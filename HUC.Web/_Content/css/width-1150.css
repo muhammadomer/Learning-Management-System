@@ -1,0 +1,12 @@
+@media only screen and (max-width: 1150px) {
+  #nav-bar .nav li a {
+    padding: 10px 8px;
+  }
+  #nav-bar .nav li .sub-nav li a {
+    font-size: 12px;
+  }
+  #main-content .sign-up-box .input-area input[type="text"] {
+    width: 26%;
+    font-size: 18px;
+  }
+}

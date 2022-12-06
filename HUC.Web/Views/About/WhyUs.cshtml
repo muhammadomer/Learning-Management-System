@@ -1,0 +1,81 @@
+﻿@using HUC.Web.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Why us",
+        ContentTitle = "Why us",
+        ActivePage = "whoweare",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("who we are", Url.Action("Index")),
+            new BreadcrumbItem("why us")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+
+
+                <div class="items">
+                 
+                    <p>
+                        <strong>Training Courses</strong> offers a "must have" future-proof solution for the modern firm in the new regulatory (self-regulatory) environment by providing a refreshing approach to online learning for Law Firms, particularly relevant when the SRA's proposals on CPD come into force.
+                    </p>
+                    <h3>
+                        Why do you need HUC Online Learning?
+                    </h3>
+                    <p>
+                        The HUC e-Learning portal provides a range of Legal Compliance Standards courses, for all staff in a business. it raises awareness and keeps track of Legal Compliance learning and provides a record of each user's learning activity and competency for Governing body regulation.
+                        <br/>
+                        HUC e-Learning portal takes care of the regulatory side of things (such as Equality & Diversity, Data Protection and Anti Money Laundering) releasing your firm to concentrate on making sure that its lawyers are competent in their practice areas.
+                        <br/>
+                        The HUC e-Learning portal saves you time by allowing your firm tailored learning solutions, via uploading your own courses or update material, delivering it to the appropriate staff and achieving the required standards through a competency test.
+                    </p>
+                    <p>
+                        HUC e-learning portal is easy to use. The system uses a "Dashboard" style reporting enabling the compliance officer to review and understand your firm's observance both in terms of regulatory training requirements, but also competency levels in practice areas. Go to <a href="/">www.headsupcompliance.co.uk</a>
+                    </p>
+                                                    
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="selection-container">
+                    <ul class="sub-pages">
+                        <li>
+                            <a href="/About">
+                                Who we are
+                                <label class="arrow"></label>
+                            </a>
+
+                        </li>
+                        <li class="active">
+                            <span>
+                                Why us
+                                <label class="arrow"></label>
+                            </span>
+
+                        </li>
+                        @*<li>
+                            <a href="/About/Services">
+                                Our Services
+                                <label class="arrow"></label>
+                            </a>
+                        </li>*@
+
+                        <li>
+                            <a href="/About/Testimonials">
+                                Testimonials
+                                <label class="arrow"></label>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

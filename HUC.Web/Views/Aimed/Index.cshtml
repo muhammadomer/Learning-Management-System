@@ -1,0 +1,92 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.Courses.CourseModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Who is it aimed at",
+        ContentTitle = "Who is it aimed at",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Who is it aimed at")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="picture-heading">
+                    <img class="bg-pic" alt="Who is it aimed at?" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/picture-heading-test.jpg" />
+                </div>
+
+                <div class="items">
+                    <h2>
+                        Who is it aimed at?
+                    </h2>
+                    <p class="underline-here">
+                        Training Courses was initially set up to assist Legal firms to be compliant with the Solicitors
+                        Code of Conduct. Our Compliance e-Learning portal and associated Consultancy Services are
+                        equally applicable in businesses that are FCA regulated.<br/>
+                        Among the subjects offered are: Anti Money Laundering; Equality & Diversity; Data Protection; Risk; and complaints handling.  That “core” training allows individual businesses to determine the specific training needs of its staff to maintain competency in their practice areas.
+                    </p>
+                    <p class="change-color">
+                        Find out more about our professional training modules:
+                    </p>
+                    @*<ul class="underline-li">
+                        <li>
+                            Anti-Money Laundering 
+                        </li>
+                        <li>
+                            Equality & Diversity
+                        </li>
+                        <li>
+                            Information Security
+                        </li>
+                        <li>
+                            Data Protection
+                        </li>
+                        <li>
+                            Risk Management
+                        </li>
+                    </ul>*@
+                    <ul>
+                        @foreach (var curCourse in Model)
+                        {
+                            <li>
+                                <a href="@Html.LinkTo(curCourse)">
+                                    @curCourse.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <p>
+                        The Compliance Officer (COLP or AR) has responsibility to ensure that the whole business is provided
+                        with regular training in regulatory subjects. We aim to make your life easier by ensuring that
+                        all of your staff are trained and made aware of these risk areas and help you develop a "culture of
+                        compliance". You will be able to demonstrate that you have a training programme and that you
+                        track all of your staff's progress.
+                    </p>
+                    <h3>
+                        Why carry out online study for these professional regulations?
+                    </h3>
+                    <p>
+                        No matter what specialisation you are in or at what level you are working, there is a need to be
+                        aware of the relevant FCA or SRA Regulations and our training modules have been designed so
+                        that you can help improve your knowledge and ensure that you are able to apply the essential
+                        tools and techniques that ensure a successful career and business.
+                    </p>
+                    <p>
+                        All our training modules have been specifically selected for their course content, which combine tried and tested techniques and theories with the skills and knowledge that research shows employers require, with the ability to apply all that has been learnt to your own real-world environment.  
+                    </p>
+                </div>
+            </div>
+
+            <div class="right-column">
+                @Html.Action("DemoPod", "Request")
+            </div>
+        </div>
+    </div>
+</div>

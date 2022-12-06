@@ -1,0 +1,445 @@
+﻿body {
+    text-align: center;
+}
+
+.panel-body {
+    padding: 20px !important;
+}
+
+.paddingLR-20 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.hbox {
+    width: 100% !important;
+    margin: auto !important;
+}
+
+.vbox {
+    padding: 0px !important;
+}
+
+header {
+    width: 1200px !important;
+    margin: auto !important;
+}
+
+.full-page {
+    background-image: url(/_Content/images/extraLarge.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    right: 0;
+    width: 1200px !important;
+    text-align: left;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    background-size: 100% 540px !important;
+    /*background-size: 100% 385px;*/
+}
+
+.header.box-shadow {
+    box-shadow: 0 0px 0;
+}
+
+.no-padding {
+    padding: 0px !important;
+}
+
+
+
+.box {
+    /*padding: 0 5px 0 5px;*/
+    margin: 20px 1% !important;
+    position: relative;
+    width: 48%;
+}
+
+    .box .inner {
+        background-color: #fff;
+        margin: 10px;
+    }
+
+.bg-white {
+    background-color: transparent !important;
+}
+
+    .bg-white a, .bg-white .logout-btn:hover, .bg-white a:hover {
+        color: #000 !important;
+    }
+
+.panel {
+    margin-bottom: 20px !important;
+}
+
+.panel-default {
+    /* margin-top: 310px; */
+}
+
+.align-top-content {
+    padding: 0px 90px;
+    top: 420px !important;
+}
+
+.align-top-content1 {
+    padding: 0px 110px;
+    top: 200px !important;
+}
+.align-top-content2 {
+    padding: 0px 100px;
+    top:210px ;
+    z-index: 1;
+}
+
+
+.module-tile {
+    border-color: #eaeef1;
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);
+    border: 0px !important;
+    background-color: #fff;
+    /*margin: 0px 6px 15px 6px;*/
+}
+
+.module-tile-first {
+    height: 175px;
+}
+
+.module-tile-second {
+    height: 60px;
+    background-color: #EBECEE;
+}
+
+.progress-bar {
+    background-color: #604da5;
+}
+
+.module-time, .module-assessed-by {
+    position: absolute;
+    bottom: 5px;
+    display: block;
+    width: 100%;
+    color: #454545;
+    font-family: 'Franklin Gothic';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: left
+}
+
+.module-assessed-by {
+    font-weight: 100;
+    bottom: 25px;
+}
+
+.disabled-link {
+    cursor: no-drop;
+}
+
+.ev-component-title > .ev-component-title-inner {
+    color: #454545;
+    text-align: left;
+    font-family: Bahnschrift;
+    font-size: 25px;
+    /* font-weight: 700;*/
+    line-height: 1.25;
+}
+
+.ev-component-title > p {
+    color: #454545;
+    text-align: left;
+    font-family: Franklin Gothic Book;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.ev-component-title > h4 {
+    color: #454545;
+    font-family: Bahnschrift;
+    font-size: 30px;
+    font-weight: 400 !important;
+    line-height: 1.25;
+    text-align: left;
+}
+
+.ev-article > h4 {
+    color: #454545;
+    font-family: Bahnschrift !important;
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0px 0px 10px 0px;
+}
+
+.ev-article > h3, .ev-article h3 {
+    color: #454545 !important;
+    text-align: left;
+    font-family: Bahnschrift !important;
+    font-size: 25px !important;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0px 0px 10px 0px;
+}
+
+.headingh3 {
+    color: #454545 !important;
+    text-align: left;
+    font-family: Bahnschrift !important;
+    font-size: 25px !important;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0px 0px 10px 0px;
+}
+
+.ev-article a, sup {
+    color: #339966
+}
+
+.ev-article {
+    padding: 0px 20px;
+    margin-bottom: 10px;
+}
+
+    .ev-article > ul, .ev-article > ol {
+        padding-left: 40px;
+    }
+
+    .ev-article, .ev-article > p, .ev-dialog-item-message > p .ev-component-body-inner > p, .ev-article > p strong, .ev-article ul, .ev-article > strong, .footer-tile, .footer-current-page {
+        color: #454545;
+        text-align: left;
+        font-family: Franklin Gothic Book !important;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.25;
+        box-shadow: 0px 0px 0px 0px;
+    }
+
+.footer-tile-detail {
+    display: table;
+}
+
+    .footer-tile-detail > [class*="col-"] {
+        vertical-align: middle;
+        display: table-cell;
+        float: none;
+    }
+
+.footer-tile, .footer-tile a {
+    text-align: center;
+    color: #999999 !important;
+    width: 100%;
+}
+
+.footer-current-page {
+    color: #000 !important;
+    text-align: center;
+}
+
+
+.footer-tile a:hover {
+    color: #808393 !important;
+}
+
+.ev-article > p strong, .ev-article > strong, .footer-tile > strong {
+    font-weight: 700;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.course-overview .panel .panel-body h2 {
+    border: 0px;
+}
+
+.ev-dragAndDrop-component .ev-drop-zone-text > p {
+    color: #ffffff;
+    font-weight: 400;
+    font-family: Signika !important;
+}
+
+.btn-orange-color {
+    background-color: transparent;
+    border-color: #fff;
+    width: 130px;
+    color: #fff !important;
+    border-width: 3px;
+}
+
+/*.btn-orange-color:hover,.btn-orange-color:focus, .btn-orange-color:active {
+		background-color: #c57936;
+		border-color: #c57936;
+}*/
+
+.course-header {
+    text-align: center;
+    margin: auto;
+    width: 70%;
+    margin-top: 130px;
+}
+
+    .course-header div {
+        margin: auto;
+        color: white;
+        padding: 0px 40px;
+        font-size: 50px;
+        border: 3px solid white;
+        border-radius: 7px;
+        box-shadow: 0 0 10px #9ecaed;
+        text-transform: uppercase;
+        width: fit-content;
+    }
+
+.course-overview {
+    color: #4d4d4d;
+    width: 100%;
+}
+.course-overview-top-preview {
+    top: 300px;
+    position: absolute;
+}
+.course-overview-top-preview2 {
+    top: 480px;
+    position: absolute;
+}
+.course-overview-top-about {
+    top: 480px;
+    position: absolute;
+}
+.course-overview-top-module {
+    top: 490px;
+    position: absolute;
+}
+.course-overview-top-asses {
+    top: 480px;
+    position: absolute;
+}
+.course-overview-top-modulepreview {
+    top: 600px;
+    position: absolute;
+}
+/*Resources Preview start*/
+.course-overview-top-respreview {
+    top: 430px !important;
+    position: relative !important;
+}
+/*Resources Preview end*/
+
+.nextprev {
+    max-width: 66% !important;
+    height: auto !important;
+}
+
+.coursecounter {
+    width: 100%;
+    font-size: 24px;
+    color: white;
+    margin: auto;
+    background-color: #9b9c9f;
+    border-radius: 5px;
+}
+@media only screen and (min-width: 768px) {
+    #btnLogout {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    body {
+        padding: 0px !important;
+    }
+}
+
+/*New Design */
+.no-padding {
+    padding: 0px 106px !important;
+}
+
+
+
+.module-tile-second {
+    background-color: #fff;
+}
+
+.btn-blue-color-dash {
+    color: white !important;
+    background-color: #000;
+    margin-left: 24px;
+}
+.btn-blue-color-userclose{
+    color: #fff !important;
+    background-color: #000;
+    margin-left: 30px;
+    border: 1px solid #000;	
+}
+.btn-blue-color-close {
+    color: white !important;
+    background-color: #000;
+    margin-right: 24px;
+}
+
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+@media screen and (min-width: 1401px) {
+    .full-page {
+        height: 50% !important;
+    }
+}
+
+@media screen and (min-width: 1366px) {
+    .full-page {
+        height: 60%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .course-overview-top-preview {
+        top: 400px;
+        position: absolute;
+    }
+
+    .course-overview-top-preview1 {
+        top: 400px;
+        position: absolute;
+    }
+    .course-overview-top-preview2 {
+        top: 630px;
+        position: absolute;
+    }
+    .align-top-content {
+        top: 530px;
+        z-index: 1;
+    }
+
+    .course-overview-top-module {
+        top: 620px;
+        position: absolute;
+    }
+
+    .align-top-content1 {
+        top: 360px!important;
+        z-index: 1;
+    }
+    .align-top-content2 {
+        padding:0px 100px;
+        top: 350px !important;
+        z-index: 1;
+    }
+
+    .course-overview-top-asses {
+        top: 620px!important;
+        position: absolute;
+    }
+
+    .course-overview-top-about {
+        top: 630px;
+        position: absolute;
+    }
+
+}
+

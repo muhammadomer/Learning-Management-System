@@ -1,0 +1,138 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.PageModels.UserTestResultsPageModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = @Model.User.FirstName + " " + @Model.User.LastName + "'s Test Results",
+        ContentTitle = @Model.User.FirstName + " "+ @Model.User.LastName +" - " +Model.UserCourse.Course.Name +   "'s Test Results",
+        ContentTitleDesc = "",//"Here are this users results for each test in this course.",
+        ActivePage = "users",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Users", null, "i-users3"),
+            new BreadcrumbItem(Model.User.FirstName + " " + Model.User.LastName),
+            new BreadcrumbItem("Statistics", Url.Action("Statistics", new { id = Model.UserCourse.CompanyUser.ID })),
+            new BreadcrumbItem("Test Results")
+        }
+    };
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, null, { "bSortable": false }],
+                "iDisplayLength": 10
+            });
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content">
+            <a class="btn btn-success pull-right" href="javascript:history.back()">
+                Back to Profile<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="javascript:history.back()">
+                Back to Profile<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            @*<span class="table-header">@Model.UserCourse.Course.Name</span>*@
+            <table id="sortable" class="table table-striped m-b-none">
+                <thead>
+
+                    <tr>
+                        <th>
+                            Date taken
+                        </th>
+                        <th>
+                            Test taken
+                        </th>
+                        <th>
+                            Time spent
+                        </th>
+                        <th>
+                            Score
+                        </th>
+                        <th>
+                            Retake On
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var testResource in Model.UserCourse.Course.Resources.Where(x => x.Questions.Any()))
+                    {
+                        var userCourseTests = testResource.UserTestsFor(Model.UserCourse.ID);
+
+
+                        foreach (var userCourseTest in userCourseTests.OrderByDescending(x => x.StartOn))
+                        {
+                            <tr>
+                                <td>
+                                    @userCourseTest.StartOn.ToString()
+                                </td>
+                                <td>
+                                    @testResource.Name
+                                </td>
+                                <td>
+                                    @userCourseTest.TimeTakenString
+                                </td>
+                                <td>
+                                    @(userCourseTest.CorrectAnswerCount)/@(userCourseTest.MaxScore)
+                                </td>
+                                <td>
+                                    @{
+                                        var now = DateTime.Now;
+                                        DateTime? retakeDate = testResource.TestRetakeDateFor(Model.UserCourse.ID);
+
+                                        if (retakeDate == null)
+                                        {
+                                            @:Never
+                                        }
+                                        else
+                                        {
+                                            if (now >= retakeDate.Value)
+                                            {
+                                                @:Now
+                                            }
+                                            else
+                                            {
+                                                @:@retakeDate.ToString()
+                                            }
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<script>
+$(document).ready(function () {
+	$('.btn-2').removeAttr('style');
+			$(".intro-text").removeClass("button-deactive");
+			$(".btn-2").css("color", "#ffffff !important");
+    });
+	</script>

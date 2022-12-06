@@ -1,0 +1,22 @@
+﻿@model HUC.Web.App.PageModels.Forms.DemoFormModel
+
+<div class="light-grey-bg">
+    <div class="container">
+        <div class="content">
+            <div class="sign-up-box">
+                @using (Html.BeginForm("Index", "Request", FormMethod.Post))
+                {
+                    <h3>
+                        Sign up for a demo today
+                    </h3>
+                    <div class="input-area">
+                        @Html.TextBoxFor(x => x.Name, new { placeholder = "Your name" })
+                        @Html.TextBoxFor(x => x.Email, new { placeholder = "Your email address" })
+                        @Html.TextBoxFor(x => x.Company, new { placeholder = "Company name" })
+                        <input class="large-button orange" type="submit" value="Submit" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

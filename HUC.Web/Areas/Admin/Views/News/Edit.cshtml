@@ -1,0 +1,120 @@
+﻿@using HUC.Web.App.MediaItems
+@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@model HUC.Web.App.News.Items.NewsItemEditModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = Model.Title + " - Edit",
+        ContentTitle = Model.Title + " - Edit",
+        ContentTitleDesc = "Here you can edit this news item.",
+        ActivePage = "news",
+        ActiveSubPage = "items",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("News", null, "i-stack"),
+            new BreadcrumbItem("Items", Url.Action("Index"), "i-docs"),
+            new BreadcrumbItem("Edit")
+        }
+    };
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublishOnDateString)
+            <div class="input-field">
+                @Html.EditorFor(model => model.PublishOnDateString)
+                @Html.ValidationMessageFor(model => model.PublishOnDateString)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublishOnTimeString)
+            <div class="input-field">
+                @Html.EditorFor(model => model.PublishOnTimeString)
+                @Html.ValidationMessageFor(model => model.PublishOnTimeString)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryID)
+            <div class="input-field">
+                @Html.ChosenFor(model => model.CategoryID, Model.CategoryOptions(), "Select Category...")
+                @Html.ValidationMessageFor(model => model.CategoryID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LabelIDs)
+            <div class="input-field">
+                @Html.ChosenFor(model => model.LabelIDs, Model.LabelOptions(), "Select Labels...", true)
+                @Html.ValidationMessageFor(model => model.LabelIDs)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublishBy)
+            <div class="input-field">
+                @Html.EditorFor(model => model.PublishBy)
+                @Html.ValidationMessageFor(model => model.PublishBy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IntroCopy)
+            <div class="input-field">
+                @Html.TextAreaFor(model => model.IntroCopy)
+                @Html.ValidationMessageFor(model => model.IntroCopy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImageID)
+            <div class="input-field">
+                @Html.MediaSelectFor(model => model.ImageID, FileType.Image, true)
+                @Html.ValidationMessageFor(model => model.ImageID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TestimonialID)
+            <div class="input-field">
+                @Html.ChosenFor(model => model.TestimonialID, Model.TestimonialOptions(), "Choose Testimonial", false, true)
+                @Html.ValidationMessageFor(model => model.TestimonialID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BodyCopy)
+            <div class="input-field full">
+                @Html.TextAreaFor(x => x.BodyCopy, new { @class = "redactor" })
+                @Html.ValidationMessageFor(model => model.BodyCopy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="action-button">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}

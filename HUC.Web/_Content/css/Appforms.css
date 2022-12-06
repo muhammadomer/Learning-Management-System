@@ -1,0 +1,79 @@
+﻿.form-control {
+    color: #72bbb8 !important;
+    border: 2px solid #72bbb8 !important;
+    border-radius: 6px;
+    height: 40px !important;
+    max-width: 500px !important;
+}
+
+.redactor_editor {
+    border: 1px solid #72bbb8 !important;
+    min-height: 200px !important;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 200px !important;
+}
+
+.redactor_toolbar {
+    border: 2px solid #72bbb8 !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px
+}
+/*   input {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }*/
+td > b {
+    color: #72bbb8 !important;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+label {
+    color: black !important;
+}
+
+table {
+    width: 500px;
+    border-radius: 6px;
+    border-collapse: inherit;
+}
+
+.set-margin {
+    margin-top: 85px;
+}
+
+@@media(max-width:1600px) {
+    table {
+        width: auto !important;
+    }
+}
+
+input[type="radio"] {
+    /* remove standard background appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* create custom radiobutton appearance */
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    padding: 0px;
+    /* background-color only for content */
+    background-clip: content-box;
+    border: 5px solid #72bbb8;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+    /* appearance for checked radiobutton */
+    input[type="radio"]:checked {
+        background-color: #336666;
+    }
+
+    input[type="radio"]:focus {
+        outline: unset;
+    }

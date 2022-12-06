@@ -1,0 +1,1317 @@
+﻿@model HUC.Web.App.Resources.Chapters.Contents.ChapterContentModel
+@using HUC.Web.App.Resources.Chapters.Contents
+<style>
+    .win-margin {
+        margin-left: 10px;
+    }
+
+    .edit-create-form .input-field {
+        max-width: 500px;
+    }
+
+    .form-control {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }
+	.accordiontitle , .accordiondescription {
+        margin-left: 10px;
+        margin-right: 4px;
+    }
+    .removeItem {
+        float: right;
+        margin-right: 10px;
+    }
+	#accordionList li {
+        background-color: #f6f6f6;
+        border: solid 1px;
+        margin-bottom: 2px;
+        padding:5px;
+        cursor: grab;
+    }
+</style>
+<link href="~/_Content/css/bootstrap-colorselector.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    #cke_7, #cke_8, #cke_14, #cke_22, #cke_28, #cke_45, #cke_49, #cke_50, #cke_51, #cke_52, #cke_57, #cke_58, #cke_59, #cke_63, #cke_72, #cke_74, #cke_80 {
+        display: none !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var model = @Html.Raw(Json.Encode(Model.ContentType));
+        var JsonList = [];
+        var ValueList = [];
+        var optionList = [];
+        var IndexId = 1;
+        var imageerror = 0;
+        $("#loading").hide();
+        console.log("model");
+        if (model == 400) {
+            var modelValue = $("#Value").val();
+            if (modelValue.trim() != "") {
+                JsonList = JSON.parse(modelValue);
+                for (var i = 0; i < JsonList.length; i++) {
+                    var fullText = JsonList[i].content.length > 50 ? JsonList[i].content.substring(0, 49) + '...' : JsonList[i].content;
+                    var htmlRow = '<li><i class="fa fa-arrows" aria-hidden="true"></i><span class="accordiontitle">' + JsonList[i].heading + '</span>:<span class="accordiondescription" title="' + JsonList[i].content + '">' + fullText + '</span><span class="removeItem">X</span></li>';
+                    $("#accordionList").append(htmlRow);
+                }
+                $("#accordionList").sortable();
+            }
+        }
+        else if (model == 500) {
+            var modelValue = $("#Value").val();
+            var htmlRow;
+            if (modelValue.trim() != "") {
+                ValueList = JSON.parse(modelValue);
+                JsonList = JSON.parse(modelValue);
+                for (var i = 0; i < ValueList.length; i++) {
+                    IndexId = ValueList[i].IndexId;
+                }
+            }
+            IndexId++;
+        }
+        else if (model == 600) {
+            var modelValue = $("#Value").val();
+            if (modelValue.trim() != "") {
+                JsonList = JSON.parse(modelValue);
+                for (var i = 0; i < JsonList.length; i++) {
+                    var fullText = JsonList[i].message.length > 50 ? JsonList[i].message.substring(0, 49)+'...' : JsonList[i].message;
+                    var htmlRow = '<li><i class="fa fa-arrows" aria-hidden="true"></i><span class="accordiontitle">' + JsonList[i].type + '</span>:<span class="accordiondescription" title="' + JsonList[i].message + '">' + fullText + '</span><span class="removeItem">X</span></li>';
+                    $("#accordionList").append(htmlRow);
+                }
+                $("#accordionList").sortable();
+            }
+        }
+        $("#btSubmit").on("click", function (e) {
+
+            e.preventDefault();
+            JsonList = [];
+            var itemLength = $('#accordionList li').length;
+            if (model == 400) {
+                if (itemLength == 0) {
+                    toastr.error("Please add atleast one Item");
+                    return false;
+                }
+                $('#accordionList li').each(function (key, value) {
+                    var title = $(this).find(".accordiontitle").text();
+                    var description = $(this).find(".accordiondescription").attr("title");
+                    var item = {
+                        "heading": title,
+                        "content": description
+                    }
+                    JsonList.push(item);
+                    if (itemLength - 1 == key) {
+                        $("#Value").val(JSON.stringify(JsonList));
+                        $("#submitform").submit();
+                    }
+                });
+            }
+            else if (model == 500) {
+                var backflipdescription = $('#backtxtDescription').val();
+                var backflipcolor = $("#backBackgroundcolor").val();
+                var description = $('#txtDescription').val();
+                var file = $("#flipImage").val();
+                var checkitem = $('input[type="radio"]:checked').val();
+                if (checkitem == 1) {
+                    // here
+                    if (file == "" || file == undefined) {
+                        imageerror = 1;
+                        activaTab('front');
+                        $('#backtxtDescription_Iframe').contents().find('body').text("");
+                        toastr.error("We cannot proceed until you have selected an image");
+                        $("#btSubmit").hide();
+                        return;
+                    }
+                    else {
+
+                         if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#flipImage").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('username', 'Manas');
+
+                    $.ajax({
+                        url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/UploadFiles',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            if (result.Message == "1") {
+                                if (backflipdescription == "") {
+                                    toastr.error("Please add flip side description");
+                                    return;
+                                } else {
+                                    var item = {
+                                        "IndexId": IndexId,
+                                        "imagePath": result.Data,
+                                        "heading": "",
+                                        "content": description,
+                                        "backdescription": backflipdescription,
+                                        "backcolor": backflipcolor
+                                    }
+                                    imageerror = 0;
+                                    JsonList.push(item);
+                                    ValueList.push(item);
+                                    $("#Value").val(JSON.stringify(JsonList));
+                                    toastr.success("Flip Card Added");
+                                    $("#txtDescription").val("");
+                                    $("#flipImage").val("");
+                                    $("#pic").prop("checked", true).trigger("click");
+                                    $("#txtDescription_Iframe").contents().find("body").text("");
+                                    $("#txtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                                    $("#backtxtDescription_Iframe").contents().find("body").text("");
+                                    $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                                    $("ul.dropdown-menu li:first-child a").click();
+                                    $("#addItemToList").text("Save");
+                                    $("#btSubmit").val("Finish");
+                                    activaTab('front');
+                                    $("#Value").val(JSON.stringify(ValueList));
+                                    $("#submitform").submit();
+                                }
+                            }
+                            else {
+                                imageerror = 1;
+                                toastr.error("We cannot proceed until you have selected an image");
+                                $('#backtxtDescription_Iframe').contents().find('body').text("");
+                               // toastr.error("No Image select, Select Image First");
+                                return false;
+                            }
+                        },
+                        error: function (err) {
+                            toastr.error(err.statusText);
+                        }
+                    });
+                } else {
+                             toastr.error("FormData is not supported.");
+                             $('#backtxtDescription_Iframe').contents().find('body').text("");
+                }
+                    }
+                }
+                else {
+                    if (description == "") {
+                        toastr.error("Please add front cover description");
+                        $('#backtxtDescription_Iframe').contents().find('body').text("");
+                        return;
+                    }
+                    if (backflipdescription == "") {
+                        toastr.error("Please add flip side description");
+                        $('#backtxtDescription_Iframe').contents().find('body').text("");
+                        return;
+                    }
+                    var colour = $("#Backgroundcolor").val();
+                    var item = {
+                        "IndexId": IndexId,
+                        "imagePath": colour,
+                        "heading": colour,
+                        "content": description,
+                        "backdescription": backflipdescription,
+                        "backcolor": backflipcolor
+                    }
+                    ValueList.push(item);
+                    JsonList.push(item);
+                    console.log(JsonList);
+                    $("#Value").val(JSON.stringify(JsonList));
+                    toastr.success("Flip Card Added");
+                    $("#flipImage").val("");
+                    $("#pic").prop("checked", true).trigger("click");
+                    $("#txtDescription_Iframe").contents().find("body").text("");
+                    $("#txtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                    $("#backtxtDescription_Iframe").contents().find("body").text("");
+                    $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                    $("ul.dropdown-menu li:first-child a").click();
+                    $("#addItemToList").text("Save");
+                    $("#btSubmit").val("Finish");
+                    activaTab('front');
+                    $("#Value").val(JSON.stringify(ValueList));
+                    $("#submitform").submit();
+                }
+            }
+            if (model == 600) {
+                if (itemLength == 0) {
+                    toastr.error("Please add atleast one Item");
+                    return false;
+                }
+                $('#accordionList li').each(function (key, value) {
+                    var type = $(this).find(".accordiontitle").text();
+                    var message = $(this).find(".accordiondescription").attr("title");
+                    var item = {
+                        "message": message,
+                        "type": type
+                    }
+                    JsonList.push(item);
+                    if (itemLength - 1 == key) {
+                        $("#Value").val(JSON.stringify(JsonList));
+                        $("#submitform").submit();
+                    }
+                });
+            }
+            else {
+                if (imageerror == 1) {
+                    imageerror = 0;
+                }
+                else {
+                    $("#submitform").submit();
+                }
+            }
+        });
+
+        $("#addItemToList").on("click", function () {
+            if (model == 400) {
+                var title = $("#txtTitle").val();
+                var description = $("#txtDescription").val();
+                if (title == "") {
+                    toastr.error("please provide title");
+                    return;
+                }
+                else if (description == "") {
+                    toastr.error("please provide description");
+                    return;
+                }
+                var fullText = description.length > 50 ? description.substring(0, 49) + '...' : description;
+                var htmlRow = '<li><i class="fa fa-arrows" aria-hidden="true"></i><span class="accordiontitle">' + title + '</span>:<span class="accordiondescription" title="' + description + '">' + fullText + '</span><span class="removeItem">X</span></li>';
+                $("#accordionList").append(htmlRow);
+                $("#accordionList").sortable();
+                var item = {
+                    "heading": title,
+                    "content": description
+                }
+                JsonList.push(item);
+                $("#Value").val(JSON.stringify(JsonList));
+                $("#txtTitle").val("");
+                $("#txtDescription").val("");
+            }
+            else if (model == 500) {
+                var backflipdescription = $('#backtxtDescription').val();
+                var backflipcolor = $("#backBackgroundcolor").val();
+                var description = $('#txtDescription').val();
+                var checkitem = $('input[type="radio"]:checked').val();
+                if (checkitem == 1) {
+                    if (file == "") {
+                        toastr.error("please select image");
+                        return;
+                    }
+                    else {
+                        var file = $("#flipImage").val();
+                         if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#flipImage").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('username', 'Manas');
+
+                    $.ajax({
+                        url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/UploadFiles',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            if (result.Message == "1") {
+                                debugger
+                                $("#loading").show();
+                                var fulltextshow = $(backflipdescription).text();
+                                var htmlRow = '<li  class="list-group-item"><i class="fa fa-arrows" aria-hidden="true"></i>:' + fulltextshow + ' <span style="margin-left:100px"  class="removeItem">X</span></li>';
+                                $("#accordionList").append(htmlRow);
+                                $("#accordionList").sortable();
+                                var item = {
+                                    "imagePath": result.Data,
+                                    "heading": "",
+                                    "content": description,
+                                    "backdescription": backflipdescription,
+                                    "backcolor" : backflipcolor
+                                }
+                                JsonList.push(item);
+                                ValueList.push(item);
+                                $("#Value").val(JSON.stringify(JsonList));
+                                $("#txtDescription").val("");
+                                $("#flipImage").val("");
+                                $('input[type="radio"]:checked').val(1);
+                                $("#backtxtDescription").val("");
+                                $("#backBackgroundcolor").val();
+                                $("#btSubmit").show();
+                                activaTab('front');
+                            }
+                            else {
+                                toastr.error(result.Message);
+                            }
+                        },
+                        error: function (err) {
+                            toastr.error(err.statusText);
+                        }
+                    });
+                } else {
+                    toastr.error("FormData is not supported.");
+                }
+                    }
+                    $("#addItemToList").text("Add Another Flip Card");
+
+                }
+                else {
+                    var colour = $("#Backgroundcolor").val();
+                    var fulltextshow = $(description).text();
+                    var htmlRow = '<li  class="list-group-item"><i class="fa fa-arrows" aria-hidden="true"></i>:' + fulltextshow + ' <span style="margin-left:100px"   class="removeItem">X</span></li>';
+                    $("#accordionList").append(htmlRow);
+                    $("#accordionList").sortable();
+                    var item = {
+                        "imagePath": colour,
+                        "heading": colour,
+                        "content": description,
+                        "backdescription": backflipdescription,
+                        "backcolor": backflipcolor
+                    }
+                    ValueList.push(item);
+                    JsonList.push(item);
+                    console.log(JsonList);
+                    $("#Value").val(JSON.stringify(JsonList));
+                    $("#txtDescription").val("");
+                    $("#flipImage").val("");
+                    $('input[type="radio"]:checked').val(1);
+                    $("#addItemToList").text("Add Another Flip Card");
+                    $("#btSubmit").show();
+                    activaTab('front');
+
+                }
+                //if (description == "") {
+                //    toastr.error("please provide description");
+                //    return;
+                //}
+                // Checking whether FormData is available in browser
+
+            }
+            else if (model == 600) {
+                var message = $("#txtInterviewMessage").val();
+                var type = $("#ddlInterviewType").val();
+                if (message == "") {
+                    toastr.error("please provide Interview Message");
+                    return;
+                }
+                else if (type == "") {
+                    toastr.error("please provide Interview Type");
+                    return;
+                }
+                var fullText = message.length > 50 ? message.substring(0, 49) + '...' : message;
+                var htmlRow = '<li><i class="fa fa-arrows" aria-hidden="true"></i><span class="accordiontitle">' + type + '</span>:<span class="accordiondescription" title="' + message + '">' + fullText + '</span><span class="removeItem">X</span></li>';
+                $("#accordionList").append(htmlRow);
+                $("#accordionList").sortable();
+                var item = {
+                    "message": message,
+                    "type": type
+                }
+                JsonList.push(item);
+                $("#Value").val(JSON.stringify(JsonList));
+                $("#txtInterviewMessage").val("");
+                $("#ddlInterviewType").val("");
+            }
+            else if (model == 700)
+            {
+                var title = $("#txtTitle").val();
+                var attempts = $("#txtAttempts").val();
+                var question = $("#txtQuestion").val();
+                var statement = $("#txtStatement").val();
+                if (title == "") {
+                    toastr.error("Please provide title.");
+                    return;
+                }
+                else if (attempts == "") {
+                    toastr.error("Please provide attempts.");
+                    return;
+                }
+                else if (question == "") {
+                    toastr.error("Please provide question.");
+                    return;
+                }
+                else if (statement == "") {
+                    toastr.error("Please provide statement.");
+                    return;
+                }
+                var optionLength = $('.optionList .row').length;
+                if (optionLength == 0) {
+                    toastr.error("Please add atleast one option.");
+                }
+                else {
+                    var optionValidation = true;
+                    optionList = [];
+                    var trueOptionCount = 0;
+                    $('.optionList .row').each(function (key, value) {
+                        var questionOption = $(this).find(".questionOption").val();
+                        var questionBit = $(this).find(".questionBit").val();
+                        if (questionOption == "") {
+                            $(this).find(".questionOption").addClass("red-border");
+                            optionValidation = false;
+                        }
+                        else {
+                            $(this).find(".questionOption").removeClass("red-border");
+                        }
+                        if (questionBit == "") {
+                            $(this).find(".questionBit").addClass("red-border");
+                            optionValidation = false;
+                        }
+                        else {
+                            $(this).find(".questionBit").removeClass("red-border");
+                        }
+                        if (questionBit == "true") {
+                            trueOptionCount++;
+                        }
+                        var option = {
+                            "option": questionOption,
+                            "type": questionBit
+                        }
+                        debugger
+                        optionList.push(option);
+                        if (optionLength - 1 == key) {
+                            if (!optionValidation) {
+                                toastr.error("Please provide options required fields.");
+                            }
+                            if (trueOptionCount > 1) {
+                                toastr.error("Only one option can be true.");
+                            }
+                        }
+                    });
+                }
+            }
+            $("#loading").hide();
+        });
+
+        $("#btnInsertEmptyOptionRow").on("click", function () {
+            $(".optionList").append($(".optionRowTemplate").html());
+        });
+
+        function activaTab(tab) {
+            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+            $("#txtDescription").val("");
+            $("#backtxtDescription").val("");
+        };
+		$(document).on("click", ".removeItem", function () {
+        $(this).parent().remove();
+        JsonList = [];
+        var itemLength = $('#accordionList li').length;
+        $('#accordionList li').each(function (key, value) {
+            var title = $(this).find(".accordiontitle").text();
+            var description = $(this).find(".accordiondescription").text();
+            var item = {
+                "heading": title,
+                "Description": description
+            }
+            JsonList.push(item);
+            if (itemLength - 1 == key) {
+                $("#Value").val(JSON.stringify(JsonList));
+            }
+        });
+    });
+    });
+    function activaTab(tab) {
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+        $("#txtDescription").val("");
+        $("#backtxtDescription").val("");
+    };
+    $(document).on("click", ".removeOption", function () {
+        $(this).closest(".row").remove();
+    });
+
+
+
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+</script>
+
+@switch (Model.ContentType)
+{
+    case ContentType.Text:
+        <style>
+            .cke_skin_kama .cke_focus {
+                outline: none !important;
+            }
+        </style>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, "Text"@*, new { @class = "control-label white-color" }*@)
+            <div>
+                @*@Html.TextAreaFor(x => x.Value, new { @class = "redactor" })*@
+                @Html.TextAreaFor(x => x.Value, new { @class = "ckeditor" })
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+
+        @*<b>Backgroung Color :</b>  <input type="color" class="default-tex" />
+             <b>&nbsp;&nbsp;&nbsp; Text Color :</b> <input type="color" class="default-te"/>
+            <input type="button" class="default-text"  value="Change"  />*@
+
+        @*<script>
+                var va = "";
+                var ta ="";
+                $(".default-text").on("click", function (e) {
+                     va = $('.default-tex').val();
+                     ta = $('.default-te').val();
+
+                    $('iframe').contents().find('body').css('backgroundColor', va);
+                    $('iframe').contents().find('body').css('color', ta);
+
+                    return false;
+
+                });
+                CKEDITOR.on('instanceReady', function (e) {
+                    // First time
+                    e.editor.document.getBody().setStyle('background-color', 'white');
+                    e.editor.document.getBody().setStyle('color', 'black');
+                    // in case the user switches to source and back
+                    e.editor.on('contentDom', function () {
+                        e.editor.document.getBody().setStyle('background-color', va);
+                        e.editor.document.getBody().setStyle('color', ta);
+                    });
+                });
+            </script>*@
+
+        break;
+
+    case ContentType.Audio:
+        var fileProvided = Model != null && !String.IsNullOrWhiteSpace(Model.Value);
+        var fileaudio = Model.Value;
+        <script>
+            $(".panel").css('width', '40%');
+        </script>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, "Audio File : MP3 Format"@*, new { @class = "control-label white-color" }*@)
+            <div style="font-size:16px;font-family:'Franklin Gothic Book';">
+                @if (fileProvided)
+                {
+                    <input type="file" class="form-control" name="value_file" value="@fileaudio" />
+                    <label id="filename">@fileaudio</label>
+                }
+                else
+                {
+                    <input type="file" class="form-control" name="value_file" />
+                }
+                @Html.HiddenFor(x => x.Value)
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        <script>
+            $('input[type="file"]').change(function (e) {
+                var fileName = e.target.files[0].name;
+                $("#filename").text(fileName);
+            })
+        </script>
+        break;
+
+    case ContentType.PDF:
+        var fileProvidedPDF = Model != null && !String.IsNullOrWhiteSpace(Model.Value);
+		var filename = Model.Value;
+        <style>
+            
+            .fa-2x {
+                font-size: 1.5em !important;
+            }
+        </style>
+        <script>
+            $(".panel").css('width', '40%');
+
+        </script>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-1" style="margin-left:5px;">
+                    <i class="fa fa-2x fa-file-pdf-o" style="color:#72bbb8"></i>
+                </div>
+                <div class="col-lg-1">
+                    <i class="fa fa-2x fa-file-excel-o" style="color:#72bbb8"></i>
+                </div>
+                <div class="col-lg-1">
+                    <i class="fa fa-2x fa-file-word-o" style="color:#72bbb8"></i>
+                </div>
+                <div class="col-lg-1">
+                    <i class="fa fa-2x fa-file-powerpoint-o" style="color:#72bbb8"></i>
+                </div>
+            </div>
+            <div class="form-group" style="font-size:16px;font-family:'Franklin Gothic Book';width:370px;height:40px;padding:5px!important">
+               
+                @if (fileProvidedPDF)
+                {
+                    <input type="file" name="value_file"  style="padding:7px;" class="form-control" accept=".pdf, .docx, .xlsx, .doc, .pptx, .ppt, .odp" value="@filename"/>
+                    <label id="filename" >@filename</label>
+//                    <p>A file is already uploaded. <a href="#" class="revealUpload" style="color:cornflowerblue">Click here</a> to replace it.</p>
+                }
+                else
+                {
+                    <input type="file" name="value_file" style="padding:7px;" class="form-control" accept=".pdf, .docx, .xlsx, .doc, .pptx, .ppt, .odp" @if (fileProvidedPDF) { <text> style="display:none;" </text> } />
+                }
+                @Html.HiddenFor(x => x.Value)
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        <script>
+            $('input[type="file"]').change(function (e) {
+                var fileName = e.target.files[0].name;
+                $("#filename").text(fileName);
+            })     
+        </script>
+        break;
+
+
+  case ContentType.VideoYoutube:
+        <script>
+            $(".panel").css('width', '35%');
+            $(".edit-create-form").css('margin-top', '10px');
+            $(".edit-create-form").css('margin-left', '8px');
+        </script>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, "YouTube Video URL"@*, new { @class = "control-label white-color" }*@)
+            <div>
+                @if (Model.Value != null)
+                {
+                    <input type="text" id="ValueyoutubeVideo" class="form-control" value="https://www.youtube.com/watch?v=@Model.Value" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-youtube-vid", @style = "display:none" })
+                    @Html.ValidationMessageFor(model => model.Value)
+                }
+                else
+                {
+                    <input type="text" id="ValueyoutubeVideo" class="form-control" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-youtube-vid", @style = "display:none" })
+                    @Html.ValidationMessageFor(model => model.Value)
+                }
+            </div>
+        </div>
+        <script>
+            $('#ValueyoutubeVideo').on('change', function () {
+                var newval = '',
+                    $this = $(this);
+                if (newval = $this.val().match(/(\?|&)v=([^&#]+)/)) {
+                    $("#js-youtube-vid").val(newval.pop());
+                } else if (newval = $this.val().match(/(\.be\/)+([^\/]+)/)) {
+                    $("#js-youtube-vid").val(newval.pop());
+                } else if (newval = $this.val().match(/(\embed\/)+([^\/]+)/)) {
+                    $("#js-youtube-vid").val(newval.pop().replace('?rel=0', ''));
+                }
+            });
+        </script>
+        break;
+    case ContentType.VideoVimeo:
+        <script>
+            $(".panel").css('width', '35%');
+            $(".edit-create-form").css('margin-top', '10px');
+            $(".edit-create-form").css('margin-left', '8px');
+        </script>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, "Vimeo Video URL"@*, new { @class = "control-label white-color" }*@)
+            <div>
+                @if (Model.Value != null)
+                {
+                    <input type="text" id="ValueVimeoVideo" class = "form-control" value="https://vimeo.com/@Model.Value" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-vimo-vid" , @style = "display:none" })
+                    @Html.ValidationMessageFor(model => model.Value)
+                }
+                else
+                {
+                    <input type="text" id="ValueVimeoVideo" class = "form-control" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-vimo-vid", @style = "display:none" })
+                    @Html.ValidationMessageFor(model => model.Value)
+                }
+            </div>
+        </div>
+        <script>
+            $('#ValueVimeoVideo').on('change', function () {
+                var newval = '',
+                    $this = $(this);
+                if (newval = $this.val().replace('https://vimeo.com/', '')) {
+                    $("#js-vimo-vid").val(newval);
+                } 
+            });
+        </script>
+        break;
+    case ContentType.VideoWistia:
+        <script>
+            $(".panel").css('width', '35%');
+            $(".edit-create-form").css('margin-top', '10px');
+            $(".edit-create-form").css('margin-left', '8px');
+        </script>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, "Wistia Video URL"@*, new { @class = "control-label white-color" }*@)
+            <div>
+                @if (Model.Value != null)
+                {
+                    <input type="text" id="ValueWistiaVideo" class="form-control" value="http://fast.wistia.net/embed/iframe/@Model.Value" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-Wistia-vid", @style = "display:none" })
+                    @Html.ValidationMessageFor(model => model.Value)
+                }
+                else
+                {
+                    <input type="text" id="ValueWistiaVideo" class="form-control" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-Wistia-vid", @style = "display:none" })
+                    @Html.ValidationMessageFor(model => model.Value)
+                }
+            </div>
+        </div>
+        <script>
+            $('#ValueWistiaVideo').on('change', function () {
+                var newval = '',
+                    $this = $(this);
+                if (newval = $this.val().replace('http://fast.wistia.net/embed/iframe/' , '')) {
+                    $("#js-Wistia-vid").val(newval);
+                } 
+            });
+        </script>
+        break;
+    case ContentType.Accordion:
+        <script>
+            $(".panel").css('width', '87%');
+            $(".edit-create-form").css('margin-top', '10px');
+            $(".edit-create-form").css('margin-left', '8px');
+
+        </script>
+		<style>
+            .form-control-desc {
+                color: #72bbb8 !important;
+                border: 2px solid #72bbb8 !important;
+                border-radius: 6px;
+            }
+            .edit-create-form .input-field input[type="text"], .edit-create-form .input-field input[type="password"], .edit-create-form .input-field input[type="email"], .edit-create-form .input-field input[type="number"], .edit-create-form .input-field textarea {
+                float: left;
+                width: 98%;
+                max-width: 100%; 
+                padding: 0 5px;
+                font-size: 16px;
+                font-family: roboto-regular, Arial, sans-serif;
+                border: 1px solid #b3b3b3;
+                outline: none;
+            }
+        </style>
+        <div class="row">
+            <div class="col-md-12" style="margin-left:-12px">
+                <div class="form-group">
+                    @Html.Label("Section Heading"@*, new { @class = "control-label white-color" }*@)
+                    @Html.TextBox("Title", null, new { @class = "form-control", @id = "txtTitle", @placeholder = "Heading" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Content", new { @class = "control-label" })
+                    @Html.TextArea("Description", null, new { @class = "form-control-desc ", @id = "txtDescription", @placeholder = "Content", @style = "height: 74px !important;" })
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-primary" href="JavaScript:void(0);" id="addItemToList">Add</a>
+                </div>
+                @Html.HiddenFor(x => x.Value)
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="accordionList" class="list-group">
+                </ul>
+            </div>
+        </div>
+        break;
+    case ContentType.Flip:
+        <script>
+            $(".panel").css('width', '44%');
+            $(".edit-create-form").css('margin-top', '10px');
+            $(".edit-create-form").css('margin-left', '8px');
+
+            var fonts = [
+                { text: "Arial", value: "Arial,Helvetica" },
+                { text: "Calibri", value: "sans-serif" },
+                { text: "Courier New", value: "Courier New,Courier,monospace" },
+                { text: "Georgia", value: "Georgia,serif" },
+                { text: "Impact", value: "Impact,Charcoal,sans-serif" },
+                { text: "Lucida Console", value: "Lucida Console,Monaco,monospace" },
+                { text: "Segoe UI", value: "Segoe UI" },
+                { text: "Tahoma", value: "Tahoma,Geneva,sans-serif" },
+                { text: "Times New Roman", value: "Times New Roman" },
+                { text: "Trebuchet MS", value: "Trebuchet MS,Helvetica,sans-serif" },
+                { text: "Verdana", value: "Verdana,Geneva,sans-serif" },
+            ];
+
+            var textfontsize = [
+                {
+                    text: "2 (10pt)",
+                    value: "2"
+                },
+                {
+                    text: "3 (12pt)",
+                    value: "3"
+                },
+                {
+                    text: "4 (14pt)",
+                    value: "4"
+                },
+                {
+                    text: "5 (18pt)",
+                    value: "5"
+                },
+                {
+                    text: "6 (24pt)",
+                    value: "6"
+                },
+                {
+                    text: "7 (36pt)",
+                    value: "7"
+                }
+            ];
+
+            $(document).ready(function () {
+                $("#btSubmit").hide();
+                $(".action-button").css({ "margin-right": "57%!important" });
+                $("#btSubmit").val("Finish");
+				$("#cncelb").css("margin-left" , "-3px !important");
+                $(".tab-content #front").addClass('in active');
+                $('#backBackgroundcolor').colorselector();
+                $('#Backgroundcolor').colorselector();
+                $("#pic").on("click", function () {
+                    $("#introid").hide();
+                    $("#colid").prop("checked", false);
+                    $("#bcColor").hide();
+                    $("#bcImage").show();
+                    $('#Backgroundcolor').removeAttr('required');
+                    $('#Backgroundimage').attr('required', true);
+                    $('#Backgroundcolor').val('');
+                })
+                $("#colid").on("click", function () {
+                    $("#introid").show();
+                    $("#pic").prop("checked", false);
+                    $("#bcColor").show();
+                    $("#bcImage").hide();
+                    $("#imagePreview").hide();
+                    $("#flipImage").val('');
+                    $("#imgshow").hide();
+                    $('#Backgroundimage').removeAttr('required');
+                    $('#Backgroundcolor').attr('required', true);
+                    $('#Backgroundimage').val('');
+                });
+
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("#imagePreview").show();
+                        $('#displayimage').attr('src', e.target.result);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $(function () {
+                $("#txtDescription").ejRTE({
+                    width: "480px",
+                    showFooter: false,
+                    fontName: fonts,
+                    fontSize: textfontsize,
+                    tools: {
+                        font: ["fontName", "fontSize", "fontColor", "backgroundColor"],
+                        style: ["bold", "italic", "underline"]
+                    },
+                    create: function () {
+                        var $head = this._rteIframe.contents().find("head");
+                        var url = "Styles/styles.css";
+                        $head.append($("<link/>", { rel: "stylesheet", href: 'http://fonts.googleapis.com/css?family=Roboto', type: "text/css" }));
+                        $head.append($("<link/>", { rel: "stylesheet", href: 'http://fonts.googleapis.com/css?family=Great+Vibes', type: "text/css" }));
+                    }
+                });
+                $("#backtxtDescription").ejRTE({
+                    width: "480px",
+                    showFooter: false,
+                    fontName: fonts,
+                    fontSize: textfontsize,
+                    tools: {
+                        font: ["fontName", "fontSize", "fontColor", "backgroundColor"],
+                        style: ["bold", "italic", "underline"]
+                    },
+                    create: function () {
+                        var $head = this._rteIframe.contents().find("head");
+                        var url = "Styles/styles.css";
+                        $head.append($("<link/>", { rel: "stylesheet", href: 'http://fonts.googleapis.com/css?family=Roboto', type: "text/css" }));
+                        $head.append($("<link/>", { rel: "stylesheet", href: 'http://fonts.googleapis.com/css?family=Great+Vibes', type: "text/css" }));
+                    }
+                });
+                $("#txtDescription_fontNameDDL_popup .e-ul li:nth-child(1)").removeClass("e-active");
+                $("#txtDescription_fontNameDDL_popup .e-ul li:nth-child(2)").addClass("e-active");
+                $("#txtDescription_fontNameDDL").val('Calibri');
+                $("#txtDescription_fontNameDDL_hidden").val('Calibri');
+                $("#backtxtDescription_fontNameDDL_popup .e-ul li:nth-child(1)").removeClass("e-active");
+                $("#backtxtDescription_fontNameDDL_popup .e-ul li:nth-child(2)").addClass("e-active");
+                $("#backtxtDescription_fontNameDDL").val('Calibri');
+                $("#backtxtDescription_fontNameDDL_hidden").val('Calibri');
+            });
+
+            $(document).ready(function () {
+                $('#txtDescription_Iframe').contents().find('body').css('backgroundColor', '#72bbb8');
+                $('#backtxtDescription_Iframe').contents().find('body').css('backgroundColor', '#e8eaef');
+               // $('#txtDescription_Iframe').contents().find('body').css('caret-color', '#72bbb8');
+              //  $('#backtxtDescription_Iframe').contents().find('body').css('caret-color', '#e8eaef');
+
+                $('ul.dropdown-menu').click(function (e) {
+                    var color = $('#Backgroundcolor').val();
+                   // $('#txtDescription_Iframe').contents().find('body').css('caret-color', color);
+                    $('#txtDescription_Iframe').contents().find('body').css('backgroundColor', color);
+                });
+                $('ul.dropdown-caret').click(function (e) {
+                    var backcolor = $('#backBackgroundcolor').val();
+                    $('#backtxtDescription_Iframe').contents().find('body').css('backgroundColor', backcolor);
+                    //$('#backtxtDescription_Iframe').contents().find('body').css('caret-color', backcolor);
+
+                });
+                $(".open-tab-1").click(function () {
+                    $("#btSubmit").hide();
+                })
+                $(".open-tab-2").click(function () {
+                    $("#btSubmit").show();
+                })
+            });
+
+        </script>
+        <link href="//cdn.syncfusion.com/14.2.0.28/js/web/flat-azure/ej.web.all.min.css" rel="stylesheet" />
+        @*<script src="//cdn.syncfusion.com/js/assets/external/jquery.easing.1.3.min.js"></script>*@
+        <script src="~/_Content/js/htmlstrip-js.js"></script>
+        <style>
+            @@media screen and (max-width: 1366px) and (max-height: 786px) {
+                .panel {
+                    width: 64% !important;
+                }
+            }
+
+            #txtDescription_fontNameDDL_container {
+                width: 87px !important;
+            }
+
+            #txtDescription_fontSizeDDL_container {
+                width: 95px !important;
+                margin-left: -53px;
+            }
+
+            #txtDescription_fontColor {
+                margin-left: -53px;
+            }
+
+            #backtxtDescription_fontNameDDL_container {
+                width: 87px !important;
+            }
+
+            #backtxtDescription_fontSizeDDL_container {
+                width: 95px !important;
+                margin-left: -53px;
+            }
+
+            #backtxtDescription_fontColor {
+                margin-left: -53px;
+            }
+
+            #txtDescription_formatStyle, #txtDescription_alignment, #txtDescription_lists, #txtDescription_indenting, #txtDescription_doAction, #txtDescription_links, #txtDescription_images, #txtDescription_media, #txtDescription_tables, #txtDescription_view, #txtDescription_strikethrough {
+                display: none;
+            }
+
+            #txtDescription_Iframe {
+                height: 310px !important;
+                width: 440px !important;
+            }
+
+            #backtxtDescription_Iframe {
+                height: 310px !important;
+                width: 440px !important;
+            }
+
+            #txtDescription_wrapper {
+                height: 350px !important;
+                width: 440px !important;
+            }
+
+
+            #backtxtDescription_formatStyle, #backtxtDescription_alignment, #backtxtDescription_lists, #backtxtDescription_indenting, #backtxtDescription_doAction, #backtxtDescription_links, #backtxtDescription_images, #backtxtDescription_media, #backtxtDescription_tables, #backtxtDescription_view, #backtxtDescription_strikethrough {
+                display: none;
+            }
+
+            #backtxtDescription_wrapper {
+                height: 350px !important;
+                width: 440px !important;
+            }
+
+            td > b {
+                color: #72bbb8 !important;
+                font-size: 16px;
+                margin-left: 5px;
+            }
+
+            .edit-create-form .input-field {
+                max-width: 90%;
+            }
+
+            .edit-create-form .form-group {
+                width: 120%;
+            }
+
+            label {
+                color: black !important;
+            }
+
+			
+            table {
+                width: 500px;
+                border-radius: 6px;
+                border-collapse: inherit;
+            }
+
+            .panel-body {
+                margin-left: 112px;
+                width: 84%;
+            }
+
+            .set-margin {
+                margin-top: 85px;
+            }
+
+            @@media(max-width:1600px) {
+                table {
+                    width: auto !important;
+                }
+            }
+            /* appearance for checked radiobutton */
+            input[type="radio"]:checked {
+                background-color: #336666;
+            }
+
+            input[type="radio"]:focus {
+                outline: unset;
+            }
+
+            input[type="radio"] {
+                /* remove standard background appearance */
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                /* create custom radiobutton appearance */
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                padding: 0px;
+                /* background-color only for content */
+                background-clip: content-box;
+                border: 5px solid #72bbb8;
+                background-color: #ffffff;
+                border-radius: 50%;
+                margin-top: 9px;
+            }
+
+            .e-rte .e-toolbarspan {
+                border-bottom: 0px solid
+            }
+
+            .nav-tabs {
+                border-bottom: 1px solid #72bbb8 !important;
+            }
+
+                .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                    border: 1px solid #72bbb8;
+                    border-bottom-color: transparent;
+                }
+        </style>
+        <ul class="nav nav-tabs" style="width: 63%;">
+            <li class="active"><a href="#front" class="open-tab-1" data-toggle="tab" style="font-family:Bahnschrift !important;">Front Cover</a></li>
+            <li><a href="#flip" class="open-tab-2" data-toggle="tab" style="font-family:Bahnschrift !important;">Flip Side</a></li>
+        </ul>
+        <div class="tab-content" id="tabs">
+            @*Front Cover Start*@
+            <div class="tab-pane" id="front" style="margin-top:40px !important;">
+                <div class="row">
+                    <div class="col-md-8" style="margin-left:-14px">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-left: -15px;">
+                                <div class="form-group">
+                                    <div class="input-field">
+                                        <table style="border:2px solid #72bbb8">
+                                            <thead>
+                                                <tr>
+                                                    <td style="width:200px;"><b> Image</b></td>
+                                                    <td style="border-right:2px solid #72bbb8;width:30px;"> <input type="radio" value="1" id="pic" @*name="BackGroundType"*@ checked /></td>
+                                                    <td style="width:200px;"><b>BG Colour</b></td>
+                                                    <td style="width:30px;"> <input type="radio" value="2" id="colid" @*name="BackGroundType"*@ /></td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top: -26px;">
+                                <div class="form-group" id="bcImage">
+                                    Size(450*300) Pixels
+                                    <div class="input-field">
+                                        <input type="file" style="border: 2px solid #72bbb8; padding: 7px; width: 104%; height: 0%;" accept=".png, .jpg, .jpeg" class="form-control" name="flipImage" id="flipImage" required="" onchange="readURL(this);" />
+                                    </div>
+                                </div>
+                                <div class="row col-md-12" id="bcColor" style="display:none;margin-top: 35px;">
+                                    <div class="col-md-10">
+                                        Choose Colour
+                                    </div>
+                                    <div class="col-md-2" style="margin-left: -30px; margin-top: 8px;">
+                                        <select id="Backgroundcolor" name="Backgroundcolor">
+                                            <option value="#72bbb8" data-color="#72bbb8" selected>Hex</option>
+                                            <option value="#ffffff" data-color="#ffffff">White</option>
+                                            <option value="#A0522D" data-color="#A0522D">sienna</option>
+                                            <option value="#FF4500" data-color="#FF4500">orangered</option>
+                                            <option value="#008B8B" data-color="#008B8B">darkcyan</option>
+                                            <option value="#B8860B" data-color="#B8860B">darkgoldenrod</option>
+                                            <option value="#32CD32" data-color="#32CD32">limegreen</option>
+                                            <option value="#FFD700" data-color="#FFD700">gold</option>
+                                            <option value="#48D1CC" data-color="#48D1CC">mediumturquoise</option>
+                                            <option value="#87CEEB" data-color="#87CEEB">skyblue</option>
+                                            <option value="#FF69B4" data-color="#FF69B4">hotpink</option>
+                                            <option value="#CD5C5C" data-color="#CD5C5C">indianred</option>
+                                            <option value="#87CEFA" data-color="#87CEFA">lightskyblue</option>
+                                            <option value="#6495ED" data-color="#6495ED">cornflowerblue</option>
+                                            <option value="#DC143C" data-color="#DC143C">crimson</option>
+                                            <option value="#e8eaef" data-color="#e8eaef">darkGray</option>
+                                            <option value="#FF8C00" data-color="#FF8C00">darkorange</option>
+                                            <option value="#C71585" data-color="#C71585">mediumvioletred</option>
+                                            <option value="#000000" data-color="#000000">black</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="introid" style="width: 440px;display:none">
+                            <div class="input-field">
+                                @Html.TextArea("Description", new { @class = "flipdescription", @id = "txtDescription", @name = "txtDescription", @placeholder = "Flip Cover Text" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="imagePreview" style="display:none;height:314px;width:444px;border:2px solid #72bbb8">
+                            <div class="input-field">
+                                <img id="displayimage" src="" height="310" width="440" alt="your image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*Front Cover End*@
+            @*Flip Cover Start*@
+            <div class="tab-pane" id="flip" style="margin-top:10px !important;">
+                <div class="row">
+                    <div class="col-md-12" style=" margin-top:8px;">
+                        <div class="form-group" id="backbcColor">
+                            <div class="col-md-10" style=" margin-left: -30px;">
+                                Choose Colour :
+                            </div>
+                            <div class="input-field col-md-2" style=" margin-left: 115px; margin-top: -18px;">
+                                <select id="backBackgroundcolor" name="backBackgroundcolor">
+                                    <option value="#e8eaef" data-color="#e8eaef" selected>darkGray</option>
+                                    <option value="#ffffff" data-color="#ffffff">White</option>
+                                    <option value="#A0522D" data-color="#A0522D">sienna</option>
+                                    <option value="#FF4500" data-color="#FF4500">orangered</option>
+                                    <option value="#008B8B" data-color="#008B8B">darkcyan</option>
+                                    <option value="#B8860B" data-color="#B8860B">darkgoldenrod</option>
+                                    <option value="#32CD32" data-color="#32CD32">limegreen</option>
+                                    <option value="#FFD700" data-color="#FFD700">gold</option>
+                                    <option value="#48D1CC" data-color="#48D1CC">mediumturquoise</option>
+                                    <option value="#87CEEB" data-color="#87CEEB">skyblue</option>
+                                    <option value="#FF69B4" data-color="#FF69B4">hotpink</option>
+                                    <option value="#CD5C5C" data-color="#CD5C5C">indianred</option>
+                                    <option value="#87CEFA" data-color="#87CEFA">lightskyblue</option>
+                                    <option value="#6495ED" data-color="#6495ED">cornflowerblue</option>
+                                    <option value="#DC143C" data-color="#DC143C">crimson</option>
+                                    <option value="#FF8C00" data-color="#FF8C00">darkorange</option>
+                                    <option value="#C71585" data-color="#C71585">mediumvioletred</option>
+                                    <option value="#000000" data-color="#000000">black</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" id="introid" style="margin-top:-15px;width: 440px;">
+                    Text
+                    <div class="input-field">
+                        @Html.TextArea("backDescription", new { @class = "backfliptxtDescription", @id = "backtxtDescription", @name = "backtxtDescription", @placeholder = "Back Flip  Text" })
+                    </div>
+                </div>
+                @*<div class="form-group" >
+                        <a class="btn btn-primary" href="JavaScript:void(0);" style="width:170px" id="addItemToList">Save</a>
+                    </div>*@
+            </div>
+            @*Flip Cover End*@
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                @Html.HiddenFor(x => x.Value)
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="accordionList">
+                </ul>
+            </div>
+        </div>
+        break;
+    case ContentType.Interview:
+        <script>
+            $(".panel").css('width', '35%');
+            $(".edit-create-form").css('margin-top', '10px');
+            $(".edit-create-form").css('margin-left', '8px');
+        </script>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    @Html.Label("Interview Message", new { @class = "control-label" })
+                    @Html.TextArea("Interview Message", null, new { @class = "form-control", @id = "txtInterviewMessage", @placeholder = "Interview Message" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Interview Type", new { @class = "control-label" })
+                    <select id="ddlInterviewType" class="form-control">
+                        <option value="">Select Type</option>
+                        <option value="interviewer">interviewer</option>
+                        <option value="expert">expert</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-primary" href="JavaScript:void(0);" id="addItemToList">Add</a>
+                </div>
+                @Html.HiddenFor(x => x.Value)
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="accordionList">
+                </ul>
+            </div>
+        </div>
+        break;
+    default:
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(x => x.Value)
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        break;
+}
+<script src="~/_Content/js/bootstrap-colorselector.min.js"></script>

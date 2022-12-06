@@ -1,0 +1,75 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Companies.Users.CompanyUserModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Users",
+        ContentTitle = "Users",
+        ContentTitleDesc = "Here are all the direct courses assigned to this user.",
+        ActivePage = "users",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Companies", Url.Action("Index", "Companies"), "fa-building-o"),
+            new BreadcrumbItem("Users", Url.Action("Index", "CompanyUsers", new { id = Model.CompanyID })),
+            new BreadcrumbItem("Direct Courses", null),
+        }
+    };
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, { "bSortable": false }],
+                "iDisplayLength": 10
+            });
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+<p class="alert alert-info">
+    <strong>Please Note:</strong> You cannot remove a course from a user once they have started it in order to preserve data.
+</p>
+<p>
+    <a href="@Url.Action("Create", new { companyUserID = Model.ID })" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create New</a>
+</p>
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>User Started</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var directCourse in Model.User.DirectCourses)
+                {
+                    var userCourse = Model.User.UserCourses.First(x => x.CourseID == directCourse.ID);
+
+                    <tr>
+                        <td>
+                            @directCourse.Name
+                        </td>
+                        <td>
+                            @if (userCourse.StartedOn.HasValue)
+                            {
+                                @:@userCourse.StartedOn.Value.ToString("g")
+                            }
+                        </td>
+                        <td>
+                            @if (!userCourse.StartedOn.HasValue)
+                            {
+                                <a href="@Url.Action("Delete", new {id = userCourse.ID})" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

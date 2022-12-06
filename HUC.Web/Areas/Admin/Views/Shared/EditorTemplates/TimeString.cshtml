@@ -1,0 +1,25 @@
+﻿@model string
+@if (!String.IsNullOrWhiteSpace(Model))
+{
+    <div class="input-append bootstrap-timepicker">
+        @Html.TextBoxFor(x => x, new Dictionary<string, object> { { "class", "time-picker" }, { "Value", Model } })
+        <span class="add-on">
+            <i class="fa fa-clock-o"></i>
+        </span>
+    </div>
+}
+else
+{
+    <div class="input-append bootstrap-timepicker">
+        @Html.TextBoxFor(x => x, new Dictionary<string, object> { { "class", "time-picker" }, { "Value", DateTime.Now.ToString("t") } })
+        <span class="add-on">
+            <i class="fa fa-clock-o"></i>
+        </span>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[name="@Html.NameFor(x => x)"]').mask('99:99');
+    });
+</script>

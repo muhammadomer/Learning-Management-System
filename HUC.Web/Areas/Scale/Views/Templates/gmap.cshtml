@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.PageTitle = "Google Maps";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "google-maps";
+    ViewBag.ParentPageName = "ui";
+    //Content title area
+    ViewBag.ContentTitle = "Google Maps";
+    ViewBag.ContentTitleDesc = " ";
+}
+@section Scripts{
+    <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/maps/gmaps.js"></script>
+    <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scalejs/demos/demo-maps.js"></script>            
+}
+<section class="hbox stretch">
+    <section id="gmap_geocoding" style="min-height:240px;">          
+    </section>
+    <aside class="wrapper aside-lg">
+        <p class="text-lg font-thin">Google Maps</p>
+        <form method="post" id="geocoding_form" class="m-t-sm">
+            <div class="input-group">                  
+                <input type="text" id="address" name="address" class="input-sm form-control" placeholder="Search">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-default" type="submit">Go!</button>
+                </span>
+            </div>
+        </form>
+        <a id="start_travel" class="btn btn-default btn-rounded btn-sm m-t m-b">Start</a>
+        <ul id="instructions" class="list-unstyled fa-ul"></ul>
+    </aside>
+</section>

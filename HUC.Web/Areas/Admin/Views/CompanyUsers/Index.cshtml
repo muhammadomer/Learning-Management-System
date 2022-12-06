@@ -1,0 +1,121 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Companies.CompanyModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Users",
+        ContentTitle = "Users",
+        ContentTitleDesc = "Here are all the users in the company. Company currently has " + Model.UsersUsed + "/" + Model.UserLimit + " users.",
+        ActivePage = "users",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Companies", Url.Action("Index", "Companies"), "fa-building-o"),
+            new BreadcrumbItem("Users", null)
+        }
+    };
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, null, { "bSortable": false }],
+                "iDisplayLength": 10
+            });
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+<p>
+    @if (Model.UsersAvailable > 0)
+    {
+        <a href="@Url.Action("Create", new { id = Model.ID })" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create New (@Model.UsersAvailable Remaining)</a>
+    }
+
+    <a href="@Url.Action("SendActivationEmails",new {id = Model.ID})" class="btn btn-s-md btn-success pull-right"><i class="i i-mail"></i> Send Activation Emails</a>
+</p>
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Account Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.AllUsers.OrderByDescending(x => x.IsAdmin).ThenByDescending(x => x.IsBackupAdmin).ThenBy(x => x.User.FirstName).ThenBy(x => x.User.LastName))
+                {
+                    <tr>
+                        <td>
+                            @user.User.FirstName @user.User.LastName
+                            @if (user.IsAdmin)
+                            {
+                                <span class="label bg-danger"><i class="fa fa-bolt"></i> Admin</span>
+                            }
+                            else if (user.IsBackupAdmin)
+                            {
+                                <span class="label bg-dark text-white"><i class="fa fa-bolt"></i> Backup Admin</span>
+                                if (user.IsBackupAdminCourseUsable)
+                                {
+                                    <span class="label bg-primary"><i class="fa fa-book"></i> Course Usable</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="label bg-primary"><i class="fa fa-user"></i> User</span>
+                            }
+                        </td>
+                        <td>@user.User.Email</td>
+                        <td>
+                            @if (user.User.IsActive)
+                            {
+                                @:Activated
+                            }
+                            else
+                            {
+                                @:Pending Activation <a href="@Url.Action("Activate", new {id = user.ID})" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-check"></i> Activate</a>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = user.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                            @if (!user.IsAdmin)
+                            {
+                                <a href="@Url.Action("Delete", new {id = user.ID})" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>
+                                if (!user.IsBackupAdmin)
+                                {
+                                    <a href="@Url.Action("SetBackup", new {id = user.ID})" class="btn btn-xs btn-rounded btn-dark"><i class="fa fa-bolt"></i> Set Backup Admin</a>
+                                    <a href="@Url.Action("Move", new {id = user.ID})" class="btn btn-xs btn-rounded btn-default"><i class="fa fa-mail-forward"></i> Move User</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("RevokeBackup", new { id = user.ID })" class="btn btn-xs btn-rounded btn-dark"><i class="fa fa-bolt"></i> Revoke Backup Admin</a>
+                                    if (!user.IsBackupAdminCourseUsable)
+                                    {
+                                        <a href="@Url.Action("SetCourseUsable", new { id = user.ID })" class="btn btn-xs btn-rounded btn-primary"><i class="fa fa-book"></i> Set Course Usable</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("RevokeCourseUsable", new { id = user.ID })" class="btn btn-xs btn-rounded btn-primary"><i class="fa fa-book"></i> Revoke Course Usable</a>
+                                    }
+                                }
+
+                                if (!user.IsBackupAdmin || user.IsBackupAdminCourseUsable)
+                                {
+                                    //User can access courses - can assign direct courses
+
+                                    <a href="@Url.Action("Index", "DirectCourses", new { id = user.ID })" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-book"></i> View Direct Courses</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

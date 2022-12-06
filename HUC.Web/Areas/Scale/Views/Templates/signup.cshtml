@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.PageTitle = "Sign Up";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "sign-up";
+    ViewBag.ParentPageName = "ui";
+    //Content title area
+    ViewBag.ContentTitle = "Sign Up";
+    ViewBag.ContentTitleDesc = " ";
+}
+
+@section Scripts{
+
+}
+<section class="m-b-lg wrapper-md ">
+    <header class="wrapper text-center">
+        <strong>Sign up to find interesting thing</strong>
+    </header>
+    <div class="container aside-xl">
+        <form action="#">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <input placeholder="Name" class="form-control no-border">
+                </div>
+                <div class="list-group-item">
+                    <input type="email" placeholder="Email" class="form-control no-border">
+                </div>
+                <div class="list-group-item">
+                    <input type="password" placeholder="Password" class="form-control no-border">
+                </div>
+            </div>
+            <div class="checkbox m-b">
+                <label>
+                    <input type="checkbox"> Agree the <a href="#">terms and policy</a>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign up</button>
+            <div class="line line-dashed"></div>
+            <p class="text-muted text-center"><small>Already have an account?</small></p>
+            <a href="#" class="btn btn-lg btn-default btn-block">Sign in</a>
+        </form>
+    </div>
+</section>

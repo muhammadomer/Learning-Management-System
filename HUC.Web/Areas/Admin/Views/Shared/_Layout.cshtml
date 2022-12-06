@@ -1,0 +1,388 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Controllers
+@using HUC.Web.Models
+@{
+    var pageData = (PageDataModel)ViewBag.PageData;
+    if (pageData == null)
+    {
+        pageData = new PageDataModel();
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1" />
+    <title>
+        Training Courses | Admin @(String.IsNullOrWhiteSpace(pageData.Title) ? "" : "| " + pageData.Title)
+    </title>
+    @if (ViewBag.OtherApplication == "1")
+    {
+        <link rel="shortcut icon" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/K6/favicon.ico" type="image/x-icon" />
+    }
+    else
+    {
+        <link rel="shortcut icon" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/favicon.ico" type="image/x-icon" />
+    }
+    <meta name="description" content="@pageData.ContentTitleDesc" />
+    <!--[if lt IE 9]>
+        <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/html5shiv.js"></script>
+        <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/respond.min.js"></script>
+        <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/excanvas.js"></script>
+    <![endif]-->
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/css/ie8.css" />
+    <![endif]-->
+    @if (ViewBag.OtherApplication == "1")
+    {
+        @Styles.Render("~/bundles/scale/k6css")
+
+    }
+    else
+    {
+        @Styles.Render("~/bundles/scale/css")
+    }
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        #accordionList {
+            list-style-type: none;
+            padding: 0px;
+        }
+
+            #accordionList li {
+                background-color: #f6f6f6;
+                background-color: #f6f6f6;
+                padding: 10px;
+                border: solid 1px;
+                margin-bottom: 2px;
+                cursor: grab;
+            }
+
+            #accordionList .removeItem {
+                float: right;
+                cursor: pointer;
+            }
+
+            #accordionList .accordiontitle {
+                font-weight: bold;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            #accordionList .accordiondescription {
+                padding-left: 5px;
+            }
+
+        .red-border {
+            border: solid 1px red !important;
+        }
+
+        @@media (min-width: 768px) {
+            .full-page {
+                padding-top: 140px !important;
+            }
+        }
+        /*we start from here*/
+        .padder {
+            padding-left: 32px !important;
+            padding-right: 26px !important;
+        }
+
+        .align-top-content {
+            padding-right: 26px !important;
+        }
+
+        .pull-right {
+            padding-left: 7px;
+        }
+
+        .row {
+            margin-left: -15px !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white header header-md navbar navbar-fixed-top-xs">
+        <div class="navbar-header aside-md dk">
+            <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
+                <i class="fa fa-bars"></i>
+            </a>
+            @*<a href="../Admin/Courses" class="navbar-brand"><img src="../_content/images/main-logo.png" class="m-r-sm"></a>*@
+            @if (ViewBag.OtherApplication == "1")
+            {
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/k6/main-logo.png" class="m-r-sm"></a>
+            }
+            else
+            {
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/main-logo.png" class="m-r-sm"></a>
+            }
+
+            <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+                Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" />
+            </a>
+        </div>
+        @if (!pageData.StrippedLayout)
+        {
+            <p class="intro-text hidden-xs hidden">
+                Welcome to the Training Courses Admin System
+            </p>
+
+            <p class="intro-text hidden-xs pull-right" @*padder*@>
+                <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="pull-right logout-btn">Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" /></a>
+                <div class="seperator hidden-xs pull-right"></div>
+            </p>
+
+            <p class="intro-text hidden-xs pull-right "@*padder*@>
+                Welcome to the Training Courses Admin System
+            </p>
+
+            <p class="intro-text hidden-xs pull-right padder hidden">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses" class="pull-right logout-btn m-l-lg">Courses</a>
+                <div class="seperator hidden-xs pull-right hidden"></div>
+            </p>
+
+            <p class="intro-text hidden-xs pull-right padder hidden">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard" class="pull-right logout-btn m-l-lg">Dashboard</a>
+
+            </p>
+        }
+    </header>
+    <section class="hbox stretch full-page">
+        <!-- .aside -->
+        @*@Html.Partial("~/Areas/Admin/Views/Shared/Partials/LeftArea.cshtml")*@
+        <!-- /.aside -->
+        <section id="content">
+            <section class="hbox stretch">
+                <section class="vbox scrollable padder">
+                    <!-- .breadcrumb -->
+                    @*@Breadcrumb(pageData)*@
+                    <!-- / .breadcrumb -->
+                    @if (!String.IsNullOrWhiteSpace(pageData.ContentTitle))
+                    {
+                        <section class="row m-b-md">
+                            <div class="col-md-11 col-sm-6">
+                                <small class="content-desc white-color" style="font-size:20px !important;"> @ViewBag.CourseName </small>
+                              
+                                <h3 class="m-b-xs text-black" >
+
+                                    @if (pageData.ContentTitle.Length > 35)
+                                    {
+                                        <text> @pageData.ContentTitle.Substring(0, 35) ... </text>
+                                    }
+                                    else
+                                    {
+                                        <text> @pageData.ContentTitle </text>
+                                    }
+
+                                </h3>
+                                @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
+                                {
+                                    <small class="content-desc" style="font-size:20px !important;">
+                                        @pageData.ContentTitleDesc
+                                    </small>
+                                }
+                            </div>
+                        </section>
+                    }
+                    @RenderBody()
+                </section>
+                <!-- side content -->
+                <aside class="aside-md bg-black hide" id="sidebar">
+                    <section class="vbox animated fadeInRight">
+                        <section class="scrollable">
+                            <div class="wrapper"><strong>Live feed</strong></div>
+                            <ul class="list-group no-bg no-borders auto">
+                                <li class="list-group-item">
+                                    <span class="fa-stack pull-left m-r-sm">
+                                        <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                        <i class="fa fa-reply fa-stack-1x text-white"></i>
+                                    </span>
+                                    <span class="clear">
+                                        <a href="#">Goody@gmail.com</a> sent your email
+                                        <small class="icon-muted">13 minutes ago</small>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fa-stack pull-left m-r-sm">
+                                        <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                        <i class="fa fa-file-o fa-stack-1x text-white"></i>
+                                    </span>
+                                    <span class="clear">
+                                        <a href="#">Mide@live.com</a> invite you to join a meeting
+                                        <small class="icon-muted">20 minutes ago</small>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fa-stack pull-left m-r-sm">
+                                        <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                        <i class="fa fa-map-marker fa-stack-1x text-white"></i>
+                                    </span>
+                                    <span class="clear">
+                                        <a href="#">Geoge@yahoo.com</a> is online
+                                        <small class="icon-muted">1 hour ago</small>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fa-stack pull-left m-r-sm">
+                                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                        <i class="fa fa-info fa-stack-1x text-white"></i>
+                                    </span>
+                                    <span class="clear">
+                                        <a href="#"><strong>Admin</strong></a> post a info
+                                        <small class="icon-muted">1 day ago</small>
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="wrapper"><strong>Friends</strong></div>
+                            <ul class="list-group no-bg no-borders auto">
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <span class="pull-left thumb-sm avatar">
+                                            <img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/scale/images/a3.png" alt="John said" class="img-circle">
+                                            <i class="on b-black bottom"></i>
+                                        </span>
+                                        <div class="media-body">
+                                            <div><a href="#">Chris Fox</a></div>
+                                            <small class="text-muted">about 2 minutes ago</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <span class="pull-left thumb-sm avatar">
+                                            <img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/scale/images/a2.png" alt="John said">
+                                            <i class="on b-black bottom"></i>
+                                        </span>
+                                        <div class="media-body">
+                                            <div><a href="#">Amanda Conlan</a></div>
+                                            <small class="text-muted">about 2 hours ago</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <span class="pull-left thumb-sm avatar">
+                                            <img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/scale/images/a1.png" alt="John said">
+                                            <i class="busy b-black bottom"></i>
+                                        </span>
+                                        <div class="media-body">
+                                            <div><a href="#">Dan Doorack</a></div>
+                                            <small class="text-muted">3 days ago</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <span class="pull-left thumb-sm avatar">
+                                            <img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/scale/images/a0.png" alt="John said">
+                                            <i class="away b-black bottom"></i>
+                                        </span>
+                                        <div class="media-body">
+                                            <div><a href="#">Lauren Taylor</a></div>
+                                            <small class="text-muted">about 2 minutes ago</small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
+                    </section>
+                </aside>
+                <!-- / side content -->
+            </section>
+            <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+        </section>
+    </section>
+    @Scripts.Render("~/bundles/scale/js")
+    @Scripts.Render("~/bundles/admin/js")
+    @RenderSection("scripts", required: false)
+    @{
+
+        var notification = (NotificationModel)TempData[BaseController.NotificationKey];
+        if (notification != null)
+        {
+            TempData[BaseController.NotificationKey] = null;
+
+            <script type="text/javascript">
+                console.log('notification time!');
+                @switch (notification.Type)
+                {
+                   case NoteType.Error:
+                        @:toastr.error('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                        //@:addError('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                                                                                break;
+                    case NoteType.Info:
+                        @:toastr.info('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                       // @:addInfo('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                                                                                break;
+                    case NoteType.Success:
+                        @:toastr.success('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                        //@:addSuccess('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                                                                                break;
+                    case NoteType.Note:
+                        @:toastr.warning('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                       // @:addNotice('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
+                                                                                break;
+               
+                }
+                setTimeout(function () {
+                    $(".ui-pnotify-closer").trigger("click");
+                }, 5000);
+            </script>
+        }
+        <script>
+		
+            $(document).ready(function () {
+				$(".col-md-1").hide();
+                //setTimeout(function () {
+                //    $(".ui-pnotify-closer").trigger("click");
+                //}, 4000);
+                setTimeout(function () {
+                    $(".ui-pnotify").remove();
+                }, 5000);
+            });
+        </script>
+    }
+</body>
+</html>@helper Breadcrumb(PageDataModel pageData)
+{
+    var breadcrumb = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Dashboard", "/Admin", "fa-home")
+    };
+
+    if (pageData != null && pageData.Breadcrumb != null)
+    {
+        breadcrumb.AddRange(pageData.Breadcrumb);
+    }
+    <ul class="breadcrumb">
+        @{
+            var count = breadcrumb.Count();
+            foreach (var item in breadcrumb)
+            {
+                <li @if (count == 1) { <text> class="active" </text>    }>
+                    @if (!String.IsNullOrWhiteSpace(item.Link) && count != 1)
+                    {
+                        <a href="@item.Link">
+                            @if (!String.IsNullOrWhiteSpace(item.Icon))
+                            {
+                                <i class="@item.Icon.Split('-')[0] @item.Icon"></i>
+                            }
+                            @item.Name
+                        </a>
+                    }
+                    else
+                    {
+                        if (!String.IsNullOrWhiteSpace(item.Icon))
+                        {
+                            <i class="@item.Icon.Split('-')[0] @item.Icon"></i>
+                        }
+                        @:@item.Name
+                    }
+                </li>
+                    count--;
+            }
+        }
+    </ul>
+}

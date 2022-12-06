@@ -1,0 +1,131 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@{
+    var pageData = (PageDataModel)ViewBag.PageData;
+    if (pageData == null)
+    {
+        pageData = new PageDataModel();
+    }
+
+    var user = Html.User();
+    var courseUser = user.Company.AllUsers.SingleOrDefault(x => x.UserID == user.ID);
+}
+
+@if (!pageData.StrippedLayout)
+{
+    <aside class="bg-black aside-md hidden-print" id="nav">
+        <section class="vbox">
+            <section class="w-f scrollable">
+                <div class=slim-scroll data-height=auto data-disable-fade-out=true data-distance=0 data-size=10px data-railopacity=0.2>
+                    <!-- nav -->
+                    <nav class="nav-primary hidden-xs">
+                        <!-- Website Nav -->
+                        <ul class="nav nav-main" data-ride="collapse">
+                            <li class="@if (pageData.ActivePage == "dashboard")
+                                       {<text>active</text>}">
+                                <a href="/Company" class="auto">
+                                    <i class="i i-calendar icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        @if (courseUser.IsBackupAdmin && courseUser.IsBackupAdminCourseUsable)
+                        {
+                            <ul class="nav nav-main mob-show" data-ride="collapse">
+                                <li>
+                                    <a href="@Url.Action("Index", "Dashboard", new { area = "Users"})" class="auto">
+                                        <i class="i i-newtab icon">
+                                        </i>
+                                        <span class="font-bold">
+                                            To User
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                        
+                        <!-- / Website Nav -->
+                        <!-- Templates Nav -->
+                        <ul class="nav nav-main" data-ride="collapse">
+                            <li class="active">
+                                <a href="#" class="auto nav-title">
+                                    <span class="font-bold">Company Management</span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "users"){<text>active</text>}">
+                                <a href="/Company/Users" class="auto">
+                                    <i class="i i-users3 icon">
+                                    </i>
+                                    <span class="font-bold">Users</span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "usage"){<text>active</text>}">
+                                <a href="/Company/Usage" class="auto">
+                                    <i class="i i-statistics icon">
+                                    </i>
+                                    <span class="font-bold">Usage Statistics</span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "usage-graphs"){<text>active</text>}">
+                                <a href="/Company/dashboard/graphs" class="auto">
+                                    <i class="i i-statistics icon">
+                                    </i>
+                                    <span class="font-bold">Usage Graphs</span>
+                                </a>
+                            </li>
+                            @*<li class="@if (pageData.ActivePage == "layout"){<text>active</text>}">
+                                    <a href="#" class="auto">
+                                        <span class="pull-right text-muted">
+                                            <i class="i i-circle-sm-o text"></i>
+                                            <i class="i i-circle-sm text-active"></i>
+                                        </span>
+                                        <b class="badge bg-danger pull-right">4</b>
+                                        <i class="i i-stack icon">
+                                        </i>
+                                        <span class="font-bold">Layouts</span>
+                                    </a>
+                                    <ul class="nav dk">
+                                        <li>
+                                            <a href="/scale/templates/LayoutColor" class="auto">
+                                                <i class="i i-dot"></i>
+                                                <span>Color option</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/scale/templates/LayoutHbox" class="auto">
+                                                <i class="i i-dot"></i>
+                                                <span>Hbox layout</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/scale/templates/LayoutBoxed" class="auto">
+                                                <i class="i i-dot"></i>
+                                                <span>Boxed layout</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/scale/templates/LayoutFluid" class="auto">
+                                                <i class="i i-dot"></i>
+                                                <span>Fluid layout</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>*@
+                        </ul>
+                        <!-- / Templates Nav -->
+                    </nav>
+                    <!-- / nav -->
+                </div>
+            </section>
+            <footer class="footer hidden-xs no-padder text-center-nav-xs">
+                <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs">
+                    <i class="i i-circleleft text"></i>
+                    <i class="i i-circleright text-active"></i>
+                </a>
+            </footer>
+        </section>
+    </aside>
+}

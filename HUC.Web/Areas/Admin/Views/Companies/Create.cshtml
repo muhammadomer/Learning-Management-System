@@ -1,0 +1,124 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@model HUC.Web.App.Companies.CompanyAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Add Company",
+        ContentTitle = "Add Company",
+        ContentTitleDesc = "Here you can add a new company.",
+        ActivePage = "companies",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Companies", Url.Action("Index"), "fa-building-o"),
+            new BreadcrumbItem("Create")
+        }
+    };
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ParentCompanyID)
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserLimit)
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserLimit)
+                @Html.ValidationMessageFor(model => model.UserLimit)
+            </div>  
+        </div>
+        
+        @if (!Model.ParentCompanyID.HasValue)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsDemonstration)
+                <div class="input-field">
+                    @Html.EditorFor(model => model.IsDemonstration)
+                    @Html.ValidationMessageFor(model => model.IsDemonstration)
+                </div>
+            </div>
+        }
+        else
+        {
+            @:@Html.HiddenFor(x => x.IsDemonstration)
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsInitialVerificationEnabled)
+            <div class="input-field">
+                @Html.EditorFor(model => model.IsInitialVerificationEnabled)
+                @Html.ValidationMessageFor(model => model.IsInitialVerificationEnabled)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseIDs)
+            <div class="input-field">
+                @Html.ChosenFor(model => model.CourseIDs, Model.CourseOptions(), "Choose Courses...", true)
+                @Html.ValidationMessageFor(model => model.CourseIDs)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserAdd.Email)
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserAdd.Email)
+                @Html.ValidationMessageFor(model => model.UserAdd.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>First name</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserAdd.FirstName)
+                @Html.ValidationMessageFor(model => model.UserAdd.FirstName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Last name</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserAdd.LastName)
+                @Html.ValidationMessageFor(model => model.UserAdd.LastName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserAdd.Password)
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserAdd.Password)
+                @Html.ValidationMessageFor(model => model.UserAdd.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserAdd.ConfirmPassword)
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserAdd.ConfirmPassword)
+                @Html.ValidationMessageFor(model => model.UserAdd.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,45 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.News.Categories.NewsCategoryAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Create a category",
+        ContentTitle = "Create a category",
+        ContentTitleDesc = "Here you can create a new category.",
+        ActivePage = "news",
+        ActiveSubPage = "categories",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("News", null, "i-stack"),
+            new BreadcrumbItem("Categories", Url.Action("Categories"), "fa-sitemap"),
+            new BreadcrumbItem("Create")
+        }
+    };
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Categories")
+            </div>
+        </div>
+    </div>
+}

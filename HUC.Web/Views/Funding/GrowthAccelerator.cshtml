@@ -1,0 +1,267 @@
+﻿@using HUC.Web.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Growth Accelerator",
+        ContentTitle = "Growth Accelerator",
+        ActivePage = "funding",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("funding support", Url.Action("Index")),
+            new BreadcrumbItem("growth accelerator")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="items">
+                    <div class="full-image">
+                        <img alt="" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/growthaccelerator.png" />
+                    </div>
+
+                    <h2>
+                        Overview
+                    </h2>
+                    <p>
+                        The Government has been running a scheme for a while whose aim is to drive growth in the SME sector. It has often been referred to
+                        as "One of their best kept secrets!"
+                    </p>
+                    <p>
+                        The scheme offers companies, which meet the application criteria, the chance to access funded training, use of business coaches
+                        and attendance at a series of six half day workshops.
+                    </p>
+                    <p>
+                        This is an outstanding offering and has the potential to make a substantial difference to the growth prospects of small businesses
+                        and our economy as a whole.
+                    </p>
+
+                    <h2>
+                        Application
+                    </h2>
+                    <p>
+                        The application process is very simple, quick and straight forward. Firstly companies have to meet with a Regional Growth Manager
+                        to assess eligibility based upon the following criteria (not exhaustive):-
+                    </p>
+                    <ul>
+                        <li>
+                            Size - must be less than 250 employees
+                        </li>
+                        <li>
+                            Potential - must be able to demonstrate a real growth potential of 20% average of 3 years in terms of turnover or employment.
+                            <em>Start-ups need to be have the potential to turnover £1m within 3 years of inception</em>
+                        </li>
+                        <li>
+                            Location - must be located in England
+                        </li>
+                    </ul>
+                    <p>
+                        If the application is successful a very rapid process of identification of needs and methods to satisfy that need kicks in.
+                    </p>
+
+                    <h2>
+                        Types of support
+                    </h2>
+                    <p>
+                        There are four themes for the support that is on offer:-
+                    </p>
+                    <ol>
+                        <li>
+                            Business Development Coaching - aimed at unlocking the barriers to growth and coaching the business leaders to fulfil their
+                            potential
+                        </li>
+                        <li>
+                            Access to finance - helping businesses navigate to the best sources of finance to fund their growth
+                        </li>
+                        <li>
+                            Growth through Innovation - aimed at helping companies become more innovative and creative in what they sell and how they go
+                            about selling
+                        </li>
+                        <li>
+                            Leadership &amp; Management - aimed at equipping the company with the skills necessary to maximise the potential they have in
+                            their team.
+                        </li>
+                    </ol>
+
+                    <h2>
+                        Customer journey
+                    </h2>
+                    <p>
+                        This is the journey a potential business will go through in order to access this lucrative support.
+                    </p>
+                    <p>
+                        <strong>Phone Interview by Growth Manager:</strong> test and assess ambition, opportunity, and capacity, determine if company is
+                        right for programme, and identify optimum coaching journey
+                    </p>
+                    <p>
+                        <strong>Growth Mapper:</strong> helps to identify barriers to growth and provides an agenda for a dialogue
+                    </p>
+                    <p>
+                        <strong>Face to Face Session:</strong> Growth Manager and Senior Management discuss GrowthMapper and "identify the pains" that
+                        Growth Accelerator might address leading to Scope of Support
+                    </p>
+                    <p>
+                        <strong>Scope of Support:</strong> an outcome based record of the support on offer: expressed as Work Packages not as
+                        "days of support"
+                    </p>
+                    <p>
+                        <strong>Coach Matching:</strong> if company agree scope of support then a coach is matched against the scope of support and engaged
+                    </p>
+
+                    <h3>
+                        Growth Mapper
+                    </h3>
+                    <p>
+                        The Growth Mapper is an outstanding tool consisting of 10 questions in each of 10 areas of the business. The objective is to
+                        surface the areas where the most benefit can up gained from the scheme and to unlock the blockages to growth that exist in the
+                        business. Ideally the questionnaire is completed by a range of management team members in order to get a diverse range of opinions.
+                    </p>
+                    <p>
+                        Not only is the Growth Mapper highly informative; it only takes 15 minutes to complete! The 10 areas addressed in the
+                        questionnaire are:-
+                    </p>
+                    <ul>
+                        <li>
+                            Strategy
+                        </li>
+                        <li>
+                            Cash
+                        </li>
+                        <li>
+                            Marketing and Sales
+                        </li>
+                        <li>
+                            Leadership
+                        </li>
+                        <li>
+                            Access to finance
+                        </li>
+                        <li>
+                            Innovation
+                        </li>
+                        <li>
+                            People and skills
+                        </li>
+                        <li>
+                            Operations
+                        </li>
+                        <li>
+                            Sustainability
+                        </li>
+                        <li>
+                            Change
+                        </li>
+                    </ul>
+                    <p>
+                        An INSIGHT report is then automatically generated that gets under the skin of the business and illuminates the coaching process
+                    </p>
+
+                    <h3>
+                        Scope of Support
+                    </h3>
+                    <p>
+                        Each client engagement has a Scope of Support document drawn up for them by the Growth Manager. This document includes typically
+                        three work packages centred on the outcome of the Growth Mapper. Each work package includes details of the milestone e.g. to
+                        develop a sales generation process and pipeline, a deliverable and % of the total coaching time that will be allocated to this
+                        work package.
+                    </p>
+
+                    <h3>
+                        Training and development
+                    </h3>
+                    <p>
+                        In addition to the FREE coaching, access to the six FREE half day workshops and the expert support that comes with all of this,
+                        business can also access up to £2000.00 per person of matched funding towards training and development in pursuit of the skills
+                        necessary to unlock their potential. This matched funding alone makes the sign-up fee pale into insignificance and can be used for
+                        in-company training, external courses or qualifications courses.
+                    </p>
+
+                    <h3>
+                        Business Coaching
+                    </h3>
+                    <p>
+                        Coaches with many years of experience, the battle scars to prove it and access to a wealth of knowledge can be an invaluable
+                        resource to any business. They are able to take a different perspective on the challenges facing your business and do not suffer
+                        from the tunnel vision syndrome often prevalent in management teams.
+                    </p>
+                    <p>
+                        Coaches do not provide you with a "basket of fish", they "teach you how to fish". This means that once the project is over you are
+                        self-sufficient and able to continue your growth curve and reap the rewards for many years to come.
+                    </p>
+
+                    <h2>
+                        Half day workshops
+                    </h2>
+                    <p>
+                        Members of the scheme have access to any or all of the six sessions that are organised regularly in each region. The areas covered
+                        are as follows:-
+                    </p>
+                    <ul>
+                        <li>
+                            Strategy - Plan to win
+                        </li>
+                        <li>
+                            Leadership - Inspiring your team
+                        </li>
+                        <li>
+                            High Growth Teams - Developing Your People
+                        </li>
+                        <li>
+                            Sales &amp; Marketing - Winning and growing profitable customers
+                        </li>
+                        <li>
+                            Delivering Value - Achieving more for less
+                        </li>
+                        <li>
+                            Change Management - Navigating your High Growth journey
+                        </li>
+                    </ul>
+
+                    <h2>
+                        Fees
+                    </h2>
+                    <p>
+                        There is a small fee for inclusion on the scheme, which should be looked on as an investment rather than the cost, as the benefits
+                        far outweigh the few hundred pounds plus VAT that is charged. The fee is based on the number of employees and ranges from £600.00
+                        to £3000.00 plus VAT.
+                    </p>
+
+                    <h2>
+                        Timescales
+                    </h2>
+                    <p>
+                        As this is geared to making a real difference quickly and is very much about effectiveness and efficiency, the timescales are
+                        short. You won’t find long-winded forms to fill in or protracted approval processes.
+                    </p>
+                    <p>
+                        Typically a project takes 6-9 months to complete and has a maximum duration of 12 months. When you consider that each project is
+                        targeted to increase the turnover by over £100k you can see why this is such a compelling proposition.
+                    </p>
+
+                    <h2>
+                        Want to know more?
+                    </h2>
+                    <p>
+                        If you want to know more about this Funding opportunity to make a substantial difference to the prospects of your business pick up
+                        the phone to John Barton on 07793 242187, or email me on <a href="mailto:john@hucomp.co.uk">john&#64;hucomp.co.uk</a> and I will email you answers to
+                        your questions or simply call you back and talk you through how this can be of real benefit to you.
+                    </p>
+                    <p>
+                        You can also take a look at the Growth Accelerator website
+                        <a href="http://www.growthaccelerator.com/" target="_blank">www.growthaccelerator.com</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="single-demo">
+                    @*This is a class for when the page only has the demo and nothing else (sidelinks etc). Remove if these occur.*@
+                    @Html.Action("DemoPod", "Request")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

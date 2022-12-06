@@ -1,0 +1,740 @@
+﻿@using HUC.Web.App.Resources
+@using HUC.Web.App.Users.Courses
+@using HUC.Web.App.Resources.Chapters.Contents
+@using HUC.Web.App.Resources.Questions.Answers
+@using HUC.Web.Models
+@model HUC.Web.App.Resources.ResourceModel
+@{
+    Layout = "~/Views/Shared/_PreviewLayout.cshtml";
+    List<TestQuestionAnswerModelForJson> answerList = new List<TestQuestionAnswerModelForJson>();
+    int nextModuleId = Model.NextResource == null ? 0 : Model.NextResource.ID;
+}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Signika:100,200,300,400,500,600,700,800,900" media="all">
+
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/accordion.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/interview.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/flip.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/radio.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/slider.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/player.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/truefalse.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/popper.min.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/bootstrap.min.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/accordion.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/interview.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/PreviewFlip.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/PreviewRadio.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/Previewfreetext.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/Previewslider.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/PreviewTrueFalse.js"></script>
+
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/lib/jquery.signalR-2.2.1.js"></script>
+<script src="~/signalr/hubs"></script>
+<script>
+    $(document).ready(function () {
+        $("#modAdspic").empty();
+        $("#modAdspic").append('<a href="#"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Gdd-logo.jpg" style="max-height:106px;padding-right:50px;width:168px;"></a>');
+
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/Preview/CompanyPreview.css" />
+<input type="hidden" id="hdnModuleId" value="@Model.ID" />
+<input type="hidden" id="hdnNextModuleId" value="@nextModuleId" />
+<input type="hidden" id="hdnCourseId" value="@Model.Course.ID" />
+<input type="hidden" id="hdnApplicatonPath" value="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)" />
+@if (Model.Course.BackGroundType == false && !string.IsNullOrEmpty(Model.Course.Background))
+{
+    <style>
+        .full-page {
+            background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Course.Background) !important;
+        }
+        textarea {
+            overflow-y: scroll;
+            height: 100px;
+            resize: none; /* Remove this if you want the user to resize the textarea */
+                    }
+					 
+    </style>
+}
+else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
+{
+    <style>
+        .full-page {
+          background:@Model.Course.Background !important;
+        }
+    </style>
+}
+
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="course-header">
+                @if (Model.Course.Name.Length > 25)
+                {
+                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                }
+                else
+                {
+                    <div>@Model.Course.Name</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 align-top-content1" >
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important"  href="#" onclick="Back();">
+            <i  class="fa fa-arrow-left"></i> Back
+        </a>
+		 <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"  href="javascript:window.open('','_self').close();">
+             Dashboard
+        </a>
+    </div>
+</div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Dashboard">
+                Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="course-overview course-overview-top-module">
+    <div class="col-md-12 main-panel no-padding">
+        <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 ev-article">
+                        <h4>@Model.Sort - @Model.Name</h4>
+                        @if (!String.IsNullOrWhiteSpace(Model.TestIntroCopy))
+                        {
+                            <p><strong>Module Content:</strong> @Model.TestIntroCopy</p>
+                        }
+                        @if (@Model.ModuleTime != null && @Model.ModuleTime > 1)
+                        {
+                            <p class="margin-top-10"><strong>Expected time to completion:</strong> @Convert.ToInt32(Model.ModuleTime) Minutes</p>
+                        }
+                        else
+                        {
+                            <p class="margin-top-10"><strong>Expected time to completion:</strong> 1 Minutes</p>
+                        }
+
+                        @if (Model.Questions != null)
+                        {
+                            if (Model.Questions.Count() == 1)
+                            {
+                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() question</p>
+                            }
+                            else if (Model.Questions.Count() > 1)
+                            {
+                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() questions</p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        @foreach (var item in Model.Chapters.OrderBy(x => x.Sort))
+                        {
+                            <h3 style="padding-top:30px;" class="headingh3">@Model.Sort.ToString().@item.Sort: @item.Name</h3>
+                            foreach (var content in item.Contents.OrderBy(x => x.Sort))
+                            {
+                                switch (content.ContentType)
+                                {
+                                    case ContentType.Text:
+                                        <p>
+                                            @Html.Raw(content.Value)
+                                        </p>
+                                        break;
+
+                                    case ContentType.Audio:
+									<style>
+        
+					 .audiojs {
+        width:946px !important;
+    }
+    </style>
+                                        <audio src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Media/Uploads/@content.Value" preload="auto"></audio>
+                                        break;
+                                    case ContentType.PDF:
+                                        var absoluteurl = HttpContext.Current.Request.Url.AbsoluteUri.Split('/');
+                                        var urlpath = absoluteurl[0] + "//" + absoluteurl[2];
+                                        if (content.Value.Contains(".pdf"))
+                                        {
+
+                                            <iframe src="~/_Media/Uploads/@content.Value" style="width:100%; height:950px;" frameborder="0"></iframe>
+                                        }
+                                        else if (content.Value.Contains(".docx") || content.Value.Contains(".doc") || content.Value.Contains(".xlsx"))
+                                        {
+                                            var sss = "https://view.officeapps.live.com/op/embed.aspx?src=" + urlpath + HttpContext.Current.Request.ApplicationPath + "/_Media/Uploads/" + content.Value;
+                                            // var sss = "https://view.officeapps.live.com/op/embed.aspx?src=" + "http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc"; //"http://localhost:5412" + "/_Media/Uploads/" + content.Value;
+                                            <iframe src='@sss' style="width:100%; height:950px;" frameborder="0">This is an embedded </iframe>
+                                        }
+                                        else if (content.Value.Contains(".pptx") || content.Value.Contains(".ppt") || content.Value.Contains(".odp"))
+                                        {
+                                            var ssd = "https://view.officeapps.live.com/op/embed.aspx?src=" + urlpath + HttpContext.Current.Request.ApplicationPath + "/_Media/Uploads/" + content.Value;
+                                            // var ssd = "https://view.officeapps.live.com/op/embed.aspx?src=" + "http://www.learningaboutelectronics.com/Articles/Example.xlsx"; //"http://localhost:5412" + "/_Media/Uploads/" + content.Value;
+                                            <iframe src='@ssd' style="width:100%; height:540px;" frameborder="0">This is an embedded </iframe>
+                                        }
+                                        break;
+                                    case ContentType.VideoYoutube:
+                                        <center>  <iframe width="960" height="315" src="//www.youtube.com/embed/@content.Value?controls=2&modestbranding=1&rel=0" frameborder="0" allowfullscreen></iframe></center>
+                                        break;
+                                    case ContentType.VideoVimeo:
+                                        <div class="row" style="background-color:black;width: 945px;margin-left: 0px;">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" style="margin-top:7px;">
+                                <iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                                        break;
+                                    case ContentType.VideoWistia:
+                                        <center>     <iframe src="//fast.wistia.net/embed/iframe/@content.Value" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="960" height="360"></iframe></center>
+                                        break;
+                                    case ContentType.Accordion:
+                                        <div class="accordion-module" id="module-@content.ID" style="margin-top:20px !important;margin-bottom:20px !important"></div>
+                                        <script>
+												var jasonObj = {
+													divId: "module-@content.ID",
+													get accordion() {
+														return @Html.Raw(content.Value);
+													},
+												};
+												var accordion = new Accordion(jasonObj);
+												accordion.initialize();
+                                        </script>
+                                        break;
+                                    case ContentType.Flip:
+                                        <div class="flip-module" id="module-@content.ID"></div>
+                                        <script>
+												var flipJson = @Html.Raw(content.Value);
+												for (var i = 0; i < flipJson.length; i++) {
+													flipJson[i].imagePath = flipJson[i].imagePath.replace("~/", "../../../");
+												}
+												var jasonObj = {
+													divId: "module-@content.ID",
+													flip: flipJson,
+												};
+												var flip = new Flip(jasonObj);
+												flip.initialize();
+                                        </script>
+                                        break;
+                                    case ContentType.Interview:
+                                        <div class="interview-module" id="module-@content.ID"></div>
+                                        <script>
+												var jasonObj = {
+													divId: "module-@content.ID",
+													name: "@ViewBag.FullName",
+													role: "Employee",
+													place: "@ViewBag.CompanyName",
+													dialogs:@Html.Raw(content.Value),
+												};
+												var interview = new Interview(jasonObj);
+												interview.initialize();
+                                        </script>
+                                        break;
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Questions.Count() > 0)
+        {
+            <div class="panel" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 ev-article">
+                            <h4>Module @Model.Sort - Assessment</h4>
+                            @foreach (var question in Model.Questions.OrderBy(x => x.Sort))
+                            {
+                                answerList = new List<TestQuestionAnswerModelForJson>();
+
+                                if (question.QuestionType == 1 || question.QuestionType == null)
+                                {
+
+                                    var formId = "submitAnswer" + question.ID;
+                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
+                                    {
+                                        @*<p>
+                                                <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                            </p>*@
+                                        <div class="radio-module" id="module-@question.ID"></div>
+                                        <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                        <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
+                                        <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+
+                                        foreach (var curAnswer in question.Answers)
+                                        {
+                                            answerList.Add(new TestQuestionAnswerModelForJson
+                                            {
+                                                answerid = curAnswer.ID.ToString(),
+                                                option = curAnswer.Answer.Replace("\n", "").Replace("\r", ""),
+                                                type = curAnswer.IsCorrect == true ? "true" : "false",
+                                            });
+                                        }
+                                        <script>
+													// Radio
+													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+													var jasonObj = {
+														divId: "module-@question.ID",
+                                                        title: "Part @question.Sort: Multiple Choice",
+                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
+														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
+														statement: "Select the answer you think is correct.",
+														attempts: @question.Attempts,
+														get multi() {
+															return @Html.Raw(Json.Encode(answerList))
+														},
+													};
+                                                     var radio = new PreviewRadio(jasonObj);
+													radio.initialize();
+                                        </script>
+                                    }
+                                }
+                                else if (question.QuestionType == 2)
+                                {
+                                    var formId = "submitAnswer" + question.ID;
+                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
+                                    {
+                                        @*<p>
+                                                <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                            </p>*@
+                                        <div class="radio-module" id="module-@question.ID"></div>
+                                        <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                        <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
+                                        <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                        foreach (var curAnswer in question.Answers.OrderBy(x => x.Sort))
+                                        {
+                                            answerList.Add(new TestQuestionAnswerModelForJson
+                                            {
+                                                answerid = curAnswer.ID.ToString(),
+                                                option = curAnswer.Answer.Replace("\n", "").Replace("\r", ""),
+                                                type = curAnswer.IsCorrect == true ? "true" : "false",
+                                            });
+                                        }
+                                        <script>
+													// Radio
+													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+													var jasonObj = {
+														divId: "module-@question.ID",
+                                                        title: "Part @question.Sort: Multiple Choice",
+                                                       feedback: @Html.Raw(Json.Encode(question.Feedback)),
+														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
+														statement: "Select the answer you think is correct.",
+														attempts: @question.Attempts,
+														get multi() {
+															return @Html.Raw(Json.Encode(answerList))
+														},
+													};
+                                                     var radio = new PreviewRadio(jasonObj);
+													radio.initialize();
+                                        </script>
+                                    }
+                                }
+                                else if (question.QuestionType == 3)
+                                {
+
+                                    var formId = "submitAnswer" + question.ID;
+                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
+                                    {
+                                        @*<p>
+                                                <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                            </p>*@
+                                        <div class="radio-module" id="module-@question.ID"></div>
+                                        <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                        <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
+                                        <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                        foreach (var curAnswer in question.Answers)
+                                        {
+                                            answerList.Add(new TestQuestionAnswerModelForJson
+                                            {
+                                                answerid = curAnswer.ID.ToString(),
+                                                option = curAnswer.Answer.Replace("\n", "").Replace("\r", ""),
+                                                type = curAnswer.IsCorrect == true ? "true" : "false",
+
+                                            });
+                                        }
+                                        <script>
+													// Slider
+													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+													var jasonObj = {
+														divId: "module-@question.ID",
+                                                        title: "Part @question.Sort: Slider",
+                                                       feedback: @Html.Raw(Json.Encode(question.Feedback)),
+														subHeading: "Move the slider position between 1 - " + answers.length + " and then click submit.&nbsp;",
+														max: answers.length,
+														selected: @question.AnswerOrder == 0? 0 : @question.AnswerOrder,
+														selectedAnswer: @question.AnswerOrder,
+														attempts:  @question.Attempts,
+														question: "@question.Question.Replace("\n", "").Replace("\r", "")",
+														get multi() {
+															return @Html.Raw(Json.Encode(answerList))
+														},
+													};
+                                                     var slider = new PreviewSlider(jasonObj);
+													slider.initialize();
+
+                                        </script>
+                                    }
+                                }
+                                else if (question.QuestionType == 4)
+                                {
+                                    @*<p>
+                                            <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                        </p>*@
+                                    <div class="truefalse-module" id="module-@question.ID"></div>
+                                    <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                    <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="@question.ID" />
+                                    <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                    foreach (var curAnswer in question.Answers)
+                                    {
+                                        answerList.Add(new TestQuestionAnswerModelForJson
+                                        {
+                                            answerid = curAnswer.ID.ToString(),
+                                            option = curAnswer.Answer.Replace("\n", "").Replace("\r", ""),
+                                            type = curAnswer.IsCorrect == true ? "true" : "false",
+                                        });
+                                    }
+                                    <script>
+													// True False
+													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+													var jasonObj = {
+														divId: "module-@question.ID",
+                                                        title: "Part @question.Sort: True or False",
+                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
+														statement:
+															"Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.",
+														attempts: @question.Attempts,
+														question:  @Html.Raw(Json.Encode(answerList)),
+													};
+													var trueFalse = new PreviewTrueFalse(jasonObj);
+													trueFalse.initialize();
+                                    </script>
+                                }
+                                else if (question.QuestionType == 5)
+                                {
+
+                                    var formId = "submitAnswer" + question.ID;
+
+                                    @*<p>
+                                            <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                        </p>*@
+                                    <div class="truefalse-module" id="module-@question.ID"></div>
+                                    <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                    <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="@question.ID" />
+                                    <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                    foreach (var curAnswer in question.Answers)
+                                    {
+                                        string answer = "";
+
+                                        if (curAnswer.Answer.Contains("\""))
+                                        {
+                                            answer = curAnswer.Answer;
+                                            for (int i = 0; i <= curAnswer.Answer.Length; i++)
+                                            {
+
+
+                                                if (answer[i] == '"')
+
+                                                {
+                                                    answer = answer.Insert(i, "\\");
+
+                                                    i++;
+                                                }
+
+
+
+                                            }
+
+
+                                            //   answer = curAnswer.Answer.Replace("\\", "\"");
+                                            //  answer = curAnswer.Answer.Insert(36, "\\").Insert(50, "\\");
+                                        }
+
+                                        else
+                                        {
+                                            answer = curAnswer.Answer;
+                                        }
+                                        answerList.Add(new TestQuestionAnswerModelForJson
+                                        {
+                                            answerid = curAnswer.ID.ToString(),
+                                            option = answer,
+                                            type = curAnswer.IsCorrect == true ? "true" : "false",
+
+                                        });
+
+                                    }
+                        <script>
+                                            // True False
+                                            @*var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                            var jasonObj = {
+                                                divId: "module-@question.ID",
+                                                title: "Part 1: True or False",
+                                                statement:
+                                                    "Read the three statements below. Decide whether they are true or false and then drag them onto corresponding answer.",
+                                                attempts: @question.Attempts,
+                                                question:  @Html.Raw(Json.Encode(answerList)),
+                                            };
+                                            var trueFalse2 = new TrueFalse2(jasonObj);
+                                           trueFalse.initialize();*@
+
+                            $(document).ready(function () {
+                                // Here you create Jason Object and initialize Interview instance
+                                var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                const ansObj = [];
+
+                                for (let i = 0; i < answers.length; i++) {
+                                    debugger;
+                                    let obj = answers[i];
+                                    obj.option.replace("/", "");
+                                    ansObj.push(obj);
+
+                                    console.log(obj.answerid);
+                                }
+                                const jasonObj = {
+                                    divId: "module-@question.ID",
+                                    title: "Part @question.Sort: True or False",
+                                    feedback: @Html.Raw(Json.Encode(question.Feedback)),
+                                    statement:
+                                        "The answer here corresponds to one of the statements below. Associate the answer with the right question by dragging and dropping",
+                                    attempts: @question.Attempts,
+                                    answer: [
+                                        {
+                                            title: @Html.Raw(Json.Encode(question.Question)),
+                                          /*  title: "True. Drag OR Drop this against the correct statement",*/
+                                            type: "true",
+                                        }
+                                    ],
+                                    question: ansObj, @*@Html.Raw(Json.Encode(answerList)),*@
+
+                                };
+
+                                const trueFalse2 = new PreviewTrueFalse2(jasonObj);
+
+
+                                trueFalse2.initialize();
+
+                            });
+
+
+                        </script>
+
+                                }
+                                else if (question.QuestionType == 6)
+                                {
+                                    int i = 1;
+                                    @*<p>
+                                            <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                        </p>*@
+                                    <div class="truefalse-module" id="module-@question.ID"></div>
+                                    <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                    <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="@question.ID" />
+                                    <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                    foreach (var curAnswer in question.Answers)
+                                    {
+                                        answerList.Add(new TestQuestionAnswerModelForJson
+                                        {
+                                            answerid = curAnswer.ID.ToString(),
+                                            option = "<div class='col-md-10'>" + curAnswer.Answer + "</span></div><div class='col-md-2'> <label for='cars'> </label><select name='cars' class='ev-input-text' style='color:black;float:right;' id='inid" + i.ToString() + "-" + question.ID + "'><option value='true'>True</option>  <option value='false'>False</option></select></div>",
+                                            type = curAnswer.IsCorrect == true ? "true" : "false",
+
+                                        });
+                                        i++;
+                                    }
+
+                                    <script>
+                                            // True False
+                                            @*var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                            var jasonObj = {
+                                                divId: "module-2",
+                                                title: "Part 1: True or False",
+                                                statement:
+                                                    "Read the three statements below. Decide whether they are true or false and then drag them onto corresponding answer.",
+                                                attempts: @question.Attempts,
+                                                question:  @Html.Raw(Json.Encode(answerList)),
+                                            };
+                                            var trueFalse = new TrueFalse(jasonObj);
+                            trueFalse.initialize();*@
+                            $(document).ready(function () {
+                                // Here you create Jason Object and initialize Interview instance
+                                const jasonObj = {
+                                    divId: "module-@question.ID",
+                                    title: "Part @question.Sort: True or False",
+                                   feedback: @Html.Raw(Json.Encode(question.Feedback == null ? "" : question.Feedback)),
+                                    statement:
+                                        "Select True Or False from the Dropdown after the question.",
+                                    attempts: @question.Attempts,
+                                    question: @Html.Raw(Json.Encode(answerList)),
+
+                                };
+
+                                const trueFalse1 = new PreviewTrueFalse1(jasonObj);
+
+
+                                trueFalse1.initialize();
+
+                            });
+                                    </script>
+                                }
+                                else if (question.QuestionType == 7)
+                                {
+
+                                    var formId = "submitAnswer" + question.ID;
+                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
+                                    {
+                                        foreach (var curAnswer in question.Answers)
+                                        {
+                                            <script>
+                                                $(document).ready(function () {
+                                                    var textarea ="@curAnswer.Answer";
+                                                    $("#freetext").val(textarea);
+                                                    $("#freetext").attr("disabled", "disabled");
+                                                    $("button." + "module-@question.ID").prop("disabled", true);
+                                                });
+                                            </script>
+                                        }
+                                        <div class="radio-module" id="module-@question.ID"></div>
+                                        <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                        <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
+                                        <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                        <style>
+                                            .ev-component-interaction-label {
+                                                display: none !important;
+                                            }
+                                        </style>
+                                        <script>
+
+													var jasonObj = {
+														divId: "module-@question.ID",
+                                                        title: "Part @question.Sort: Free Text",
+                                                        statement: "Write your answer in the text box below." + "\n" +"<textarea id='freetext' rows='10' cols='138' style='width:100%;margin-top:16px;margin-bottom:2px;border-color:#66CC99;' readonly> </textarea>",
+                                                        attempts: @question.Attempts,
+														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
+                                                        get multi() {
+															return @Html.Raw(Json.Encode(answerList))
+														},
+													};
+                                            var freetext = new PreviewFreeText(jasonObj);
+                                            freetext.initialize();
+                                        </script>
+                                    }
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+        <div class="row" @*style="margin-left:0px;margin-right:0px;"*@>
+            <div class="col-md-12" @*module-tile/here*@ style="padding: 20px 14px 20px 14px; font-size: 15px;">
+                <div class="row footer-tile footer-tile-detail" style="width:102%;">
+                   
+				@if (Model.PrevResource != null)
+                    {
+					
+                        <div class="col-md-5" style="text-align:left !important;margin-top:5px;">
+						                  <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/ModuleDetail/@Model.PrevResource.ID" style="color:#fff !important;width: 50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i> Previous Module </a>
+                        </div>
+                    }
+
+                    @if (Model.Sort == 1)
+                    {
+                        
+                        <div class="col-md-5" style="text-align:left !important;margin-top:5px;">
+						                           <a class="btn btn-success  pull-left btn-blue-color-close"  href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/AboutCourse/@Model.Course.ID" style="color:#fff !important;width: 50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i> About this course</a>
+                        </div>
+                    }
+					
+                    <div class="col-md-2 footer-current-page">
+                        <div class="coursecounter">
+                            @* <span>@(Model.Sort + 1)</span> of <span>@Model.TotalResource</span>*@
+                        </div>
+                    </div>
+
+
+
+                    @if (Model.NextResource != null)
+                    {
+                        if (Model.ModuleCompleted)
+                        //if (true)
+                        {
+                            <div class="col-md-5" style="text-align:right !important;margin-top:5px;">
+							   <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/ModuleDetail/@Model.NextResource.ID" style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;">Next Module  <i class="fa fa-arrow-right" style="color:#fff !important"></i> </a>
+							</div>
+                            
+                        }
+                        else
+                        {
+						
+                            <div class="col-md-5" style="text-align:right !important;margin-top:5px;">
+                              <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/ModuleDetail/@Model.NextResource.ID" style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;">Next Module  <i class="fa fa-arrow-right" style="color:#fff !important"></i> </a>
+							 </div>
+                        }
+                    }
+                    else
+                    {
+                        if (Model.ModuleCompleted)
+                        //if (true)
+                        {
+                            <div class="col-md-5" style="text-align:right !important; margin-top:5px;">
+                                 <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/Assessment/@Model.Course.ID" style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;">Course Feedback <i class="fa fa-arrow-right" style="color:#fff !important"></i> </a>
+                          </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-5" style="text-align:right !important; margin-top:5px;">
+                                <a class="btn btn-success  pull-left btn-blue-color-close" style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;"  href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/Assessment/@Model.Course.ID">Course Feedback  <i class="fa fa-arrow-right" style="color:#fff !important"></i></a>
+								
+                           </div>
+                           
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<input type="hidden" id="courseHeartbeat" value="true" />
+<input type="hidden" id="cID" value="@Model.CourseID" />
+<input type="hidden" id="isTest" value="true" />
+
+<script>
+function Back(){
+	window.history.back();
+  }
+    function gotopage() {
+
+        window.location.href = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Dashboard/DashBoardView";
+
+    }
+
+    $("#logoid").hide();
+    $(".bg-white").hide();
+</script>

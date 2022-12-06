@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.PageTitle = "Doucmentations";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "error";
+    ViewBag.ParentPageName = "pages";
+    //Content title area
+    ViewBag.ContentTitle = "404 Error";
+    ViewBag.ContentTitleDesc = "";
+}
+
+@section Scripts{
+
+}
+<div class="row m-n">
+    <div class="col-sm-4">
+        <div class="list-group bg-info auto m-b-sm m-b-lg">
+            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/scale" class="list-group-item">
+                <i class="fa fa-chevron-right icon-muted"></i>
+                <i class="fa fa-fw fa-home icon-muted"></i> Goto homepage
+            </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-chevron-right icon-muted"></i>
+                <i class="fa fa-fw fa-question icon-muted"></i> Send us a tip
+            </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-chevron-right icon-muted"></i>
+                <span class="badge bg-info lt">021-215-584</span>
+                <i class="fa fa-fw fa-phone icon-muted"></i> Call us
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Users.UserLoginModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Login",
+        ContentTitle = "Login",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("login")
+        }
+    };
+}
+
+<div class="desc-form standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="width-50">
+                <h2>
+                    Log in to your account
+                </h2>
+                <p>
+                    Please enter your email address and password to log in to your account.
+                </p>
+            </div>
+            <div class="width-50">
+                <h2>
+                    Enter your details
+                </h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.TextBoxFor(x => x.Email, new { @placeholder = "Your email address" })
+                    @Html.ValidationMessageFor(x => x.Email)
+                    
+                    @Html.PasswordFor(x => x.Password, new { @placeholder = "Your password" })
+                    @Html.ValidationMessageFor(x => x.Password)
+                    
+                    <a class="forgot" href="/Auth/Reset">
+                        Forgotten password
+                    </a>
+                    <input class="large-button orange" type="submit" value="Submit" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

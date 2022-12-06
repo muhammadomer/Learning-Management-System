@@ -1,0 +1,78 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Companies.Users.CompanyUserEditModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Users",
+        ContentTitle = Model.User.FirstName + " " + Model.User.LastName + " - Edit",
+        ContentTitleDesc = "Here you can edit the details of this user.",
+        ActivePage = "users",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Companies", Url.Action("Index", "Companies"), "fa-building-o"),
+            new BreadcrumbItem("Users", Url.Action("Index", new { id = Model.CompanyID })),
+            new BreadcrumbItem("Edit")
+        }
+    };
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.CompanyID)
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <label>Email</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserEdit.Email)
+                @Html.ValidationMessageFor(model => model.UserEdit.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>First name</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserEdit.FirstName)
+                @Html.ValidationMessageFor(model => model.UserEdit.FirstName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Last name</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserEdit.LastName)
+                @Html.ValidationMessageFor(model => model.UserEdit.LastName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserEdit.Password)
+                @Html.ValidationMessageFor(model => model.UserEdit.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm password</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.UserEdit.ConfirmPassword)
+                @Html.ValidationMessageFor(model => model.UserEdit.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Index", new { id = Model.CompanyID })
+            </div>
+        </div>
+    </div>
+}

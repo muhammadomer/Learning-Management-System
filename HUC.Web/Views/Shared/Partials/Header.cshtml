@@ -1,0 +1,21 @@
+﻿<div id="header">
+    <div class="container">
+        <div class="content">
+            <a class="logo" href="/">
+                <img alt="Training Courses" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/main-logo.png" />
+            </a>
+            <p class="points">
+                Compliance e-Learning & Consultancy Services
+            </p>
+            <div class="login-section">
+                <a class="large-button grey login-button desktop-ver" href="#">
+                    Login
+                </a>
+                <a class="large-button grey mobile-ver" href="/Auth/Login">
+                    Login
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

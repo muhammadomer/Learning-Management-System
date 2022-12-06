@@ -1,0 +1,840 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Settings.SettingsModel
+
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "settings",
+        ContentTitle = "Settings",
+        ContentTitleDesc = "Here you can create a new setting.",
+        ActivePage = "setting",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Settings", Url.Action("Index"), "fa-briefcase"),
+            new BreadcrumbItem("Create")
+        }
+    };
+
+    int sd = 0;
+    var _settings = ViewBag.Settings;
+
+}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="~/_Content/css/bootstrap-colorselector.min.css" rel="stylesheet" />
+<style>
+    /*  input[type="radio"], input[type="checkbox"] {
+        height: 26px !important;
+    }*/
+
+    .edit-create-form .input-field {
+        max-width: 500px;
+    }
+
+    textarea {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: 100%;
+        height: 300px;
+        display: block;
+        resize: none; /*Add this if you dont want users to resize */
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+    }
+
+    .form-control {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }
+
+    .redactor_editor {
+        border: 1px solid #72bbb8 !important;
+        min-height: 200px !important;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        height: 200px !important;
+    }
+
+    .redactor_toolbar {
+        border: 2px solid #72bbb8 !important;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px
+    }
+    /*   input {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }*/
+    td > b {
+        color: #72bbb8 !important;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .btn-colorselector {
+        margin-top: 0px !important;
+    }
+
+    label {
+        color: black !important;
+    }
+
+    table {
+        width: 500px;
+        border-radius: 6px;
+        border-collapse: inherit;
+    }
+
+    .set-margin {
+        margin-top: 85px;
+    }
+
+    @@media(max-width:1600px) {
+        table {
+            width: auto !important;
+        }
+    }
+
+    input[type="radio"] {
+        /* remove standard background appearance */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        /* create custom radiobutton appearance */
+        display: inline-block;
+        width: 19px;
+        height: 19px;
+        padding: 0px;
+        /* background-color only for content */
+        background-clip: content-box;
+        border: 5px solid #72bbb8;
+        background-color: #ffffff;
+        border-radius: 50%;
+        margin-top: 6px;
+    }
+
+        /* appearance for checked radiobutton */
+        input[type="radio"]:checked {
+            background-color: #336666;
+        }
+
+        input[type="radio"]:focus {
+            outline: unset;
+        }
+
+    .btn-colorselector {
+        display: inline-block;
+        width: 70px;
+        height: 36px;
+        background-color: #DDD;
+        vertical-align: middle;
+        border-radius: 0;
+        border: 2px solid #72bbb8;
+        margin-top: 2px !important;
+    }
+
+    @@media(max-width:1366px) {
+        .btn-colorselector {
+            display: inline-block;
+            width: 70px;
+            height: 36px;
+            background-color: #DDD;
+            vertical-align: middle;
+            border-radius: 0;
+            border: 2px solid #72bbb8;
+            margin-top: -1px !important;
+        }
+    }
+
+    .givecolor {
+        background-color: #1aae88 !important;
+        color: white !important;
+    }
+</style>
+<div class="desktop-ver">
+    @*<div class="row">
+            <div class="col-md-12 align-top-content button-active" style="margin-top: 100px; margin-right: 15px;">
+                <a class="btn btn-success pull-right" href="@Url.Action("Index","Courses")">
+                    <i style="margin-left: 10px;" class="fa fa-arrow-left"></i> Back to list
+                </a>
+            </div>
+        </div>*@
+</div>
+
+
+
+<div class="col-md-12">
+
+
+    <section class="row">
+
+
+        <section class="panel panel-default">
+
+            @using (Html.BeginForm("Create", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row" style="padding-top:18px">
+
+                    <div class="col-md-4" style="text-align:left;display:flex;">
+                        <div class="form-group" style="padding-left:40px;padding-top: 10px; width: 80%">
+                            @Html.LabelFor(model => model.TraniningOfficerName)
+                        </div>
+                        @*</div>
+
+                            <div class="col-md-2" style="margin-top:5px;width:200px;padding-right:20px;">*@
+
+                        <div class="form-group" style=" width: 100%">
+
+                            @*<div class="input-field">*@
+                            @Html.TextBoxFor(model => model.TraniningOfficerName, new { @class = "form-control", @maxlength = "50" })
+                            @Html.ValidationMessageFor(model => model.TraniningOfficerName)
+
+                            @*</div>*@
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-5" style="text-align: left; display: flex;">
+                        <div class="form-group" style="padding-top: 10px; padding-left:30px">
+                            @Html.LabelFor(model => model.TrainingOfficerEmail)
+                        </div>
+                        @*</div>
+
+                            <div class="col-md-2" >*@
+                        <div class="form-group" style="padding-left: 20px; width: 60%;text-align:left;">
+
+                            @*<div class="input-field">*@
+
+
+                            @Html.TextBoxFor(model => model.TrainingOfficerEmail, new { @class = "form-control", @maxlength = "50", type = "email" })
+                            @Html.ValidationMessageFor(model => model.TrainingOfficerEmail, "", new { @class = "error" })
+
+                            @*</div>*@
+                        </div>
+                        @*<div class="form-group" style="padding-top: 4px; width: 40%">
+                                <input type="submit" value="Save" class="btn " style="color:white; background-color: #72bbb8" />
+                            </div>*@
+                    </div>
+                    @*<div class="col-md-2" style="text-align: center; display: flex;">*@
+                        <div class="form-group" style="padding-top: 3px; width: 100%">
+                            <input type="submit" value="Save" class="btn " style="color:white; background-color: #72bbb8" />
+                        </div>
+                    @*</div>*@
+
+
+
+                </div>
+
+            }
+        </section>
+    </section>
+</div>
+<section class="row">
+
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <section class="panel panel-default" style="height:325px">
+                @using (Html.BeginForm("UpdateReminder", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <header class="panel-heading font-bold" style="padding-left:50px">Course Reminder</header>
+
+
+
+
+
+
+
+
+                    <div class="row">
+
+                        <div class="col-md-5">
+                            <div class="form-group" style="padding-left:40px;padding-top:10px">
+                                @Html.LabelFor(model => model.TrainingCoursesWeeks)
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.TrainingCoursesWeeks, new { @type = "number", @maxLength = "1", @class = "form-control", @min = "1", @max = "8" })
+                                @Html.ValidationMessageFor(model => model.TrainingCoursesWeeks)
+
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-top:10px">
+                            <span class="float-right">Weeks</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-5">
+                            <div class="form-group" style="padding-left: 40px; padding-top: 10px">
+                                @Html.LabelFor(model => model.DaysReminder1)
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.DaysReminder1, new { @type = "number", @maxlength = "1", @class = "form-control", @min = "1", @max = "5" })
+                                @Html.ValidationMessageFor(model => model.DaysReminder1)
+
+                            </div>
+
+                        </div>
+                        <div class="form-group" style="padding-top:10px">
+                            <span class="float-right">Weeks</span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="col-md-5">
+                            <div class="form-group" style="padding-left: 40px; padding-top: 10px">
+                                @Html.LabelFor(model => model.DaysReminder2)
+
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.DaysReminder2, new { @type = "number", @maxlength = "1", @class = "form-control", @min = "1", @max = "5" })
+                                @Html.ValidationMessageFor(model => model.DaysReminder2)
+                            </div>
+
+                        </div>
+                        <div class="form-group" style="padding-top:10px">
+                            <span class="float-right">Weeks</span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-5">
+                            <div class="form-group" style="padding-left: 40px; padding-top: 10px">
+                                @Html.LabelFor(model => model.DaysReminder3)
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+
+                                <div class="input-field">
+                                    @Html.TextBoxFor(model => model.DaysReminder3, new { @type = "number", @maxlength = "1", @class = "form-control", @min = "1", @max = "5" })
+                                    @Html.ValidationMessageFor(model => model.DaysReminder3)
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group" style="padding-top:10px">
+                            <span class="float-right">Weeks</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-10" style="text-align:right">
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn" style=" background-color: #72bbb8;color:white" />
+                            </div>
+                        </div>
+                        @*<div class="col-md-3">
+
+
+                            </div>*@
+
+                    </div>
+
+
+
+
+
+
+
+                }
+
+
+
+
+            </section>
+        </div>
+
+        <div class="col-md-6">
+
+            <section class="panel panel-default" style="height:325px">
+
+                @using (Html.BeginForm("UpdateEmailSent", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <header class="panel-heading font-bold" style="padding-left:50px">Email Settings</header>
+
+                    if (Model != null)
+                    {
+                        <div class="row">
+
+
+
+
+
+
+                            <div class="form-group" style="padding-top:10px;">
+
+
+                                <div class="col-sm-5 " style="padding-left:50px;padding-top:5px;"> @Html.LabelFor(model => model.EmailReminder)</div>
+
+                                <div class="col-sm-1 " style="padding-top:5px;">Yes</div>
+
+                                <div class="col-sm-1 ">  @Html.RadioButtonFor(model => model.EmailReminder, true, new { @id = Model.EmailReminder }) </div>
+                                <div class="col-sm-1 " style="padding-top:5px;">No</div>
+                                <div class="col-sm-1 ">  @Html.RadioButtonFor(model => model.EmailReminder, false, new { @id = Model.EmailReminder })</div>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group" style="padding-top:20px;">
+                                <div class="col-sm-5 " style="padding-left: 50px; padding-top: 5px;">@Html.LabelFor(model => model.EmailCourseComplete)</div>
+                                @*</div>
+                                    <div class="form-group">*@
+                                <div class="col-sm-1 " style="padding-top:5px;">Yes</div><div class="col-sm-1 "> @Html.RadioButtonFor(model => model.EmailCourseComplete, true, new { @id = Model.EmailCourseComplete })</div>
+                                <div class="col-sm-1 " style="padding-top:5px;">No</div><div class="col-sm-2 ">@Html.RadioButtonFor(model => model.EmailCourseComplete, false, new { @id = Model.EmailCourseComplete }) </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group" style="padding-top:20px;">
+                                <div class="col-sm-5 " style="padding-left: 50px; padding-top: 5px;">@Html.LabelFor(model => model.EmailAssignCourse)</div>
+                                @*</div>
+                                    <div class="form-group">*@
+                                <div class="col-sm-1 " style="padding-top:5px;">Yes</div><div class="col-sm-1 ">@Html.RadioButtonFor(model => model.EmailAssignCourse, true, new { @id = Model.EmailAssignCourse }) </div>
+                                <div class="col-sm-1 " style="padding-top:5px;">No</div><div class="col-sm-1 "> @Html.RadioButtonFor(model => model.EmailAssignCourse, false, new { @id = Model.EmailAssignCourse }) </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group" style="padding-top:27px;">
+                                <div class="col-sm-5" style="padding-left:50px; ">@Html.LabelFor(model => model.EmailCompliance)</div>
+                                @*</div>
+                                    <div class="form-group">*@
+                                <div class="col-sm-1 " style="padding-top:5px;">Yes</div><div class="col-sm-1 ">@Html.RadioButtonFor(model => model.EmailCompliance, true, new { @id = Model.EmailCompliance }) </div>
+                                <div class="col-sm-1 " style="padding-top:5px;">No</div><div class="col-sm-1 "> @Html.RadioButtonFor(model => model.EmailCompliance, false, new { @id = Model.EmailCompliance })</div>
+                            </div>
+                        </div>
+                    }
+
+
+
+
+
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" style="padding-top:15px;text-align:right">
+                                <input type="submit" value="Save" class="btn " style="background-color: #72bbb8;color:white" />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+
+
+
+
+
+
+</section>
+
+
+<section class="row">
+    <div class="col-sm-12 col-md-6">
+        <h3 class="m-b-xs text-background" style="font-size:24px !important">
+            Email Configuration
+        </h3>
+    </div>
+
+</section>
+
+<div class="col-md-3">
+    <section class="panel panel-default">
+        <div class="table-responsive ">
+            <table id="sortabletbl" class="table table-striped m-b-none black-header">
+                <thead>
+                    <tr>
+                        <th width="400px" class="text-center aligntd">
+                            Title
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null)
+                    {
+
+                        foreach (var emailconfig in Model.EmailConfiguration)
+                        {
+                            sd++;
+                            <tr id="tr_@sd" onclick="selectThis(@sd)" style="cursor: pointer;">
+                                <td class="text-center" style="display:none;">
+                                    <i data-email="@emailconfig.Id" class="fa fa-check un-checked-icon selectSingleUser userera_@sd"></i>
+                                    <input type="hidden" value="@emailconfig.Id" id="txtEmailConfig_@sd" />
+                                </td>
+                                <td>@emailconfig.Title</td>
+
+
+
+
+
+
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*<div class="table-responsive col-md-9">
+                <table id="sortabletbl" class="table table-striped m-b-none black-header">
+                    <thead>
+                        <tr>
+                            <th width="400px" class="text-center aligntd">
+                                Body
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="text" id="txtTitle" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>  <input type="text" id="txtSubject" /></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>*@
+    </section>
+
+
+
+
+</div>
+<div class="col-md-9">
+    <section class="panel panel-default">
+
+        <div class="row" style="height: 40px; text-align: center; background-color: #72bbb8;padding-top:10px">
+            <span style="color:white;"><b>Body</b> </span>
+        </div>
+
+        <div class="row" style="padding-top: 15px; padding-left: 5px">
+            @*<div class="col-md-2 " style="padding-top: 15px; ">
+                    <label>Email Description</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" id="txtDescription" style="height:40px;" class="form-control   " />
+                </div>*@
+            @*<div class="row" style="padding-top: 15px; padding-left: 5px">*@
+            <div class="col-md-2 " style="padding-top: 10px;">
+                <label>Email Subject</label>
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="txtSubject" style="height:35px;" class=" form-control  " />
+            </div>
+            @*</div>*@
+
+
+            <div class="col-md-2  " style="padding-top: 15px;width:80px ">
+                <label>Tags</label>
+            </div>
+            <div class="col-md-4" style=" ">
+
+                <select style="height: 40px; " class="form-control">
+                    <option value="1">Email To</option>
+                    @*<option value="2">Subject</option>*@
+
+                    <option value="2">Start_Date</option>
+                    <option value="3">Finish_Date</option>
+
+                    <option value="4">Date_succesful_completion</option>
+                    <option value="5">nyears days</option>
+                    <option value="6">n_years</option>
+
+                    <option value="7">Course List Assigned</option>
+                    <option value="8">Course List InComplete</option>
+
+                    <option value="9">Course Title</option>
+                    <option value="10">Training Course Weeks</option>
+                    <option value="11">Training Officer Name</option>
+                    <option value="12">Application Name</option>
+                    <option value="13">URL</option>
+                    <option value="14">User Name</option>
+                    <option value="15">Password</option>
+                    <option value="16">Account Id</option>
+
+                </select>
+
+                @*<input type="text" id="txtDescription" style="height:40px;" class="form-control   " />*@
+            </div>
+
+
+        </div>
+
+
+        <div>
+            <div>
+                <div class="row" style="padding-top: 15px">
+                    <div class="col-md-12">
+
+                        <textarea name="Editor1"></textarea>
+                        @*<textarea   id="txtBody"      class=" " ></textarea>*@
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div>
+            <div>
+                <div class="row" style="text-align:right;height:50px;padding-top:5px;padding-right:16px">
+
+                    <input type="button" value="Save" onclick="UpdateEmailConfig()" class="btn " style="background-color: #72bbb8;color:white" />
+                </div>
+
+            </div>
+
+
+        </div>
+    </section>
+</div>
+
+@*<script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>*@
+
+<script src="~/_Content/js/bootstrap-colorselector.min.js"></script>
+<script src="~/_Content/ckeditor/ckeditor.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".intro-text").removeClass("button-deactive");
+        //  $(".btn-5").css("color", "#ffffff !important");
+        $('.btn-5').removeAttr('style');
+       //   CKEDITOR.replace('Editor1');
+        // CKEDITOR.destroy();
+
+        //        CKEDITOR.replace( 'Editor1', {
+        //  removeButtons: 'Bold'
+        //} );
+
+    //  config.removeButtons   = 'Link';
+        //
+
+
+        CKEDITOR.replace('Editor1', {
+            toolbar: [
+                { name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
+                { name: 'clipboard', groups: ['clipboard', 'undo'], items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                { name: 'editing', groups: ['find', 'selection', 'spellchecker'], items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                { name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
+                '/',
+                { name: 'basicstyles', groups: ['basicstyles', 'cleanup'], items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'], items: ['NumberedList', 'BulletedList', '-',  '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'] },
+              //  { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert', items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'] },
+                '/',
+                { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                { name: 'others', items: ['-'] }
+              //  { name: 'about', items: ['About'] }
+            ]
+        });
+
+
+
+
+
+
+
+
+
+
+    }); //
+
+
+    var ii=0
+
+
+    var selectThis = function (id) {
+        //var alternameemail = "";
+        var email = "";
+        $("#tr_" + id + " > td").addClass('givecolor');
+
+
+
+
+      //  alert(id);
+
+        var cout = @Html.Raw(Json.Encode(sd)); //$("tr").length;
+        for (var i = 1; i <= cout; i++) {
+            if (i == id) {
+
+                email = $(".userera_" + i).attr("data-email");
+                // alternameemail = $("#txtEmail_" + i).val();
+            } else {
+                $("#tr_" + i + " > td").removeClass('givecolor');
+
+            }
+
+        }
+
+        ii = id;
+       // alert(email);
+
+        var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Settings/getEmailConfiguration?EmailConfigId=" + email;
+
+        FillBodySection(url)
+
+    }
+
+    function FillBodySection(sendAddress) {
+      //  alert();
+        $.ajax({
+            type: "GET",
+            url: sendAddress,
+
+            success: function (response) {
+
+
+                if (response == "no") {
+
+                } else {
+
+                    debugger;
+
+                    var eamilConfig = response;
+
+                 //   $('#txtDescription').val(response[0].Description.trim());
+                    $('#txtSubject').val(response[0].Subject.trim());
+
+               //     $('#txtBody').val(response[0].Body.trim());
+
+                    var body = response[0].Body;
+
+                    CKEDITOR.instances["Editor1"].setData(body);
+
+
+                  //  alert(body);
+
+                  //  CKEDITOR.instances["Editor1"].setData(body);
+
+
+                    //alert(response[0].Title);
+                    //alert(response[0].Subject);
+
+
+                }
+
+            }
+        })
+    }
+
+
+    function UpdateEmailConfig() {
+
+       // alert();
+
+   //   var Description=  $('#txtDescription').val();
+        var Subject = $('#txtSubject').val();
+
+        var Body = CKEDITOR.instances['Editor1'].getData();
+
+   //     var Body = $('#txtBody').val();
+
+   //     alert(Body);
+
+
+       // var cout = @Html.Raw(Json.Encode(sd));
+
+        var id = $('#txtEmailConfig_' + ii).val();
+
+     //   alert(id);
+
+    //   var Body = "abc";
+        var url = 'Settings/updateEmailConfig';
+        var requestPerameters = {
+            "Id": id,
+         //   "Description": Description,
+            "Subject": Subject,
+            "Body": Body
+
+        };
+
+
+
+     //   alert(Body);
+
+
+        AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
+
+            if (response == true) {
+
+               toastr.success("Setting updated");
+
+            }
+            else {
+
+               toastr.error("Training officer not added");
+            }
+
+        });
+
+
+       // var _url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Settings/updateEmailConfig?Title=" + Title + "&Subject=" + Subject + "?Body=" + body;
+
+
+
+
+
+
+
+
+    };
+
+
+
+
+</script>

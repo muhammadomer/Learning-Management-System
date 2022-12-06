@@ -1,0 +1,760 @@
+﻿@using HUC.Web.Models
+@using HUC.Web.Models.SinglePoint
+@model List<HUC.Web.Models.SinglePoint.Users>
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Assign Course",
+        ContentTitle = "Assign Courses",
+        ActivePage = "assign-course",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Assign Courses", null, "i-users3")
+        }
+    };
+    int sd = 0;
+    string col = "";
+}
+<!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+    .grid-select-box {
+        color: #fff;
+        background-color: #1aae88;
+        border: #1aae88;
+        border-radius: 5px;
+    }
+
+    .grid-search-box {
+        color: #fff;
+        background-color: transparent;
+        border: solid 1px #fff;
+        border-radius: 0px;
+        border-right: none;
+    }
+
+        .grid-search-box:focus {
+            border-color: #fff;
+        }
+
+    .grid-search-box-icon {
+        background-color: transparent;
+        border: solid 1px #fff;
+        border-radius: 0px;
+        border-left: none;
+    }
+
+    .form-check-inline {
+        display: inline-block;
+    }
+
+    .lblCourse {
+        margin-right: 15px;
+    }
+
+    .checked-icon {
+        color: #fff;
+        background-color: #1aae88;
+        border-radius: 50%;
+        padding: 3px 3px 3px 3px;
+    }
+
+    .un-checked-icon {
+        color: #1aae88;
+        background-color: #1aae88;
+        border-radius: 50%;
+        padding: 3px 3px 3px 3px;
+    }
+
+    #userTable {
+        margin-bottom: 0px;
+    }
+
+    #userTable_filter {
+        display: none;
+    }
+
+    .paginate_button_disabled {
+        color: #72bbb8 !important;
+        background-color: #fff !important;
+        cursor: no-drop !important;
+    }
+
+    .paginate_active, .paginate_button {
+        color: #72bbb8 !important;
+        background-color: #fff !important;
+    }
+    .dataTables_wrapper .table{
+        border:none !important;
+    }
+   
+    .givecolor {
+        background-color: #1aae88 !important;
+        color: white !important;
+    }
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+       /* border: 1px solid #72bbb8;
+        background-color: #72bbb8;*/
+        padding-bottom:10px;
+        padding-left:20px;
+    }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color:white;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #fff;
+                color: #72bbb8;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #fff;
+                color: #72bbb8;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 20px;
+      
+        border-top: none;
+    }
+    .drplist {
+        background: #fff;
+        color: #72bbb8 !important;
+    }
+   .form-control {
+       border-color:#fff;
+       font-size:16px;
+       height:37px;
+   }
+    .coursecontent {
+        display: block;
+        padding: 6px 20px;
+        border-top: none;
+    }
+    .dataTables_info, .dataTables_paginate {
+        padding: 15px;
+       
+        color: #245c6f;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+</style>
+<div class="tab">
+    <button class="tablinks active" onclick="openCity(event, 'Users')">Users</button>
+    <button class="tablinks" onclick="openCity(event, 'Paris')">Departments</button>
+
+</div>
+
+<!-- Tab content -->
+<div id="Users" class="tabcontent active" style="display:block;">
+
+    @if (!String.IsNullOrWhiteSpace(ViewBag.PageData.ContentTitle))
+    {
+        <section class="row m-b-xs" style="margin-right:-15px;margin-left:-15px;margin-bottom:3px !important;">
+            <div class="col-sm-6">
+                <h3 class="m-b-xs text-black" style="margin-top:2px">
+                    @ViewBag.PageData.ContentTitle
+                </h3>
+                @if (!String.IsNullOrWhiteSpace(ViewBag.PageData.ContentTitleDesc))
+                {
+                    <small class="content-desc">
+                        @ViewBag.PageData.ContentTitleDesc
+                    </small>
+                }
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+					<div class="col-md-3" style="padding-right:0px"></div>
+                    <div class="col-md-5" style="padding-right:0px">
+                        <select class="form-control drplist" id="ddlDepartment">
+                            <option value="">Select Departments</option>
+                            @if (ViewBag.DepartmentList != null)
+                            {
+                                foreach (var option in ViewBag.DepartmentList)
+                                {
+                                    <option value="@option">@option</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    @*<div class="col-md-4" style="padding-right:0px">
+                        <select class="form-control drplist" id="ddlPracticeGroup" disabled>
+                            <option value="">Select</option>
+
+                            @foreach (var option in ViewBag.PracticeGroupList)
+                            {
+                                if (!string.IsNullOrEmpty(option))
+                                {
+                                    <option value="@option">@option</option>
+                                }
+
+                            }
+                        </select>
+                    </div>*@
+                    <div class="col-md-4" style="padding-right:0px">
+                        <div class="input-group">
+                            <input type="text" class="form-control drplist" id="txtSearchUsers" placeholder="Search">
+                            <div class="input-group-btn drplist">
+                                <a class="btn btn-default grid-search-box-icon">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+
+
+    <section @*class="panel panel-default"*@>
+        <div class="table-responsive">
+            <table id="userTable" class="table table-striped m-b-none">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="display:none;">
+                            @*<input type="checkbox" style="width:15px" class="form-check selectAllUser" />*@
+                            <i class="fa fa-check un-checked-icon selectAllUser"></i>
+                        </th>
+                        <th>Employee</th>
+                        <th>Job Title</th>
+                        <th>Email</th>
+                        <th>Contact No</th>
+                        <th>Department</th>
+                        
+                    </tr>
+                </thead>
+                <tbody >
+                    @foreach (var user in ViewBag.UserList)
+                    {
+
+                        sd++;
+                        <tr id="tr_@sd" onclick="selectThis(@sd)" style="cursor: pointer;">
+                            <td class="text-center" style="display:none;">
+                                <i data-email="@user.Email" class="fa fa-check un-checked-icon selectSingleUser userera_@sd"></i>
+                                <input type="hidden" value="@user.Email" id="txtEmail_@sd" />
+                                @*<input type="checkbox" data-email="@user.Email" style="width:15px" class="form-check selectSingleUser" />*@
+                            </td>
+                            <td>
+                                @user.First_Name @user.Last_Name
+                            </td>
+                            <td>
+                                @user.Job_Title
+                            </td>
+                            <td>
+                                @user.Email
+                            </td>
+                            <td>
+                                @user.Telephone
+                            </td>
+                            <td>
+                                @user.Department
+                            </td>
+                            
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<div id="Paris" class="tabcontent">
+    @if (!String.IsNullOrWhiteSpace(ViewBag.PageData.ContentTitle))
+    {
+        <section class="row m-b-xs" style="margin-right:0px;margin-left: -14px;">
+		  <h3 class="m-b-xs text-black" style="margin-top:2px;margin-left: 14px;">
+					@ViewBag.PageData.ContentTitle
+				</h3>
+            <div class="col-sm-12" style="padding-top:10px;">
+                <div class="row">
+                    <div class="col-md-3" style="padding-right:0px;padding-left:0px;">
+                        @* multiselect-ui //assign this class for multiselect *@
+                        <select class="form-control drplist" id="dates-field2" @*multiple="multiple" style="display:none;"*@>
+                            <option value="">Select Department</option>
+                            <option value="-1">All Departments</option>
+                            @if (ViewBag.AllDepartments != null && ViewBag.AllDepartments.Count > 0)
+                            {
+
+                                foreach (var option in ViewBag.AllDepartments)
+                                {
+                                    <option value="@option.ID">@option.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3" style="padding-right:0px">
+                        <select class="form-control drplist" id="PracticeGroup" style="display:none;">
+                            <option value="">Select</option>
+
+                            @foreach (var option in ViewBag.PracticeGroupList)
+                            {
+                                if (!string.IsNullOrEmpty(option))
+                                {
+                                    <option value="@option">@option</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+    }
+</div>
+
+
+<div class="coursecontent"> 
+
+
+<h3 class="m-b-xs text-black" style="margin-bottom: 10px;color: #245c6f !important;margin-top:45px;">Courses Available</h3>
+<section class="panel panel-default">
+    <div class="row" style="margin-left:0px;margin-right:0px;padding-top:15px;padding-bottom:15px;">
+        <div class="col-md-12" id="courseListSection">
+            <div class="form-check" style="padding-left: 15px;">
+                @*<input class="form-check-input selectAllCourse" type="checkbox">*@
+                <i class="fa fa-check un-checked-icon selectAllCourse"></i>
+                <label class="form-check-label lblCourse" style="font-weight:bold;margin-bottom:15px;">Select All</label>
+            </div>
+            <div class="row">
+                @foreach (var course in ViewBag.CoursesList)
+                {
+                    <div class="col-md-4 form-check-inline">
+                        <i class="fa fa-check un-checked-icon selectSingleCourse coursera_@course.Value" data-id="@course.Value"></i>
+                        <label class="form-check-label lblCourse">@course.Text</label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<div class="col-md-12" style="padding-right:0px;">
+    <div class="action-button" style = "float: left;margin-left: -14px;">
+        <a class="btn btn-dark pull-right m-b-sm" id="btnSave">Assign Course</a>
+        <a class="btn btn-dark pull-right m-b-sm" id="btnSavedrop" style="display:none;">Assign Course</a>
+    </div>
+</div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        var SelectedUserEmail = [];
+        var SelectedUserCourses = [];
+
+        $(document).ready(function () {
+			
+			$('.btn-1').removeAttr('style');
+			$(".intro-text").removeClass("button-deactive");
+			$(".btn-1").css("color", "#ffffff !important");
+			$(".btn-4").css("color", "#245c6f !important");
+			$(".btn-3").css("color", "#245c6f !important");
+			$(".btn-2").css("color", "#245c6f !important");
+          //  $(".btn-5").css("color", "#245c6f !important");
+			
+          //  $(".btn-5").css("color", "#ffffff !important");
+          //  $('.btn-5').removeAttr('style');
+
+            $('#userTable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row' <'col-sm-6'l style='background:#72bbb8'><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "iDisplayLength": 10,
+                "bLengthChange": false,
+                "aoColumnDefs": [
+                    { "bSortable": false, "aTargets": [0] },
+                    //{ "bSearchable": false, "aTargets": [0, 1, 2, 3] }
+                ],
+                "aaSorting": [[2, "asc"], [0, "asc"]]
+            });
+            $('#userTable').addClass("panel panel-default");
+            $("#btnSave").on("click", function () {
+             //   debugger
+                SelectedUserEmail = [];
+                SelectedUserCourses = [];
+                let UserCount = $("#userTable tbody tr").length
+                let CourseCount = $(".form-check-inline i").length
+                //$("tr").each(function (i, tr) {
+                //let UserCount = $('.selectSingleUser .checked-icon').length;
+                //let CourseCount = $('.selectSingleCourse .checked-icon').length;
+                //if (UserCount == 0) {
+                //    toastr.error("Please select User");
+                //}
+                //else if (CourseCount == 0) {
+                //    toastr.error("Please select Course");
+                //}
+                $("#userTable tbody tr").each(function (index, value) {
+                    //$.each($('#userTable').find('.selectSingleUser'), function (index, value) {
+                    //console.log(index + ": " + value + ": " + $(this).attr("data-email"));
+                    let email = $(this).find(".checked-icon").attr("data-email");
+
+                
+                    if (email != undefined) {
+                        SelectedUserEmail.push(email);
+                    }
+
+                    if (UserCount - 1 == index) {
+                        $(".form-check-inline i").each(function (index, value) {
+                            //console.log(index + ": " + value + ": " + $(this).attr("data-email"));
+                            if ($(this).hasClass("checked-icon")) {
+                                SelectedUserCourses.push($(this).attr("data-id"));
+                            }
+                            if (CourseCount - 1 == index) {
+                                if (SelectedUserEmail.length == 0) {
+                                    toastr.error("Please select User");
+                                    return
+                                }
+                                else if (SelectedUserCourses.length == 0) {
+                                    SelectedUserCourses.push(-1);
+                                   // toastr.error("Please select Course");
+                                   // return
+                                }
+                                var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/AssignCourse/AssignCourse";
+                                var requestPerameters = {
+                                    "UsersEmail": SelectedUserEmail,
+                                    "UserCourses": SelectedUserCourses
+                                }
+                                AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
+                                    console.log(response)
+
+                                  
+
+                                    if (response.Feedback) {
+                                        toastr.success("Updated Succesfully");
+                                       // toastr.success(response.emails.name);
+                                        //$(".selectAllUser").removeClass("un-checked-icon")
+                                        //$(".selectAllUser").addClass("checked-icon")
+                                        //$(".selectAllUser").trigger("click")
+                                        //$(".selectAllCourse").removeClass("un-checked-icon")
+                                        //$(".selectAllCourse").addClass("checked-icon")
+                                        //$(".selectAllCourse").trigger("click")
+                                        //var cout = $("tr").length;
+                                        //for (var i = 1; i <= cout; i++) {
+                                        //        $("#tr_" + i + " > td").removeClass('givecolor');
+                                        //}
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            $(".selectAllUser").on("click", function () {
+                if ($(this).hasClass("un-checked-icon")) {
+                    $(this).removeClass("un-checked-icon")
+                    $(this).addClass("checked-icon")
+                    $(".selectSingleUser").each(function () {
+                        $(this).removeClass("un-checked-icon");
+                        $(this).addClass("checked-icon");
+                    })
+                }
+                else if ($(this).hasClass("checked-icon")) {
+                    $(this).removeClass("checked-icon")
+                    $(this).addClass("un-checked-icon")
+                    $(".selectSingleUser").each(function () {
+                        $(this).removeClass("checked-icon");
+                        $(this).addClass("un-checked-icon");
+                    })
+                }
+            });
+
+            $(".selectSingleUser").click(function () {
+                debugger
+                if ($(this).hasClass("un-checked-icon")) {
+                    $(this).removeClass("un-checked-icon")
+                    $(this).addClass("checked-icon")
+                    var isAllChecked = 0;
+                    $(".selectSingleUser").each(function () {
+                        if ($(this).hasClass("un-checked-icon"))
+                            isAllChecked = 1;
+                    })
+                    if (isAllChecked == 0) {
+                        $(".selectAllUser").removeClass("un-checked-icon")
+                        $(".selectAllUser").addClass("checked-icon")
+                    }
+                }
+                else if ($(this).hasClass("checked-icon")) {
+                    $(this).removeClass("checked-icon")
+                    $(this).addClass("un-checked-icon")
+                    $(".selectAllUser").removeClass("checked-icon")
+                    $(".selectAllUser").addClass("un-checked-icon")
+                }
+               // alert("clicked");
+                // $(".table > tbody > tr:nth-child(odd) > td, .table > tbody > tr:nth-child(odd) > th")
+                //$("#tr_1").removeClass('odd');
+                // $("#tr_1 > td").css('background-color', 'black !important');
+               // $("#tr_"++" > td").addClass('givecolor');
+
+
+            });
+
+
+
+            $(".selectAllCourse").on("click", function () {
+                if ($(this).hasClass("un-checked-icon")) {
+                    $(this).removeClass("un-checked-icon")
+                    $(this).addClass("checked-icon")
+                    $(".selectSingleCourse").each(function () {
+                        $(this).removeClass("un-checked-icon");
+                        $(this).addClass("checked-icon");
+                    })
+                }
+                else if ($(this).hasClass("checked-icon")) {
+                    $(this).removeClass("checked-icon")
+                    $(this).addClass("un-checked-icon")
+                    $(".selectSingleCourse").each(function () {
+                        $(this).removeClass("checked-icon");
+                        $(this).addClass("un-checked-icon");
+                    })
+                }
+            });
+
+            $(".selectSingleCourse").click(function () {
+                if ($(this).hasClass("un-checked-icon")) {
+                    $(this).removeClass("un-checked-icon")
+                    $(this).addClass("checked-icon")
+                    var isAllChecked = 0;
+                    $(".selectSingleCourse").each(function () {
+                        if ($(this).hasClass("un-checked-icon"))
+                            isAllChecked = 1;
+                    })
+                    if (isAllChecked == 0) {
+                        $(".selectAllCourse").removeClass("un-checked-icon")
+                        $(".selectAllCourse").addClass("checked-icon")
+                    }
+                }
+                else if ($(this).hasClass("checked-icon")) {
+                    $(this).removeClass("checked-icon")
+                    $(this).addClass("un-checked-icon")
+                    $(".selectAllCourse").removeClass("checked-icon")
+                    $(".selectAllCourse").addClass("un-checked-icon")
+                }
+            });
+            $("#txtSearchUsers").on("keyup", function () {
+                $("#userTable_filter label input").val($(this).val());
+                $("#userTable_filter label input").trigger("keyup");
+
+            });
+            $("#ddlPracticeGroup").on("change", function () {
+                $("#userTable_filter label input").val($(this).val());
+                $("#userTable_filter label input").trigger("keyup");
+
+            });
+            $("#ddlDepartment").on("change", function () {
+                $("#userTable_filter label input").val($(this).val());
+                $("#userTable_filter label input").trigger("keyup");
+
+            });
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+
+<script>
+
+    var selectThis = function (id) {
+        //var alternameemail = "";
+        var email = "";
+        $("#tr_" + id + " > td").addClass('givecolor');
+       
+        var cout = @Html.Raw(Json.Encode(sd)); //$("tr").length;
+        for (var i = 1; i <= cout; i++) {
+            if (i == id) {
+                $(".userera_" + i).removeClass("un-checked-icon");
+                $(".userera_" + i).addClass("checked-icon");
+                email = $(".userera_" + i).attr("data-email");
+               // alternameemail = $("#txtEmail_" + i).val();
+            } else {
+                $("#tr_" + i + " > td").removeClass('givecolor');
+                $(".userera_" + i).removeClass("checked-icon");
+                $(".userera_" + i).addClass("un-checked-icon");
+            }
+          
+        }
+        $(".selectAllCourse").removeClass("checked-icon");
+        $(".selectAllCourse").addClass("un-checked-icon");
+        // alert(email);
+        //if (email == "" || email == undefined || email == null) {
+        //    email = alternameemail;
+        //}
+        var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/AssignCourse/GetUserCourses?UsersEmail=" + email;
+        FillCourseCheckBoxes(url);
+
+       // $("#btnSave").trigger("click");
+    }
+
+    function FillCourseCheckBoxes(sendAddress) {
+        var ajUserCourses = [];
+        $(".form-check-inline i").each(function (index, value) {
+            //console.log(index + ": " + value + ": " + $(this).attr("data-email"));
+
+            ajUserCourses.push($(this).attr("data-id"));
+            $(".coursera_" + $(this).attr("data-id")).removeClass("checked-icon");
+            $(".coursera_" + $(this).attr("data-id")).addClass("un-checked-icon");
+
+        });
+        $.ajax({
+            type: "GET",
+            url: sendAddress,
+            success: function (response) {
+                debugger
+                if (response == "no") {
+                   
+                } else {
+                    var corsearr = response.split("{##}");
+                    var ttchecked = 0;
+                    for (var i = 0; i < corsearr.length; i++) {
+                        for (var j = 0; j < ajUserCourses.length; j++) {
+
+                            if (corsearr[i] == ajUserCourses[j]) {
+                                ttchecked++;
+                                $(".coursera_" + corsearr[i]).removeClass("un-checked-icon");
+                                $(".coursera_" + corsearr[i]).addClass("checked-icon");
+                            }
+                        }
+                    }
+                    if (ttchecked >= ajUserCourses.length) {
+                        $(".selectAllCourse").removeClass("un-checked-icon");
+                        $(".selectAllCourse").addClass("checked-icon");
+                    } else {
+                        $(".selectAllCourse").removeClass("checked-icon");
+                        $(".selectAllCourse").addClass("un-checked-icon");
+                    }
+                   
+                }
+            }
+        })
+    }
+
+    //Tabs Controll here
+
+    function openCity(evt, cityName) {
+        // Declare all variables
+        if (cityName == "Users") {
+            $("#btnSavedrop").hide();
+            $("#btnSave").show();
+        } else {
+            $("#btnSavedrop").show();
+            $("#btnSave").hide();
+        }
+        ClearData();
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
+    function ClearData() {
+
+        $(".selectAllUser").removeClass("un-checked-icon")
+        $(".selectAllUser").addClass("checked-icon")
+        $(".selectAllUser").trigger("click")
+        $(".selectAllCourse").removeClass("un-checked-icon")
+        $(".selectAllCourse").addClass("checked-icon")
+        $(".selectAllCourse").trigger("click")
+        var cout = $("tr").length;
+        for (var i = 1; i <= cout; i++) {
+            $("#tr_" + i + " > td").removeClass('givecolor');
+        }
+        $("#dates-field2").val('');
+    }
+    $("#ddlDepartment").on("change", function () {
+        var ssd = $(this).val();
+        if (ssd == "Practice Group") {
+            $("#ddlPracticeGroup").prop("disabled", false);
+        } else {
+            $("#ddlPracticeGroup").prop("disabled", true);
+        }
+
+    })
+    $("#dates-field2").on("change", function () {
+        var ssd = $(this).val();
+        //if (ssd == "Practice Group") {
+        //    $("#PracticeGroup").prop("disabled", false);
+        //} else {
+        //    $("#PracticeGroup").prop("disabled", true);
+        //}
+        var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/AssignCourse/GetDepartmentCourses?DeptID=" + ssd;
+        FillCourseCheckBoxes(url);
+    })
+</script>
+@*<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/multiselect.js"></script>*@
+<script type="text/javascript">
+    //$(function () {
+    //    $('.multiselect-ui').multiselect({
+    //        includeSelectAllOption: true,
+
+    //    });
+    //});
+    $("#btnSavedrop").on("click", function () {
+      var urldrop = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/AssignCourse/AddCoursesByDept";
+        var deptlist = $("#dates-field2").val();
+       // var Departments = deptlist.split(",");
+        var CourseArray = [];
+        if (deptlist == "" || deptlist == undefined || deptlist == null) {
+            toastr.error("Please select Department");
+            return
+        }
+        $(".form-check-inline i").each(function (index, value) {
+            //console.log(index + ": " + value + ": " + $(this).attr("data-email"));
+            if ($(this).hasClass("checked-icon")) {
+                CourseArray.push($(this).attr("data-id"));
+            }
+        });
+        if (CourseArray.length == 0) {
+            toastr.error("Please select Course");
+            return;
+        }
+        var requestPerameters = {
+            "DepartmentID": deptlist,
+            "UserCourses": CourseArray
+        }
+        AjaxPostRequestWithRequestPerameters(urldrop, requestPerameters, function (response) {
+            console.log(response)
+            if (response.Feedback) {
+                toastr.success("Record Updated Succesfully");
+                if (response.isempty) {
+                    var urlmail = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/AssignCourse/SendEmail";
+                    var emailparams = {
+                        "senders": response.emails
+                    }
+                    AjaxPostRequestWithRequestPerameters(urlmail, emailparams, function (response) { console.log("Alhamdulillah"); });
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,120 @@
+﻿@using HUC.Web.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Home",
+        ActivePage = "home"
+    };
+}
+
+<div class="home-slider">
+    <div class="container">
+        <div class="content">
+            <div class="slide">
+                <div class="text-box">
+                    <p>
+                        Online, easy to use <strong>Legal Compliance Training</strong>
+                    </p>
+                    <a class="large-button orange" href="/Request">
+                        Request a demo
+                    </a>
+                </div>
+                <div class="image">
+                    <img alt="Online, easy to use Legal Compliance Training" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/banner-image.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dark-teal-bg home-links">
+    <div class="container">
+        <div class="content">
+            <img class="prev servicebanner-prev" alt="Previous" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/large-white-arrow-prev.png" />
+            <ul class="servicebanner">
+                <li class="open" style="border-right: none;">
+                    <a href="/Course">
+                        <img class="icon" alt="OUR COURSES" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/home-courses.png" />
+                        <span>
+                            <label>
+                                OUR COURSES
+                            </label>
+                        </span>
+                    </a>
+                </li>
+                @*<li>
+                    <a href="/Funding">
+                        <img class="icon" alt="" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/home-funding.png" />
+                        <span>
+                            <label>
+                                FUNDING SUPPORT
+                            </label>
+                        </span>
+                    </a>
+                </li>
+                <li class="last">
+                    <a href="Consultancy">
+                        <img class="icon" alt="" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/home-consultancy.png" />
+                        <span>
+                            <label>
+                                CONSULTANCY SERVICES
+                            </label>
+                        </span>
+                    </a>
+                </li>*@
+            </ul>
+            <img class="next servicebanner-next" alt="Next" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/large-white-arrow-next.png" />
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+@Html.Action("DemoHome", "Request")
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="home-info">
+                <ul>
+                    <li>
+                        <img class="pic" alt="Who is it aimed at" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/home-col1-image.png" />
+                        <h4>
+                            Who is it aimed at
+                        </h4>
+                        <p>
+                            Training Courses was initially set up to assist Legal firms to be compliant with the ...
+                            <a href="/Aimed">
+                                Read more >
+                            </a>
+                        </p>
+                    </li>
+                    @*<li>
+                        <img class="pic" alt="" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/home-col2-image.png" />
+                        <h4>
+                            Funding support available
+                        </h4>
+                        <p>
+                            Training Courses are dedicated to helping Law firms address the latest ...
+                            <a href="/Funding">
+                                Read more >
+                            </a>
+                        </p>
+                    </li>*@
+                </ul>
+                
+                @Html.Action("IndexTestimonial")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".home-slider .container .content").AnySlider({
+            interval: 5000
+        });
+
+    });
+</script>

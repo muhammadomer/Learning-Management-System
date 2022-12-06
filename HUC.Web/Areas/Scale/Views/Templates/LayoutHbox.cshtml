@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.PageTitle = "HBox Layout";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "hbox-fluid";
+    ViewBag.ParentPageName = "ui";
+    //Content title area
+    ViewBag.ContentTitle = "HBox Layout";
+    ViewBag.ContentTitleDesc = " ";
+}
+
+@section Scripts{
+    <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/demos/demo-datatables.js"></script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+<div class="panel b-a wrapper">
+    <div class="row">
+        <div class="col-sm-8">                      
+            <a href="#" class="btn btn-icon btn-default btn-success btn-rounded btn-inactive" data-toggle="class:btn-success"><i class="fa fa-bookmark-o"></i></a>
+            <a href="#" class="btn btn-icon btn-default btn-rounded btn-inactive m-r-xs" data-toggle="class:btn-success">
+                <i class="fa fa-check"></i>
+            </a>
+            <a href="#" class="btn btn-default btn-rounded"><i class="fa fa-bars"></i> All Courses</a>
+        </div>
+        <div class="col-sm-4">
+            <form role="search">
+                <div class="form-group m-b-none">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default btn-icon"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>          
+<div class="blog-post">                   
+    <div class="post-item">
+        <div class="post-media">
+            <section class="m-b-none">
+                <div class="carousel auto slide" id="c-fade">
+                    <ol class="carousel-indicators out">
+                        <li data-target="#c-fade" data-slide-to="0" class="active"></li>
+                        <li data-target="#c-fade" data-slide-to="1" class=""></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item bg-light dker wrapper active text-center">
+                            <span class="h2"><i class="fa fa-clock-o fa-5x m-t text-white"></i></span>
+                            <p class="text-muted m-t m-b-lg">Time saving</p>
+                        </div>
+                        <div class="item bg-light dk wrapper text-center">
+                            <span class="h2"><i class="fa fa-file-o fa-5x m-t text-white"></i></span>
+                            <p class="text-muted m-t m-b-lg">Full documents</p>
+                        </div>
+                    </div>
+                    <a class="left carousel-control" href="#c-fade" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a class="right carousel-control" href="#c-fade" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+        <div class="caption wrapper-lg">
+            <h2 class="post-title"><a href="#">7 things you need to know about the flat design</a></h2>
+            <div class="post-sum">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. 
+                    <br><br>
+                    Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.</p>
+            </div>
+            <div class="line line-lg"></div>
+            <div class="text-muted">
+                <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">Admin</a>
+                <i class="fa fa-clock-o icon-muted"></i> Feb 20, 2013
+                <a href="#" class="m-l-sm"><i class="fa fa-comment-o icon-muted"></i> 2 comments</a>
+            </div>
+        </div>
+    </div>
+    <div class="post-item">
+        <div class="caption wrapper-lg">
+            <h2 class="post-title"><a href="#">Bootstrap 3: What you need to know</a></h2>
+            <div class="post-sum">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. 
+                </p>
+                <h3>Html5 and CSS3</h3>
+                <p>
+                    Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.</p>
+            </div>
+            <div class="line line-lg"></div>
+            <div class="text-muted">
+                <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">Admin</a>
+                <i class="fa fa-clock-o icon-muted"></i> Feb 15, 2013
+                <a href="#" class="m-l-sm"><i class="fa fa-comment-o icon-muted"></i> 4 comments</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center m-t-lg m-b-lg">
+    <ul class="pagination pagination-md">
+        <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+    </ul>
+</div>
+
+<h4 class="m-t-lg m-b">3 Comments</h4>
+<section class="comment-list block">
+    <article id="comment-id-1" class="comment-item">
+        <a class="pull-left thumb-sm">
+            <img src="images/a2.png" class="img-circle">
+        </a>
+        <section class="comment-body m-b">
+            <header>
+                <a href="#"><strong>John smith</strong></a>
+                <label class="label bg-info m-l-xs">Editor</label> 
+                <span class="text-muted text-xs block m-t-xs">
+                    24 minutes ago
+                </span>
+            </header>
+            <div class="m-t-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum.</div>
+        </section>
+    </article>
+    <!-- .comment-reply -->
+    <article id="comment-id-2" class="comment-item comment-reply">
+        <a class="pull-left thumb-sm">
+            <img src="images/a1.png" class="img-circle">
+        </a>
+        <section class="comment-body m-b">
+            <header>
+                <a href="#"><strong>John smith</strong></a>
+                <label class="label bg-dark m-l-xs">Admin</label> 
+                <span class="text-muted text-xs block m-t-xs">
+                    26 minutes ago
+                </span>
+            </header>
+            <div class="m-t-sm">Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.</div>
+        </section>
+    </article>
+    <!-- / .comment-reply -->
+    <article id="comment-id-2" class="comment-item">
+        <a class="pull-left thumb-sm">
+            <img src="images/a0.png" class="img-circle">
+        </a>
+        <section class="comment-body m-b">
+            <header>
+                <a href="#"><strong>John smith</strong></a>
+                <label class="label bg-dark m-l-xs">Admin</label> 
+                <span class="text-muted text-xs block m-t-xs">
+                    26 minutes ago
+                </span>
+            </header>
+            <blockquote class="m-t">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <small>Someone famous in <cite title="Source Title">Source Title</cite></small>
+            </blockquote>
+            <div class="m-t-sm">Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.</div>
+        </section>
+    </article>
+</section>
+<h4 class="m-t-lg m-b">Leave a comment</h4>
+<form>
+    <div class="form-group pull-in clearfix">
+        <div class="col-sm-6">
+            <label>Your name</label>
+            <input type="text" class="form-control" placeholder="Name">
+        </div>
+        <div class="col-sm-6">
+            <label >Email</label>
+            <input type="email" class="form-control" placeholder="Enter email">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Comment</label>
+        <textarea class="form-control" rows="5" placeholder="Type your comment"></textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default btn-rounded">Post comment</button>
+    </div>
+</form>

@@ -1,0 +1,111 @@
+﻿@using HUC.Web.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Our Services",
+        ContentTitle = "Our Services",
+        ActivePage = "whoweare",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("who we are", Url.Action("Index")),
+            new BreadcrumbItem("our services")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="picture-heading">
+                    <img class="bg-pic" alt="Online Compliance Training for Legal Firms" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/picture-heading-test.jpg" />
+                    <div class="text">
+                        <img alt="Online Compliance Training for Legal Firms" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/picture-heading-icon.png" />
+                        <span>
+                            Online Compliance Training for Legal Firms
+                        </span>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <h2>
+                        OUR SERVICES
+                    </h2>
+                    <p>
+                        HUC offers the following services: 
+                    </p>                    
+                    <ul>
+                        <li>
+                            Online Learning
+                            <p>
+                                Our e-Learning portal provides a range of courses, for all staff in a business, to be aware of Legal Compliance standards and for each user company to keep track of such learning to provide their governing body with a record of each users learning activity.
+                            </p>
+                        </li>
+                        <li>
+                            Litigation funding
+                            <p>
+                                We advise on the various funding options available to litigators and have access to the main providers. The advice can extend to include Risk Management protocols to give comfort to all parties. 
+                            </p>
+                        </li>
+                        <li>
+                            Business restructuring including succession planning and controlled exits 
+                            <p>
+                                
+                            </p>
+                        </li>
+
+                        <li>
+                            Lexcel/ISO quality standards. 
+                            <p>
+                                HUC has access to a number of specialists who can guide a firm through the process of accreditation. 
+                            </p>
+                        </li>
+                        <li>
+                            Management & Leadership Training
+                            <p>
+                                We provide various training options for a variety of topics across your organisational requirements including – Marketing, IT, Business Processes, CRM, Social Media & Content Marketing. We may be able to assist you in accessing grant support to facilitate these projects – please ask us for more information.  
+                            </p>
+                        </li>
+                    </ul>                           
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="selection-container">
+                    <ul class="sub-pages">
+                        <li>
+                            <a href="/About">
+                                Who we are
+                                <label class="arrow"></label>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="/About/WhyUs">
+                                Why us
+                                <label class="arrow"></label>
+                            </a>
+
+                        </li>
+                        <li class="active">
+                            <span>
+                                Our Services
+                                <label class="arrow"></label>
+                            </span>
+                        </li>
+
+                        <li>
+                            <a href="/About/Testimonials">
+                                Testimonials
+                                <label class="arrow"></label>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                @Html.Action("DemoPod", "Request")
+            </div>
+        </div>
+    </div>
+</div>

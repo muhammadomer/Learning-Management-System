@@ -1,0 +1,480 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Courses.CourseEditModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Edit course",
+        ContentTitle = "Edit course",
+        ContentTitleDesc = "Here you can edit this course.",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index"), "fa-briefcase"),
+            new BreadcrumbItem("Edit")
+        }
+    };
+    string hidden = "";
+    bool check = false;
+    string margin = "set-margin";
+    if(Model.ReTake != null && Model.ReTake == false)
+    {
+        hidden = "hidden";
+        margin = "";
+    }
+    else if(Model.ReTake != null && Model.ReTake == true)
+    {
+        check = true;
+    }
+    List<SelectListItem> duration = new List<SelectListItem>();
+    duration.Add(new SelectListItem { Text = "N/A", Value = "0" });
+    duration.Add(new SelectListItem { Text = "3 Months", Value = "90" });
+    duration.Add(new SelectListItem { Text = "6 Months", Value = "180" });
+    duration.Add(new SelectListItem { Text = "1 Year", Value = "365", Selected=true });
+    duration.Add(new SelectListItem { Text = "2 Years", Value = "730" });
+}
+<link href="~/_Content/css/bootstrap-colorselector.min.css" rel="stylesheet" />
+<style>
+    /*  input[type="radio"], input[type="checkbox"] {
+        height: 26px !important;
+    }*/
+
+    .edit-create-form .input-field {
+        max-width: 500px;
+    }
+
+    .form-control {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }
+
+    .redactor_editor {
+        border: 1px solid #72bbb8 !important;
+        min-height: 200px !important;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        height: 200px !important;
+    }
+
+    .redactor_toolbar {
+        border: 2px solid #72bbb8 !important;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px
+    }
+    /*   input {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }*/
+    td > b {
+        color: #72bbb8 !important;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .btn-colorselector {
+        margin-top: 0px !important;
+    }
+
+    label {
+        color: black !important;
+    }
+
+    table {
+        width: 500px;
+        border-radius: 6px;
+        border-collapse: inherit;
+    }
+
+    .set-margin {
+        margin-top: 85px;
+    }
+
+    @@media(max-width:1600px) {
+        table {
+            width: auto !important;
+        }
+    }
+
+    input[type="radio"] {
+        /* remove standard background appearance */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        /* create custom radiobutton appearance */
+        display: inline-block;
+        width: 19px;
+        height: 19px;
+        padding: 0px;
+        /* background-color only for content */
+        background-clip: content-box;
+        border: 5px solid #72bbb8;
+        background-color: #ffffff;
+        border-radius: 50%;
+        margin-top: 6px;
+    }
+
+        /* appearance for checked radiobutton */
+        input[type="radio"]:checked {
+            background-color: #336666;
+        }
+
+        input[type="radio"]:focus {
+            outline: unset;
+        }
+
+    .btn-colorselector {
+        display: inline-block;
+        width: 70px;
+        height: 36px;
+        background-color: #DDD;
+        vertical-align: middle;
+        border-radius: 0;
+        border: 2px solid #72bbb8;
+        margin-top: 2px !important;
+    }
+
+    @@media(max-width:1366px) {
+        .btn-colorselector {
+            display: inline-block;
+            width: 70px;
+            height: 36px;
+            background-color: #DDD;
+            vertical-align: middle;
+            border-radius: 0;
+            border: 2px solid #72bbb8;
+            margin-top: -1px !important;
+        }
+    }
+</style>
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content">
+            <a class="btn btn-success pull-right" href="@Url.Action("Index","Courses")">
+                <i @*style="margin-left: 10px;"*@ class="fa fa-arrow-left"></i> Back To list
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@Url.Action("Index","Courses")">
+                <i @*style="margin-left: 10px;"*@ class="fa fa-arrow-left"></i> Back To list
+            </a>
+        </div>
+    </div>
+</div>
+<div class="col-md-12" style="padding-left:0px !important;">
+<section class="panel panel-default">
+    @*<header class="panel-heading">The Header</header>*@
+    <div class="panel-body">
+        @using (Html.BeginForm("Edit", "Courses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(x => x.Background)
+            @Html.HiddenFor(x => x.BackGroundType)
+            @Html.HiddenFor(x => x.IsVisibleWebsite)
+            @Html.HiddenFor(x=>x.CreatedDate)
+            @Html.HiddenFor(x=>x.ReTake)
+        <div class="form-horizontal edit-create-form">
+            @Html.ValidationSummary(true)
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name@*, new { @class = "white-color" }*@)
+                    <div class="input-field">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" , @maxlength = "20" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label> Course header </label>
+                    <div class="input-field">
+                        <table style="border:2px solid #72bbb8">
+                            <thead>
+
+                                <tr>
+                                    <td style="width:200px;height: 36px;"><b> Image</b></td>
+                                    <td style="border-right:2px solid #72bbb8;width:30px;">  <input type="radio" id="pic" name="pic" @if (Model.BackGroundType == false) { <text> checked </text> } /></td>
+                                    <td style="width:200px;height: 36px;"><b> Solid Color</b></td>
+                                    <td style="width:30px;"> <input type="radio" id="colid" name="colid" @if (Model.BackGroundType == true) { <text> checked </text> } /></td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="form-group" id="bcImage" @if (Model.BackGroundType == true) { <text> style="display:none;" </text> }>
+                    @Html.LabelFor(model => model.Background)
+                    <div class="input-field">
+                        <input type="file"  style="border:2px solid #72bbb8;padding:5px;" class="form-control" accept=".png, .jpg, .jpeg" name="BackgroundImage" id="Backgroundimage" />
+                        @Html.ValidationMessageFor(model => model.Background)
+                    </div>
+                </div>
+                <div class="form-group" id="bcColor" @if (Model.BackGroundType == false) { <text> style="display:none;" </text> }>
+                    <label>Choose Color</label>
+                    <div class="input-field">
+                        <select id="Backgroundcolor" name="Backgroundcolor">
+                            @if (Model.BackGroundType == true)
+                            {
+                            <option value="@Model.Background" data-color="@Model.Background">darkorange</option>
+                            }
+                            <option value="#A0522D" data-color="#A0522D">sienna</option>
+                            <option value="#ffffff" data-color="#ffffff">White</option>
+                            <option value="#FF4500" data-color="#FF4500">orangered</option>
+                            <option value="#008B8B" data-color="#008B8B">darkcyan</option>
+                            <option value="#B8860B" data-color="#B8860B">darkgoldenrod</option>
+                            <option value="#32CD32" data-color="#32CD32">limegreen</option>
+                            <option value="#FFD700" data-color="#FFD700">gold</option>
+                            <option value="#48D1CC" data-color="#48D1CC">mediumturquoise</option>
+                            <option value="#87CEEB" data-color="#87CEEB">skyblue</option>
+                            <option value="#FF69B4" data-color="#FF69B4">hotpink</option>
+                            <option value="#CD5C5C" data-color="#CD5C5C">indianred</option>
+                            <option value="#87CEFA" data-color="#87CEFA">lightskyblue</option>
+                            <option value="#6495ED" data-color="#6495ED">cornflowerblue</option>
+                            <option value="#DC143C" data-color="#DC143C">crimson</option>
+                            <option value="#FF8C00" data-color="#FF8C00">darkorange</option>
+                            <option value="#C71585" data-color="#C71585">mediumvioletred</option>
+                            <option value="#000000" data-color="#000000">black</option>
+                        </select>
+                        @*<input type="color"  style="border:2px solid;width:140px; height:40px;" name="Backgroundcolor" id="Backgroundcolor" @if (Model.BackGroundType == true) { <text> value="@Model.Background" </text> } />*@
+                        @Html.ValidationMessageFor(model => model.Background)
+                    </div>
+                </div>
+                <div class="form-group @margin" id="introid">
+                    @Html.LabelFor(model => model.IntroCopy, new { @id = "introlabel" })
+                    <div class="input-field">
+                        @Html.TextAreaFor(model => model.IntroCopy, new { @class = "redactor" })
+                        @Html.ValidationMessageFor(model => model.IntroCopy)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="adjust-button hidden">
+                        <input type="submit" value="Update" class="btn btn-dark" />
+                    </div>
+                    <div>
+                        <input type="submit" value="Update" class="btn btn-dark" />
+
+                    </div>
+                </div>
+            </div>
+          
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PassingPercentage)
+                    <div class="input-field">
+                        @Html.TextBoxFor(model => model.PassingPercentage, new { @class = "form-control" , @required = "required" })
+                        @Html.ValidationMessageFor(model => model.PassingPercentage)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RetakeDuration)
+                    <div class="input-field">
+                        @Html.DropDownListFor(model => model.RetakeDuration, duration, "Select Renewal", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RetakeDuration)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReTake)
+                    <div class="input-field">
+                        <table style="border:2px solid #72bbb8">
+                            <thead>
+
+                                <tr>
+                                    <td style="width:200px;"><b> Yes</b></td>
+                                    <td style="border-right:2px solid #72bbb8;width:30px;"> <input type="radio" id="yes" @if (check) { <text> checked </text> } /></td>
+                                    <td style="width:200px;"><b> No</b></td>
+                                    <td style="width:30px;"> <input type="radio" id="no" @if (!check) { <text> checked </text> } /></td>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+                @if (Model.BackGroundType)
+                {
+                    <input type="hidden" id="peace" value="col" name="peace" />
+                }
+                else
+                {
+                    <input type="hidden" id="peace" value="pic" name="peace" />
+                }
+                <div class="form-group @hidden" id="cooldown">
+                    @Html.LabelFor(model => model.CoolDownHours)
+                    <div class="input-field">
+                        @Html.TextBoxFor(model => model.CoolDownHours, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CoolDownHours)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OutroCopy)
+                    <div class="input-field">
+                        @Html.TextAreaFor(model => model.OutroCopy, new { @class = "redactor" })
+                        @Html.ValidationMessageFor(model => model.OutroCopy)
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-2">
+
+            </div>
+            @*<div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <b> Background :</b>  <input type="radio" id="pic" name="pic"  @if (Model.BackGroundType == false) { <text> checked </text> } /><b> Image</b> <input type="radio" id="colid" name="colid" @if (Model.BackGroundType == true) { <text> checked </text> } /><b> Solid Color</b>
+        <div class="form-group" id="bcImage" @if (Model.BackGroundType == true) { <text> style="display:none;" </text> }>
+            @Html.LabelFor(model => model.Background)
+            <div class="input-field">
+                <input type="file" accept=".png, .jpg, .jpeg" name="BackgroundImage" id="Backgroundimage" />
+                @Html.ValidationMessageFor(model => model.Background)
+            </div>
+        </div>
+        <div class="form-group" id="bcColor" @if (Model.BackGroundType == false) { <text> style="display:none;" </text> }>
+            <label>Choose Color</label>
+            <div class="input-field">
+                <input type="color" name="Backgroundcolor" id="Backgroundcolor" @if (Model.BackGroundType == true) { <text> value="@Model.Background" </text> } />
+                @Html.ValidationMessageFor(model => model.Background)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReTake)
+            <div class="input-field">
+                Yes  <input type="radio" id="yes" @if (check) { <text> checked </text> } /> &nbsp;&nbsp;&nbsp;&nbsp;No <input type="radio" id="no" @if (!check) { <text> checked </text> } />
+
+            </div>
+        </div>
+        @if (Model.BackGroundType)
+        {
+            <input type="hidden" id="peace" value="col" name="peace" />
+        }
+        else
+        {
+            <input type="hidden" id="peace" value="pic" name="peace" />
+        }
+        <div class="form-group @hidden" id="cooldown">
+            @Html.LabelFor(model => model.CoolDownHours)
+            <div class="input-field">
+                @Html.TextBoxFor(model => model.CoolDownHours, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CoolDownHours)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PassingPercentage)
+            <div class="input-field full">
+                @Html.TextBoxFor(model => model.PassingPercentage)
+                @Html.ValidationMessageFor(model => model.PassingPercentage)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RetakeDuration)
+            <div class="input-field">
+                @Html.DropDownListFor(model => model.RetakeDuration, duration, "Select Compliance Renewal", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RetakeDuration)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IntroCopy)
+            <div class="input-field full">
+                @Html.TextAreaFor(model => model.IntroCopy, new { @class = "redactor" })
+                @Html.ValidationMessageFor(model => model.IntroCopy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OutroCopy)
+            <div class="input-field full">
+                @Html.TextAreaFor(model => model.OutroCopy, new { @class = "redactor" })
+                @Html.ValidationMessageFor(model => model.OutroCopy)
+            </div>
+        </div>
+
+        <div>
+            <div class="adjust-button">
+                <input type="submit" value="Update" class="btn btn-dark" />
+            </div>
+            <div class="back-button btn btn-warning hidden">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>*@
+        </div>
+        }
+    </div>
+</section>
+</div>
+<script src="~/_Content/js/bootstrap-colorselector.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#Backgroundcolor').colorselector();
+    })
+    $("#pic").on("click", function () {
+        $("#colid").prop("checked", false);
+        $("#bcColor").hide();
+        $("#bcImage").show();
+        $('#peace').val("pic");
+    })
+    $("#colid").on("click", function () {
+        $("#pic").prop("checked", false);
+        $("#bcColor").show();
+        $("#bcImage").hide();
+        $('#peace').val("col");
+        // $('#Backgroundimage').val('');
+    })
+    $("#yes").on("click", function () {
+        $("#no").prop("checked", false);
+        $("#CoolDownHours").val(coolval);
+        $("#cooldown").removeClass('hidden');
+        $("#introid").addClass('set-margin');
+    })
+    var coolval = "0";
+    $("#no").on("click", function () {
+        $("#yes").prop("checked", false);
+        $("#cooldown").addClass('hidden');
+        coolval = $("#CoolDownHours").val();
+        $("#CoolDownHours").val('');
+        $("#introid").removeClass('set-margin');
+    })
+    $("#CoolDownHours").keydown(function (event) {
+        // Allow only backspace and delete
+        if (event.keyCode == 46 || event.keyCode == 8) {
+            // let it happen, don't do anything
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if (event.keyCode < 48 || event.keyCode > 57) {
+                event.preventDefault();
+            }
+        }
+    });
+    $("#PassingPercentage").keydown(function (event) {
+        // Allow only backspace and delete
+        if (event.keyCode == 46 || event.keyCode == 8) {
+            // let it happen, don't do anything
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if (event.keyCode < 48 || event.keyCode > 57) {
+                event.preventDefault();
+            }
+        }
+    });
+</script>

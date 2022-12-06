@@ -1,0 +1,23 @@
+﻿@model HUC.Web.App.Testimonials.TestimonialModel
+
+@if (Model != null)
+{
+    <div class="testimonial-box">
+        <p>
+            <img class="open-quote" alt="open quote" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/testimonial-open-quote.png" />
+
+            @Model.BodyCopy
+
+            <img class="close-quote" alt="close quote" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/testimonial-close-quote.png" />
+        </p>
+        <label>
+            @Model.FullName
+            
+            @if (!String.IsNullOrWhiteSpace(Model.CompanyName))
+            {
+                <br />
+                @:@Model.CompanyName
+            }
+        </label>
+    </div>
+}

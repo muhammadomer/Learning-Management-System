@@ -1,0 +1,110 @@
+﻿@model HUC.Web.App.PageModels.Forms.ContactFormModel
+
+<div id="footer">
+    <div class="container">
+        <div class="content">
+            <div class="width-50">
+                <ul>
+                    <li>
+                        <h3>
+                            Sitemap
+                        </h3>
+                    </li>
+                    <li>
+                        <a href="/">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Course">
+                            Our courses
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/About/WhyUs">
+                            Why us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Request">
+                            Request demo
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="/Funding">
+                            Funding support
+                        </a>
+                    </li>*@
+                    <li>
+                        <a href="/Aimed">
+                            Who is it aimed at?
+                        </a>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <h3>
+                            Company
+                        </h3>
+                    </li>
+                    <li>
+                        <a href="/About">
+                            Who we are
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Contact">
+                            Contact
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Privacy">
+                            Privacy policy
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Conditions">
+                            Conditions of usage
+                        </a>
+                    </li>
+                </ul>               
+            </div>
+
+            <div class="width-50 contact">
+                @using (Html.BeginForm("Index", "Contact", FormMethod.Post))
+                {
+                    <h3>
+                        Contact us
+                    </h3>
+
+                    <div class="main-inputs">
+                        @Html.TextBoxFor(x => x.Name, new { placeholder = "Your name" })
+                        @Html.TextBoxFor(x => x.Email, new { placeholder = "Email address" })
+                    </div>
+
+                    <div class="message-area">
+                        @Html.TextAreaFor(x => x.Message, new { placeholder = "Your message..." })
+                    </div>
+
+                    <input class="large-button orange" type="submit" value="Send" />
+                }
+            </div>
+            <div class="copyright-social">
+                <p class="copyright">
+                    &copy; 2020 Ghost Digital &amp; Data. All rights reserved.
+                </p>
+                <ul class="social-buttons">
+                    <li>
+                        <a class="linkin" href="http://uk.linkedin.com/pub/julian-rose/21/753/704" target="_blank"></a>
+                    </li>
+                    <li>
+                        <a class="twitter" href="https://twitter.com/heads_up_comp" target="_blank"></a>
+                    </li>
+                </ul>
+            </div>
+           
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

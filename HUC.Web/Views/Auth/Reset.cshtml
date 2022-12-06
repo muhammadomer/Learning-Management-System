@@ -1,0 +1,40 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Users.UserResetModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Forgotten password",
+        ContentTitle = "Forgotten password",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("forgotten password")
+        }
+    };
+}
+
+<div class="desc-form standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="width-50">
+                <h2>
+                    Reset your password
+                </h2>
+                <p>
+                    If you have forgotten your password, please enter your account email address and we will send you a link via email enabling you to
+                    reset your password!
+                </p>
+            </div>
+            <div class="width-50">
+                <h2>
+                    Enter your email address
+                </h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.TextBoxFor(x => x.Email, new { placeholder = "Your email address" })
+                    <input class="large-button orange" type="submit" value="Submit" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

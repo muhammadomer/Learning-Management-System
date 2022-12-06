@@ -1,0 +1,14 @@
+@media only screen and (max-width: 1250px) {
+  #nav-bar .nav li a {
+    font-size: 16px;
+  }
+  #nav-bar .nav li .sub-nav {
+    top: 36px;
+  }
+  #nav-bar .nav li .sub-nav li a {
+    font-size: 14px;
+  }
+  #main-content .home-links ul li a span {
+    font-size: 15px;
+  }
+}

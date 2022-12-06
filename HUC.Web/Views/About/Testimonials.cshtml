@@ -1,0 +1,80 @@
+﻿@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.Testimonials.TestimonialModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Testimonials",
+        ContentTitle = "Testimonials",
+        ActivePage = "whoweare",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("who we are", Url.Action("Index")),
+            new BreadcrumbItem("testimonials")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                @foreach (var testimonial in Model.OrderBy(x => x.Sort))
+                {
+                    <div class="box-pod quote">
+                        <p>
+                            <img class="open-quote" alt="open quote" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/testimonial-red-open-quote.png" />
+
+                            @testimonial.BodyCopy
+
+                            <img class="close-quote" alt="close quote" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/testimonial-red-close-quote.png" />
+                        </p>
+                        <label>
+                            @testimonial.FullName
+                            @if (!String.IsNullOrWhiteSpace(testimonial.CompanyName))
+                            {
+                                @:, @testimonial.CompanyName
+                            }
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <div class="right-column">
+                <div class="selection-container">
+                    <ul class="sub-pages">
+                        <li>
+                            <a href="/About">
+                                Who we are
+                                <label class="arrow"></label>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="/About/WhyUs">
+                                Why us
+                                <label class="arrow"></label>
+                            </a>
+
+                        </li>
+                        @*<li>
+                            <a href="/About/Services">
+                                Our Services
+                                <label class="arrow"></label>
+                            </a>
+                        </li>*@
+
+                        <li class="active">
+                            <span>
+                                Testimonials
+                                <label class="arrow"></label>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                @Html.Action("DemoPod", "Request")
+            </div>
+        </div>
+    </div>
+</div>

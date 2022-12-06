@@ -1,0 +1,450 @@
+.container {
+  width: 1200px;
+}
+a {
+  color: #ff0000;
+}
+h2 {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1e2171;
+  color: #1e2171;
+  text-align: left;
+}
+#main-left {
+  float: left;
+  width: 25%;
+  padding-right: 20px;
+  min-height: 100px;
+}
+#main-right {
+  float: left;
+  width: 75%;
+  min-height: 100px;
+}
+#page-intro h1 {
+  float: left;
+  width: 100%;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff0000;
+  border-bottom: 2px solid #1e2171;
+}
+#page-intro h1 sub {
+  float: left;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 11px;
+  line-height: 145%;
+  font-weight: normal;
+  color: black;
+}
+#page-intro p {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+#left-nav {
+  float: left;
+  width: 100%;
+  border: 1px solid #666;
+  -o-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#left-nav li {
+  float: left;
+  width: 100%;
+  background: white;
+  font-size: 14px;
+}
+#left-nav li a,
+#left-nav li span {
+  float: left;
+  width: 100%;
+  color: black;
+  padding: 10px;
+  text-decoration: none;
+}
+#left-nav li a i,
+#left-nav li span i {
+  margin-right: 5px;
+}
+#left-nav li a [class*=fa-arrow-],
+#left-nav li span [class*=fa-arrow-] {
+  float: right;
+}
+#left-nav li.active > a,
+#left-nav li.active span {
+  font-weight: bold;
+}
+#left-nav li.active:hover > a,
+#left-nav li.active:hover span {
+  text-decoration: none;
+}
+#left-nav li:hover > a,
+#left-nav li:hover span {
+  text-decoration: underline;
+}
+#left-nav li.logout {
+  border-top: 1px solid #666;
+}
+#left-nav li.logout:hover a {
+  background: #e65050;
+  color: white;
+  text-decoration: none;
+}
+#left-nav .sub-menu-wrap {
+  float: left;
+  padding: 0 10px;
+  border-bottom: 1px solid #666;
+  display: none;
+}
+#left-nav .sub-menu-wrap.open {
+  display: block;
+}
+#left-nav .sub-menu-wrap > ul {
+  float: left;
+  width: 100%;
+  border-top: 1px solid #666;
+}
+#left-nav .sub-menu-wrap > ul li {
+  font-size: 12px;
+}
+.three-col-list {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+.three-col-list li {
+  float: left;
+  width: 33.33%;
+  padding: 10px 15px;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  font-size: 12px;
+  line-height: 145%;
+}
+.three-col-list li.last {
+  border-bottom: 1px solid black;
+}
+.three-col-list li i {
+  float: left;
+  margin-right: 5px;
+  line-height: 145%;
+}
+.three-col-list li i.size-16 {
+  font-size: 24px;
+}
+.three-col-list li i.size-8 {
+  font-size: 18px;
+}
+.three-col-list li i.color1 {
+  color: #ff0000;
+}
+.three-col-list li i.color2 {
+  color: #1e2171;
+}
+.three-col-list.no-border {
+  border: 0;
+}
+.three-col-list.no-border li {
+  border: 0;
+}
+.width-examples {
+  float: left;
+  width: 100%;
+}
+.width-examples .width-wrap {
+  height: 40px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  line-height: 40px;
+}
+[class*="width-"] {
+  float: left;
+  margin-bottom: 20px;
+  padding: 0 1%;
+}
+.width-50 {
+  width: 50%;
+}
+.width-25 {
+  width: 25%;
+}
+.width-75 {
+  width: 75%;
+}
+.width-33 {
+  width: 33%;
+}
+.width-20 {
+  width: 20%;
+}
+.width-60 {
+  width: 60%;
+}
+.width-40 {
+  width: 40%;
+}
+.width-80 {
+  width: 80%;
+}
+.width-90 {
+  width: 90%;
+}
+.width-10 {
+  width: 10%;
+}
+.width-100 {
+  width: 100%;
+}
+.back-1 {
+  background: #ff0000;
+}
+.back-2 {
+  background: #1e2171;
+}
+.buttons-area {
+  float: left;
+  width: 100%;
+}
+.buttons-area .btn {
+  margin-bottom: 5px;
+}
+.btn {
+  float: left;
+  padding: 0 10px;
+  margin-right: 5px;
+  background: #d1d1d1;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  line-height: 150%;
+  border: 4px solid transparent;
+  cursor: pointer;
+}
+.btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.btn i {
+  margin-left: 10px;
+}
+.btn.larger,
+.btn .larger {
+  font-size: 125%;
+}
+.btn.largest,
+.btn .largest {
+  font-size: 150%;
+}
+.btn.smallest,
+.btn .smallest {
+  font-size: 50%;
+}
+.btn.smaller,
+.btn .smaller {
+  font-size: 75%;
+}
+.btn.action,
+.btn .action {
+  color: white;
+  background-color: #045e9f;
+}
+.btn.action-2,
+.btn .action-2 {
+  color: white;
+  background-color: #4f99c6;
+}
+.btn.edit,
+.btn .edit {
+  background-color: #f7d05b;
+  color: #333;
+}
+.btn.delete,
+.btn .delete {
+  background-color: #d3413b;
+  color: white;
+}
+.btn.confirm,
+.btn .confirm {
+  background-color: #87b75a;
+  color: white;
+}
+.btn.inverse,
+.btn .inverse {
+  background-color: #555;
+  color: white;
+}
+.btn.purple,
+.btn .purple {
+  background-color: #7461aa;
+  color: white;
+}
+.btn.light,
+.btn .light {
+  background-color: #e1e1e1;
+  color: #666;
+}
+.btn.disabled {
+  opacity: 0.7;
+  pointer-events: none;
+  cursor: default;
+}
+.btn.app {
+  padding: 10px;
+  -o-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+.btn.app i {
+  display: block;
+  margin-left: 0;
+  width: 100%;
+  font-size: 350%;
+  margin-bottom: 5px;
+}
+.btn-groups-example .btn-group {
+  clear: both;
+  margin-bottom: 20px;
+}
+.btn-group {
+  float: left;
+  margin-bottom: 5px;
+  box-shadow: 0px 0px 2px #333;
+  overflow: hidden;
+}
+.btn-group .btn {
+  margin: 0;
+}
+.btn-group .btn + .btn {
+  box-shadow: -1px -1px 1px #333;
+}
+.btn-group .btn.active {
+  pointer-events: none;
+  cursor: default;
+  color: white;
+  background: #666;
+}
+.btn-group .btn i {
+  margin-left: 0;
+}
+.btn-group.vert .btn {
+  clear: both;
+  width: 100%;
+  text-align: center;
+}
+.btn-group.two-button {
+  width: 100%;
+  box-shadow: none;
+  overflow: visible;
+}
+.btn-group.two-button .btn {
+  box-shadow: 0px 0px 2px #333;
+  -o-border-radius: 5px 0 0 5px;
+  -moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
+}
+.btn-group.two-button .btn + .btn {
+  float: right;
+  -o-border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 5px 5px;
+  border-radius: 0 5px 5px 0;
+}
+.example-dropdowns .btn-dropdown-wrap {
+  margin-bottom: 5px;
+}
+.btn-dropdown-wrap {
+  float: left;
+}
+.btn-dropdown-wrap .btn {
+  margin-bottom: 0;
+}
+.btn-dropdown-wrap ul {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  background: white;
+  top: 100%;
+  border: 1px solid #333;
+  white-space: nowrap;
+}
+.btn-dropdown-wrap ul li {
+  float: left;
+  width: 100%;
+}
+.btn-dropdown-wrap ul li + li {
+  border-top: 1px solid #999;
+}
+.btn-dropdown-wrap ul li a {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  font-size: 12px;
+  text-decoration: none;
+  color: #333;
+}
+.btn-dropdown-wrap ul li a:hover {
+  background: #f1f1f1;
+}
+.app-btn-examples {
+  float: left;
+  width: 100%;
+}
+.btn-label-examples {
+  float: left;
+  width: 100%;
+  margin-top: 20px;
+}
+.btn-label-examples .btn {
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.btn sup {
+  position: absolute;
+  z-index: 8;
+  width: 100%;
+  left: 0;
+  top: -15px;
+  color: white;
+}
+.btn sup.bottom {
+  bottom: -15px;
+  top: auto;
+}
+.btn sup span {
+  margin: 0 auto;
+  padding: 5px 10px;
+  -o-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  background: #333;
+}
+.btn sup span.left {
+  float: left;
+  padding: 0px 10px;
+  margin-left: -12px;
+}
+.btn sup span.right {
+  float: right;
+  padding: 0px 10px;
+  margin-right: -12px;
+}

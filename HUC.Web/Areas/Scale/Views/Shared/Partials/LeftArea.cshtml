@@ -1,0 +1,295 @@
+﻿<aside class="bg-black aside-md hidden-print" id="nav">
+    <section class="vbox">
+        <section class="w-f scrollable">
+            <div class=slim-scroll data-height=auto data-disable-fade-out=true data-distance=0 data-size=10px data-railopacity=0.2>
+                <!-- nav -->
+                <nav class="nav-primary hidden-xs">
+                    <!-- Website Nav -->
+                    <ul class="nav nav-main" data-ride="collapse">
+                        <li class="@if(ViewBag.PageName == "dashboard"){<text>active</text>}">
+                            <a href="/scale/Dashboard" class="auto">
+                                <i class="i i-statistics icon">
+                                </i>
+                                <span class="font-bold">
+                                    Dashboard
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- / Website Nav -->
+                    <!-- Templates Nav -->
+                    <ul class="nav nav-main" data-ride="collapse">
+                        <li class="active">
+                            <a href="#" class="auto nav-title">
+                                <span class="font-bold">Templates</span>
+                            </a>
+                        </li>
+                        <li class="@if(ViewBag.PageName == "index"){<text>active</text>}">
+                            <a href="/scale/templates" class="auto">
+                                <i class="i i-statistics icon">
+                                </i>
+                                <span class="font-bold">Overview</span>
+                            </a>
+                        </li>
+                        <li class="@if(ViewBag.ParentPageName == "layout"){<text>active</text>}">
+                            <a href="#" class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="i i-circle-sm-o text"></i>
+                                    <i class="i i-circle-sm text-active"></i>
+                                </span>
+                                <b class="badge bg-danger pull-right">4</b>
+                                <i class="i i-stack icon">
+                                </i>
+                                <span class="font-bold">Layouts</span>
+                            </a>
+                            <ul class="nav dk">
+                                <li>
+                                    <a href="/scale/templates/LayoutColor" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Color option</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/LayoutHbox" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Hbox layout</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/LayoutBoxed" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Boxed layout</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/LayoutFluid" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Fluid layout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="@if(ViewBag.PageName == "ui"){<text>active</text>}">
+                            <a href="#" class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="i i-circle-sm-o text"></i>
+                                    <i class="i i-circle-sm text-active"></i>
+                                </span>
+                                <i class="i i-lab icon">
+                                </i>
+                                <span class="font-bold">UI kit</span>
+                            </a>
+                            <ul class="nav dk">
+                                <li>
+                                    <a href="/scale/templates/buttons" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Buttons</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/icons" class="auto">
+                                        <b class="badge bg-info pull-right">369</b>
+                                        <i class="i i-dot"></i>
+                                        <span>Icons</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/grid" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Grid</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/widgets" class="auto">
+                                        <b class="badge bg-dark pull-right">8</b>
+                                        <i class="i i-dot"></i>
+                                        <span>Widgets</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/components" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Components</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/list" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>List group</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#table" class="auto">
+                                        <span class="pull-right text-muted">
+                                            <i class="i i-circle-sm-o text"></i>
+                                            <i class="i i-circle-sm text-active"></i>
+                                        </span>
+                                        <i class="i i-dot"></i>
+                                        <span>Table</span>
+                                    </a>
+                                    <ul class="nav dker">
+                                        <li>
+                                            <a href="/scale/templates/TableStatic">
+                                                <i class="i i-dot"></i>
+                                                <span>Table static</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/scale/templates/TableDatatable">
+                                                <i class="i i-dot"></i>
+                                                <span>Datatable</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#form" class="auto">
+                                        <span class="pull-right text-muted">
+                                            <i class="i i-circle-sm-o text"></i>
+                                            <i class="i i-circle-sm text-active"></i>
+                                        </span>
+                                        <i class="i i-dot"></i>
+                                        <span>Form</span>
+                                    </a>
+                                    <ul class="nav dker">
+                                        <li>
+                                            <a href="/scale/templates/FormElements">
+                                                <i class="i i-dot"></i>
+                                                <span>Form elements</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/scale/templates/FormValidation">
+                                                <i class="i i-dot"></i>
+                                                <span>Form validation</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/scale/templates/FormWizard">
+                                                <i class="i i-dot"></i>
+                                                <span>Form wizard</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/chart" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Chart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/portlet" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Portlet</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/timeline" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Timeline</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="i i-circle-sm-o text"></i>
+                                    <i class="i i-circle-sm text-active"></i>
+                                </span>
+                                <i class="i i-docs icon">
+                                </i>
+                                <span class="font-bold">Pages</span>
+                            </a>
+                            <ul class="nav dk">
+                                <li>
+                                    <a href="/scale/templates/profile" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/invoice" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Invoice</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/master" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Master</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/gmap" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Google Map</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/jvectormap" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Vector Map</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/signin" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Signin</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/signup" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Signup</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/error" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>404</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="i i-circle-sm-o text"></i>
+                                    <i class="i i-circle-sm text-active"></i>
+                                </span>
+                                <i class="i i-grid2 icon">
+                                </i>
+                                <span class="font-bold">Apps</span>
+                            </a>
+                            <ul class="nav dk">
+                                <li>
+                                    <a href="/scale/templates/mail" class="auto">
+                                        <b class="badge bg-success lt pull-right">2</b>
+                                        <i class="i i-dot"></i>
+                                        <span>Mailbox</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/scale/templates/fullcalendar" class="auto">
+                                        <i class="i i-dot"></i>
+                                        <span>Calendar</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- / Templates Nav -->
+                </nav>
+                <!-- / nav -->
+            </div>
+        </section>
+        <footer class="footer hidden-xs no-padder text-center-nav-xs">
+            <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs">
+                <i class="i i-circleleft text"></i>
+                <i class="i i-circleright text-active"></i>
+            </a>
+        </footer>
+    </section>
+</aside>

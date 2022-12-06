@@ -1,0 +1,41 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Courses.CourseModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Our courses",
+        ContentTitle = "Our courses",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("our courses", Url.Action("Index")),
+            new BreadcrumbItem(Model.Name.ToLower())
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+
+                <div class="items">
+                    <div class="wysiwyg">
+                        <h2>
+                            @Model.Name
+                        </h2>
+
+                        @Html.Raw(Model.CourseDescription)
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="single-demo"> @*This is a class for when the page only has the demo and nothing else (sidelinks etc). Remove if these occur.*@
+                    @Html.Action("DemoPod", "Request")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

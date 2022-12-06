@@ -1,0 +1,117 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Resources.Chapters.Contents.ChapterContentEditModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Edit Content",
+        ContentTitle = "Edit Content",
+        ContentTitleDesc = "Here you can edit this content.",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index", "Courses"), "fa-briefcase"),
+            new BreadcrumbItem(Model.Chapter.Resource.Course.Name),
+            new BreadcrumbItem("Resources", Url.Action("Index", new { id = Model.Chapter.Resource.CourseID}), "fa-files-o"),
+            new BreadcrumbItem(Model.Chapter.Resource.Name + " - Resource", Url.Action("View", new { id = Model.Chapter.ResourceID})),
+            new BreadcrumbItem("Chapter " + Model.Chapter.Sort + " - " + Model.Chapter.Name),
+            new BreadcrumbItem("Edit Content"),
+        }
+    };
+}
+<style>
+    .edit-create-form .form-group label {
+        margin-left: 10px !important;
+        margin-top: 6px !important;
+    }
+
+</style>
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/ckeditor/config.js"></script>
+@*<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content" style="margin-top:115px;">
+            <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>*@
+<div class="col-md-12" style="padding-left:0px !important;">
+    <section class="panel panel-default">
+        @*<header class="panel-heading">The Header</header>*@
+        <div class="panel-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @id = "submitform" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="edit-create-form" style="margin-top:12px;">
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.HiddenFor(x => x.ChapterID)
+                    @Html.HiddenFor(x => x.ContentType)
+                    @Html.HiddenFor(x => x.Sort)
+                    <style>
+                        body {
+                            font-size: 18px !important;
+                        }
+                    </style>
+                    <div class="form-group">
+                        <div class="input-field full">
+                            @Html.EditorFor(x => x, "ChapterContent")
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="action-button" style="float:left !important; margin:2px !important;">
+                            <input type="button" id="btSubmit" value="Update" class="btn btn-dark" />
+                        </div>
+                       <a href ="/TrainingCourses/Admin/Resources/View/@Model.Chapter.ResourceID" class="btn btn-secondary m-btn m-btn--custom" style="float:left;margin:2px !important;border: 1px solid darkgrey;">Cancel</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    </div>
+<script>
+    $(document).ready(function () {
+	 $('.text-black').removeAttr('style')  ; 
+        $(".align-top-content").removeClass("button-deactive");
+        $(".align-top-content").addClass("button-active");
+        $(".col-md-1").hide();
+    })
+</script>
+    @*<div class="col-md-3">
+
+
+            <div class="desktop-ver">
+                <div class="row">
+                    <div class="col-md-12 align-top-content" style="padding-right:0px !important;">
+                        <a class="btn btn-success pull-right" href="javascript:history.back()">
+                            <i  class="fa fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-ver middle-btn">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-12">
+                        <a class="btn btn-success pull-right" href="javascript:history.back()">
+                            <i  class="fa fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>*@

@@ -1,0 +1,220 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Resources.ResourceModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Modules",
+        ContentTitle = Model.Course.Name+ " > " + Model.Name + " > " + "Assessments ",
+        ContentTitleDesc = "",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index", "Courses"), "fa-briefcase"),
+            new BreadcrumbItem(Model.Course.Name),
+            new BreadcrumbItem("Resources", Url.Action("Index", new { id = Model.CourseID}), "fa-files-o"),
+            new BreadcrumbItem(Model.Name + " - Test")
+        }
+    };
+}
+<style>
+    .vbox .col-md-1{
+        display:none;
+    }
+	 h3.text-black {
+        
+        margin-left: -17px;
+    }
+	@@media screen and (min-width: 2048px) {
+	.k6{
+	margin-right: 47.5% !important;
+	}
+	}
+</style>
+@if (!Model.Course.IsPublished)
+{
+    <div class="desktop-ver">
+        <div class="row">
+            <div class="col-md-12 align-top-content k6" style="margin-top:142px;margin-right: 45.5%;">
+                <a @*href="@Url.Action("QuestionCreate", new { id = Model.ID })"*@ onclick="AddEdit(@Model.ID,0)" class="btn btn-success pull-right"><i class="fa fa-pencil"></i> Create New Question</a>
+                <a class="btn btn-success pull-right" href="@Url.Action("Index", new { id = Model.CourseID})" style="margin-right: 15px;">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-ver middle-btn">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12">
+                <a href="@Url.Action("QuestionCreate", new { id = Model.ID })" class="btn btn-success pull-right"><i class="fa fa-pencil"></i> Create New Question</a>
+            </div>
+        </div>
+    </div>
+    <p class="hidden">
+        <a href="@Url.Action("QuestionCreate", new { id = Model.ID })" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create Question</a>
+    </p>
+
+}
+else
+{
+    <div class="desktop-ver">
+        <div class="row">
+            <div class="col-md-12 align-top-content">              
+                <a class="btn btn-success pull-right" href="@Url.Action("Index", new { id = Model.CourseID})">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+}
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            @if (ViewBag.OtherApplication == "1")
+            {
+                <div class="modal-header" style="background-color:black;color:#fff">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Manage Question</h4>
+                </div>
+            }
+            else
+            {
+                <div class="modal-header" style="background-color:#72bbb8;color:#fff">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Manage Question</h4>
+                </div>
+            }
+            <div class="modal-body" id="myModalBodyDiv">
+
+
+
+
+            </div>
+            <div class="modal-footer">
+
+                @*<button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@if (Model.Questions.Count() > 0)
+{
+    foreach (var question in Model.Questions.OrderBy(x => x.Sort))
+    {
+        <section class="panel panel-default" id="progressbar" style="margin-top:14px;width:988px !important;" >
+            <header class="panel-heading">
+                @if (!Model.Course.IsPublished)
+                {
+                    <ul class="nav nav-pills pull-right">
+                        @if (question.Sort > 1)
+                        {
+                            <li>
+                                <a href="@Url.Action("QuestionMoveUp", new { id = question.ID })"><i class="fa fa-chevron-up"></i> Move Up</a>
+                            </li>
+                        }
+                        @if (question.Sort < Model.Questions.Count())
+                        {
+                            <li>
+                                <a href="@Url.Action("QuestionMoveDown", new { id = question.ID })"><i class="fa fa-chevron-down"></i> Move Down</a>
+                            </li>
+                        }
+                        <li>
+                            <a @*href="@Url.Action("QuestionEdit", new {id = question.ID})"*@ onclick="AddEdit(@question.ID,1)" style="cursor:pointer;"><i class="fa fa-pencil"></i> Edit</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("QuestionDelete", new { id = question.ID, confirm = true })"><i class="fa fa-times"></i> Delete</a>
+                        </li>
+                        @*<li>
+                                <a href="@Url.Action("AnswerCreate", new {id = question.ID})"><i class="fa fa-plus"></i> Create Answer</a>
+                            </li>*@
+                    </ul>
+                }
+                <strong>Question @question.Sort</strong>
+            </header>
+            <div class="panel-body">
+                <p>
+                    @Html.Raw(question.Question)
+                </p>
+				@if (question.QuestionType == 7)
+                {
+
+                }
+                else
+                {
+                foreach (var answer in question.Answers)
+                {
+                    <p>
+                        @answer.Answer
+                        @if (answer.IsCorrect)
+                        {
+                            <span class="label label-success rounded"><i class="fa fa-check"></i></span>
+                        }
+                    </p>
+                    if (!Model.Course.IsPublished)
+                    {
+                        <p class="bg-end-section rounded" style="padding: 5px 30px; margin-top: 5px;">
+
+                            @if (answer.Sort > 1)
+                            {
+                                @:<a href="@Url.Action("AnswerMoveUp", new { id = answer.ID })" data-toggle="tooltip" title="Move Up"><i class="fa fa-chevron-circle-up white-color "></i></a>
+                            }
+                            else
+                            {
+                                <a href="#"><i class="fa fa-chevron-circle-up" style="opacity:0.4;cursor:default; color:white"></i></a>
+                            }
+                            &nbsp;&nbsp;
+                            @if (answer.Sort < question.Answers.Count())
+                            {
+                                @:<a href="@Url.Action("AnswerMoveDown", new { id = answer.ID })" data-toggle="tooltip" title="Move Down"><i class="fa fa-chevron-circle-down white-color "></i></a>
+                            }
+                            else
+                            {
+                                <a href="#"><i class="fa fa-chevron-circle-down" style="opacity:0.4;cursor:default; color:white"></i></a>
+                            }
+                            &nbsp;&nbsp;
+                            @*<a href="@Url.Action("AnswerEdit", new {id = answer.ID})" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a> &nbsp;&nbsp;*@
+                            <a href="@Url.Action("AnswerDelete", new { id = answer.ID, confirm = true })" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>
+
+
+
+                        </p>
+                    }
+                }
+				}
+            </div>
+        </section>
+    }
+}
+else
+{
+    <section class="panel panel-default" id="progressbar" style="margin-top:14px;width:988px !important;" >
+        <header class="panel-heading">
+            <center>   <h4>No Data To Display</h4></center>
+        </header>
+    </section>
+}
+
+<script>
+
+    $(document).ready(function () {
+		 $(".intro-text").removeClass("button-deactive");
+        $(".btn-3").css("color", "#ffffff !important");
+        $(".align-top-content").removeClass("button-deactive");
+        $(".align-top-content").addClass("button-active");
+    });
+
+    var AddEdit=function(Id,check){
+        var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/Question?id=" + Id + "&check=" + check;
+        console.log(url);
+        $("#myModalBodyDiv").load(url,function(){
+            $("#myModal").modal("show");
+
+        })
+
+    }
+</script>

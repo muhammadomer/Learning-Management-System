@@ -1,0 +1,73 @@
+﻿@model HUC.Web.Models.PageDataModel
+
+<div class="mobile-nav">
+    <img alt="Open menu" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/mobile-menu.png" />
+</div>
+
+<div id="nav-bar">
+    <div class="container">
+        <div class="content">
+            <ul class="nav">
+                <li @if (Model.ActivePage == "home") { <text> class="active" </text> }>
+                    <a href="/">
+                        Home
+                    </a>
+                </li>
+                <li @if (Model.ActivePage == "whoweare") { <text> class="active" </text>   }>
+                    <a href="/About">
+                        Who we are
+                    </a>
+                    <ul class="sub-nav">
+                        <li>
+                            <img class="arrow" alt="" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/sub-nav-arrow.png" />
+                            <a href="/About/WhyUs">
+                                Why us
+                            </a>
+                        </li>
+                        @*<li>
+                            <a href="/About/Services">
+                                Our Services
+                            </a>
+                        </li>*@
+                        <li>
+                            <a href="/About/Testimonials">
+                                Testimonials
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li @if (Model.ActivePage == "courses") { <text> class="active" </text>   }>
+                    <a href="/Course">
+                        Our courses
+                    </a>
+                </li>
+                @*<li @if (Model.ActivePage == "consultancy") { <text> class="active" </text>   }>
+                    <a href="/Consultancy">
+                        Consultancy Services
+                    </a>
+                </li>
+                <li @if (Model.ActivePage == "funding") { <text> class="active" </text>   }>
+                    <a href="/Funding">
+                        Funding Support
+                    </a>
+                </li>*@
+                <li @if (Model.ActivePage == "news") { <text> class="active" </text>   }>
+                    <a href="/News">
+                        News
+                    </a>
+                </li>
+                <li class="last-item @if (Model.ActivePage == "contact") { <text>active</text>  } ">
+                    <a href="/Contact">
+                        Contact us
+                    </a>
+                </li>
+                <li @if (Model.ActivePage == "request") { <text> class="active" </text>  }>
+                    <a href="/Request">
+                        Request demo
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

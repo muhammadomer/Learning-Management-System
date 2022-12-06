@@ -1,0 +1,43 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.PageModels.Forms.DemoFormModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Request Demo",
+        ContentTitle = "Request Demo",
+        ActivePage = "request",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("request demo")
+        }
+    };
+}
+
+<div class="desc-form standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="width-50">
+                <h2>
+                    Sign up for a demo today
+                </h2>
+                <p>
+                    If you like what you see and would like to sign up for a demo, then please fill out the form with your details.
+                </p>
+            </div>
+            <div class="width-50">
+                @using (Html.BeginForm())
+                {
+                    <h2>
+                        Enter your details
+                    </h2>
+                
+                    @Html.TextBoxFor(x => x.Name, new { placeholder = "Your name" })
+                    @Html.TextBoxFor(x => x.Email, new { placeholder = "Your email address" })
+                    @Html.TextBoxFor(x => x.Company, new { placeholder = "Company name" })
+                    <input class="large-button orange" type="submit" value="Submit" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

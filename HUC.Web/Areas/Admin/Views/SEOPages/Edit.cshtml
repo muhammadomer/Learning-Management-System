@@ -1,0 +1,58 @@
+﻿
+@using HUC.Web.Models
+@model HUC.Web.App.SEOPage.SEOPageModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "SEO Fields",
+        ContentTitle = "SEO Fields",
+        ContentTitleDesc = "Here you add new SEO Fields .",
+        ActivePage = "seo",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("SEO", Url.Action("Index"), "fa fa-pagelines"),
+            new BreadcrumbItem("Create")
+        }
+    };
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model=>Model.ID)
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PageTitle)
+            <div class="input-field full">
+                @Html.EditorFor(model => model.PageTitle)
+                @Html.ValidationMessageFor(model => model.PageTitle)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MetaDescription)
+            <div class="input-field">
+                @Html.EditorFor(model => model.MetaDescription)
+                @Html.ValidationMessageFor(model => model.MetaDescription)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.URL)
+            <div class="input-field">
+                @Html.EditorFor(model => model.URL)
+                @Html.ValidationMessageFor(model => model.URL)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="action-button">
+                <input type="submit" value="Edit" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning edit-create-buttons">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}

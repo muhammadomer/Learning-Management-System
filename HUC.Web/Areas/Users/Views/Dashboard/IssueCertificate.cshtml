@@ -1,0 +1,325 @@
+﻿@using HUC.Web.App.Courses
+@using HUC.Web.Models
+@model HUC.Web.App.Courses.Certificate.Certificate
+
+@{
+    Layout = null;
+    int gddcert =System.Convert.ToInt32( System.Configuration.ConfigurationManager.AppSettings["gddCertificate"]);
+}
+<html>
+<head>
+    <title>Training Courses |User Certificate</title>
+    <link rel="shortcut icon" href="/TrainingCourses/_Content/images/favicon.ico" type="image/x-icon" />
+
+    <link href="~/_Content/certificate.css" rel="stylesheet" />
+    <style type="text/css">
+        <!--
+        span.cls-009 {
+            font-family: Rage;
+            font-size: 40px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: italic;
+            line-height: 0.21;
+            letter-spacing: normal;
+            text-align: left;
+            color: #333131;
+        }
+
+        span.cls_002 {
+            font-family: Times,serif;
+            font-size: 28.0px;
+            color: #333131;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_002 {
+            font-family: Times,serif;
+            font-size: 28.0px;
+            color: #333131;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        span.cls_003 {
+            font-family: Times,serif;
+            font-size: 15.0px;
+            color: #333131;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+            text-transform: uppercase !important;
+        }
+
+        div.cls_003 {
+            font-family: Times,serif;
+            font-size: 15.0px;
+            color: #333131;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        span.cls_004 {
+            font-family: Times,serif;
+            font-size: 24.1px;
+            color: #333131;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        div.cls_004 {
+            font-family: Times,serif;
+            font-size: 24.1px;
+            color: #333131;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        span.cls_005 {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 15.0px;
+            color: #333131;
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        div.cls_005 {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 15.0px;
+            color: #333131;
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        span.cls_006 {
+            font-family: Times,serif;
+            font-size: 100.0px;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+            color: #043707 !important;
+        }
+
+        div.cls_006 {
+            font-family: Times,serif;
+            font-size: 100.0px;
+            color: #043707 !important;
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        span.cls_007 {
+            font-family: Times,serif;
+            font-size: 15px;
+            color: #333131;
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        div.cls_007 {
+            font-family: Times,serif;
+            font-size: 12.1px;
+            color: #333131;
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none;
+        }
+        -->
+
+       
+
+
+    </style>
+
+</head>
+<body>
+    @if (gddcert == 0)
+    {
+
+        <div style="position:absolute;left:50%;margin-left:-302px;width:605px;height:872px;overflow:hidden;" id="content">
+            <div style="position:absolute;left:0px;top:-3px;">
+                <img src="~/_Content/images/Certificate/Background.png">
+            </div>
+            <div style="position:absolute;left:99.56px;top:53.00px" class="cls_002"><span class="cls_002">CERTIFICATE OF COMPLIANCE</span></div>
+            <div style="position:absolute;left:99.55px;top:126.00px" class="cls_003"><span class="cls_003">NAME:</span><span class="cls_003" style="margin-left:64px;">@Model.UserName</span></div>
+            <div style="position:absolute;left:99.55px;top:163.00px" class="cls_003"><span class="cls_003">COMPANY:</span><span class="cls_003" style="margin-left:34px;">@Model.CompanyName</span></div>
+            <div style="position:absolute;left:99.55px;top:200.00px" class="cls_003"><span class="cls_003">COURSE:</span><span class="cls_003" style="margin-left:48px;">@Model.CourseName</span></div>
+            <div style="position:absolute;left:99.55px;top:237.00px" class="cls_003"><span class="cls_003">ISSUE DATE:</span><span class="cls_003" style="margin-left:23px;">@Model.IssueDate.ToLongDateString()</span></div>
+            <div style="position:absolute;left:99.56px;top:311.00px" class="cls_004"><span class="cls_004" style="text-decoration:underline;">Conclusion</span></div>
+            <div style="position:absolute;left:99.55px;top:364.01px" class="cls_005"><span class="cls_005">Based on the level of achievement required to complete and comply</span></div>
+            <div style="position:absolute;left:99.55px;top:384.00px" class="cls_005"><span class="cls_005">with aforementioned course details, it has been deemed that the person</span></div>
+            <div style="position:absolute;left:99.55px;top:404.00px" class="cls_005"><span class="cls_005">named on this certificate has passed.</span></div>
+            <div style="position:absolute;left:98.55px;top:433.00px" class="cls_006"><span class="cls_006">PASS</span></div>
+            <div style="position:absolute;left:99.55px;top:645.00px;" class="cls_005"><span class="cls-009">@Model.CreatedBy</span></div>
+            <div style="position:absolute;left:99.55px;top:678.00px;" class="cls_005"><span class="cls_005" style="color:#333131 !important;font-weight: normal;">Certificate Issued by: </span></div>
+            <div style="position:absolute;left:99.56px;top:700.00px;" class="cls_005"><span class="cls_005" style="color:#333131 !important;font-weight: normal;">@Model.CreatedBy</span></div>
+            <div style="position:absolute;left:99.56px;top:790.00px" class="cls_007"><span class="cls_007" style="color:#333131 !important;font-weight: normal;">(c) heads up compliance 2021 - Learning Management Software.</span></div>
+
+
+
+        </div>
+    }
+    else
+    {
+
+        <div style="position:absolute;left:50%;margin-left:-302px;top:34px;width:604px;height:862px;border:1px solid gainsboro;overflow:hidden" id="content">
+            <div style="position:absolute;left:0px;top:-3px;">
+                <img src="~/_Content/images/Certificate/certificatev2.png" width="600" height="860">
+            </div>
+
+            <div style="position:absolute;left:69.55px;top:286.00px" class="cls_003"><span class="cls_003" style="margin-left:64px;">@Model.UserName</span></div>
+            <div style="position:absolute;left:99.55px;top:353.00px" class="cls_003"><span class="cls_003" style="margin-left:34px;">@Model.CompanyName</span></div>
+            @*<div style="position:absolute;left:99.55px;top:200.00px" class="cls_003"><span class="cls_003" style="margin-left:48px;">@Model.CourseName</span></div>*@
+            <div style="position:absolute;left:109.55px;top:417.00px" class="cls_003"><span class="cls_003" style="margin-left:23px;">@Model.IssueDate.ToLongDateString()</span></div>
+
+            <div style="position:absolute;left:129.55px;top:495.00px" class="cls_003"><span class="cls_003" style="margin-left:23px;">@ViewBag.Questions</span></div>
+            <div style="position:absolute;left:312.55px;top:476.00px" class="cls_003"><span class="cls_003" style="margin-left:23px;">@ViewBag.Answers</span></div>
+
+        </div>
+
+
+
+    }
+
+
+    <div style="position:absolute;left:912.55px;top:920px;padding-bottom:10px">
+        <input  type="button" onclick="printCertificate()" value="Print" style="width:60px;height:30px;background-color:black;color:white;cursor:pointer;border-radius:5px" />
+
+    </div>
+
+
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+<script>
+    
+
+    (function () {
+        var height = 842;
+        var width = 595;
+        
+            form = $('#content'),
+            //cache_width = form.width(),
+            a4 = [595.28, 842.89]; // for a4 size paper width and height
+        $('body').scrollTop(0);
+        createPDF();
+        //create pdf
+        function createPDF() {
+            getCanvas().then(function (canvas) {
+                var
+                    img = canvas.toDataURL("image/png"),
+                    doc = new jsPDF({
+                        unit: 'px',
+                        format: 'a4'
+                    });
+                doc.addImage(img, 'JPEG', 55, 75);
+          
+                debugger;
+                doc.save('Certificate.pdf');
+                //form.width(cache_width);
+            });
+        }
+
+        // create canvas object
+        function getCanvas() {
+            //form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+            return html2canvas(form, {
+                imageTimeout: 2000,
+                removeContainer: true
+            });
+        }
+
+    }());
+</script>
+<script>
+    /*
+ * jQuery helper plugin for examples and tests
+ */
+    (function ($) {
+        $.fn.html2canvas = function (options) {
+            var date = new Date(),
+                $message = null,
+                timeoutTimer = false,
+                timer = date.getTime();
+            html2canvas.logging = options && options.logging;
+            html2canvas.Preload(this[0], $.extend({
+                complete: function (images) {
+                    var queue = html2canvas.Parse(this[0], images, options),
+                        $canvas = $(html2canvas.Renderer(queue, options)),
+                        finishTime = new Date();
+
+                    $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
+                    $canvas.siblings().toggle();
+
+                    $(window).click(function () {
+                        if (!$canvas.is(':visible')) {
+                            $canvas.toggle().siblings().toggle();
+                            throwMessage("Canvas Render visible");
+                        } else {
+                            $canvas.siblings().toggle();
+                            $canvas.toggle();
+                            throwMessage("Canvas Render hidden");
+                        }
+                    });
+                    throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
+                }
+            }, options));
+
+            function throwMessage(msg, duration) {
+                window.clearTimeout(timeoutTimer);
+                timeoutTimer = window.setTimeout(function () {
+                    $message.fadeOut(function () {
+                        $message.remove();
+                    });
+                }, duration || 2000);
+                if ($message)
+                    $message.remove();
+                $message = $('<div ></div>').html(msg).css({
+                    margin: 0,
+                    padding: 10,
+                    background: "#000",
+                    opacity: 0.7,
+                    position: "fixed",
+                    top: 10,
+                    right: 10,
+                    fontFamily: 'Tahoma',
+                    color: '#fff',
+                    fontSize: 12,
+                    borderRadius: 12,
+                    width: '595px',
+                    height: '842px',
+                    textAlign: 'center',
+                    textDecoration: 'none'
+                }).hide().fadeIn().appendTo('body');
+            }
+        };
+    })(jQuery);
+
+
+    function printCertificate() {
+
+
+        //var prtContent = document.getElementById("content");
+       
+        //var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+        //WinPrint.document.write(prtContent.innerHTML);
+        //WinPrint.document.close();
+        //WinPrint.focus();
+        //WinPrint.print();
+        //WinPrint.close();
+
+        javascript: window.print();
+    }
+</script>  

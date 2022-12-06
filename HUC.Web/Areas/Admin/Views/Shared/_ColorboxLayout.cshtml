@@ -1,0 +1,38 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Controllers
+@using HUC.Web.Models
+@{
+    var pageData = (PageDataModel)ViewBag.PageData;
+    if (pageData == null)
+    {
+        pageData = new PageDataModel();
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1" />
+    <title>
+        Training Courses | Admin @(String.IsNullOrWhiteSpace(pageData.Title) ? "" : "| " + pageData.Title)
+    </title>
+    <meta name="description" content="@pageData.ContentTitleDesc" />
+    <!--[if lt IE 9]>
+        <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/html5shiv.js"></script>
+        <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/respond.min.js"></script>
+        <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/excanvas.js"></script>
+    <![endif]-->
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="/_Content/Scale/css/ie8.css" />
+    <![endif]-->
+
+    @Styles.Render("~/bundles/scale/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+    <body>
+        
+        @RenderBody()
+    </body>
+</html>

@@ -1,0 +1,195 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.Courses.CourseModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Our courses",
+        ContentTitle = "Our courses",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("our courses")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="items">
+                    <h2>
+                        Our courses
+                    </h2>
+                    <p>
+                        Training Courses has been set up to assist firms to be compliant with the Solicitors Code of Conduct and the FCA regulations.
+                    </p>
+                    <p>
+                        Find out more about our professional training modules:
+                    </p>
+                    <ul>
+                        @foreach (var curCourse in Model)
+                        {
+                            <li>
+                                <a href="@Html.LinkTo(curCourse)">
+                                    @curCourse.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <p>
+                        As the COLP or AR it is your responsibility to ensure that the whole firm is provided with regular
+                        training in the above regulatory subjects. We aim to make your life easier by ensuring that all of
+                        your staff are trained and made aware of these risk areas and help you develop a "culture of compliance".
+                        You will be able to demonstrate that you have a training programme and that you track all
+                        of your staff's progress.
+                    </p>
+                    @*<p>
+                        The courses are aimed at awareness, rather than legal competence but also provide valuable CPD points.
+                    </p>*@
+
+                    <h3>
+                        Why carry out online study for these professional regulations?
+                    </h3>
+                    <p>
+                        No matter what specialisation you are in or at what level you are working, there is a need to be
+                        aware of the SRA Code of Conduct or the FCA regulations. Our training modules have been designed
+                        so that you can help improve your knowledge and ensure that you are able to apply the essential
+                        tools and techniques that ensure a successful career and business.
+                    </p>
+                    <p>
+                        All our training modules have been specifically selected for their course content, which combine tried and tested techniques and
+                        theories with the skills and knowledge that research shows employers require, with the ability to apply all that has been learnt
+                        to your own real-world environment.
+                    </p>
+                    <p>
+                        Our training modules are testament to your knowledge and understanding, providing confirmation of your experience and capabilities.
+                    </p>
+
+                    @*<h2>
+                        Regulation Update for COLPS &amp; COFAs
+                    </h2>
+                    <p>
+                        Solicitors Regulation Authority (SRA) research showed that the majority of law firms are non-compliant with the Solicitors Code
+                        of Conduct.
+                    </p>
+                    <p>
+                        If you are a newly appointed COLP or COFA this course will give you the opportunity to check that you are fully compliant or
+                        highlight areas where you may be at risk. It will also look at the key issues by practice area.
+                    </p>
+                    <ul>
+                        <li>
+                            Do you meet the required standards?
+                        </li>
+                        <li>
+                            How effective are your systems? Are they robust enough?
+                        </li>
+                        <li>
+                            Are your systems too costly and complex to maintain?
+                        </li>
+                        <li>
+                            Understanding how the regulator gathers data &amp; how to avoid being on the SRA radar
+                        </li>
+                        <li>
+                            What action will be taken by the regulator?
+                        </li>
+                        <li>
+                            Are further changes on the horizon?
+                        </li>
+                    </ul>
+
+                    <h2>
+                        MLRO &amp; the 4th AML Directive
+                    </h2>
+                    <p>
+                        Are you a Money Laundering Reporting Officer? Do you know what changes in policies and procedures will be required to satisfy the
+                        EC's 4th Directive on Money Laundering?
+                    </p>
+                    <p>
+                        MLROs must be experts in the application of the anti-money laundering compliance regime. Difficult decisions have to be made and
+                        MLROs must be sure of their ground.
+                    </p>
+                    <p>
+                        An MLRO is also responsible for ensuring that his firm's anti-money laundering systems and practices are kept up-to-date, and
+                        all <strong>employees are adequately trained</strong>. If a firm is to keep out of trouble, its MLRO must stay ahead of the curve.
+                    </p>
+                    <p>
+                        Also, MLROs are increasingly required to deal with production orders, often raising complicated issues involving legal privilege,
+                        duties of confidence and tipping off. And there are occasions when money held in a firm's client account can be frozen by order of
+                        the Court.
+                    </p>
+                    <p>
+                        This half day advanced level training course will cover the following:
+                    </p>
+                    <ul>
+                        <li>
+                            The EC 4th Directive
+                            <ul>
+                                <li>
+                                    The key changes
+                                </li>
+                                <li>
+                                    What does this mean in practice?
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Suspicious activity reports
+                            <ul>
+                                <li>
+                                    Making a report and seeking consent to proceed
+                                </li>
+                                <li>
+                                    Where to draw the line
+                                </li>
+                                <li>
+                                    Legal professional privilege
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Systems and procedures
+                            <ul>
+                                <li>
+                                    On-going monitoring by fee earners
+                                </li>
+                                <li>
+                                    Fee earner risk reviews
+                                </li>
+                                <li>
+                                    Monitoring the systems and procedures
+                                </li>
+                                <li>
+                                    Employment terms
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Responding to production orders
+                            <ul>
+                                <li>
+                                    Duties of confidence
+                                </li>
+                                <li>
+                                    Legal professional privilege
+                                </li>
+                                <li>
+                                    Making witness statements
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>*@
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="single-demo">
+                    @*This is a class for when the page only has the demo and nothing else (sidelinks etc). Remove if these occur.*@
+                    @Html.Action("DemoPod", "Request")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

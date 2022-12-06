@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Blank";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "blank";
+    ViewBag.ParentPageName = "pages";
+    //Content title area
+    ViewBag.ContentTitle = "Blank";
+    ViewBag.ContentTitleDesc = "This is a blank page";
+}
+
+@section Scripts{
+    <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/demos/demo-flot.js"></script>
+
+}

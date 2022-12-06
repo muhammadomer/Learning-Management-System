@@ -1,0 +1,55 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.News.Items.NewsCategoryEditModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+<<<<<<< local
+        Title = "News Categories",
+        ContentTitle = "News Categories",
+        ContentTitleDesc = "Edit a news category item.",
+=======
+        Title = Model.Name + " - Edit",
+        ContentTitle = Model.Name + " - Edit",
+        ContentTitleDesc = "Here you can edit this category.",
+>>>>>>> other
+        ActivePage = "news",
+<<<<<<< local
+        ActiveSubPage = "categories",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("News", null, "i-stack"),
+            new BreadcrumbItem("Categories", Url.Action("Categories"), "fa-sitemap"),
+            new BreadcrumbItem("Edit")
+        }
+=======
+>>>>>>> other
+    };
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Categories")
+            </div>
+        </div>
+    </div>
+}

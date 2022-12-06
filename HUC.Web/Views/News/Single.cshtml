@@ -1,0 +1,117 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@model HUC.Web.App.PageModels.NewsItemPageModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Latest news",
+        ContentTitle = "Latest news",
+        ActivePage = "news",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("latest news", Url.Action("Index")),
+            new BreadcrumbItem(Model.NewsItem.Title.ToLower())
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="items">
+                    @if (Model.NewsItem.Image != null)
+                    {
+                        <img class="news-image" alt="@Model.NewsItem.Title" src="@Model.NewsItem.Image.SourceReference()" />
+                    }
+                    
+                    <ul class="news-details">
+                        <li class="date">
+                            @Model.NewsItem.PublishOn.Day.AddOrdinal() @Model.NewsItem.PublishOn.ToString("MMMM yyyy")
+                        </li>
+                        @if (Model.NewsItem.Labels.Any())
+                        {
+                            <li class="tag">
+                                @String.Join(", ", Model.NewsItem.Labels.Select(x => x.Name))
+                            </li>
+                        }
+                        @if (Model.NewsItem.Category != null)
+                        {
+                            <li class="category">
+                                @Model.NewsItem.Category.Name
+                            </li>
+                        }
+                    </ul>
+
+                    <h2>
+                        @Model.NewsItem.Title
+                    </h2>
+                    <div class="wysiwyg">
+                        @Html.Raw(Model.NewsItem.BodyCopy.Replace("\r", "<br/>"))
+                    </div>
+                    
+                    @if (Model.NewsItem.Testimonial != null)
+                    {
+                        <div class="news-quote">
+                            <p>
+                                <img class="open-quote" alt="open quote" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/testimonial-red-open-quote.png" />
+
+                                @Model.NewsItem.Testimonial.BodyCopy
+
+                                <img class="close-quote" alt="close quote" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/testimonial-red-close-quote.png" />
+                            </p>
+                            <label>
+                                @Model.NewsItem.Testimonial.FullName
+                                @if (!String.IsNullOrWhiteSpace(Model.NewsItem.Testimonial.CompanyName))
+                                {
+                                    @:, @Model.NewsItem.Testimonial.CompanyName
+                                }
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="selection-container">
+                    <div class="selection-items">
+                        <h2>
+                            News archive
+                        </h2>
+
+                        <ul>
+                            @foreach (var archive in Model.Archive)
+                            {
+                                <li>
+                                    <a href="@Html.LinkToNews(archive)">
+                                        @archive.ToString("MMMM yyyy")
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="selection-items">
+                        <h2>
+                            Categories
+                        </h2>
+
+                        <ul>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <li @if (Model.NewsItem.CategoryID.HasValue && Model.NewsItem.CategoryID.Value == category.ID){<text>class="active"</text>}>
+                                    <a href="@Html.LinkToNews(category)">
+                                        @category.Name (@category.NewsItems.Count())
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                
+                @Html.Action("DemoPod", "Request")
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@{
+    var pageData = (PageDataModel)ViewBag.PageData;
+    if (pageData == null)
+    {
+        pageData = new PageDataModel();
+    }
+
+    var user = Html.User();
+    var courseUser = user.Company.AllUsers.SingleOrDefault(x => x.UserID == user.ID);
+}
+
+@if (!pageData.StrippedLayout)
+{
+    <aside class="bg-black aside-md hidden-print" id="nav">
+        <section class="vbox">
+            <section class="w-f scrollable">
+                <div class=slim-scroll data-height=auto data-disable-fade-out=true data-distance=0 data-size=10px data-railopacity=0.2>
+                    <!-- nav -->
+                    <nav class="nav-primary hidden-xs">
+                        <!-- Website Nav -->
+                        <ul class="nav nav-main" data-ride="collapse">
+                            <li class="@if (pageData.ActivePage == "dashboard")
+                                       {<text>active</text>}">
+                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard" class="auto">
+                                    <i class="i i-calendar icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        @if (courseUser.IsBackupAdmin)
+                        {
+                            <ul class="nav nav-main mob-show" data-ride="collapse">
+                                <li>
+                                    <a href="@Url.Action("Index", "Dashboard", new { area = "Company" })" class="auto">
+                                        <i class="i i-newtab icon">
+                                        </i>
+                                        <span class="font-bold">
+                                            To Company
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                        <ul class="nav nav-main" data-ride="collapse">
+                            <li class="@if (pageData.ActivePage == "courses"){<text>active</text>}">
+                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses" class="auto">
+                                    <i class="i i-book icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Courses
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- / Website Nav -->
+                       
+                    </nav>
+                    <!-- / nav -->
+                </div>
+            </section>
+            <footer class="footer hidden-xs no-padder text-center-nav-xs">
+                <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs">
+                    <i class="i i-circleleft text"></i>
+                    <i class="i i-circleright text-active"></i>
+                </a>
+            </footer>
+        </section>
+    </aside>
+}

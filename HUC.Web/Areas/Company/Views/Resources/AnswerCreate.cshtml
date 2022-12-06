@@ -1,0 +1,128 @@
+﻿@using HUC.Web.App.Resources.Chapters.Contents
+@using HUC.Web.Models
+@model HUC.Web.App.Resources.Questions.Answers.TestQuestionAnswerAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Modules",
+        ContentTitle = "Module - " + Model.Question.Resource.Name + "",
+        ContentTitleDesc = "Create an answer in this question",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", "/Company/Courses", "fa-briefcase"),
+            new BreadcrumbItem(Model.Question.Resource.Course.Name),
+            new BreadcrumbItem("Resources", "/Company/Resources/" + Model.Question.Resource.CourseID, "fa-files-o"),
+            new BreadcrumbItem(Model.Question.Resource.Name + " - Test", "/Company/Resources/Test/" + Model.Question.ResourceID),
+            new BreadcrumbItem("Question " + Model.Question.Sort),
+            new BreadcrumbItem("Create Answer"),
+        }
+    };
+}
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content">
+            <a class="btn btn-success pull-right" href="@Url.Action("Test", new { ID = Model.Question.ResourceID })">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@Url.Action("Test", new { ID = Model.Question.ResourceID })">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4" style="padding-left:0px !important;">
+    <section class="panel panel-default">
+        @*<header class="panel-heading">The Header</header>*@
+        <div class="panel-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal edit-create-form">
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.TestQuestionID)
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Answer, new { @class = "control-label", @style = "padding-bottom:12px !important;" })
+                        <div class="input-field full">
+                            @Html.TextAreaFor(model => model.Answer)
+                            @Html.ValidationMessageFor(model => model.Answer)
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:6px;">
+                        @*@Html.LabelFor(model => model.IsCorrect)*@
+
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding-right:118px;">  @Html.EditorFor(model => model.IsCorrect) Is this Correct Answer?</td>
+                                        <td>  <input type="submit" value="Create" class="btn btn-dark" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                        <div class="input-field full">
+
+                            @Html.ValidationMessageFor(model => model.IsCorrect)
+                        </div>
+                    </div>
+
+                    @*<div class="form-group edit-create-buttons ">
+                        <div class="action-button">
+
+                        </div>
+                        <div class="back-button btn btn-warning hidden">
+                            @Html.ActionLink("Back to Test", "Test", new { ID = Model.Question.ResourceID })
+                        </div>
+                    </div>*@
+
+                </div>
+            }
+        </div>
+    </section>
+</div>
+<script>
+$(document).ready(function () {
+		 $(".intro-text").removeClass("button-deactive");
+        $(".btn-3").css("color", "#ffffff !important");
+        
+    })
+</script>
+@*<div class="col-md-3">
+
+
+        <div class="desktop-ver">
+            <div class="row">
+                <div class="col-md-12 align-top-content" style="padding-right:0px !important;">
+                    <a class="btn btn-success pull-right" href="javascript:history.back()">
+                        <i  class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-ver middle-btn">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-12">
+                    <a class="btn btn-success pull-right" href="javascript:history.back()">
+                        <i  class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>*@

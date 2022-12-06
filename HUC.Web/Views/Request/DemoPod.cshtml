@@ -1,0 +1,20 @@
+﻿@model HUC.Web.App.PageModels.Forms.DemoFormModel
+<div class="demo">
+    @using (Html.BeginForm("Index", "Request", FormMethod.Post))
+    {
+        <h3>
+            Sign up for a Demo today
+        </h3>
+        <div class="image">
+            <img alt="Sign up for a Demo today" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/demo-test-image.png" />
+            <label>
+                Full<br />
+                Demo
+            </label>
+        </div>
+        @Html.TextBoxFor(x => x.Name, new { placeholder = "Your name" })
+        @Html.TextBoxFor(x => x.Email, new { placeholder = "Your email address" })
+        @Html.TextBoxFor(x => x.Company, new { placeholder = "Company name" })
+        <input class="large-button orange" type="submit" value="Submit" />
+    }
+</div>

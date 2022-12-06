@@ -1,0 +1,27 @@
+﻿@model string
+@if (!String.IsNullOrWhiteSpace(Model))
+{
+    <div class="input-append bootstrap-timepicker">
+        @Html.TextBoxFor(x => x, new Dictionary<string, object> { { "class", "date-picker" }, { "Value", Model } })
+        <span class="add-on">
+            <i class="fa fa-calendar"></i>
+        </span>
+    </div>
+}
+else
+{
+    <div class="input-append bootstrap-timepicker">
+        @Html.TextBoxFor(x => x, new Dictionary<string, object> { { "class", "date-picker" }, { "Value", DateTime.Now.ToShortDateString() } })
+        <span class="add-on">
+            <i class="fa fa-calendar"></i>
+        </span>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[name="@Html.NameFor(x => x)"]').datepicker({
+             format: 'dd/mm/yyyy'
+        });
+    });
+</script>

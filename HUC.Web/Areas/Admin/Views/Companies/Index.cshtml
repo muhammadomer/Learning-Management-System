@@ -1,0 +1,85 @@
+﻿@using HUC.Web.App.Companies
+@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.Companies.CompanyModel>
+@{
+    var parentCompany = (CompanyModel)ViewBag.ParentCompany;
+
+    string headerExtraString = null;
+    var breadcrumb = new List<BreadcrumbItem>();
+    if (parentCompany != null)
+    {
+        breadcrumb.Add(new BreadcrumbItem("Companies", Url.Action("Index"), "fa-building-o"));
+
+        headerExtraString = String.Join(" > ", parentCompany.CompanyTrace.Select(x => x.Name));
+        foreach (var curCompany in parentCompany.CompanyTrace)
+        {
+            breadcrumb.Add(new BreadcrumbItem(curCompany.Name, Url.Action("Index", new { parentID = curCompany.ID })));
+        }
+    }
+    else
+    {
+        breadcrumb.Add(new BreadcrumbItem("Companies", null, "fa-building-o"));
+    }
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Companies",
+        ContentTitle = "Companies" + (headerExtraString == null ? "" : ": " + headerExtraString),
+        ContentTitleDesc = "Here are all the companies in the system",
+        ActivePage = "companies",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Companies", null, "fa-building-o")
+        }
+    };
+
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, null, { "bSortable": false }],
+                "iDisplayLength": 10
+            });
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+<p>
+    <a href="@Url.Action("Create", new { id = (parentCompany != null ? parentCompany.ID : (int?)null) })" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Add New</a>
+</p>
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Users</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in Model)
+                {
+                    <tr>
+                        <td>
+                            @company.Name
+                        </td>
+                        <td>
+                            @company.ThisCompanyUserCount/@company.UserLimit
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = company.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="@Url.Action("Index", "CompanyUsers", new {id = company.ID})" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-eye"></i> View Users</a>
+
+                            <a href="@Url.Action("Index", new { parentID = company.ID })" class="btn btn-xs btn-rounded btn-primary"><i class="fa fa-building-o"></i> View Sub-Companies</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

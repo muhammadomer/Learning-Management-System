@@ -1,0 +1,699 @@
+﻿@using System.Activities.Expressions
+@using System.Runtime.CompilerServices
+@using HUC.Web.App.Resources
+@using HUC.Web.App.Resources.Chapters.Contents
+@using HUC.Web.App.Resources.Questions.Answers
+@using HUC.Web.App.Resources.Questions
+@using HUC.Web.App.Users
+@using HUC.Web.App.Users.Courses
+@using HUC.Web.Models
+@model HUC.Web.App.Users.Courses.UserCourseModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Course - " + Model.Course.Name,
+        ContentTitle = Model.Course.Name,
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index")),
+            new BreadcrumbItem(Model.Course.Name)
+        }
+    };
+    List<TestQuestionAnswerModelForJson> answerList = new List<TestQuestionAnswerModelForJson>();
+    UserCourseTestModel curUserTest = null;
+    if (Model.CourseStage.Resource != null)
+    {
+        curUserTest = Model.CourseStage.Resource.LatestUserTestFor(Model.ID);
+    }
+
+}
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/accordion.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/interview.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/flip.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/radio.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/slider.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/player.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/popper.min.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/bootstrap.min.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/accordion.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/interview.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/flip.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/radio.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/slider.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/truefalse.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".submit-answer").on("click", function () {
+            $("#submitAnswer").submit();
+        });
+    });
+</script>
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard">
+                Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard">
+                Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="course-overview">
+    <div class="col-xs-10 main-panel no-padding">
+        <div class="panel panel-default hidden">
+            <header class="panel-heading" style="float:left;width:100%;min-height:52px;">
+                <strong>
+                    @Model.Course.Name
+                </strong>
+                @if (Model.CourseStage.IsTest && curUserTest != null && !curUserTest.IsComplete)
+                {
+                    if (Model.CourseStage.Resource.TestTimeLimitMinutes.HasValue)
+                    {
+                        <span class="label label-info rounded" id="countdown">
+
+                        </span>
+
+                        <script type="text/javascript">
+                                $(document).ready(function () {
+                                    countdown(new Date('@(curUserTest.StartOn.AddMinutes(Model.CourseStage.Resource.TestTimeLimitMinutes.Value).ToString("yyyy/MM/dd HH:mm:ss"))'), function (ts) {
+                                        if (ts.end > ts.start) {
+                                            $('#countdown').html('Time Expired');
+                                            $('#countdown').removeClass('label-info').addClass('label-danger');
+                                        } else {
+                                            $('#countdown').html((ts.hours > 0 ? ts.hours + 'h ' : '') + (ts.minutes > 0 ? ts.minutes + 'm ' : '') + (ts.seconds > 0 ? ts.seconds + 's' : ''));
+                                        }
+                                    });
+                                });
+                        </script>
+                    }
+                }
+            </header>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body" id="content-zone">
+                @if (Model.CourseStage.Resource != null)
+                {
+                    //Resource is present
+                    if (Model.CourseStage.Chapter != null)
+                    {
+                        <h2>@Model.CourseStage.Resource.Name</h2>
+                        <h3>Chapter @Model.CourseStage.Chapter.Sort: @Model.CourseStage.Chapter.Name</h3>
+                        //Chapter is present, signifies a content read page
+                        foreach (var content in Model.CourseStage.Chapter.Contents.OrderBy(x => x.Sort))
+                        {
+                            switch (content.ContentType)
+                            {
+                                case ContentType.Text:
+                                    <p>
+                                        @Html.Raw(content.Value)
+                                    </p>
+                                    break;
+
+                                case ContentType.Audio:
+                                    <audio src="/_Media/Uploads/@content.Value" preload="auto"></audio>
+                                    break;
+								case ContentType.PDF:
+                                    <iframe src="/_Media/Uploads/@content.Value" style="width:100%; height:500px;" frameborder="0"></iframe>
+                                    break;
+                                case ContentType.VideoYoutube:
+                                    <iframe width="560" height="315" src="//www.youtube.com/embed/@content.Value?controls=2&modestbranding=1&rel=0" frameborder="0" allowfullscreen></iframe>
+                                    break;
+                                case ContentType.VideoVimeo:
+                                    <iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="560" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                    break;
+                                case ContentType.VideoWistia:
+                                    <iframe src="//fast.wistia.net/embed/iframe/@content.Value" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="640" height="360"></iframe>
+                                    break;
+                                case ContentType.Accordion:
+                                    <div class="accordion-module" id="module-@content.ID"></div>
+                                    <script>
+                                        var jasonObj = {
+                                            divId: "module-@content.ID",
+                                            get accordion() {
+                                                return @Html.Raw(content.Value);
+                                            },
+                                        };
+                                        var accordion = new Accordion(jasonObj);
+                                        accordion.initialize();
+                                    </script>
+                                    break;
+                                case ContentType.Flip:
+                                    <div class="flip-module" id="module-@content.ID"></div>
+                                    <script>
+                                        var flipJson = @Html.Raw(content.Value);
+                                        for (var i = 0; i < flipJson.length; i++) {
+                                            flipJson[i].imagePath = flipJson[i].imagePath.replace("~/", "../../../");
+                                        }
+                                        var jasonObj = {
+                                            divId: "module-@content.ID",
+                                            flip: flipJson,
+                                        };
+                                        var flip = new Flip(jasonObj);
+                                        flip.initialize();
+                                    </script>
+                                    break;
+                                case ContentType.Interview:
+                                    <div class="interview-module" id="module-@content.ID"></div>
+                                    <script>
+                                        var jasonObj = {
+                                            divId: "module-@content.ID",
+                                            name: "@ViewBag.FullName",
+                                            role: "Software Engineer",
+                                            place: "@ViewBag.CompanyName",
+                                            dialogs:@Html.Raw(content.Value),
+                                        };
+                                        var interview = new Interview(jasonObj);
+                                        interview.initialize();
+                                    </script>
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Model.CourseStage.TestQuestion != null && Model.CourseStage.IsTest)
+                        {
+                            //Question is present, signifies a question/answer page
+                            using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "submitAnswer" }))
+                            //using (Html.BeginForm(),)
+                            {
+                                <p>
+                                    @Model.CourseStage.TestQuestion.Question
+                                </p>
+                                <hr />
+                                if (Model.CourseStage.TestQuestion.QuestionType == 1 || Model.CourseStage.TestQuestion.QuestionType == null)
+                                {
+                                    foreach (var curAnswer in Model.CourseStage.TestQuestion.Answers)
+                                    {
+                                        <p class="padder">
+                                            <label>
+                                                <input type="@((Model.CourseStage.TestQuestion.Answers.Count(x => x.IsCorrect) > 1) ? "checkbox" : "radio")" name="answer" value="@curAnswer.ID" />
+                                                @curAnswer.Answer
+                                            </label>
+                                        </p>
+                                        <hr />
+                                    }
+                                    <p>
+                                        <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                    </p>
+                                    <div class="btn btn-success">
+                                        <input type="submit" value="Submit Answer" />
+                                    </div>
+                                    <script>
+                                        console.log("answers");
+                                    </script>
+                                }
+                                else if (Model.CourseStage.TestQuestion.QuestionType == 2)
+                                {
+                                    <p>
+                                        <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                    </p>
+                                    <div class="radio-module" id="module-@Model.CourseStage.TestQuestion.ID"></div>
+                                    <input type="hidden" name="answer" id="hdnAnswerId" value="0" />
+                                    foreach (var curAnswer in Model.CourseStage.TestQuestion.Answers)
+                                    {
+                                        answerList.Add(new TestQuestionAnswerModelForJson
+                                        {
+                                            answerid = curAnswer.ID.ToString(),
+                                            option = curAnswer.Answer,
+                                            type = curAnswer.IsCorrect == true ? "true" : "false",
+
+                                        });
+                                    }
+                                    <script>
+                                        // Radio
+                                        var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                        console.log(JSON.stringify(answers));
+                                        console.log("answers");
+                                        console.log(answers);
+                                        var jasonObj = {
+                                            divId: "module-@Model.CourseStage.TestQuestion.ID",
+                                            title: "Part 1: Multiple Choice",
+                                            question:"@Model.CourseStage.TestQuestion.Question",
+                                            statement: "Select the answer you assess is correct.",
+                                            attempts: 3,
+                                            get multi() {
+                                                return @Html.Raw(Json.Encode(answerList))
+                                            },
+                                        };
+                                        var radio = new Radio(jasonObj);
+                                        radio.initialize();
+                                    </script>
+                                    <a class="btn btn-success disabled submit-answer">Submit Answer</a>
+                                }
+                                else if (Model.CourseStage.TestQuestion.QuestionType == 3)
+                                {
+                                    <p>
+                                        <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                    </p>
+                                    <div class="radio-module" id="module-@Model.CourseStage.TestQuestion.ID"></div>
+                                    <input type="hidden" name="answer" id="hdnAnswerId" value="0" />
+                                    foreach (var curAnswer in Model.CourseStage.TestQuestion.Answers)
+                                    {
+                                        answerList.Add(new TestQuestionAnswerModelForJson
+                                        {
+                                            answerid = curAnswer.ID.ToString(),
+                                            option = curAnswer.Answer,
+                                            type = curAnswer.IsCorrect == true ? "true" : "false",
+
+                                        });
+                                    }
+                                    <script>
+                                        // Slider
+                                        var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                        console.log(JSON.stringify(answers));
+                                        console.log("answers");
+                                        console.log(answers);
+                                        var jasonObj = {
+                                            divId: "module-@Model.CourseStage.TestQuestion.ID",
+                                            title: "Part 1: Slider",
+                                            subHeading: "Move the slider either position 1, 2, or 3 and then press submit.&nbsp;",
+                                            max: 3,
+                                            selected: 2,
+                                            attempts: 3,
+                                            question:"@Model.CourseStage.TestQuestion.Question",
+                                            get multi() {
+                                                return @Html.Raw(Json.Encode(answerList))
+                                            },
+                                        };
+                                        var slider = new Slider(jasonObj);
+                                        slider.initialize();
+
+                                    </script>
+                                    <a class="btn btn-success disabled submit-answer">Submit Answer</a>
+                                }
+                                else if (Model.CourseStage.TestQuestion.QuestionType == 4)
+                                {
+                                    <p>
+                                        <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                    </p>
+                                    <div class="truefalse-module" id="module-@Model.CourseStage.TestQuestion.ID"></div>
+                                    <input type="hidden" name="answer" id="hdnAnswerId" value="0" />
+                                    foreach (var curAnswer in Model.CourseStage.TestQuestion.Answers)
+                                    {
+                                        answerList.Add(new TestQuestionAnswerModelForJson
+                                        {
+                                            answerid = curAnswer.ID.ToString(),
+                                            option = curAnswer.Answer,
+                                            type = curAnswer.IsCorrect == true ? "true" : "false",
+
+                                        });
+                                    }
+                                    <script>
+                                        // True False
+                                        var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                        console.log(JSON.stringify(answers));
+                                        console.log("answers");
+                                        console.log(answers);
+                                        var jasonObj = {
+                                            divId: "module-@Model.CourseStage.TestQuestion.ID",
+                                            title: "Part 1: True or False",
+                                            statement:
+                                                "Read the three statements below. Decide whether they are true or false and then drag them onto corresponding answer.",
+                                            attempts: 3,
+                                            question:  @Html.Raw(Json.Encode(answerList)),
+                                        };
+                                        var trueFalse = new TrueFalse(jasonObj);
+                                        trueFalse.initialize();
+                                    </script>
+                                    <a class="btn btn-success disabled submit-answer">Submit Answer</a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //No question, signifies a test start/end page
+                            if (Model.CourseStage.IsTestStart)
+                            {
+                                <p>This is the start of the test for '@Model.CourseStage.Resource.Name'</p>
+                                if (curUserTest != null && curUserTest.IsComplete)
+                                {
+                                    <p>
+                                        As you have completed this test, you may also skip past it.
+                                    </p>
+                                }
+                            }
+                            if (Model.CourseStage.IsTestEnd && curUserTest != null)
+                            {
+                                if (curUserTest.IsComplete)
+                                {
+                                    //Test is completed. This is the test results page
+                                    <a class="btn btn-primary btn-rounded" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "restartresource" })" style="margin-bottom: 20px;">
+                                        Restart this resource
+                                    </a>
+
+                                    <p>
+                                        Your score is @(curUserTest.CorrectAnswerCount)/@(curUserTest.TestQuestions.Count())
+                                    </p>
+                                }
+
+                                foreach (var curQuestion in curUserTest.TestQuestions)
+                                {
+                                    var question = curQuestion;
+
+                                    var userQuestion = curUserTest.UserQuestions.SingleOrDefault(x => x.UserCourseTestID == curUserTest.ID && x.TestQuestionID == question.ID);
+                                    var isAnswered = userQuestion != null && userQuestion.IsAnswered;
+                                    var isFlagged = userQuestion != null && userQuestion.IsFlagged;
+                                    var isCorrect = userQuestion != null && userQuestion.IsCorrect;
+
+                                    <h3>
+                                        Question @question.Sort
+                                        @if (curUserTest.IsComplete)
+                                        {
+                                            if (isCorrect)
+                                            {
+                                                <span class="label label-success rounded text-xs"><i class="fa fa-check"></i> Correct</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-danger rounded text-xs"><i class="fa fa-times"></i> Incorrect</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (!isAnswered)
+                                            {
+                                                <span class="label label-warning rounded text-xs"><i class="fa fa-question"></i> Unanswered</span>
+                                            }
+                                            if (isFlagged)
+                                            {
+                                                <span class="label label-danger rounded text-xs"><i class="fa fa-flag"></i> Flagged</span>
+                                            }
+                                            if (!isAnswered || isFlagged)
+                                            {
+                                                var curStage = Model.Course.Stages.Single(x => x.TestQuestionID.HasValue && x.TestQuestionID.Value == question.ID);
+
+                                                <a class="label label-primary rounded text-xs" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "skipTo", destStage = curStage.ID })">View this question</a>
+                                            }
+                                        }
+                                    </h3>
+                                    if (userQuestion != null)
+                                    {
+                                        <p>
+                                            @Html.Raw(String.Join("<br/><br/>", userQuestion.UserAnswers.Select(x => x.TestAnswer.Answer)))
+                                        </p>
+                                    }
+                                    if (curUserTest.IsComplete && !String.IsNullOrWhiteSpace(curQuestion.Feedback))
+                                    {
+                                        <p><strong>Feedback</strong></p>
+                                        <p>
+                                            @Html.Raw(curQuestion.Feedback.Replace("\r", "<br/>"))
+                                        </p>
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //No resource, signifies a course start/end page
+
+                    if (Model.CourseStage.IsStart)
+                    {
+                        <p><h2>About this Course</h2></p>
+                        @:@Html.Raw(Model.Course.IntroCopy)
+                    }
+                    if (Model.CourseStage.IsEnd)
+                    {
+                        @:@Html.Raw(Model.Course.OutroCopy)
+                    }
+                }
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <header class="panel-heading" style="float:left;width:100%;min-height:52px;">
+                <div class="col-xs-2">
+                    <ul class="nav nav-pills pull-left" style="margin: 0 -15px;">
+                        @if (Model.CourseStage.PrevStage != null)
+                        {
+                            if (Model.CourseStage.IsTest)
+                            {
+                                if ((Model.CourseStage.IsTestEnd && curUserTest != null && curUserTest.IsComplete) || Model.CourseStage.IsTestStart)
+                                {
+                                    <li>
+                                        <a class="btn btn-warning" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "prev" })"><i class="fa fa-arrow-left"></i> Previous</a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="btn btn-warning" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "prev" })"><i class="fa fa-arrow-left"></i> Previous</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                </div>
+                <div class="col-xs-8 text-center">
+                    <strong>@Model.CourseStage.Resource</strong>
+                </div>
+                <div class="col-xs-2 r-mobile">
+
+                    <ul class="nav nav-pills pull-right" style="margin: 0 -15px;">
+                        @if (Model.CourseStage.IsEnd)
+                        {
+                            <li>
+                                <a class="btn btn-success" href="@Url.Action("Index", "Dashboard", new { area = "Users" })">Complete Course <i class="fa fa-arrow-right"></i></a>
+                            </li>
+                        }
+                        else if (Model.CourseStage.NextStage != null)
+                        {
+                            if (Model.CourseStage.IsTest)
+                            {
+                                if (Model.CourseStage.IsTestStart)
+                                {
+                                    if (curUserTest != null && !Model.CourseStage.Resource.TestCooldownHours.HasValue)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a class="btn btn-success" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "next" })">Begin Test <i class="fa fa-arrow-right"></i></a>
+                                        </li>
+                                    }
+                                    if (curUserTest != null && curUserTest.IsComplete)
+                                    {
+                                        <li>
+                                            <a class="btn btn-danger" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "skiptest" })">Skip Test <i class="fa fa-arrow-right"></i></a>
+                                        </li>
+                                    }
+                                }
+                                else if (Model.CourseStage.IsTestEnd)
+                                {
+                                    if (curUserTest.IsComplete)
+                                    {
+                                        <li>
+                                            <a class="btn btn-success" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "next" })">Next <i class="fa fa-arrow-right"></i></a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a class="btn btn-success" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "next" })">Complete Test <i class="fa fa-arrow-right"></i></a>
+                                        </li>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="btn btn-success" href="@Url.Action("Stage", new { id = Model.CourseID, changeStage = "next" })">Next <i class="fa fa-arrow-right"></i></a>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                </div>
+            </header>
+        </div>
+    </div>
+    <div class="col-xs-2 left-panel no-padding">
+        <div class="panel panel-default course-progress">
+            <header class="panel-heading">
+                <strong>Progress</strong>
+            </header>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    @{
+                        var prevResourceID = (int?)null;
+                    }
+                    @foreach (var stage in Model.Course.Stages)
+                    {
+                        if (stage.Resource != null && prevResourceID != stage.ResourceID)
+                        {
+                            <li class="font-bold">
+                                @stage.Resource.Name
+                            </li>
+                            prevResourceID = stage.ResourceID;
+                        }
+
+                        var skipLink = "/Users/Courses/Stage/" + Model.CourseID + "?changeStage=skipTo&destStage=" + stage.ID;
+
+                        if (!stage.IsStart && !stage.IsEnd && !stage.IsTestEnd && (!stage.IsTest || stage.IsTestStart))
+                        {
+                            <li>
+                                @if (Model.CourseStageID == stage.ID || (stage.IsTest && Model.CourseStage.IsTest && Model.CourseStage.ResourceID == stage.ResourceID))
+                                {
+                                    <i class="fa fa-arrow-right"></i>
+                                }
+                                else
+                                {
+                                    if (Model.CourseStage.Stage > stage.Stage)
+                                    {
+                                        <i class="fa fa-circle"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-circle-o"></i>
+                                    }
+                                }
+                                @if (stage.Resource != null)
+                                {
+                                    if (stage.Chapter != null)
+                                    {
+                                        if (stage.CanBeSkippedTo(Model.ID))
+                                        {
+                                            <a href="@skipLink">Chapter @stage.Chapter.Sort - @stage.Chapter.Name</a>
+                                        }
+                                        else
+                                        {
+                                            @:Chapter @stage.Chapter.Sort - @stage.Chapter.Name
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (stage.IsTestStart)
+                                        {
+                                            if (stage.CanBeSkippedTo(Model.ID))
+                                            {
+                                                <a href="@skipLink">Test</a>
+                                            }
+                                            else
+                                            {
+                                                @:Test
+                                            }
+                                        }
+                                    }
+                                }
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        @if (Model.CourseStage.IsTest)
+        {
+            <div class="panel panel-default course-progress">
+                <header class="panel-heading">
+                    <strong>@Model.CourseStage.Resource.Name Test</strong>
+                </header>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        @foreach (var stage in Model.Course.Stages.Where(x => x.ResourceID == Model.CourseStage.ResourceID && x.IsTest))
+                        {
+                            var skipLink = "/Users/Courses/Stage/" + Model.CourseID + "?changeStage=skipTo&destStage=" + stage.ID;
+
+                            if (stage.Resource != null && stage.IsTest)
+                            {
+                                <li>
+                                    @if (Model.CourseStageID == stage.ID)
+                                    {
+                                        <i class="fa fa-arrow-right"></i>
+                                    }
+                                    else
+                                    {
+                                        if (Model.CourseStage.Stage > stage.Stage)
+                                        {
+                                            <i class="fa fa-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-circle-o"></i>
+                                        }
+                                    }
+                                    @if (stage.IsTestStart)
+                                    {
+                                        if (stage.CanBeSkippedTo(Model.ID))
+                                        {
+                                            <a href="@skipLink">Test Start</a>
+                                        }
+                                        else
+                                        {
+                                            @:Test Start
+                                        }
+                                    }
+                                    else if (stage.IsTestEnd)
+                                    {
+                                        if (stage.CanBeSkippedTo(Model.ID))
+                                        {
+                                            <a href="@skipLink">
+                                                @if (curUserTest != null && curUserTest.IsComplete)
+                                                {
+                                                    @:Test Summary
+                                                }
+                                                else
+                                                {
+                                                    @:Test Results
+                                                }
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            if (curUserTest != null && curUserTest.IsComplete)
+                                            {
+                                                @:Test Summary
+                                            }
+                                            else
+                                            {
+                                                @:Test Results
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (stage.CanBeSkippedTo(Model.ID))
+                                        {
+                                            <a href="@skipLink">Question @stage.TestQuestion.Sort</a>
+                                        }
+                                        else
+                                        {
+                                            @:Question @stage.TestQuestion.Sort
+                                        }
+                                    }
+                                </li>
+                            }
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<input type="hidden" id="courseHeartbeat" value="true" />
+<input type="hidden" id="cID" value="@Model.CourseID" />
+<input type="hidden" id="isTest" value="@(Model.CourseStage.IsTest ? "true" : "false")" />

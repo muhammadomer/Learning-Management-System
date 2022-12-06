@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+@{
+    ViewBag.PageTitle = "Boxed Layout";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "boxed-layout";
+    ViewBag.ParentPageName = "ui";
+    //Content title area
+    ViewBag.ContentTitle = "Boxed Layout";
+    ViewBag.ContentTitleDesc = "GDP per capita average annual growth rate";
+}
+@section Scripts{
+    <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/demos/demo-datatables.js"></script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+
+}
+<div class="table-responsive" id="growthrate">
+</div>

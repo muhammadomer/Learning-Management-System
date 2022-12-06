@@ -1,0 +1,476 @@
+﻿@using HUC.Web.Models;
+@model HUC.Web.App.Resources.Questions.TestQuestionModel
+@{
+    int sd = 1;
+    List<SelectListItem> QuestionTypeList = new List<SelectListItem>();
+    //QuestionTypeList.Add(new SelectListItem
+    //{
+    //    Text = "Simple",
+    //    Value = "1"
+    //});
+    string button = "Create";
+    if(Model != null && Model.Question != null)
+    {
+        button = "Update";
+    }
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Free Text",
+        Value = "7"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Radio Buttons unlimited responses",
+        Value = "2"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Sliding bar with number of answers",
+        Value = "3"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "True or False drag and drop",
+        Value = "4"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Single Question,multiple answers" +
+        "",
+        Value = "5"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "True or False dropdown",
+        Value = "6"
+    });
+
+    List<SelectListItem> attemptlist = new List<SelectListItem>();
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "1",
+        Value = "1"
+    });
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "2",
+        Value = "2"
+    });
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "3",
+        Value = "3"
+    });
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "4",
+        Value = "4"
+    });
+}
+<style>
+    .form-control:focus {
+        border-color: dimgray !important;
+    }
+    .form-control {
+        color: #72bbb8 !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        max-width: 500px !important;
+    }
+    .divpadding {
+        padding-top: 10px;
+    }
+</style>
+@*<div class="col-md-8" style="padding-left:0px !important;">
+    <section class="panel panel-default">
+        <header class="panel-heading"> This for heder</header>
+        <div class="panel-body">*@
+@*@using (Html.BeginForm())
+    {*@
+<link href="~/_Content/css/Appforms.css" rel="stylesheet" />
+<form id="myform" @*action="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Resources/AddEditQuestion"*@>
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+        @if (Model != null && Model.ID != Model.ResourceID)
+        {
+         
+            <input type="hidden" id="Qid" value="@Model.ID" />
+            @Html.HiddenFor(x => x.ID)
+        }
+        else
+        {
+            
+            <input type="hidden" id="ID" name="ID" value="0" />
+            <input type="hidden" id="Qid" value="0" />
+        }
+
+        @Html.HiddenFor(x => x.ResourceID)
+        @Html.HiddenFor(x => x.Sort)
+        <div class="col-md-6" style="margin-bottom:-15px;">
+            <div class="form-group">
+                <label class="control-label" style="margin-top: -3px;">Type</label>
+                @*@Html.LabelFor(model => model.QuestionType)*@
+                <div class="input-field full">
+                    @Html.DropDownListFor(model => model.QuestionType, QuestionTypeList, "-- Select Type --", new { @class = "form-control", @style = "max-width:360px", @id = "QuestionType" })
+                    @Html.ValidationMessageFor(model => model.QuestionType)
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: -5px;">
+                <label class="control-label" id="labeltext">Question</label>
+                @*@Html.LabelFor(model => model.Question, new { @class = "control-label" ,@id= })*@
+                <div class="input-field full">
+                    @Html.TextAreaFor(model => model.Question, new { @class = "form-control", @style = "height:160px !Important" })
+                    @Html.ValidationMessageFor(model => model.Question)
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="control-label" id = "optionlabal">Options</label>
+            </div>
+        </div>
+
+        <div class="col-md-6" >
+            <div class="form-group">
+                @Html.LabelFor(model => model.Attempts)
+                <div class="input-field full">
+                    @Html.DropDownListFor(model => model.Attempts, attemptlist, "-- Select Attempts --", new { @class = "form-control", @style = "max-width:360px" })
+                    @*@Html.EditorFor(model => model.Attempts, new { @type = "number" })*@
+                    @Html.ValidationMessageFor(model => model.Attempts)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Feedback)
+                <div class="input-field full">
+                    @Html.TextAreaFor(model => model.Feedback, new { @class = "form-control", @style = "height:160px !Important" })
+                    @Html.ValidationMessageFor(model => model.Feedback)
+                </div>
+            </div>
+
+            <input type="hidden" value="" name="alist" id="alist" />
+        </div>
+
+        @if (ViewBag.Answers != null)
+        {
+    <div id="addanswer">
+        @foreach (var item in ViewBag.Answers)
+        {
+        
+        <div class="col-md-8" style="display:inline-flex;margin-bottom: 14px;">   
+                <input type="hidden" value="@item.ID" id="ansid-@sd" />
+                <input type="text" id="ans-@sd" value="@item.Answer" class="form-control" />     
+        </div>
+        <div class="col-md-4">
+            <input type="checkbox" checked="@item.IsCorrect" id="chk-@sd" onclick="BoxChecker(@sd)" style="margin-top: 18px;margin-left: -16px;" /> <span id="textoption">Correct option</span> <a class="btn btn-default hidden" style="float:right;" id="btn-@sd" onclick="AddNewAnswer(@sd)"><i class="fa fa-plus"></i></a>
+        </div>
+
+            sd++;
+        }
+
+    </div>
+            <script>
+                var counter = $('input:checkbox').length;
+                $("#btn-" + counter).removeClass("hidden");
+
+            </script>
+        }
+        else
+        {
+            <div id="addanswer">
+                <div class="col-md-8">
+                    <input type="hidden" value="0" id="ansid-1" />
+                    <input type="text" id="ans-1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <input type="checkbox" id="chk-1" onclick="BoxChecker(1)" style="margin-top: 18px;margin-left: -16px;" />  <span id="textoption">Correct option</span> <a class="btn btn-default" style="float:right;" id="btn-1" onclick="AddNewAnswer(1)"><i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+        }
+        <div class="form-group edit-create-buttons" style="margin-bottom:0px;margin-top:20px;margin-left: 15px;">
+            <div>
+                <input type="button" onclick="SubmitData()" id="submitform" value="@button" class="btn btn-dark" />
+            </div>
+            <div class="back-button btn btn-warning hidden">
+                @Html.ActionLink("Back to Test", "Test", new { ID = Model.ResourceID })
+            </div>
+        </div>
+    </div>
+</form>
+@*</div>
+        </section>
+    </div>*@
+
+<script src="~/_Content/js/lib/jquery.validate.min.js"></script>
+<script src="~/_Content/js/lib/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var selectitemedit = $('#QuestionType').val();
+        if (selectitemedit == 7) {
+            $("#Attempts").val(1);
+            $("#Attempts").attr("disabled", true);
+            $("#Feedback").attr("disabled", true);
+            $("#Attempts").css("background-color", "#eee");
+            $("#Feedback").css("background-color", "#eee");
+            $("#ans-1").attr("disabled", true);
+            $("#chk-1").prop('checked', false);
+            $("#chk-1").attr('disabled', true);
+            $("#btn-1").attr('disabled', true);
+        }
+        else {
+            $("#Attempts").attr("disabled", false);
+            $("#Feedback").attr("disabled", false);
+            $("#Attempts").css("background-color", "#FFFFFF");
+            $("#Feedback").css("background-color", "#FFFFFF");
+            $("#ans-1").attr("disabled", false);
+            $("#chk-1").attr('disabled', false);
+            $("#btn-1").attr('disabled', false);
+            $("#ans-1").val(0);
+        }
+    });
+    $("#QuestionType").change(function () {
+        var totalCheckboxes = $('input:checkbox').length;
+        var selectitem = $("#QuestionType").val();
+        var text = $("#QuestionType option:selected").text();
+       // $("#labeltext").text(text);
+        if (selectitem == 7) {
+            $("#Attempts").val(1);
+            $("#labeltext").text("Question");
+            $("#Attempts").attr("disabled", true);
+            $("#Feedback").attr("disabled", true);
+            $("#Attempts").css("background-color", "#eee");
+            $("#Feedback").css("background-color", "#eee");
+            $("#ans-1").attr("disabled", true);
+            $("#chk-1").prop('checked', false);
+            $("#chk-1").attr('disabled', true);
+            $("#btn-1").attr('disabled', true);
+        }
+        else {
+            $("#Attempts").attr("disabled", false);
+            $("#Feedback").attr("disabled", false);
+            $("#Attempts").css("background-color", "#FFFFFF");
+            $("#Feedback").css("background-color", "#FFFFFF");
+            $("#ans-1").attr("disabled", false);
+            $("#chk-1").attr('disabled', false);
+            $("#btn-1").attr('disabled', false);
+            $("#ans-1").val(0);
+            for (var i = 1; i <= totalCheckboxes; i++) {
+                $("#chk-" + i).prop('checked', false);
+            }
+        }
+
+
+    })
+
+    function BoxChecker(bt) {
+        var box = $("#QuestionType").val();
+        var totalCheckboxes = $('input:checkbox').length;
+        if (box == 4 || box == 6) {
+            return false;
+        } else {
+            if ($("#chk-" + bt).prop('checked') == true) {
+                for (var i = 1; i <= totalCheckboxes; i++) {
+                    if (i == bt) {
+
+                    } else {
+                        $("#chk-" + i).prop('checked', false);
+                    }
+                }
+            }
+
+        }
+    }
+
+    function BoxValidator() {
+        var box = $("#QuestionType").val();
+        var totalCheckboxes = $('input:checkbox').length;
+        if (box == 4 || box == 6) {
+            return true;
+        } else {
+            var boxeschecked = false;
+            for (var i = 1; i <= totalCheckboxes; i++) {
+                if ($("#chk-" + i).prop('checked') == true) {
+                    boxeschecked = true;
+                    }
+            }
+            return boxeschecked;
+        }
+    }
+
+    function Checkinputs() {
+                var totalCheckboxes = $('input:checkbox').length;
+                for (var i = 1; i <= totalCheckboxes; i++) {
+                    var value = $("#ans-" + i).val();
+                    if (value == null || value == "" || value == undefined) {
+                        toastr.error('Please fill all answer fields');
+                        return false;
+                    }
+                }
+                return true;
+    }
+
+    var AddNewAnswer = function (id) {
+                if (!Checkinputs()) {
+                    return false;
+                }
+                $("#btn-" + id).hide();
+                var boxtype = $("#QuestionType").val();
+				var text = " Correct option" ;
+				if(boxtype == 4){
+					text = " Correct Statement";
+				}
+				
+				if(boxtype == 6){
+					text = " Correct Statement";
+				}
+                var appdata = '<div class="col-md-8 divpadding"><input type="hidden" value="0" id="ansid-' + (id + 1) + '" /><input type="text" id="ans-' + (id + 1) + '" class="form-control" /></div>';
+                appdata += '<div class="col-md-4 divpadding"><input type="checkbox" id="chk-' + (id + 1) + '"onclick="BoxChecker(' + (id + 1) +')" style="margin-top: 18px;margin-left: -16px;"/>' + text + ' <a class="btn btn-default" style="float:right;" id="btn-' + (id + 1) + '" onclick="AddNewAnswer(' + (id + 1) + ')"><i class="fa fa-plus"></i></a></div>'
+                $("#addanswer").append(appdata);
+                // alert($('input:checkbox').length);
+                //CollectAnswers();
+    }
+
+    function CollectAnswers() {
+                var JsonList = new Array();
+                var totalCheckboxes = $('input:checkbox').length;
+                for (var i = 1; i <= totalCheckboxes; i++) {
+                    var ID = $("#ansid-" + i).val();
+                    var Answer = $("#ans-" + i).val();
+                    var IsCorrect = "0";
+                    if ($("#chk-" + i).prop('checked') == true) {
+                        IsCorrect = "1";
+                    }
+                     //$("#chk-" + i).val();
+                    var questionid = $("#Qid").val();
+                    var item = {};
+                    item.answerid= ID;
+                    item.option= Answer;
+                    item.selected = IsCorrect;
+                    item.questionid = questionid;
+                    item.type = $("#QuestionType").val();
+
+                if(Answer == ""){
+
+				}else{
+
+                JsonList.push(item);
+				}
+                }
+                return JSON.stringify(JsonList);
+    }
+
+    function SubmitData() {
+        var questiontype = $("#QuestionType").val();
+        if (questiontype== 7) {
+
+        }
+        else {
+            
+            if (!BoxValidator()) {
+                toastr.error('One answer should be true please mark a checkbox');
+                return false;
+            }
+        }
+
+
+        var list = CollectAnswers();
+
+        //$("#alist").val(JSON.stringify({ 'alist': list }));
+        // $('#submitform').clone().attr('type', 'submit').insertAfter('#submitform').prev().remove();
+        // $("#submitform").submit();
+
+        var data = $("#myform").serialize();
+        if (!$("#myform").valid()) {
+            return false;
+        }
+        //var dtt = { addModel: JSON.stringify(data), alist: list};
+        var url = '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/AddEditQuestion';
+                $.ajax({
+                    type: "POST",
+                  //  contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: url,
+                    data: data,
+                    success: function (response) {
+                        if (questiontype == 7) {
+                            window.location.href = '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/Test/' + $("#ResourceID").val();
+                        }
+                        else {
+                            if (response == "0") {
+                            window.location.href = '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/Test/' + $("#ResourceID").val();
+                            }
+                            else {
+                            url = '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin//Resources/AddEditAnswers';
+                            $.ajax({
+                                type: "POST",
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
+                                //  contentType: false, // Not to set any content header
+                                // processData: false, // Not to process data
+                                url: url,
+                                data: list,
+                                success: function (response) {
+                                      window.location.href = '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/Test/' + $("#ResourceID").val();
+                                }
+                            });
+                        }
+                        }
+                    }
+                });
+    }
+
+  
+       $("#QuestionType").on("change", function () {
+        var id = parseInt($(this).val());
+        var text = $("#QuestionType option:selected").text();
+        //$("#labeltext").text(text);
+        if (id == 4) {
+            $("#Question").attr('readonly', true);
+			$("#optionlabal").text("Statement");
+            $("#labeltext").text("Statement");
+            $("#textoption").text("Correct Statement");
+            $("#Question").val("Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.");
+        } else if (id == 6) {
+			$("#optionlabal").text("Statement");
+            $("#labeltext").text("Instruction");
+            $("#textoption").text("Correct Statement");
+            $("#Question").attr('readonly', true);
+            $("#Question").val("Select \"True Or False\" from the Dropdown placed at the end of each question.");
+
+        }  else if (id == 5) {
+            
+			$("#optionlabal").text("Options");
+			$("#textoption").text("Correct option");
+            $("#labeltext").text("Question");
+			 $("#Question").attr('readonly', false)
+            $("#Question").val("");
+        }
+        else if (id == 3) {
+            $("#optionlabal").text("Options");
+			$("#textoption").text("Correct option");
+            $("#labeltext").text("Question");
+			 $("#Question").attr('readonly', false)
+            $("#Question").val("");
+        }
+        else if (id == 2) {
+          
+           
+            $("#labeltext").text("Question");
+            $("#Question").attr('readonly', false)
+            $("#Question").val("");
+          
+        }
+
+        else {
+		 $("#optionlabal").text("Options");
+            $("#Question").attr('readonly', false);
+			$("#textoption").text("Correct option");
+            $("#Question").val("");
+            
+        }
+       
+    })
+</script>

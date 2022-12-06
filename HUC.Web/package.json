@@ -1,0 +1,12 @@
+{
+    "name": "HUC",
+    "version": "1.0.0",
+    "description": "HUC",
+    "devDependencies": {
+        "gulp": "3.8.11",
+        "gulp-sass": "2.0.4",
+        "gulp-less": "3.0.3",
+        "del": "2.0.2",
+        "check-vs-includes":  "0.2.4"
+    }
+} 

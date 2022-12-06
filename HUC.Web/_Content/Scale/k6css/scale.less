@@ -1,0 +1,680 @@
+﻿//VARIABLES
+
+    //COLORS
+    @red: #e40424;
+    @orange: #f7931e;
+    @pale-teal: #778688;
+    @light-teal: #3e5456;
+    @dark-teal: #1c3638;
+    @pale-grey: #999999;
+    @light-grey: #d1d6d7;
+    @medium-grey: #b3b3b3;
+    @text-grey: #4d4d4d;
+    @green: #1aae88;
+
+    //FONTS
+    @roboto-light: roboto-light, Arial, sans-serif;
+    @roboto-regular: roboto-regular, Arial, sans-serif;
+    @roboto-bold: roboto-bold, Arial, sans-serif;
+
+    @font-face {
+    font-family: 'roboto-light';
+    src: url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.eot');
+    src: url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.woff') format('woff'),
+         url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.ttf') format('truetype'),
+         url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.svg#roboto-light') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+    font-family: 'roboto-regular';
+    src: url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.eot');
+    src: url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.woff') format('woff'),
+         url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.ttf') format('truetype'),
+         url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.svg#roboto-regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+    font-family: 'roboto-bold';
+    src: url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.eot');
+    src: url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.woff') format('woff'),
+         url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.ttf') format('truetype'),
+         url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.svg#roboto-bold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    }
+
+
+//MIXINS
+    //ROUNDED CORNERS
+    .rounded-all(@radius:5px){
+        -o-border-radius:@radius;
+        -moz-border-radius:@radius;
+        -webkit-border-radius:@radius;
+        border-radius:@radius;
+    }
+    .rounded-top(@radius:5px){
+        -o-border-radius:@radius @radius 0 0;
+        -moz-border-radius:@radius @radius 0 0;
+        -webkit-border-radius:@radius @radius 0 0;
+        border-radius:@radius @radius 0 0;
+    }
+    .rounded-bottom(@radius:5px){
+        -o-border-radius:0 0 @radius @radius;
+        -moz-border-radius:0 0 @radius @radius;
+        -webkit-border-radius:@radius;
+        border-radius:0 0 @radius @radius;
+    }
+    .rounded-left(@radius:5px){
+        -o-border-radius: @radius 0 0 @radius;
+        -moz-border-radius: @radius 0 0 @radius;
+        -webkit-border-radius:@radius;
+        border-radius: @radius 0 0 @radius;
+    }
+
+html, body, .full-page {
+    height: 65%;
+    width: 100%;
+}
+
+.full-page {
+    position: absolute;
+    top: 0;
+    left:0;
+    padding-top: 60px;
+}
+
+html {
+    background-color: #f2f2f2;
+}
+
+.bg-black .nav > li > a{
+    color:white;
+}
+
+/*Left nav */
+.nav{
+    .nav-title{
+        background-color:white!important;
+        color:black!important;
+        cursor:default;
+        pointer-events: none;
+        span{
+            color:black!important;
+        }
+    }
+}
+/*h3.text-black*/
+h2 {
+   // color: @red;
+    font-family: Franklin Gothic Book !important;
+    font-size: 26px;
+}
+
+p, small {
+    font-family: Franklin Gothic Book;
+    color: @text-grey;
+    font-size: 14px;
+
+    strong {
+        font-family: @roboto-bold;
+    }
+}
+
+.table {
+    margin-bottom: 0px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+
+    &.table-striped {
+        tr {
+            th {
+                background-color: white;
+            }
+
+            &.odd {
+                td {
+                    background-color: #f2f2f2;
+                }
+            }
+        }
+    }
+
+    tr {
+        th, td {
+            border-right: 1px solid #ddd;
+        }
+
+        td {
+            font-family: 'Franklin Gothic';
+
+            .btn {
+                margin-right: 5px;
+            }
+        }
+
+        th {
+            background-color: white;
+            color: @red;
+            font-family: Franklin Gothic Medium;
+            font-size: 16px;
+        }
+    }
+}
+
+.btn-rounded {
+    border-radius: 5px;
+}
+
+.fa-check-circle {
+    color: @green;
+}
+
+.fa-times-circle {
+    color: @red;
+}
+
+.bg-light.lter {
+    background-color: transparent;
+}
+
+.header {
+    p {
+        &.intro-text {
+            font-size: 18px;
+            font-family: @roboto-bold;
+            color: @red;
+        }
+    }
+}
+
+.nav {
+    .nav-title {
+        background-color: #727272!important;
+
+         span {
+             color: white!important;
+         }
+    }
+}
+
+.bg-primary, .bg-danger {
+    color: white;
+}
+
+.datepicker {
+        td {
+            &.active {
+                color: white;
+            }
+
+            &:hover {
+                background-color: #177bbb;
+                color: white;
+                cursor: pointer;
+            }
+        }
+    }
+
+.edit-create-form {
+    float: left;
+    width: 100%;
+
+    .form-group {
+        float: left;
+        width: 100%;
+        clear:both;
+        padding-left: 15px;
+
+        label {
+            text-align: left;
+        }
+    }
+
+    label {
+        float: left;
+        width: 100%;
+        font-family: 'Franklin Gothic Book';
+        font-size: 16px;
+        margin-bottom: 2px;
+        color: @text-grey;
+    }
+
+    .info-text {
+        float: left;
+        width: 100%;
+        padding-top: 5px;
+    }
+
+    .input-field {
+        width: 100%;
+        max-width: 360px;
+
+        &.full {
+            max-width: 100%;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"], input[type="number"], textarea {
+            float: left;
+            width: 100%;
+            max-width: 360px;
+            height: 35px;
+            padding: 0 5px;
+            font-size: 16px;
+            font-family: @roboto-regular;
+            border: 1px solid @medium-grey;
+            outline: none;
+
+            &:focus {
+                border: 1px solid @red;
+            }
+
+            &.time-picker, &.date-picker {
+                width: 92%;
+            }
+        }
+
+        .add-on {
+            float: left;
+            margin: 7px 0 0 5px;
+        }
+
+        textarea {
+            height: 150px;
+            padding: 5px;
+        }
+
+        .redactor_box {
+            float: left;
+            width: 100%;
+        }
+
+        select {
+            float: left;
+            width: 100%!important;
+        }
+
+        .chosen-container {
+            float: left;
+            width: 100%;
+
+            &.chosen-container-active {
+                .chosen-choices {
+                    border: 1px solid @red;
+                    box-shadow: none;
+                }
+            }
+
+            .chosen-choices {
+                float: left;
+                width: 100%;
+                max-width: 100%;
+                height: 35px;
+                padding: 5px 5px;
+                font-size: 16px;
+                font-family: @roboto-regular;
+                border: 1px solid @medium-grey;
+                outline: none;
+            }
+
+            .chosen-results {
+                float: left;
+                width: 100%;
+            }
+        }
+    }
+
+    .action-button, .back-button {
+        float: right;
+        margin: 0 0 10px 10px;
+
+        a {
+            color: white;
+        }
+    }
+
+    .field-validation-error {
+        float: left;
+        width: 100%;
+        padding-top: 5px;
+        font-size: 12px;
+        color: @red;
+    }
+
+    .edit-create-buttons {
+        max-width: 375px;
+    }
+}
+
+.ui-pnotify {
+    width: 100%!important;
+    top: 0;
+    right: 0;
+}
+
+//NAV
+.nav-main {
+    li {
+        .i-circle-sm, .i-circle-sm-o {
+            color: white;
+        }
+    }
+}
+
+.table {
+    .btn {
+        margin: 3px 0;
+    }
+}
+
+.bg-white {
+    .logout-btn {
+        &:hover {
+            color: @red;
+        }
+    }
+}
+
+
+//COURSE SECTION
+.course-overview {
+    color: #4d4d4d;
+
+    #flagged {
+        margin: 2px 0 0 5px;
+    }
+
+    .main-panel {
+        margin-bottom: 20px;
+    }
+
+    #content-zone {
+        float: left;
+        width: 100%;
+        background-color: white;
+    }
+
+    .btn {
+        input[type="submit"] {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+        }
+    }
+
+    .panel {
+        .panel-heading {
+            color: @red;
+            font-family: @roboto-bold;
+            font-size: 14px;
+
+            .nav {
+                .btn {
+                    margin-top: 10px;
+                    padding: 5px 10px;
+                    .rounded-all(5px);
+
+                    &.btn-success {
+                        i {
+                            margin-left: 5px;
+                        }
+
+                        &:hover {
+                            background-color: #179877;
+                            border-color: #158b6c;
+                        }
+                    }
+
+                    &.btn-warning {
+                        i {
+                            margin-right: 5px;
+                        }
+
+                        &:hover {
+                            background-color: #fcbf1a;
+                            border-color: #fbbb0b;
+                        }
+                    }
+
+                    &.btn-danger {
+                        margin-left: 5px;
+
+                        i {
+                            margin-right: 5px;
+                        }
+
+                        &:hover {
+                            background-color: #dd1e32;
+                            border-color: #d01c2f;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.course-progress {
+            .fa-circle, .fa-circle-o, .fa-arrow-right {
+                color: @red;
+            }
+
+            .font-bold {
+                padding: 10px 0 5px;
+                color: #4d4d4d;
+            }
+        }
+
+        .panel-body {
+            h2 {
+                padding-bottom: 5px;
+                border-bottom: 1px solid @light-grey;
+            }
+
+            h3 {
+               /* color: @red;
+                font-family: @roboto-bold;
+                font-size: 18px;*/
+            }
+        }
+
+        .col-xs-8 {
+            margin-top: 5px;
+        }
+    }
+
+    .main-panel {
+        &.no-padding {
+            padding-left: 0;
+        }
+    }
+
+    .left-panel {
+        &.no-padding {
+            padding-left: 0;
+        }
+    }
+}
+
+.profile-area {
+    .avatar {
+        .dker {
+            background-color: #e0e6f0;
+        }
+    }
+}
+
+.scrollable {
+    overflow-x: visible;
+    overflow-y: visible;
+}
+
+.middle-btn {
+
+    .btn {
+        margin: 0 auto;
+        float: left;
+        width: 100%;
+    }
+}
+
+.wrapper {
+    &.edited-padding {
+        padding-left: 0;
+
+        &.full {
+            padding-left: 15px;
+        }
+    }
+}
+
+*[class^="mobile-"], *[class*=" mobile-"] {
+    display: none;
+}
+
+*[class^="desktop-"], *[class*=" desktop-"] {
+    display: block;
+}
+
+@media only screen and (min-width:768px) {
+    .header-md {
+        height: 60px;
+        min-height: 0;
+    }
+}
+
+@media only screen and (max-width:1600px) {
+    .size-1600 {
+        .col-md-6 {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: 1439px) {
+    .course-table, .pie-chart {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width:1280px) {
+    .course-overview {
+        .left-panel {
+            width: 100%;
+
+            .course-progress {
+                float: left;
+                margin-right: 2%;
+                width: 48%;
+            }
+        }
+
+        .main-panel {
+            width: 100%;
+            padding-left: 0;
+        }
+    }
+
+    .header {
+        p {
+            &.intro-text {
+                margin-top: 13px !important;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .profile-tables {
+        .col-md-6 {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width:1200px) {
+    .hbox {
+        .profile-data {
+            .col-xs-6 {
+                width: 100%;
+                padding-bottom: 20px;
+                text-align: center;
+
+                &.text-right {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    *[class^="mobile-"], *[class*=" mobile-"] {
+        display: block;
+    }
+
+    *[class^="desktop-"], *[class*=" desktop-"] {
+        display: none;
+    }
+
+    .wrapper {
+        &.edited-padding {
+            padding-right: 0;
+
+            &.full {
+                padding-left: 0;
+            }
+        }
+    }
+
+    .b-r {
+        &.profile-area {
+            border-right: 0;
+        }
+    }
+
+    .b-l {
+        &.profile-tables {
+            border-left: 0;
+        }
+    }
+}
+
+@media only screen and (max-width:480px) {
+    .course-overview {
+        .left-panel {
+            width: 100%;
+
+            .course-progress {
+                float: left;
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+
+        .main-panel {
+            width: 100%;
+            padding-left: 0;
+
+            .col-xs-8 {
+                &.text-center {
+                    display: none;
+                }
+            }
+
+            .r-mobile {
+                float: right;
+            }
+        }
+    }
+
+    .profile-full-width {
+        width: 100%;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+   
+}

@@ -1,0 +1,75 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Users.UserAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Administrators",
+        ContentTitle = "Administrators",
+        ContentTitleDesc = "Create an administrator",
+        ActivePage = "administrators",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Administrators", Url.Action("Index"), "fa-bolt"),
+            new BreadcrumbItem("Create")
+        }
+    };
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            <div class="input-field">
+                @Html.EditorFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword)
+            <div class="input-field">
+                @Html.EditorFor(model => model.ConfirmPassword)
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>First name</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Last name</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)
+            </div>
+        </div>
+
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}

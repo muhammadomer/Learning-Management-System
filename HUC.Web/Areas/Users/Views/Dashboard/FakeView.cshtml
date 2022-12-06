@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "";
+}
+
+
+<script>
+    $(document).ready(function () {
+      window.location.href = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/Index";
+    })
+</script>
+

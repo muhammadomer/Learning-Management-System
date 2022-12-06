@@ -1,0 +1,160 @@
+﻿@using HUC.Web.App.Shared
+@using HUC.Web.Models
+@using PagedList.Mvc
+@model HUC.Web.App.PageModels.NewsPageModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Latest news",
+        ContentTitle = "Latest news",
+        ActivePage = "news",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("latest news")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                @Pagination()
+                <div class="items">
+                    <ul class="news-items">
+                        @if (Model.NewsItems.Any())
+                        {
+                            foreach (var curNews in Model.NewsItems)
+                             {
+                                 <li>
+                                     @if (curNews.Image != null)
+                                     {
+                                         <img class="post-image" alt="@curNews.Title" src="@curNews.Image.SourceReference()" />
+                                     }
+                                     <div class="post">
+                                         <h2>
+                                             <a href="@Html.LinkTo(curNews)">
+                                                 @curNews.Title
+                                             </a>
+                                         </h2>
+                                         <p>
+                                             @curNews.IntroCopy [...]
+                                         </p>
+                                         <a class="read-more" href="@Html.LinkTo(curNews)">
+                                             Read more
+                                         </a>
+                                     </div>
+                                     <ul>
+                                         <li class="date">
+                                             @curNews.PublishOn.Day.AddOrdinal() @curNews.PublishOn.ToString("MMMM yyyy")
+                                         </li>
+                                         @if (curNews.Labels.Any())
+                                         {
+                                             <li class="tag">
+                                                 @String.Join(", ", curNews.Labels.Select(x => x.Name))
+                                             </li>
+                                         }
+                                         @if (curNews.Category != null)
+                                         {
+                                             <li class="category">
+                                                 @curNews.Category.Name
+                                             </li>
+                                         }
+                                     </ul>
+                                 </li>
+                             }
+                        }
+                        else
+                        {
+                            @:No news items available
+                        }
+
+                    </ul>
+                </div>
+                @Pagination()
+            </div>
+
+            <div class="right-column">
+                <div class="selection-container">
+                    <div class="selection-items">
+                        <h2>
+                            News archive
+                        </h2>
+
+                        <ul>
+                            @foreach (var archive in Model.Archives)
+                            {
+                                <li @if (Model.CurrentArchive != null && Model.CurrentArchive.Value.Month == archive.Month && Model.CurrentArchive.Value.Year == archive.Year){ <text> class="active" </text>  }>
+                                    <a href="@Html.LinkToNews(archive)">
+                                        @archive.ToString("MMMM yyyy")
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="selection-items">
+                        <h2>
+                            Categories
+                        </h2>
+
+                        <ul>
+                            @foreach (var category in Model.Categories.Where(x => x.NewsItems.Any()))
+                            {
+                                <li @if (Model.CurrentCategory != null && Model.CurrentCategory.ID == category.ID) { <text> class="active" </text> }>
+                                    <a href="@Html.LinkToNews(category)">
+                                        @category.Name (@category.NewsItems.Count())
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                
+                @Html.Action("DemoPod", "Request")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@helper Pagination()
+{
+    @Html.PagedListPager(Model.NewsItems, page => Url.Action(
+        "Index",
+        new
+        {
+            page = page,
+            archive = Model.CurrentArchive == null ? "" : Model.CurrentArchive.Value.ToString("MMMM-yyyy"),
+            category = Model.CurrentCategory == null ? "" : Model.CurrentCategory.Name.ForUrl()
+        }),
+        new PagedListRenderOptions
+        {
+            LinkToNextPageFormat = ">>",
+            LinkToPreviousPageFormat = "<<",
+            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+            MaximumPageNumbersToDisplay = 10,
+            ContainerDivClasses = new[] { "desktop-" }
+        }
+    )
+    @Html.PagedListPager(Model.NewsItems, page => Url.Action(
+        "Index",
+        new
+        {
+            page = page,
+            archive = Model.CurrentArchive == null ? "" : Model.CurrentArchive.Value.ToString("MMMM-yyyy"),
+            category = Model.CurrentCategory == null ? "" : Model.CurrentCategory.Name.ForUrl()
+        }),
+        new PagedListRenderOptions
+        {
+            LinkToNextPageFormat = ">>",
+            LinkToPreviousPageFormat = "<<",
+            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+            MaximumPageNumbersToDisplay = 5,
+            ContainerDivClasses = new[] { "mobile-" }
+        }
+    )
+}

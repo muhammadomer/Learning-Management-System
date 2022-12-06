@@ -1,0 +1,197 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Resources.Questions.TestQuestionModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Modules",
+        ContentTitle = "Module - " + Model.Resource.Name + "",
+        ContentTitleDesc = "Edit a question in the assessment.",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index", "Courses"), "fa-briefcase"),
+            new BreadcrumbItem(Model.Resource.Course.Name),
+            new BreadcrumbItem("Resources", Url.Action("Index", new { id = Model.Resource.CourseID}), "fa-files-o"),
+            new BreadcrumbItem(Model.Resource.Name + " - Test", Url.Action("Test", new { id = Model.ResourceID})),
+            new BreadcrumbItem("Edit Question")
+        }
+    };
+    List<SelectListItem> QuestionTypeList = new List<SelectListItem>();
+    //QuestionTypeList.Add(new SelectListItem
+    //{
+    //    Text = "Simple",
+    //    Value = "1"
+    //});
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Radio Buttons unlimited answers",
+        Value = "2"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Sliding bar with number of answers",
+        Value = "3"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "True or False drag and drop",
+        Value = "4"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "Multiple answers drag and drop",
+        Value = "5"
+    });
+    QuestionTypeList.Add(new SelectListItem
+    {
+        Text = "True or False dropdown",
+        Value = "6"
+    });
+    List<SelectListItem> attemptlist = new List<SelectListItem>();
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "1",
+        Value = "1"
+    });
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "2",
+        Value = "2"
+    });
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "3",
+        Value = "3"
+    });
+    attemptlist.Add(new SelectListItem
+    {
+        Text = "4",
+        Value = "4"
+    });
+}
+
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content">
+            <a class="btn btn-success pull-right" href="@Url.Action("Test", new { ID = Model.ResourceID })">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@Url.Action("Test", new { ID = Model.ResourceID })">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8" style="padding-left:0px !important;">
+    <section class="panel panel-default">
+        @*<header class="panel-heading">The Header</header>*@
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal edit-create-form">
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.HiddenFor(x => x.ResourceID)
+                    @Html.HiddenFor(x => x.Sort)
+
+                    <div class="col-md-6">
+                        <div class="form-group edit-create-buttons">
+                            @Html.LabelFor(model => model.QuestionType@*, new { @class = "white-color" }*@)
+                            <div class="input-field full">
+                                @Html.DropDownListFor(model => model.QuestionType, QuestionTypeList, "-- Select Type --", new { @class = "form-control", @style = "max-width:360px" })
+                                @Html.ValidationMessageFor(model => model.QuestionType)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Question, new { @class = "control-label" })
+                            <div class="input-field full">
+                                @if (Model.QuestionType == 4 || Model.QuestionType == 6)
+                                {
+                                    @Html.TextAreaFor(model => model.Question , new { @readonly = "true" })
+                                }
+                                else
+                                {
+
+                                    @Html.TextAreaFor(model => model.Question)
+                                }
+
+                                @Html.ValidationMessageFor(model => model.Question)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Attempts)
+                            <div class="input-field full">
+                                @Html.DropDownListFor(model => model.Attempts, attemptlist, "-- Select Attempts --", new { @class = "form-control", @style = "max-width:360px" })
+                                @Html.ValidationMessageFor(model => model.Attempts)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Feedback)
+                            <div class="input-field full">
+                                @Html.TextAreaFor(model => model.Feedback)
+                                @Html.ValidationMessageFor(model => model.Feedback)
+                            </div>
+                        </div>
+
+
+                        <div class="form-group edit-create-buttons" style="margin-bottom:0px;">
+                            <div class="adjust-button">
+                                <input type="submit" value="Update" class="btn btn-dark" />
+                            </div>
+                            <div class="back-button btn btn-warning hidden">
+                                @Html.ActionLink("Back to Test", "Test", new { ID = Model.ResourceID })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+@*<div class="col-md-3">
+
+
+        <div class="desktop-ver">
+            <div class="row">
+                <div class="col-md-12 align-top-content" style="padding-right:0px !important;">
+                    <a class="btn btn-success pull-right" href="javascript:history.back()">
+                        <i  class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-ver middle-btn">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-12">
+                    <a class="btn btn-success pull-right" href="javascript:history.back()">
+                        <i  class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script>
+    $("#QuestionType").on("change", function () {
+        var id = parseInt($(this).val());
+        if (id == 4 || id == 6) {
+            $("#Question").attr('readonly', true);
+        } else {
+            $("#Question").attr('readonly', false);
+        }
+    });
+</script>

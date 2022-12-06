@@ -1,0 +1,32 @@
+﻿.mob-show {
+    display: none;
+}
+
+.course-overview {
+    iframe, embed, object {
+        max-width: 100%;
+        margin: 15px 10px 15px 0;
+    }
+}
+
+.flot-tick-label {
+    &.tickLabel {
+        overflow: hidden!important;
+    }
+}
+
+.year-select {
+    width: 200px;
+
+    + .chosen-container {
+        margin-top: 10px;
+    }
+}
+
+
+//mobile devices
+@media only screen and (max-width: 767px) {
+    .mob-show {
+        display: block;
+    }
+}

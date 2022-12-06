@@ -1,0 +1,266 @@
+﻿@using HUC.Web.App.MediaItems
+@model HUC.Web.App.MediaItems.Models.MediaItemPickerPageModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_ColorboxLayout.cshtml";
+    var uploadTab = (FileType?)ViewBag.UploadTab;
+    var isUpload = uploadTab.HasValue;
+}
+<style type="text/css">
+    #tabs-area {
+        width: 100%;
+        float: left;
+    }
+
+    .tab {
+        width: 100%;
+    }
+
+    .item {
+        float: left;
+        width: 138px;
+        height: 138px;
+        position: relative;
+        border: 1px solid #B4B4B4;
+    }
+
+        .item:hover {
+            background-color: #dcdcdc;
+        }
+
+        .item.selected {
+            background-color: #d9ffd4;
+        }
+
+        .item .checkButton {
+            cursor: pointer;
+        }
+
+        .item .innerButton {
+            display: none;
+        }
+
+        .item.selected:hover {
+            background-color: #b2d3ae;
+        }
+
+    .imgtxt {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        background-color: #DBDBDB;
+    }
+</style>
+<p id="tabs-area">
+    <a href="#" rel="select" class="btn @if (isUpload){<text>btn-grey</text> }else{<text>btn-inverse</text>} "><i class=" icon-hand-up"></i>Select</a>
+    @foreach (var allowedType in Model.FileTypes)
+    {
+        <a href="#" rel="upload" data-filetypeid="@((int)allowedType)" class="btn @if (isUpload && Model.Add != null && Model.Add.Type == allowedType){<text>btn-inverse</text> }else{<text>btn-grey</text>}"><i class="icon-upload-alt"></i>Upload @allowedType.ToString()</a>
+    }
+</p>
+<div id="tab-select" class="tab" @if (isUpload) { <text> style="display: none;" </text>     }>
+    @foreach (var item in Model.Items)
+    {
+        <div id="@item.ID" class="item">
+            @switch (item.Type)
+            {
+                case FileType.Image:
+                    <span class="imgtxt">@item.Title</span>
+                    <img class="checkButton" src="@item.SourceReference(110,110)" style="margin: 14px;" />
+                    break;
+                default:
+                @:@item.SimpleOutput()
+                <a href="#" class="checkButton btn btn-minier"><i class="icon-check"></i></a>
+                    break;
+            }
+
+            <input class="innerButton"
+                   name="selectedMedia"
+                   value="@item.ID"
+                   @if (Model.IsMultiple) { <text> type="checkbox" </text>            } else { <text> type="radio" </text>            } />
+            <div class="niceDisplay" style="display:none;float:left;">
+                @item.SimpleOutput(50, 50)
+            </div>
+        </div>
+    }
+</div>
+@foreach (var allowedType in Model.FileTypes)
+{
+    <div id="tab-upload-@((int)allowedType)" class="tab" @if (!isUpload || uploadTab != allowedType) { <text> style="display: none;" </text>      }>
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data"}))
+        {
+            @* Persist Values *@
+            @Html.HiddenFor(x => x.IsMultiple)
+            @Html.HiddenFor(x => x.IsRemovable)
+            @Html.HiddenFor(x => x.TargetElement)
+            @Html.HiddenFor(x => x.Add.Type, new { @Value = (int)allowedType })
+            if (Model.FileTypes != null)
+            {
+                for (int i = 0; i < Model.FileTypes.Count(); i++)
+                {
+                    @Html.Hidden("FileTypes[" + i + "]", Model.FileTypes[i])
+                }
+            }
+            @* -- *@
+
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Add.Title, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(x => x.Add.Title)
+                        @Html.ValidationMessageFor(x => x.Add.Title)
+                    </div>
+                </div>
+
+                @if (allowedType == FileType.Video)
+                {
+                    @Html.HiddenFor(x => x.Add.IsLink, new { @Value = "true" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Add.Link, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Add.Link)
+                            @Html.ValidationMessageFor(model => model.Add.Link)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(x => x.Add.IsLink, new { @Value = "false" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Add.File, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input type="file" name="@Html.NameFor(x => x.Add.File)" />
+                            @Html.ValidationMessageFor(model => model.Add.File)
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var targetElement = window.parent.$('@Model.TargetElement');
+        var firstSelected = window.parent.$('@Model.TargetElement').val().split(',');
+
+        $(firstSelected).each(function (i, v) {
+            if (!isNullOrWhiteSpace(v)) {
+                var curBox = $('#' + v);
+                curBox.addClass('selected');
+            }
+        });
+
+        $('.checkButton').click(function () {
+            var curItem = $(this);
+            var item = curItem.closest('.item');
+
+            item.find('.innerButton').click();
+
+            var allItems = $('.item');
+
+            allItems.each(function () {
+                var curIterationItem = $(this);
+                var curIterationButton = curIterationItem.find('.innerButton');
+
+                curIterationItem.removeClass('selected');
+                if (curIterationButton.is(':checked')) {
+                    curIterationItem.addClass('selected');
+                }
+            });
+        });
+
+        $('[name="selectedMedia"]').change(function () {
+            var displayWrapper = targetElement.siblings('.niceDisplayWrapper');
+            displayWrapper.html('');
+            var array = [];
+            $('[name="selectedMedia"]').each(function () {
+                var curIteration = $(this);
+                if (curIteration.prop("checked")) {
+                    array.push(curIteration.val());
+
+                    var niceDisplayClone = curIteration.closest('.item').find('.niceDisplay').clone();
+                    niceDisplayClone.show();
+                    displayWrapper.append(niceDisplayClone);
+                }
+            });
+            targetElement.val(array.toString());
+        });
+
+        $('#tabs-area a').click(function () {
+            var curItem = $(this);
+            var rel = curItem.attr('rel');
+
+            //Color State Change
+            $('#tabs-area a').removeClass('btn-inverse').removeClass('btn-grey');
+            curItem.addClass('btn-inverse');
+            curItem.siblings().addClass('btn-grey');
+
+            $('.tab').hide();
+
+            if (rel == 'upload') {
+                var typeID = curItem.data('filetypeid');
+                $('#tab-' + rel + '-' + typeID).show();
+            } else {
+                $('#tab-' + rel).show();
+            }
+        });
+
+        $('input[type="file"]').each(function () {
+            var curFile = $(this);
+
+            //Automated file input ace generation
+            //Use class of 'js-disableaceupload' to ignore this code
+            if (!curFile.hasClass('js-disableaceupload')) {
+                var isMultiple = curFile.is('[multiple]');
+
+                if (isMultiple) {
+                    curFile.ace_file_input({
+                        style: 'well',
+                        btn_choose: 'Drop files here or click to choose',
+                        btn_change: null,
+                        no_icon: 'icon-cloud-upload',
+                        droppable: true,
+                        thumbnail: 'small'
+
+                    });
+                } else {
+                    curFile.ace_file_input({
+                        no_file: 'No File ...',
+                        btn_choose: 'Choose',
+                        btn_change: 'Change',
+                        droppable: false,
+                        onchange: null,
+                        thumbnail: false
+                    });
+                }
+            }
+
+            //Automated adding of the 'enctype' value to a form if not already provided
+            //Use class of 'js-disableautoenctype' on the form to ignore this code
+            var curForm = curFile.closest('form');
+            if (curForm.length > 0 && !curForm.hasClass('js-disableautoenctype')) {
+                var curEncType = curForm.attr('enctype');
+                if (curEncType === undefined || isNullOrWhiteSpace(curEncType)) {
+                    curForm.attr('enctype', 'multipart/form-data');
+                }
+            }
+        });
+    });
+
+    function isNullOrWhiteSpace(str) {
+        return str === null || str.match(/^ *$/) !== null;
+    }
+</script>

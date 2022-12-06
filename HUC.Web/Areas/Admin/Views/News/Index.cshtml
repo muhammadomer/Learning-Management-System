@@ -1,0 +1,71 @@
+﻿@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.News.Items.NewsItemModel>
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Items",
+        ContentTitle = "Items",
+        ContentTitleDesc = "Here is a list of all the news items.",
+        ActivePage = "news",
+        ActiveSubPage = "items",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("News", null, "i-stack"),
+            new BreadcrumbItem("Items", null, "i-docs")
+        }
+    };
+}
+
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create New</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IntroCopy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BodyCopy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PublishOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PublishBy)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.OrderByDescending(x => x.PublishOn)) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IntroCopy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BodyCopy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PublishOn)
+            @if (item.PublishOn >= DateTime.Now)
+            {
+                <span class="label bg-black text-white">Unpublished</span>
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PublishBy)
+        </td>
+        <td>
+            <a href="@Url.Action("Edit", new { id = item.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+            <a href="@Url.Action("Delete", new { id = item.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>
+        </td>
+    </tr>
+}
+
+</table>

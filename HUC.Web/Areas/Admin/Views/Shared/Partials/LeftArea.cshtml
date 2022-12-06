@@ -1,0 +1,131 @@
+﻿@using HUC.Web.Models
+@{
+    var pageData = (PageDataModel)ViewBag.PageData;
+    if (pageData == null)
+    {
+        pageData = new PageDataModel();
+    }
+}
+
+@if (!pageData.StrippedLayout)
+{
+    <aside class="bg-black aside-md hidden-print" id="nav">
+        <section class="vbox">
+            <section class="w-f scrollable">
+                <div class=slim-scroll data-height=auto data-disable-fade-out=true data-distance=0 data-size=10px data-railopacity=0.2>
+                    <!-- nav -->
+                    <nav class="nav-primary hidden-xs">
+                        <!-- Website Nav -->
+                        <ul class="nav nav-main" data-ride="collapse">
+                            <li class="@if (pageData.ActivePage == "dashboard"){<text>active</text>}">
+                                <a href="/Admin" class="auto">
+                                    <i class="i i-statistics icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- / Website Nav -->
+                        <!-- Templates Nav -->
+                        <ul class="nav nav-main" data-ride="collapse">
+                            <li class="active">
+                                <a href="#" class="auto nav-title">
+                                    <span class="font-bold">Website Management</span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "companies"){<text>active</text>}">
+                                <a href="/Admin/Companies" class="auto">
+                                    <i class="fa fa-building-o icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Companies
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "courses"){<text>active</text>}">
+                                <a href="/Admin/Courses" class="auto">
+                                    <i class="fa fa-briefcase icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Courses
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "news"){<text>active</text>}">
+                                <a href="#" class="auto">
+                                    <span class="pull-right text-muted">
+                                        <i class="i i-circle-sm-o text"></i>
+                                        <i class="i i-circle-sm text-active"></i>
+                                    </span>
+                                    <i class="i i-stack icon">
+                                    </i>
+                                    <span class="font-bold">News</span>
+                                </a>
+                                <ul class="nav dk">
+                                    <li class="@if (pageData.ActivePage == "news" && pageData.ActiveSubPage == "items"){<text>active</text>}">
+                                        <a href="/Admin/News" class="auto">
+                                            <i class="i i-arrow-right5"></i>
+                                            <i class="i i-docs"></i>
+                                            <span>Items</span>
+                                        </a>
+                                    </li>
+                                    <li class="@if (pageData.ActivePage == "news" && pageData.ActiveSubPage == "categories"){<text>active</text>}">
+                                        <a href="/Admin/News/Categories" class="auto">
+                                            <i class="i i-arrow-right5"></i>
+                                            <i class="fa fa-sitemap"></i>
+                                            <span>Categories</span>
+                                        </a>
+                                    </li>
+                                    <li class="@if (pageData.ActivePage == "news" && pageData.ActiveSubPage == "labels"){<text>active</text>}">
+                                        <a href="/Admin/News/Labels" class="auto">
+                                            <i class="i i-arrow-right5"></i>
+                                            <i class="fa fa-tags"></i>
+                                            <span>Labels</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "testimonials"){<text>active</text>}">
+                                <a href="/Admin/Testimonials" class="auto">
+                                    <i class="fa fa-thumbs-up icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Testimonials
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "administrators"){<text>active</text>}">
+                                <a href="/Admin/Administrators" class="auto">
+                                    <i class="fa fa-bolt icon">
+                                    </i>
+                                    <span class="font-bold">
+                                        Administrators
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="@if (pageData.ActivePage == "seo"){<text>active</text>}">
+                                <a href="@Url.Action("Index","SEOPages")" class="auto">
+                                    <i class="fa fa-pagelines">
+                                    </i>
+                                    <span class="font-bold">
+                                        SEO
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- / Templates Nav -->
+                    </nav>
+                    <!-- / nav -->
+                </div>
+            </section>
+            <footer class="footer hidden-xs no-padder text-center-nav-xs">
+                <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs">
+                    <i class="i i-circleleft text"></i>
+                    <i class="i i-circleright text-active"></i>
+                </a>
+            </footer>
+        </section>
+    </aside>
+}

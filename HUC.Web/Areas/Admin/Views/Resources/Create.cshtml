@@ -1,0 +1,135 @@
+﻿@using HUC.Web.App.Courses
+@using HUC.Web.Models
+@model HUC.Web.App.Resources.ResourceAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Create module",
+        ContentTitle = Model.Course.Name + " > " + "Create module",
+        ContentTitleDesc = "",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index"), "fa-briefcase"),
+            new BreadcrumbItem(Model.Course.Name),
+            new BreadcrumbItem("Resources", Url.Action("Index", new { id = Model.CourseID}), "fa-files-o"),
+            new BreadcrumbItem("Create")
+        }
+    };
+}
+<link href="~/_Content/css/Appforms.css" rel="stylesheet" />
+
+<div class="col-md-9" style="padding-left:0px !important;">
+    <section class="panel panel-default" style=" width: 70%;">
+        @*<header class="panel-heading">The Header</header>*@
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal edit-create-form">
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.CourseID)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name@*, new { @class = "white-color" }*@)
+                        <div class="input-field">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" , @maxlength = "30"  })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+
+                    @* <div class="form-group">
+                            @Html.LabelFor(model => model.TestCooldownHours)
+                            <div class="input-field">
+                                @Html.EditorFor(model => model.TestCooldownHours)
+                                @Html.ValidationMessageFor(model => model.TestCooldownHours)
+                            </div>
+                            <span class="info-text">If provided, this is the amount of time a user must wait to re-take the test. If not provided, a user is not allowed to re-take the test.</span>
+                        </div>*@
+
+                    @*<div class="form-group">
+                        @Html.LabelFor(model => model.TestTimeLimitMinutes, new { @class = "control-label col-md-2" })
+                            <div class="input-field">
+                                @Html.EditorFor(model => model.TestTimeLimitMinutes)
+                                @Html.ValidationMessageFor(model => model.TestTimeLimitMinutes)
+                            </div>
+                            <span>If provided, this is the amount of time a user has to take a test. When this time is over, their results will be submitted as-is.</span>
+                        </div>*@
+                    <div class="form-group">
+                        <label class="control-label">Module time limit (Max 200 minutes)</label>
+                        <div class="input-field">
+                            @Html.TextBoxFor(model => model.ModuleTime, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ModuleTime)
+                        </div>
+
+                    </div>
+
+                    <div class="form-group"  style="width:95%;">
+                        <label class="control-label">Module intro text</label>
+                        <div class="input-field full">
+                            @Html.TextAreaFor(model => model.TestIntroCopy, new { @class = "redactor" })
+                            @Html.ValidationMessageFor(model => model.TestIntroCopy)
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                            @Html.LabelFor(model => model.TestOutroCopy)
+                            <div class="input-field full">
+                                @Html.TextAreaFor(model => model.TestOutroCopy, new { @class = "redactor" })
+                                @Html.ValidationMessageFor(model => model.TestOutroCopy)
+                            </div>
+                        </div>*@
+
+                    <div @*class="form-group"*@>
+                        <div class="adjust-button" style="float: left;">
+                            <input type="submit" value="Create" class="btn btn-dark" />
+                        </div>
+                        <div class="btn btn-secondary m-btn m-btn--custom" style="float:left;border: 1px solid darkgrey;margin-left: 15px !important;">
+                            @Html.ActionLink("Cancel", "Index", new { id = Model.CourseID })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+<script>
+   
+    $("#ModuleTime").keydown(function (event) {
+        // Allow only backspace and delete
+        if (event.keyCode == 46 || event.keyCode == 8) {
+            // let it happen, don't do anything
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if (event.keyCode < 48 || event.keyCode > 57) {
+                event.preventDefault();
+            }
+        }
+    });
+</script>
+        @*<div class="col-md-3">
+
+
+            <div class="desktop-ver">
+                <div class="row">
+                    <div class="col-md-12 align-top-content" style="padding-right:0px !important;">
+                        <a class="btn btn-success pull-right" href="javascript:history.back()">
+                            <i  class="fa fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-ver middle-btn">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-12">
+                        <a class="btn btn-success pull-right" href="javascript:history.back()">
+                            <i  class="fa fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>*@

@@ -1,0 +1,65 @@
+﻿@using HUC.Web.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Consultancy services",
+        ContentTitle = "Consultancy services",
+        ActivePage = "consultancy",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("consultancy services")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="picture-heading">
+                    <img class="bg-pic" alt="Online Compliance Training for Legal Firms" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/picture-heading-test.jpg" />
+                    <div class="text">
+                        <img alt="Online Compliance Training for Legal Firms" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/picture-heading-icon.png" />
+                        <span>
+                            Online Compliance Training for Legal Firms
+                        </span>
+                    </div>
+                </div>
+
+                <div class="items">
+                  
+                    <p>
+                        We are offering consultancy services in the following areas:
+                    </p>
+                    
+                    <ul class="no-bold">
+                        <li>
+                            <strong>Litigation funding</strong><br/>
+                            We can advise on the various funding options available to litigators and have access to the main providers.  The advice can extend to include Risk Management protocols to give comfort to all parties.
+
+                        </li>
+                        <li>
+                            <strong>Business restructuring including succession planning and controlled exits</strong>
+                        </li>
+                        <li>
+                           <strong> Lexcel/ISO quality standards. </strong> HUC has access to a number of specialists who can guide a firm through the process of accreditation.
+                        </li>
+                        <li>
+                            <strong>Management & Leadership Training</strong><br/>
+                            We can provide various training options for a variety of topics across your organisational requirements including – Marketing, IT, Business Processes, CRM, Social Media & Content Marketing. We may be able to assist you in accessing grant support to facilitate these projects – please ask us for more information.
+                        </li>
+                    </ul>
+                    
+              
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="single-demo"> @*This is a class for when the page only has the demo and nothing else (sidelinks etc). Remove if these occur.*@
+                    @Html.Action("DemoPod", "Request")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

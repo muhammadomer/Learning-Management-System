@@ -1,0 +1,577 @@
+﻿@using HUC.Web.Models
+@using HUC.Web.App.Companies
+@model HUC.Web.App.PageModels.CompanyDashboardPageModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Dashboard",
+        ContentTitle = "Administration View",
+        ContentTitleDesc = "Here are the overall statistics of the company",
+        ActivePage = "usage-graphs",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Useage Graphs", null, "i-statistics")
+        }
+    };
+    //  Model.Company.Courses.OrderBy(x => x.Course.Name);
+    var company = (CompanyModel)ViewBag._Company;
+}
+<style>
+    .next {
+        top: 110px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .prev {
+        top: 110px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .aligntd {
+        vertical-align: middle;
+        text-align: center;
+    }
+</style>
+<section class="row m-b-md hidden">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Filter By Year
+        </h3>
+        <small>
+            Use the dropdown to filter the results and statistics shown below by year.
+        </small>
+        <br />
+        <select class="chosen-select year-select" id="years-filter">
+            <option value="">All Time</option>
+            @foreach (var year in Model.YearsOptions())
+            {
+                <option value="@year" @if (Model.Year == year) { <text> selected="selected" </text> }>@year</option>
+            }
+        </select>
+    </div>
+</section>
+<section class="row m-b-md hidden">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Overall Statistics
+        </h3>
+        <small>
+            Here are the overall statistics for your company.
+        </small>
+    </div>
+</section>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <section class="panel panel-default" style="height:324px">
+            <header class="panel-heading font-bold">Average Score Per Course (%)</header>
+            <button onclick="BackwardScore()" class="prev" id="prevscore" style="float:left;display:none;"><i class="fa fa-chevron-circle-left"></i></button>
+            <button onclick="FarwardScore()" class="next" id="nextscore" style="float:right;display:none;"><i class="fa fa-chevron-circle-right"></i></button>
+            <div class="panel-body">
+                <div id="score-bar" style="height:240px;display:none;"></div>
+                <span id="score-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
+                <span id="score-bar-loading" class="chart-loading">No data available</span>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+
+        <section class="panel panel-default" style="height:324px">
+            <header class="panel-heading font-bold">Average Time Spent Per Course (Minutes)</header>
+            <button onclick="Backward()" class="prev" id="prev" style="float:left;display:none;"><i class="fa fa-chevron-circle-left"></i></button>
+            <button onclick="Farward()" class="next" id="next" style="float:right;display:none;"><i class="fa fa-chevron-circle-right"></i></button>
+            <div class="panel-body">
+                <div id="revision-bar" style="height:240px;display:none;"></div>
+                <span id="revision-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
+                <span id="revision-bar-loading" class="chart-loading">No data available</span>
+            </div>
+        </section>
+    </div>
+</div>
+
+<section class="row">
+    <div class="col-sm-12 col-md-6">
+        <h3 class="m-b-xs text-background" style="font-size:24px !important">
+            Courses
+        </h3>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <h3 class="content-desc adjust-desc">
+            Click usage statistics for more information
+        </h3>
+    </div>
+</section>
+<div class="col-md-12">
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            <table id="sortabletbl" class="table table-striped m-b-none black-header">
+                <thead>
+                    <tr>
+                        <th>
+                            Course Name
+                        </th>
+                        <th class="aligntd">
+                            Review States
+                        </th>
+                        <th width="250px" class="aligntd">
+                            Average Time Taken
+                        </th>
+                        <th width="180px" class="aligntd">
+                            Average Score
+                        </th>
+                        <th width="200px" class="text-center aligntd">
+                            Usage Statistics
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var curCompanyCourse in Model.Company.Courses.Where(x=>x.Course.IsDeleted==false).OrderBy(x => x.Course.Name, new StrCmpLogicalComparer()))
+
+                    {
+                        var curCompanyUser = company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First());
+                        <tr>
+                            <td>
+                                @curCompanyCourse.Course.Name
+                            </td>
+                            @if (curCompanyCourse.HasFreeTextCheck == 1 )
+                            {
+                                <td class="aligntd">
+                                    <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID">Reviews Pending</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="aligntd">No Review Pending</td>
+                            }
+                            <td class="aligntd">
+                                @curCompanyCourse.AverageTimeString
+                            </td>
+                            <td class="aligntd">
+                                @curCompanyCourse.ComplianceScoreAverage/@curCompanyCourse.Course.MaxScore
+                            </td>
+                            <td class="text-center aligntd">
+                                @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseEdit/@curCompanyCourse.ID" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>*@
+                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID"><i class="fa fa-bar-chart-o"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+<section class="row m-b-md hidden">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black" style="font-size:24px !important">
+            Latest Test Results
+        </h3>
+        <small>
+            This shows the latest 10 test scores for your users.
+        </small>
+    </div>
+</section>
+<section class="row">
+    <div class="col-sm-12 col-md-6">
+        <h3 class="m-b-xs text-background" style="font-size:24px !important">
+            Recent User Assessments
+        </h3>
+    </div>
+    <div class="col-sm-12 col-md-6">
+
+    </div>
+</section>
+<div class="col-md-12">
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            @*<span class="table-header">Latest 10 test scores of users</span>*@
+            <table id="sortable" class="table table-striped m-b-none black-header">
+                <thead>
+                    <tr>
+                        <th class="aligntd">
+                            Date
+                        </th>
+                        <th class="aligntd">
+                            User
+                        </th>
+                        <th class="aligntd">
+                            Course
+                        </th>
+                        <th class="aligntd">
+                            Test Taken
+                        </th>
+                        <th class="aligntd">
+                            Time Taken
+                        </th>
+                        <th class="aligntd">
+                            Score
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var curTest in Model.Company.LatestUserTests().OrderByDescending(x => x.StartOn).Take(10))
+                    {
+                        <tr class="aligntd">
+                            <td>
+                                @curTest.StartOn.ToShortDateString()
+                            </td>
+                            <td>
+                                @curTest.UserCourse.User.FirstName @curTest.UserCourse.User.LastName
+                            </td>
+                            <td>
+                                @curTest.Resource.Course.Name
+                            </td>
+                            <td>
+                                @curTest.Resource.Name
+                            </td>
+                            <td>
+                                @curTest.TimeTakenString
+                            </td>
+                            <td>
+                                @curTest.CorrectAnswerCount/@curTest.MaxScore
+
+
+                                @*<i class="fa fa-check-circle"></i>
+                    <i class="fa fa-times-circle"></i>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+		 $(".intro-text").removeClass("button-deactive");
+        $(".btn-4").css("color", "#ffffff !important");
+        $('#sortabletbl').dataTable({
+            "bProcessing": true,
+            "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+            "sPaginationType": "full_numbers",
+            // "aoColumns": [null, null, { "bSortable": true }],
+            "iDisplayLength": 100
+        });
+        $(".col-sm-6").hide();//for the time being
+        $("#sortabletbl_processing").hide();
+    });
+
+    var counter = 0;
+    var score = 0;
+    var com = 0;
+    var totalDataScoreinGraph = 0;
+    var countscorerecord = 0;
+    var totalDataTimeinGraph = 0;
+    var countTimerecord = 0;
+    function Farward() {
+        counter++;
+        com = 1;
+        updateGraphs(counter,com);
+
+    }
+    function FarwardScore() {
+        score++;
+        com = 2;
+        updateGraphs(score, com);
+
+    }
+    function Backward() {
+        counter--;
+        com = 1;
+        if (counter <= 0) {
+
+            $("#prev").hide();
+            $("#next").show();
+        }
+        $("#next").show();
+        updateGraphs(counter,com);
+    }
+    function BackwardScore() {
+        score--;
+        com = 2;
+        if (score <= 0) {
+
+            $("#prevscore").hide();
+            $("#nextscore").show();
+        }
+        $("#nextscore").show();
+        updateGraphs(score, com);
+    }
+    $(document).ready(function () {
+
+
+
+
+            updateGraphs(counter, com);
+            //window.setInterval(function () {
+            //    updateGraphs();
+            //}, 5000);
+
+
+
+
+            //Year filter changes
+
+            $("#years-filter").change(function() {
+                window.location.href = '/company/dashboard/Graphs?year=' + $(this).val();
+            });
+        });
+    var defaultGraphOptions = {
+        grid: {
+            hoverable: true,
+            clickable: false,
+            borderWidth: 0
+        },
+        legend: {
+            show: false
+        },
+        series: {
+            shadowSize: 1
+        }
+
+    };
+    //$("#score-bar").UseTooltip();
+    function updateGraphs(count, co) {
+
+
+
+
+        $.get('@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Dashboard/PageData?year=@Model.Year' + '&next=' + count, function (data) {
+
+           // debugger;
+
+            totalDataScoreinGraph = data.TotalRecordScoreInGraph;
+            totalDataTimeinGraph = data.TotalRecordTimeInGraph;
+             if (data.UserAverageScorePerCourse.existdata == false) {
+                 if (co == 1) {
+                     if (count > 0) {
+                         $("#next").hide();
+                     } else {
+                         $("#prev").hide();
+                     }
+                 } else if (co == 2) {
+                     if (count > 0) {
+                         $("#nextscore").hide();
+                     } else {
+                         $("#prevscore").hide();
+                     }
+                 } else {
+                     if (count > 0) {
+                         $("#next").hide();
+                         $("#nextscore").hide();
+                     } else {
+                         $("#prev").hide();
+                         $("#prevscore").hide();
+                     }
+                 }
+
+                 return false;
+             } if (data.UserAverageScorePerCourse.existdata == true) {
+
+                 if (co == 1) {
+                     if (count > 0)
+                         $("#prev").show();
+                 } else if (co == 2) {
+                     if (count > 0)
+                         $("#prevscore").show();
+                 } else {
+                     if (count > 0)
+                         $("#prev").show();
+                        // $("#prevscore").show();
+                 }
+             }
+             if (co == 1) {
+                 updateRevisionGraph(data.UserAverageTimeSpentPerCourse);
+             } else if (co == 2) {
+                 updateScoreGraph(data.UserAverageScorePerCourse);
+             } else {
+                 debugger;
+                 updateScoreGraph(data.UserAverageScorePerCourse);
+                 updateRevisionGraph(data.UserAverageTimeSpentPerCourse);
+             }
+
+                });
+    }
+    function updateScoreGraph(data) {
+        if (totalDataScoreinGraph > 10) {
+            countscorerecord = countscorerecord + data.ticks.length;
+        }
+        else {
+            $("#nextscore").hide();
+            $("#prevscore").hide();
+        }
+        $("#score-bar-loading").hide();
+      //  alert(data.barData.counter);
+        if (data == null || data.noData == true) {
+            $("#score-bar").hide();
+            $("#score-bar-error").show();
+            $("#nextscore").hide();
+            $("#prevscore").hide();
+
+        } else {
+            //Naqi//
+            if (totalDataScoreinGraph == countscorerecord) {
+                $("#nextscore").hide();
+                $("#prevscore").show();
+                countscorerecord = 0;
+            }
+            $("#score-bar").show();
+            $("#score-bar-error").hide();
+
+            $("#score-bar").length && $.plot($("#score-bar"),
+                [
+
+                    {
+
+                        label: "Target Compliance Score",
+                        data: data.barDataCompliance,
+
+                        bars: {
+                            show: true,
+                            fill: true,
+                            lineWidth: 1,
+                            barWidth: 0.75,
+                            order: 1,
+                            align: 'center',
+                            fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                        },
+                        color: "black"
+                    }, {
+                        label: "Average Compliance Score",
+                        data: data.barDataAverage,
+                        bars: {
+                            show: true,
+                            fill: true,
+                            lineWidth: 1,
+                            barWidth: 0.75,
+                            order: 1,
+                            align: 'center',
+                            fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                        },
+                        color: "#e91da3"//"#1aae88"
+                    }
+                ],
+                $.extend({}, defaultGraphOptions, {
+                    xaxis: {
+                        ticks: data.ticks
+
+                    },
+                    yaxis: {
+                        min: 0, max: 100, tickSize: 10,
+                         tickFormatter: function (v, axis) {
+                            return v + "% ";
+                        }
+                    },
+                })
+            );
+            $("#score-bar").UseTooltip("% ");
+        }
+
+    };
+    function updateRevisionGraph(data) {
+        if (totalDataTimeinGraph > 10) {
+            countTimerecord = countTimerecord + data.ticks.length;
+        }
+        else {
+            $("#prev").hide();
+            $("#next").hide();
+        }
+        $("#revision-bar-loading").hide();
+
+        if (data == null || data.noData == true) {
+            $("#revision-bar").hide();
+            $("#revision-bar-error").show();
+        } else {
+            //Naqi//
+            if (totalDataTimeinGraph == countTimerecord) {
+                $("#prev").show();
+                $("#next").hide();
+                countTimerecord = 0;
+            }
+            $("#revision-bar").show();
+            $("#revision-bar-error").hide();
+
+            $("#revision-bar").length && $.plot($("#revision-bar"),
+                [
+                    {
+                        label: "Revision Time Spent Per Course",
+                        data: data.barData,
+                        bars: {
+                            show: true,
+                            fill: true,
+                            lineWidth: 1,
+                            barWidth: 0.75,
+                            order: 1,
+                            align: 'center',
+                            fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                        },
+                        color: "#e91da3"//"#6783b7"
+                    }
+                ],
+                $.extend({}, defaultGraphOptions, {
+                    xaxis: {
+                        ticks: data.ticks
+                    },
+                    yaxis: {
+                        min: 0, minTickSize: 1,
+                        tickFormatter: function (v, axis) {
+                            return v + " min.";
+                        }
+                    }
+                })
+            );
+            $("#revision-bar").UseTooltip(" min.");
+        }
+    };
+    var previousPoint = null, previousLabel = null;
+
+    $.fn.UseTooltip = function (unit) {
+        $(this).bind("plothover", function (event, pos, item) {
+            if (item) {
+                if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
+                    previousPoint = item.dataIndex;
+                    previousLabel = item.series.label;
+                    $("#tooltip").remove();
+
+                    var x = item.datapoint[0];
+                    var y = item.datapoint[1];
+
+                    var color = item.series.color;
+                    //console.log("x: " + x);
+                  //  console.log(item);
+
+                    showTooltip(item.pageX,
+                        item.pageY,
+                        color,
+                        "<strong>" + item.series.label + "</strong><br>" + item.series.xaxis.ticks[x - 1].label + " : <strong>" + y + unit + "</strong>");
+                }
+            } else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+    }
+
+    function showTooltip(x, y, color, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css({
+            position: 'absolute',
+            display: 'none',
+            top: y - 40,
+            left: x - 120,
+            border: '2px solid ' + color,
+            padding: '3px',
+            'font-size': '9px',
+            'border-radius': '5px',
+            'background-color': '#fff',
+            'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+            opacity: 0.9
+        }).appendTo("body").fadeIn(200);
+    }
+
+
+</script>

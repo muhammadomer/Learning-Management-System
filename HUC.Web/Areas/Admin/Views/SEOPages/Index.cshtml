@@ -1,0 +1,55 @@
+﻿@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.SEOPage.SEOPageModel>
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "SEO Fields",
+        ContentTitle = "SEO Fields",
+        ContentTitleDesc = "Here you edit SEO Fields",
+        ActivePage = "seo",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("SEO", null, "fa fa-pagelines"),
+        }
+    };
+
+}
+
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-s-md btn-primary"><i class="i i-file-plus"></i> Add New</a>
+</p>
+
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Page Title</th>
+                    <th>Meta Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seo in Model)
+                {
+                    <tr>
+                        <td>
+                            @seo.URL
+                        </td>
+                        <td>
+                            @seo.PageTitle
+                        </td>
+                        <td>
+                            @seo.MetaDescription
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = seo.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="@Url.Action("Delete", new { id = seo.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

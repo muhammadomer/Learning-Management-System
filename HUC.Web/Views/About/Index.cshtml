@@ -1,0 +1,134 @@
+﻿@using HUC.Web.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Who we are",
+        ContentTitle = "Who we are",
+        ActivePage = "whoweare",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("who we are")
+        }
+    };
+}
+
+<div class="standard-bg">
+    <div class="container">
+        <div class="content">
+            <div class="page-content">
+                <div class="items">
+                    <h2 class="underline">
+                        Julian Rose
+                    </h2>
+                    <p>
+                        Training Courses is the brainchild of Julian who began his career as a commercial apprentice with British Steel, where he trained as a Management Accountant, but was then "fast tracked" into senior management roles where his problem solving and negotiating skills were used in the rationalisation programmes required in a declining industry. 
+                    </p>
+                    <p>
+                        He then went on to hold several directorships in the industrial sector before answering a "cry for help" from a friend who was an Equity Partner in a mid-tier Black Country law firm with "partnership" issues. The business stabilised and opened one of the first "one stop shops" by the acquisition of an Estate Agency feeding the conveyancing arm of the firm. He then advised both the Legal Aid Board and Law firms in the transition to the Legal Services Commission and the "Franchising" scheme. For eight years he advised Neil Kinsella of Russell Jones & Walker on a number of topics, including the acquisition of the Claims Direct brand and streamlining the delivery of legal services, becoming Commercial Director of 4 Legal.
+                    </p>
+                    <p>
+                        With advent of OFR, Julian was appointed Head of Risk and Compliance at Russell Jones & Walker in order to lead RJW through the process of an "Alternative Business Structure" to enabling external funding. Julian and RJW were integral to the SRA's pilot helping to develop and shape the new code. Julian received a personal letter of thanks in recognition of this. RJW were then acquired by Slater & Gordon where Julian became "Head of Risk and Compliance UK".
+                    </p>
+                    <p>
+                        Julian has first-hand knowledge of the regulatory requirements under the new code and is ideally placed to help firms develop the "culture of compliance" required under OFR.
+                    </p>
+                    <h2 class="underline">
+                        John Barton, BSc (Hons) MCIM
+                    </h2>
+                    <p>
+                        John has over 30 years business experience initially within the construction services profession as a Quantity Surveyor and then
+                        in the computer services industry in Sales and Marketing management roles. This has included businesses employing less than 20
+                        staff and with multinational PLCs.  He was instrumental in growing a small computer systems house to quadruple its turnover and
+                        profits over a 4-year period before its acquisition as a 95 employee strong business by a quoted company.
+                    </p>
+                    <p>
+                        John successfully established his own management consultancy business in 1987 predominantly assisting SMEs to improve their
+                        overall performance. This business development for clients has included greater use of I.T., improved sales and marketing and
+                        enhanced effectiveness of employees.  His aim is to build good long-term, profitable relationships with clients and he has
+                        successfully carried out numerous additional projects with individual client companies.
+                    </p>
+                    @*<h3>
+                        MAIN ACTIVIIES
+                    </h3>
+                    <p>
+                        John works with a wide spectrum of clients to devise business strategies, evaluate opportunities and find ways to improve business
+                        performance. He has also worked as a contracted Business Adviser with <em>Business Link</em> and is an Accredited Consultant Practitioner
+                        with MAS and a Technology Means Business Adviser. In the last 3 years John has been a Registered and Approved Coach under the
+                        GrowthAccelerator scheme. He is also a Registered and Approved Training provider under the GrowthAccelerator scheme; this means
+                        that we are able to consider funding support for suitable clients.
+                    </p>*@
+                    <ul>
+                        <li>
+                            ICT and eBusiness strategies
+                        </li>
+                        <li>
+                            Marketing and sales strategies
+                        </li>
+                        <li>
+                            ISO9000 Quality, ISO27001 (Info Security) and ISO14001 Environmental projects
+                        </li>
+                        <li>
+                            Investors in People, Lexcel and Business Excellence projects / GrowthAccelerator business development
+                        </li>
+                        <li>
+                            Manufacturing Excellence - empowerment and team development projects
+                        </li>
+                    </ul>
+                    @*<h3>
+                        TYPICAL CLIENT PROFILE
+                    </h3>
+                    <p>
+                        John has worked as a Consultant and Project Manager for multinationals, private companies, family businesses and public sector
+                        bodies (<em>Local Authorities, Police, Probation, Colleges, and Universities</em>). He has worked in industrial and service sectors
+                        including solicitors, surveyors, building societies, computers, communications, brewing, plastics and traditional
+                        engineering-based industries.
+                    </p>
+                    <p>
+                        Typical SME clients have sales between £1m and £20m. They often need an external catalyst to initiate a Change Project, usually
+                        obtaining funding subsidies to focus clients’ attention.
+                    </p>
+                    <div class="full-image">
+                        <a href="/Funding/GrowthAccelerator">
+                            <img alt="Growth Accelerator" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/growthaccelerator.png" />
+                        </a>
+                    </div>*@
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="selection-container">
+                    <ul class="sub-pages">
+                        <li class="active">
+                            <span>
+                                Who we are
+                                <label class="arrow"></label>
+                            </span>
+
+                        </li>
+                        <li>
+                            <a href="/About/WhyUs">
+                                Why us
+                                <label class="arrow"></label>
+                            </a>
+                        </li>
+                        @*<li>
+                            <a href="/About/Services">
+                                Our Services
+                                <label class="arrow"></label>
+                            </a>
+                        </li>*@
+
+                        <li>
+                            <a href="/About/Testimonials">
+                                Testimonials
+                                <label class="arrow"></label>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                @Html.Action("DemoPod", "Request")
+            </div>
+        </div>
+    </div>
+</div>

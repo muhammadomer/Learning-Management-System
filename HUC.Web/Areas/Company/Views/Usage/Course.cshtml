@@ -1,0 +1,552 @@
+﻿@using HUC.Web.App.Companies
+@using HUC.Web.Models
+@model HUC.Web.App.Courses.CourseModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Course Statistics",
+        ContentTitle = Model.Name + " - Course Statistics",
+        ContentTitleDesc = "",
+        ActivePage = "usage",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Usage Statistics", Url.Action("Index"), "i-statistics"),
+            new BreadcrumbItem(Model.Name)
+        }
+    };
+
+    var company = (CompanyModel)ViewBag._Company;
+    var userList = (List<string>)ViewBag.UserList;
+}
+<style>
+	.vbox .row .col-md-1{
+        display:block !important;
+    }
+
+    .dataTables_info, .dataTables_paginate {
+        padding: 15px;
+        color: #245c6f;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+
+    .dataTables_wrapper select, .dataTables_wrapper input {
+        font-size: 18px !important;
+        height: 40px !important;
+        padding: 5px 10px;
+        border-radius: 3px;
+        display: inline;
+        color: #72bbb8 !important;
+        border: 1px solid #72bbb8 !important;
+    }
+
+        .dataTables_wrapper select, .dataTables_wrapper input:focus {
+            border: 1px solid #72bbb8 !important;
+        }
+
+    .dataTables_wrapper label {
+        font-size: 16px !important;
+    }
+
+    .dataTables_length, .dataTables_filter {
+        padding: 15px;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+	.aligntd{
+	vertical-align: middle !important;
+    text-align: center !important;
+	}
+	.alignnametd{
+	vertical-align: middle !important;
+   
+	}
+</style>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, null, null, null, { "bSortable": false }],
+                "iDisplayLength": 10
+            });
+        });
+        $('#sortable').addClass("panel panel-default");
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <section class="panel panel-default" style="height:324px">
+            <header class="panel-heading font-bold">User Average Score Per Test</header>
+            <div class="panel-body">
+                <div id="score-bar" style="height: 240px; display: none;"></div>
+                <span id="score-bar-error" class="chart-error" style="display: none;">No Statistics Available</span>
+                <span id="score-bar-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section class="panel panel-default" style="height:324px">
+            <header class="panel-heading font-bold">Course Progress </header>
+            <div class="panel-body">
+                <div id="pass-fail-pie" style="height:240px; display: none;">
+                </div>
+                <span id="pass-fail-pie-error" class="chart-error" style="display: none;">No Statistics Available</span>
+                <span id="pass-fail-pie-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section class="panel panel-default" style="height:324px">
+            <header class="panel-heading font-bold">User Avg. Time Spent Revising Per Resource</header>
+            <div class="panel-body">
+                <div id="revision-bar" style="height: 210px; display: none;"></div>
+                <span id="revision-bar-error" class="chart-error" style="display: none;">No Statistics Available</span>
+                <span id="revision-bar-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 course-table">
+        <section 
+            <div class="table-responsive">
+                <table id="sortable" class="table table-striped m-b-none">
+                    <thead>
+                        <tr>
+                            <th class="alignnametd">
+                                User
+                            </th>
+							<th width="250" class="aligntd">
+                                Time Spent
+                            </th>
+                            <th class="aligntd">
+                                Course Status
+                            </th>
+                            
+                            <th width="200" class="aligntd">
+                                Compliance Status
+                            </th>
+                            <th width="200" class="text-center">User Statistics</th>
+                            <th width="200" class="text-center">User Certificate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var curCompanyUser in company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First()))
+                        {
+							var result = 0 ;
+                            bool isInList = userList.IndexOf(curCompanyUser.UserID.ToString()) != -1;
+                            if (!isInList)
+                            {
+                                continue;
+                            }
+                            var curUserCourse = curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID);
+                            var isStarted = curUserCourse != null && curUserCourse.StartedOn.HasValue && !curUserCourse.IsComplete;
+							if(curUserCourse != null){
+							
+                             result =  ((curUserCourse.TotalScore * 100 ) / curUserCourse.Course.MaxScore);
+							}
+                            <tr>
+                                <td  class="alignnametd">
+                                    @curCompanyUser.User.FirstName @curCompanyUser.User.LastName
+                                </td>
+								<td class="aligntd">
+                                    @if (curUserCourse != null)
+                                    {
+                                        @:@curUserCourse.TimeTakenString
+                                    }
+                                    else
+                                    {
+                                        @:0 minute 0 second
+                                    }
+                                </td>
+                                <td class="aligntd">
+                                    @if (curUserCourse == null || !curUserCourse.StartedOn.HasValue)
+                                    {
+                                        @:Not Started
+                                    }
+                                    else if (curUserCourse.IsComplete)
+                                    {
+                                        if (curCompanyUser.HasFreeText == 1)
+                                        {
+                                            <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a data-toggle="tooltip" title="review" href="@Url.Action("FreetextDetail", new { id = Model.ID , userid =  curCompanyUser.User.ID })" style="margin-left: -6px;">Review Pending</a>
+                                        }
+                                        else if (result >= curUserCourse.Course.PassingPercentage)
+                                        {
+                                            <i class="fa fa-check-circle"></i> @:Passed
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-times-circle" style="color:red"></i> @:Failed
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        @:In Progress
+                                    }
+                                </td>
+                                
+                                <td class="aligntd">
+                                    @if (curUserCourse != null)
+                                    {
+                                        if (curUserCourse.IsComplete)
+                                        {
+
+                                            if (curCompanyUser.HasFreeText != 1)
+                                            {
+                                                if (curUserCourse.Course.RetakeDuration == 0)
+                                                {
+                                                    @: Not Applicable
+                                                }
+
+                                                else if (result >= curUserCourse.Course.PassingPercentage)
+                                                {
+                                                    <i class="fa fa-check-circle" style="color:green"></i> @: Compliant
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times-circle" style="color:red"></i>@: Not Compliant
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @:  In Progress
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @: Not Started
+                                    }
+                                </td>
+                                <td  class="aligntd">
+                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users/Statistics/@curCompanyUser.ID"><i class="fa fa-bar-chart-o"></i></a>
+                                </td>
+                                @if (curUserCourse != null)
+                                {
+                                    if (curUserCourse.IsComplete && curCompanyUser.HasFreeText != 1)
+                                    {
+                                        if (result >= curUserCourse.Course.PassingPercentage)
+										{
+											if (curCompanyUser.IsIssueCertificate == 0)
+											{
+												<td class="text-center">
+												<a onclick="NewTab('@curCompanyUser.ID','@curUserCourse.UserID', '@curUserCourse.CourseID');" class="btn btn-xs btn-rounded btn-success" style="background-color: #72bbb8; color: white !important;height:31px; width: 115px; text-align: center; padding:5px;padding-left:1px;margin-left: 11px; " data-toggle="tooltip" title="Certificate" >Issue Certificate</a>
+												</td>
+											}
+											else
+											{
+												<td class="text-center">
+												<span class="btn btn-xs btn-success" style="opacity:0.25; cursor:default;color:green !important">
+												<i class="fa fa-check" style="color:green"></i> Certificate Issued
+												</span>
+												</td>
+											}
+										}
+                                    }
+                                    else
+                                    {
+
+                                        <td class="aligntd">
+								 <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;" >
+                                         Not Available
+                                    </span>
+								</td>
+                                    }
+                                }
+                                else
+                                {
+								<td class="aligntd">
+								 <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;" >
+                                         Not Available
+                                    </span>
+								</td>
+                                   
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Position of Logo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="text" id="courseId" hidden />
+                    <input type="text" id="userid" hidden />
+                    <div class="col-md-12">
+                        <select id="dropdownselect" class="form-control">
+                            <option value="">Select One</option>
+                            <option value="1">Left</option>
+                            <option value="2">Center</option>
+                            <option value="3">Right</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var message = '@TempData["Issue"]';
+        if (message != "" && message != undefined) {
+            alert("Certificate Already Issue");
+        }
+    })
+
+    function NewTab(id,userid, courseid) {
+
+        var url = '@Url.Action("IssueCertificate","Usage")' + "?id="+id + "&&userId="+ userid + "&&CourseId=" + courseid + "&&type=" + 1;
+
+      //  var url = "/Company/Usage/IssueCertificate?id=" + userid + "&&CourseId=" + courseid + "&&type=" + 1;
+        window.open(url, "_blank");
+    }
+ //   $("#dropdownselect").change(function () {
+
+ //       var typeid = $("#dropdownselect").val();
+ //       issue(typeid);
+ //   })
+ //   function issue(typeid) {
+	//debugger;
+	//if(typeid == 0){
+
+	//}else{
+
+ //       var userid = $("#userid").val();
+ //       var courseid = $("#courseId").val();
+ //       var url = "/TrainingCourses/Company/Usage/IssueCertificate?id=" + userid + "&&CourseId=" + courseid + "&&type=" + typeid;
+ //       window.location.href = url;
+	//	}
+ //   }
+
+    $(document).ready(function () {
+
+
+        var defaultGraphOptions = {
+            grid: {
+                hoverable: true,
+                clickable: false,
+                borderWidth: 0
+            },
+            legend: {
+                show: false
+            },
+            series: {
+                shadowSize: 1
+            }
+        };
+
+        updateGraphs();
+        //window.setInterval(function () {
+        //    updateGraphs();
+        //}, 5000);
+        function updateGraphs() {
+            $.get('@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseData/@Model.ID', function (data) {
+                updateAverageTimeRevisingGraph(data.AverageTimeRevising);
+                updateAverageScoreGraph(data.AverageScore);
+                updatePassFailPie(data.PassFail);
+            });
+        }
+
+        function updateAverageTimeRevisingGraph(data) {
+
+            $("#revision-bar-loading").hide();
+
+            if (data == null || data.noData == true) {
+                $("#revision-bar").hide();
+                $("#revision-bar-error").show();
+            } else {
+                $("#revision-bar").show();
+                $("#revision-bar-error").hide();
+                $("#revision-bar").length && $.plot($("#revision-bar"),
+                    [{
+                        label: "Revision Time Spent Per Test",
+                        data: data.barData,
+                        bars: {
+                            show: true,
+                            fill: true,
+                            lineWidth: 1,
+                            barWidth: 0.75,
+                            order: 1,
+                            align: 'center',
+                            fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                        },
+                        color: "#e40424"
+                    }],
+                    $.extend({}, defaultGraphOptions, {
+                        xaxis: {
+                            ticks: data.ticks
+                        },
+                        yaxis: {
+                            min: 0, minTickSize: 1,
+                            tickFormatter: function (v, axis) {
+                                return v + " min.";
+                            }
+                        }
+                    })
+                );
+                $("#revision-bar").UseTooltip(" min.");
+            }
+        };
+
+        var previousPoint = null, previousLabel = null;
+
+        $.fn.UseTooltip = function (unit) {
+            $(this).bind("plothover", function (event, pos, item) {
+                if (item) {
+                    if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
+                        previousPoint = item.dataIndex;
+                        previousLabel = item.series.label;
+                        $("#tooltip").remove();
+
+                        var x = item.datapoint[0];
+                        var y = item.datapoint[1];
+
+                        var color = item.series.color;
+                        //console.log("x: " + x);
+                        console.log(item);
+
+                        showTooltip(item.pageX,
+                            item.pageY,
+                            color,
+                            "<strong>" + item.series.label + "</strong><br>" + item.series.xaxis.ticks[x - 1].label + " : <strong>" + y + unit + "</strong>");
+                    }
+                } else {
+                    $("#tooltip").remove();
+                    previousPoint = null;
+                }
+            });
+        }
+
+        $("#issue").click(function () {
+
+
+        })
+
+        function showTooltip(x, y, color, contents) {
+            $('<div id="tooltip">' + contents + '</div>').css({
+                position: 'absolute',
+                display: 'none',
+                top: y - 40,
+                left: x - 120,
+                border: '2px solid ' + color,
+                padding: '3px',
+                'font-size': '9px',
+                'border-radius': '5px',
+                'background-color': '#fff',
+                'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+                opacity: 0.9
+            }).appendTo("body").fadeIn(200);
+        }
+
+        function updateAverageScoreGraph(data) {
+            $("#score-bar-loading").hide();
+
+            if (data == null || data.noData == true) {
+                $("#score-bar").hide();
+                $("#score-bar-error").show();
+            } else {
+                $("#score-bar").show();
+                $("#score-bar-error").hide();
+
+                $("#score-bar").length && $.plot($("#score-bar"),
+                    [{
+                        label: "User Average Score Per Course",
+                        data: data.barData,
+                        bars: {
+                            show: true,
+                            fill: true,
+                            lineWidth: 1,
+                            barWidth: 0.75,
+                            order: 1,
+                            align: 'center',
+                            fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                        },
+                        color: "#6783b7"
+                    }],
+                    $.extend({}, defaultGraphOptions, {
+                        xaxis: {
+                            ticks: data.ticks
+                        },
+                        yaxis: {
+                            min: 0, max: 100, tickSize: 10
+                        }
+                    })
+                );
+                $("#score-bar").UseTooltip("");
+            }
+        };
+
+        function updatePassFailPie(data) {
+
+             $("#pass-fail-pie-loading").hide();
+
+            if (data == null || data.noData == true) {
+                $("#pass-fail-pie").hide();
+                $("#pass-fail-pie-error").show();
+            } else {
+                $("#pass-fail-pie").show();
+                $("#pass-fail-pie-error").hide();
+
+                $("#pass-fail-pie").length && $.plot($("#pass-fail-pie"),
+                    data.pieData, {
+                    series: {
+                        pie: {
+                            combine: {
+                                color: "#999",
+                                threshold: 0.05
+                            },
+                            show: true
+                        }
+                    },
+                    legend: {
+                        show: false
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: false
+                    }
+                });
+            }
+        };
+
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+		$('.btn-4').removeAttr('style');
+			$(".intro-text").removeClass("button-deactive");
+			$(".btn-4").css("color", "#ffffff !important");
+       
+    });
+</script>

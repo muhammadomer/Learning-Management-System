@@ -1,0 +1,440 @@
+﻿@using HUC.Web.App.Resources.Questions.Answers
+@using HUC.Web.App.Users.Courses
+@using HUC.Web.Models
+@model HUC.Web.App.Users.Courses.UserCourseModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Course - " + Model.Course.Name,
+        ContentTitle = "",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index")),
+            new BreadcrumbItem(Model.Course.Name)
+        }
+    };
+    List<TestQuestionAnswerModelForJson> answerList = new List<TestQuestionAnswerModelForJson>();
+    UserCourseTestModel curUserTest = null;
+    if (Model.CourseStage.Resource != null)
+    {
+        curUserTest = Model.CourseStage.Resource.LatestUserTestFor(Model.ID);
+    }
+    //For Module Progress Bar
+    UserCourseTestModel test = new UserCourseTestModel();
+
+    int totalattemptedques = 0;
+    int totalquestion = 0;
+    int asses = 0;
+    int aboutcourse = 0;
+    if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= Model.Course.Resources.OrderBy(x => x.Sort).FirstOrDefault().ID)
+    {
+        aboutcourse = 100;
+    }
+    else
+    {
+
+        aboutcourse = 0;
+    }
+}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Signika:100,200,300,400,500,600,700,800,900" media="all">
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/player.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/Preview/Companypreview.css" />
+
+
+
+
+
+
+@if (Model.Course.BackGroundType == false && !string.IsNullOrEmpty(Model.Course.Background))
+{
+    <style>
+        .full-page {
+            background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Course.Background) !important;
+        }
+    </style>
+}
+else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
+{
+    <style>
+        .full-page {
+          background:@Model.Course.Background !important;
+        }
+    </style>
+}
+
+
+
+
+
+
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="course-header">
+                @if (Model.Course.Name.Length > 25)
+                {
+                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                }
+                else
+                {
+                    <div>@Model.Course.Name</div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-md-12 align-top-content">
+        <a class="btn btn-dark  pull-left btn-blue-color-userclose" style="width: 135px;" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView">
+              Dashboard
+        </a>
+    </div>
+    
+</div>*@
+
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView">
+                Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="course-overview course-overview-top-preview "  >
+    <div class="col-md-12 main-panel no-padding">
+        <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);margin-left:10px;margin-right:10px;">
+            <div class="panel-body">
+                <div class="row">
+                    @*<div class="col-md-12 paddingLR-20 ev-component-title">
+                        <h4 class="ev-component-title-inner">Welcome to @Model.Course.Name course.</h4>
+                        <p style="font-size:15px;">Copyright © 2020 Heads Up Compliance Ltd and Ghost Digital & Data Ltd</p>
+                    </div>*@
+                    <div class="col-md-12 module-tile-first ev-component-title" >
+                        <h4>About this course</h4>
+                        @if (!String.IsNullOrWhiteSpace(Model.Course.IntroCopy))
+                        {
+                    <p style="font-size:16px;" title="@Html.Raw(Model.Course.IntroCopy)">
+                        @Html.Raw(Model.Course.IntroCopy)
+                        @*@Html.Raw(Model.Course.IntroCopy.Length > 120 ? Model.Course.IntroCopy.Substring(0, 120) + "..." : Model.Course.IntroCopy)*@
+                    </p>
+                        }
+                        <span class="module-assessed-by hidden"><b>Assessment:</b> 2 questions</span>
+                        <span class="module-time">Duration: <small>1 Minute</small></span>
+                        <span class="module-time" style="padding-right:50px">
+                            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/AboutCourse/@Model.CourseID" class="btn btn-dark pull-right" style="width:85px;">Start</a>
+
+                        </span>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-left:0px;margin-right:0px;">
+            @*<div class="col-md-6 module-tile box">
+                <div class="row inner">
+
+                </div>
+            </div>*@
+            @foreach (var item in Model.Course.Resources.OrderBy(x => x.Sort))
+            {
+                int sd = 0;
+                decimal progress = 0;
+                totalquestion += item.Questions.Count();
+                if (Model.CourseStage.Resource != null)
+                {
+
+                    test = Model.Course.Resources.Where(x => x.ID == item.ID).FirstOrDefault().LatestUserTestFor(Model.ID);
+                }
+                if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
+                {
+                    progress = 100;
+                    if (test != null && item.Questions.Count() > 0)
+                    {
+                        foreach (var ques in item.Questions)
+                        {
+                            var Userq = test.UserQuestions.FirstOrDefault(x => x.TestQuestionID == ques.ID);
+                            if (Userq != null)
+                            {
+                                sd++;
+                                totalattemptedques++;
+                            }
+                        }
+                        progress = (100 / item.Questions.Count()) * sd;
+                        if (progress > 0)
+                        {
+                            if (progress >= 99)
+                            {
+                                progress = 100;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                    if (test != null && item.Questions.Count() > 0)
+                    {
+                        foreach (var ques in item.Questions)
+                        {
+                            var Userq = test.UserQuestions.FirstOrDefault(x => x.TestQuestionID == ques.ID);
+                            if (Userq != null)
+                            {
+                                sd++;
+                            }
+                        }
+                        progress = (100 / item.Questions.Count()) * sd;
+                        if (progress > 0)
+                        {
+                            if (progress >= 99)
+                            {
+                                progress = 100;
+                            }
+                        }
+                    }
+                }
+                //if (test != null && item.Questions.Count() > 0)
+                //{
+                //    foreach (var ques in item.Questions)
+                //    {
+                //        var Userq = test.UserQuestions.FirstOrDefault(x => x.TestQuestionID == ques.ID);
+                //        if (Userq != null)
+                //        {
+                //            sd++;
+                //        }
+                //    }
+                //    progress = (100 / item.Questions.Count()) * sd;
+                //    if(progress > 0)
+                //    {
+                //        check = true;
+                //        if(progress >= 99)
+                //        {
+                //         progress = 100;
+                //        }
+                //    }
+                //    //else
+                //    //{
+                //    //    check = false;
+                //    //}
+                //}
+                //else
+                //{
+                //    notin = true;
+                //}
+                //if(notin && !check)
+                //{
+                //    progress = 100;
+                //}
+                ////if(check)
+                ////{
+                ////    progress = 100;
+                ////}
+                <div class="col-md-6 module-tile box">
+                    <div class="row inner">
+                        <div class="col-md-12 module-tile-first ev-component-title" >
+                            <h4>Module @item.Sort</h4>
+                            <h4 style="font-size:18px !important; font-family:'Franklin Gothic'; margin-bottom:0px !important">@item.Name</h4>
+                            @if (!String.IsNullOrWhiteSpace(item.TestIntroCopy))
+                            {
+                                <p style="font-size:16px;" title="@Html.Raw(item.TestIntroCopy)">
+                                    @Html.Raw(item.TestIntroCopy.Length > 90 ? item.TestIntroCopy.Substring(0, 90) + "..." : item.TestIntroCopy)
+                                </p>
+                            }
+
+                            @if (item.Questions != null)
+                            {
+                                if (test == null /*&& test.UserQuestions.Count() == 0*/)
+                                {
+                                    // check = false;
+                                    // progress = 0;
+                                }
+                                if (item.Questions.Count() == 1)
+                                {
+                                    <span class="module-assessed-by"><b>Assessment:</b><small> @item.Questions.Count() question </small></span>
+                                }
+                                else if (item.Questions.Count() > 1)
+                                {
+                                    <span class="module-assessed-by"><b>Assessment:</b><small> @item.Questions.Count() question </small></span>
+                                }
+                            }
+                            @if (@item.ModuleTime != null && @item.ModuleTime > 1)
+                            {
+                                <span class="module-time">Duration: <small> @Convert.ToInt32(item.ModuleTime) Minutes </small></span>
+                            }
+                            else
+                            {
+                                <span class="module-time">Duration: <small> 1 Minute </small></span>
+                            }
+                        </div>
+                        <div class="col-md-12 module-tile-second" >
+                            <div class="row">
+                                <div class="col-md-8" style="margin-top:10px;">
+                                    <div class="progress" style="margin-bottom:0px;">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                             aria-valuemin="0" aria-valuemax="100" style="width:@progress%">
+                                            <span class="sr-only">70% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1" style="margin-top:10px;padding-left:0px !important;">
+                                    <span>@progress%</span>
+                                </div>
+                                <div class="col-md-3">
+                                    @*@if (check || (!check && notin))
+                                    {
+                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;cursor:no-drop;border: 1px solid gray;">View</a>
+                                    }*@
+                                    @if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
+                                    {
+                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;cursor:no-drop;border: 1px solid gray;">View</a>
+                                    }
+                                    @*@if (!check && notin)
+                                    {
+                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
+                                    }*@
+                                </div>
+                                @*<div class="col-md-6 m-t-md">
+                                    <div class="row">
+                                        <div class="col-md-11">
+                                            <div class="progress" style="margin-bottom:0px;">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width:@progress%">
+                                                    <span class="sr-only">70% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1" style="padding:0px">
+
+
+                                            <span>@progress%</span>
+
+
+                                        </div>
+                                    </div>
+                                </div>*@
+                                @* <div class="col-md-6">
+                                                            @if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
+                                {
+                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                                } else
+                                                            {
+                                                                <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;">View</a>
+                                                            }
+                                                           @if (check)
+                                                            {
+                                                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                                                            }
+                                                            @if (!check && notin)
+                                                            {
+                                                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                                                            }
+                                                        </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (totalquestion == totalattemptedques)
+            {
+
+                asses = 100;
+            }
+            else
+            {
+                asses = 0;
+            }
+            @*<div class="col-md-6 module-tile box">
+                <div class="row inner">
+                  
+                </div>
+            </div>*@
+
+
+        </div>
+
+
+
+        <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);margin-left:10px;margin-right:10px;margin-top:20px">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 module-tile-first " style="height:100px!important" >
+                        <h4><b>Final Assessment</b></h4>
+                        <p style="font-size:16px;">Final Assessment: Your @Model.Course.Name Confidence Levels</p>
+                        <span class="module-assessed-by hidden"><b>Assessment:</b> 2 questions</span>
+                        <span class="module-time">Duration: <small> 5 Minute </small></span>
+                    </div>
+                    <div class="col-md-12 module-tile-second">
+                        <div class="row">
+                            <div class="col-md-10" style="margin-top:10px;">
+                                <div class="progress" style="margin-bottom:0px;">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                         aria-valuemin="0" aria-valuemax="@asses" style="width:@asses%">
+                                        <span class="sr-only">70% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="margin-top:10px;padding-left:0px !important;">
+                                <span>@asses%</span>
+                            </div>
+                            <div class="col-md-1">
+                                @if (asses > 0)
+                                {
+                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/Assessment/@Model.CourseID" class="btn btn-dark pull-right" style="width:85px;">View</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;cursor:no-drop;border: 1px solid gray;">View</a>
+                                }
+                            </div>
+                            @*<div class="col-md-6 m-t-md">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <div class="progress" style="margin-bottom:0px;">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                    <span class="sr-only">0% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1" style="padding:0px">
+                            <span>100%</span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/Assessment/@Model.CourseID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                </div>*@
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+
+
+                </div>
+            </div>
+
+            <script>
+    @*$(document).ready(function () {
+        $("#modAdspic").empty();
+        $("#modAdspic").append('<a href="#"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Gdd-logo.jpg" style="max-height:106px;padding-right:50px;width:168px;"></a>');
+
+    });*@
+    $("#logoid").hide();
+            </script>

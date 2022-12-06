@@ -1,0 +1,53 @@
+﻿@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.News.Categories.NewsCategoryModel>
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+<<<<<<< local
+        Title = "News Categories",
+        ContentTitle = "News Categories",
+        ContentTitleDesc = "Here are the news categories in the system.",
+=======
+        Title = "Categories",
+        ContentTitle = "Categories",
+        ContentTitleDesc = "Here is a list of the current categories.",
+>>>>>>> other
+        ActivePage = "news",
+<<<<<<< local
+        ActiveSubPage = "categories",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("News", null, "i-stack"),
+            new BreadcrumbItem("Categories", null, "fa-sitemap")
+        }
+=======
+>>>>>>> other
+    };
+}
+
+<p>
+    <a href="@Url.Action("CategoryCreate")" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create New</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            <a href="@Url.Action("CategoryEdit", new { id = item.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+            <a href="@Url.Action("CategoryDelete", new { id = item.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>
+        </td>
+    </tr>
+}
+
+</table>

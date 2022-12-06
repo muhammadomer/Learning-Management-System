@@ -1,0 +1,52 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Companies.Users.Courses.DirectCourseAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Users - Create Direct Course",
+        ContentTitle = "Users - Create Direct Course",
+        ContentTitleDesc = "Here you can create a new Direct Course",
+        ActivePage = "users",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Companies", Url.Action("Index", "Companies"), "fa-building-o"),
+            new BreadcrumbItem("Users", Url.Action("Index", "CompanyUsers", new { id = Model.CompanyUser.CompanyID })),
+            new BreadcrumbItem("Direct Courses", Url.Action("Index", new { id = Model.CompanyUserID })),
+            new BreadcrumbItem("Create", null),
+        }
+    };
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.CompanyUserID)
+
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <label>Course</label>
+            <div class="input-field">
+                @Html.DropDownListFor(model => model.CourseID, Model.CourseOptions(), new { @class= "chosen-select-deselectable" })
+                @Html.ValidationMessageFor(model => model.CourseID)
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Compliance Score Minimum</label>
+            <div class="input-field">
+                @Html.TextBoxFor(model => model.ComplianceScoreMinimum)
+                @Html.ValidationMessageFor(model => model.ComplianceScoreMinimum)
+            </div>
+        </div>
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Index", new { id = Model.CompanyUserID })
+            </div>
+        </div>
+    </div>
+}

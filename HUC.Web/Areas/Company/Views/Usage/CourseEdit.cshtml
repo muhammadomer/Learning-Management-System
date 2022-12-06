@@ -1,0 +1,44 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Companies.Courses.CompanyCourseEditModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Statistics",
+        ContentTitle = "Courses",
+        ContentTitleDesc = "Edit a course",
+        ActivePage = "usage",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Usage Statistics", Url.Action("Index"), "i-statistics"),
+            new BreadcrumbItem("Edit Course")
+        }
+    };
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal edit-create-form">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.CompanyID)
+        <div class="form-group">
+            <label>Minimum compliance score</label>
+            <div class="input-field">
+                @Html.EditorFor(model => model.ComplianceScoreMinimum)
+                @Html.ValidationMessageFor(model => model.ComplianceScoreMinimum)
+            </div>
+        </div>
+
+        <div class="form-group edit-create-buttons">
+            <div class="action-button">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+            <div class="back-button btn btn-warning">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}

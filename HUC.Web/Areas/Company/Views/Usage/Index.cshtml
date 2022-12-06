@@ -1,0 +1,224 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Companies.CompanyModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Statistics",
+        ContentTitle = "Courses",
+        ContentTitleDesc = "Here are all the courses in your company. Click 'Usage Statistics' to receive more in depth information, or 'Edit' to manage it's settings.",
+        ActivePage = "usage",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Usage Statistics", null, "i-statistics")
+        }
+    };
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, null, { "bSortable": false }],
+                "iDisplayLength": 10
+            });
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>
+                        Course name
+                    </th>
+                    <th>
+                        Average time taken
+                    </th>
+                    <th>
+                        Average score
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var curCompanyCourse in Model.Courses)
+                {
+                    <tr>
+                        <td>
+                            @curCompanyCourse.Course.Name
+                        </td>
+                        <td>
+                            @curCompanyCourse.AverageTimeString
+                        </td>
+                        <td>
+                            @curCompanyCourse.ComplianceScoreAverage/@curCompanyCourse.Course.MaxScore
+                        </td>
+                        <td>
+                            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseEdit/@curCompanyCourse.ID" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID" class="btn btn-xs btn-rounded btn-success"><i class="fa fa-plus-square"></i> Usage Statistics</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="row m-b-md">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Overall Statistics
+        </h3>
+        <small>
+            Here are the overall statistics for the courses.
+        </small>
+    </div>
+</section>
+
+<div class="row">
+    <div class="col-md-6">
+        <section class="panel panel-default">
+            <header class="panel-heading font-bold">User Average Score Per Course (%)</header>
+            <div class="panel-body">
+                <div id="score-bar" style="height:240px;display:none;"></div>
+                <span id="score-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
+                <span id="score-bar-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-6">
+        <section class="panel panel-default">
+            <header class="panel-heading font-bold">User Average Time Spent Per Course (Minutes)</header>
+            <div class="panel-body">
+                <div id="revision-bar" style="height:240px;display:none;"></div>
+                <span id="revision-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
+                <span id="revision-bar-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var defaultGraphOptions = {
+            grid: {
+                hoverable: true,
+                clickable: false,
+                borderWidth: 0
+            },
+            legend: {
+                show: false
+            },
+            series: {
+                shadowSize: 1
+            }
+        };
+
+        updateGraphs();
+        //window.setInterval(function () {
+        //    updateGraphs();
+        //}, 5000);
+        function updateGraphs() {
+            $.get('/Company/Dashboard/PageData', function (data) {
+                updateScoreGraph(data.UserAverageScorePerCourse);
+                updateRevisionGraph(data.UserAverageTimeSpentPerCourse);
+            });
+        }
+
+        function updateScoreGraph(data) {
+            $("#score-bar-loading").hide();
+
+            if (data == null || data.noData == true) {
+                $("#score-bar").hide();
+                $("#score-bar-error").show();
+            } else {
+                $("#score-bar").show();
+                $("#score-bar-error").hide();
+
+                $("#score-bar").length && $.plot($("#score-bar"),
+                    [
+                        {
+                            label: "Target Compliance Score",
+                            data: data.barDataCompliance,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 0.75,
+                                order: 1,
+                                align: 'center',
+                                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                            },
+                            color: "black"
+                        }, {
+                            label: "Average Compliance Score",
+                            data: data.barDataAverage,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 0.75,
+                                order: 1,
+                                align: 'center',
+                                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                            },
+                            color: "#1aae88"
+                        }
+                    ],
+                    $.extend({}, defaultGraphOptions, {
+                        xaxis: {
+                            ticks: data.ticks
+                        },
+                        yaxis: {
+                            min: 0, max: 100, tickSize: 10
+                        }
+                    })
+                );
+            }
+        };
+        function updateRevisionGraph(data) {
+            $("#revision-bar-loading").hide();
+
+            if (data == null || data.noData == true) {
+                $("#revision-bar").hide();
+                $("#revision-bar-error").show();
+            } else {
+                $("#revision-bar").show();
+                $("#revision-bar-error").hide();
+
+                $("#revision-bar").length && $.plot($("#revision-bar"),
+                    [
+                        {
+                            label: "Revision Time Spent Per Course",
+                            data: data.barData,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 0.75,
+                                order: 1,
+                                align: 'center',
+                                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                            },
+                            color: "#6783b7"
+                        }
+                    ],
+                    $.extend({}, defaultGraphOptions, {
+                        xaxis: {
+                            ticks: data.ticks
+                        },
+                        yaxis: {
+                            min: 0, minTickSize: 1
+                        }
+                    })
+                );
+            }
+        };
+    });
+</script>

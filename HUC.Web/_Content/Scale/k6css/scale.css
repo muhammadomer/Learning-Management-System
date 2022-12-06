@@ -1,0 +1,472 @@
+﻿@font-face {
+  font-family: 'roboto-light';
+  src: url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.eot');
+  src: url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.woff') format('woff'), url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.ttf') format('truetype'), url('/_Content/Fonts/Roboto/Light/Roboto-Light-webfont.svg#roboto-light') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'roboto-regular';
+  src: url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.eot');
+  src: url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.woff') format('woff'), url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.ttf') format('truetype'), url('/_Content/Fonts/Roboto/Regular/Roboto-Regular-webfont.svg#roboto-regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'roboto-bold';
+  src: url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.eot');
+  src: url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'), url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.woff') format('woff'), url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.ttf') format('truetype'), url('/_Content/Fonts/Roboto/Bold/Roboto-Bold-webfont.svg#roboto-bold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+html,
+body,
+.full-page {
+  height: 65%;
+  width: 100%;
+}
+.full-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 60px;
+}
+html {
+  background-color: #f2f2f2;
+}
+.bg-black .nav > li > a {
+  color: white;
+}
+/*Left nav */
+.nav .nav-title {
+  background-color: white!important;
+  color: black!important;
+  cursor: default;
+  pointer-events: none;
+}
+.nav .nav-title span {
+  color: black!important;
+}
+h2,
+h3.text-black {
+  color: #e40424;
+  font-family: roboto-bold, Arial, sans-serif;
+  font-size: 26px;
+}
+p,
+small {
+    font-family: Franklin Gothic Book;
+    color: #4d4d4d;
+    font-size: 14px;
+}
+p strong,
+small strong {
+  font-family: roboto-bold, Arial, sans-serif;
+}
+.table {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+.table.table-striped tr th {
+  background-color: white;
+}
+.table.table-striped tr.odd td {
+  background-color: #f2f2f2;
+}
+.table tr th,
+.table tr td {
+  border-right: 1px solid #ddd;
+}
+ .table tr td {
+  font-family: Franklin Gothic Book;
+ }
+.table tr td .btn {
+  margin-right: 5px;
+}
+    .table tr th {
+        background-color: white;
+        color: #e40424;
+        font-family: Franklin Gothic Medium;
+        font-size: 14px;
+    }
+.btn-rounded {
+  border-radius: 5px;
+}
+.fa-check-circle {
+  color: #1aae88;
+}
+.fa-times-circle {
+  color: #e40424;
+}
+.bg-light.lter {
+  background-color: transparent;
+}
+.header p.intro-text {
+  font-size: 18px;
+  font-family: roboto-bold, Arial, sans-serif;
+  color: #e40424;
+}
+.nav .nav-title {
+  background-color: #727272!important;
+}
+.nav .nav-title span {
+  color: white!important;
+}
+.bg-primary,
+.bg-danger {
+  color: white;
+}
+.datepicker td.active {
+  color: white;
+}
+.datepicker td:hover {
+  background-color: #177bbb;
+  color: white;
+  cursor: pointer;
+}
+.edit-create-form {
+  float: left;
+  width: 100%;
+}
+.edit-create-form .form-group {
+  float: left;
+  width: 100%;
+  clear: both;
+  padding-left: 15px;
+}
+.edit-create-form .form-group label {
+  text-align: left;
+}
+.edit-create-form label {
+  float: left;
+  width: 100%;
+  font-family: roboto-bold, Arial, sans-serif;
+  font-size: 16px;
+  margin-bottom: 2px;
+  color: #4d4d4d;
+}
+.edit-create-form .info-text {
+  float: left;
+  width: 100%;
+  padding-top: 5px;
+}
+.edit-create-form .input-field {
+  width: 100%;
+  max-width: 360px;
+}
+.edit-create-form .input-field.full {
+  max-width: 100%;
+}
+.edit-create-form .input-field input[type="text"],
+.edit-create-form .input-field input[type="password"],
+.edit-create-form .input-field input[type="email"],
+.edit-create-form .input-field input[type="number"],
+.edit-create-form .input-field textarea {
+  float: left;
+  width: 100%;
+  max-width: 360px;
+  height: 35px;
+  padding: 0 5px;
+  font-size: 16px;
+  font-family: roboto-regular, Arial, sans-serif;
+  border: 1px solid #b3b3b3;
+  outline: none;
+}
+.edit-create-form .input-field input[type="text"]:focus,
+.edit-create-form .input-field input[type="password"]:focus,
+.edit-create-form .input-field input[type="email"]:focus,
+.edit-create-form .input-field input[type="number"]:focus,
+.edit-create-form .input-field textarea:focus {
+  border: 1px solid #e40424;
+}
+.edit-create-form .input-field input[type="text"].time-picker,
+.edit-create-form .input-field input[type="password"].time-picker,
+.edit-create-form .input-field input[type="email"].time-picker,
+.edit-create-form .input-field input[type="number"].time-picker,
+.edit-create-form .input-field textarea.time-picker,
+.edit-create-form .input-field input[type="text"].date-picker,
+.edit-create-form .input-field input[type="password"].date-picker,
+.edit-create-form .input-field input[type="email"].date-picker,
+.edit-create-form .input-field input[type="number"].date-picker,
+.edit-create-form .input-field textarea.date-picker {
+  width: 92%;
+}
+.edit-create-form .input-field .add-on {
+  float: left;
+  margin: 7px 0 0 5px;
+}
+.edit-create-form .input-field textarea {
+  height: 150px;
+  padding: 5px;
+}
+.edit-create-form .input-field .redactor_box {
+  float: left;
+  width: 100%;
+}
+.edit-create-form .input-field select {
+  float: left;
+  width: 100%!important;
+}
+.edit-create-form .input-field .chosen-container {
+  float: left;
+  width: 100%;
+}
+.edit-create-form .input-field .chosen-container.chosen-container-active .chosen-choices {
+  border: 1px solid #e40424;
+  box-shadow: none;
+}
+.edit-create-form .input-field .chosen-container .chosen-choices {
+  float: left;
+  width: 100%;
+  max-width: 100%;
+  height: 35px;
+  padding: 5px 5px;
+  font-size: 16px;
+  font-family: roboto-regular, Arial, sans-serif;
+  border: 1px solid #b3b3b3;
+  outline: none;
+}
+.edit-create-form .input-field .chosen-container .chosen-results {
+  float: left;
+  width: 100%;
+}
+.edit-create-form .action-button,
+.edit-create-form .back-button {
+  float: right;
+  margin: 0 0 10px 10px;
+}
+.edit-create-form .action-button a,
+.edit-create-form .back-button a {
+  color: white;
+}
+.edit-create-form .field-validation-error {
+  float: left;
+  width: 100%;
+  padding-top: 5px;
+  font-size: 12px;
+  color: #e40424;
+}
+.edit-create-form .edit-create-buttons {
+  max-width: 375px;
+}
+.ui-pnotify {
+  width: 100%!important;
+  top: 0;
+  right: 0;
+}
+.nav-main li .i-circle-sm,
+.nav-main li .i-circle-sm-o {
+  color: white;
+}
+.table .btn {
+  margin: 3px 0;
+}
+.bg-white .logout-btn:hover {
+  color: #e40424;
+}
+.course-overview {
+  color: #4d4d4d;
+}
+.course-overview #flagged {
+  margin: 2px 0 0 5px;
+}
+.course-overview .main-panel {
+  margin-bottom: 20px;
+}
+.course-overview #content-zone {
+  float: left;
+  width: 100%;
+  background-color: white;
+}
+.course-overview .btn input[type="submit"] {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+.course-overview .panel .panel-heading {
+  color: #e40424;
+  font-family: roboto-bold, Arial, sans-serif;
+  font-size: 14px;
+}
+.course-overview .panel .panel-heading .nav .btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  -o-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-success i {
+  margin-left: 5px;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-success:hover {
+  background-color: #179877;
+  border-color: #158b6c;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-warning i {
+  margin-right: 5px;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-warning:hover {
+  background-color: #fcbf1a;
+  border-color: #fbbb0b;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-danger {
+  margin-left: 5px;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-danger i {
+  margin-right: 5px;
+}
+.course-overview .panel .panel-heading .nav .btn.btn-danger:hover {
+  background-color: #dd1e32;
+  border-color: #d01c2f;
+}
+.course-overview .panel.course-progress .fa-circle,
+.course-overview .panel.course-progress .fa-circle-o,
+.course-overview .panel.course-progress .fa-arrow-right {
+  color: #e40424;
+}
+.course-overview .panel.course-progress .font-bold {
+  padding: 10px 0 5px;
+  color: #4d4d4d;
+}
+.course-overview .panel .panel-body h2 {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #d1d6d7;
+}
+.course-overview .panel .panel-body h3 {
+  color: #e40424;
+  font-family: roboto-bold, Arial, sans-serif;
+  font-size: 18px;
+}
+.course-overview .panel .col-xs-8 {
+  margin-top: 5px;
+}
+.course-overview .main-panel.no-padding {
+  padding-left: 0;
+}
+.course-overview .left-panel.no-padding {
+  padding-left: 0;
+}
+.profile-area .avatar .dker {
+  background-color: #e0e6f0;
+}
+.scrollable {
+  overflow-x: visible;
+  overflow-y: visible;
+}
+.middle-btn .btn {
+  margin: 0 auto;
+  float: left;
+  width: 100%;
+}
+.wrapper.edited-padding {
+  padding-left: 0;
+}
+.wrapper.edited-padding.full {
+  padding-left: 15px;
+}
+*[class^="mobile-"],
+*[class*=" mobile-"] {
+  display: none;
+}
+*[class^="desktop-"],
+*[class*=" desktop-"] {
+  display: block;
+}
+@media only screen and (min-width: 768px) {
+  .header-md {
+    height: 60px;
+    min-height: 0;
+  }
+}
+@media only screen and (max-width: 1600px) {
+  .size-1600 .col-md-6 {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 1439px) {
+  .course-table,
+  .pie-chart {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 1280px) {
+  .course-overview .left-panel {
+    width: 100%;
+  }
+  .course-overview .left-panel .course-progress {
+    float: left;
+    margin-right: 2%;
+    width: 48%;
+  }
+  .course-overview .main-panel {
+    width: 100%;
+    padding-left: 0;
+  }
+  .header p.intro-text {
+    margin-top: 14px;
+    font-size: 16px;
+  }
+  .profile-tables .col-md-6 {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .hbox .profile-data .col-xs-6 {
+    width: 100%;
+    padding-bottom: 20px;
+    text-align: center;
+  }
+  .hbox .profile-data .col-xs-6.text-right {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 768px) {
+  *[class^="mobile-"],
+  *[class*=" mobile-"] {
+    display: block;
+  }
+  *[class^="desktop-"],
+  *[class*=" desktop-"] {
+    display: none;
+  }
+  .wrapper.edited-padding {
+    padding-right: 0;
+  }
+  .wrapper.edited-padding.full {
+    padding-left: 0;
+  }
+  .b-r.profile-area {
+    border-right: 0;
+  }
+  .b-l.profile-tables {
+    border-left: 0;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .course-overview .left-panel {
+    width: 100%;
+  }
+  .course-overview .left-panel .course-progress {
+    float: left;
+    margin-right: 0;
+    width: 100%;
+  }
+  .course-overview .main-panel {
+    width: 100%;
+    padding-left: 0;
+  }
+  .course-overview .main-panel .col-xs-8.text-center {
+    display: none;
+  }
+  .course-overview .main-panel .r-mobile {
+    float: right;
+  }
+  .profile-full-width {
+    width: 100%;
+    padding-bottom: 20px;
+    text-align: center;
+  }
+}
+/*# sourceMappingURL=scale.css.map */

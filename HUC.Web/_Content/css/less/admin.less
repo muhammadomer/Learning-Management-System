@@ -1,0 +1,521 @@
+﻿//VARIABLES
+@color1:#ff0000;
+@color2:#1e2171;
+//MIXINS
+
+    //ROUNDED CORNERS
+    .rounded-all(@radius:5px){
+        -o-border-radius:@radius;
+        -moz-border-radius:@radius;
+        -webkit-border-radius:@radius;
+        border-radius:@radius;
+    }
+    .rounded-top(@radius:5px){
+        -o-border-radius:@radius @radius 0 0;
+        -moz-border-radius:@radius @radius 0 0;
+        -webkit-border-radius:@radius @radius 0 0;
+        border-radius:@radius @radius 0 0;
+    }
+    .rounded-bottom(@radius:5px){
+        -o-border-radius:0 0 @radius @radius;
+        -moz-border-radius:0 0 @radius @radius;
+        -webkit-border-radius:@radius;
+        border-radius:0 0 @radius @radius;
+    }
+    .rounded-left(@radius:5px){
+        -o-border-radius:@radius 0 0 @radius;
+        -moz-border-radius:@radius 0 0 @radius;
+        -webkit-border-radius:@radius 0 0 @radius;
+        border-radius:@radius 0 0 @radius;
+    }
+    .rounded-right(@radius:5px){
+        -o-border-radius:0 @radius @radius 0;
+        -moz-border-radius:0 @radius @radius 0;
+        -webkit-border-radius:@radius  @radius;
+        border-radius:0 @radius @radius 0;
+    }
+
+//GENERIC CONTAINER STYLES
+.container{
+    width:1200px;
+}
+a{
+    color:@color1;
+}
+h2{
+    float:left;
+    width:100%;
+    margin-bottom:10px;
+    font-size:16px;
+    padding-bottom:10px;
+    border-bottom:1px solid @color2;
+    color:@color2;
+    text-align:left;
+}
+
+//GENERIC LAYOUTS
+#main-left{
+    float:left;
+    width:25%;
+    padding-right:20px;
+    min-height:100px;
+}
+#main-right{
+    float:left;
+    width:75%;
+    min-height:100px;
+}
+
+//PAGE INTRO AREA - THIS WILL END UP AT THE TOP OF EVERY PAGE
+#page-intro{
+    h1{
+        float:left;
+        width:100%;
+        padding-bottom:5px;
+        margin-bottom:10px;
+        font-size:20px;
+        font-weight:bold;
+        color:@color1;
+        border-bottom:2px solid @color2;
+        sub{
+            float:left;
+            width:100%;
+            padding: 10px 0;
+            font-size:11px;
+            line-height:145%;
+            font-weight:normal;
+            color:black;
+        }
+    }
+    p{
+        float:left;
+        width:100%;
+        margin-bottom:10px;
+        font-size:12px;
+    }
+}
+
+//LEFT ADMIN NAVIGATION AREA
+#left-nav{
+    float:left;
+    width:100%;
+    border:1px solid #666;
+    .rounded-all(10px);
+    overflow:hidden;
+    li{
+        float:left;
+        width:100%;
+        background:white;
+        font-size:14px;
+        a,span{
+            float:left;
+            width:100%;
+            color:black;
+            padding:10px;
+            text-decoration:none;
+            i{
+                margin-right:5px;
+            }
+           [class*= fa-arrow-]{
+                float:right;
+            }
+        }
+        &.active{
+            > a,span{
+                font-weight:bold;
+            }
+            &:hover{
+            > a,span{
+                text-decoration:none;
+            }
+        }
+        }
+        &:hover{
+            > a,span{
+                text-decoration:underline;
+            }
+        }
+        &.logout{
+            border-top:1px solid #666;
+            &:hover{
+                a{
+                    background:#e65050;
+                    color:white;
+                    text-decoration:none;
+                }
+            }
+        }
+    }
+    .sub-menu-wrap{
+        float:left;
+        padding:0 10px;
+        border-bottom:1px solid #666;
+        display:none;
+        &.open{
+            display:block;
+        }
+        > ul{
+        float:left;
+        width:100%;
+        border-top:1px solid #666;
+            li{
+                font-size:12px;
+            }
+        }
+    }
+}
+
+
+
+//FONT AWESOME ICONS
+.three-col-list{
+    float:left;
+    width:100%;
+    margin-bottom:10px;
+    border-bottom:1px solid black;
+    border-right:1px solid black;
+    li{
+        float:left;
+        width:33.33%;
+        padding:10px 15px;
+        border-left:1px solid black;
+        border-top:1px solid black;
+        font-size:12px;
+        line-height:145%;
+
+        &.last{
+            border-bottom:1px solid black;
+        }
+        i{
+            float:left;
+            margin-right:5px;
+            line-height:145%;
+            &.size-16{
+                font-size:24px;
+            }
+            &.size-8{
+                font-size:18px;
+            }
+            &.color1{
+                color:@color1;
+            }
+            &.color2{
+                color:@color2;
+            }
+        }
+    }
+
+    &.no-border{
+        border:0;
+
+        li{
+            border:0;
+        }
+    }
+}
+
+
+//WIDTH CONTROLLERS
+.width-examples{
+    float:left;
+    width:100%;
+    .width-wrap{
+        height:40px;
+        margin-bottom:5px;
+        font-weight:bold;
+        text-align:center;
+        color:white;
+        line-height:40px;
+    }
+}
+[class*="width-"]{
+    float:left;
+    margin-bottom:20px;
+    padding:0 1%;
+}
+//50%
+.width-50{
+    width:50%;
+}
+//25%
+.width-25{
+    width:25%;
+}
+//25%
+.width-75{
+    width:75%;
+}
+//33%
+.width-33{
+    width:33%;
+}
+//20%
+.width-20{
+    width:20%;
+}
+//60%
+.width-60{
+    width:60%;
+}
+//40%
+.width-40{
+    width:40%;
+}
+//80%
+.width-80{
+    width:80%;
+}
+//90&
+.width-90{
+    width:90%;
+}
+//10%
+.width-10{
+    width:10%;
+}
+//100%
+.width-100{
+    width:100%;
+}
+
+//GENERIC BACKGROUNDS
+.back-1{
+    background:@color1;
+}
+.back-2{
+    background:@color2;
+}
+
+
+//BUTTONS AREA
+
+.buttons-area{
+    float:left;
+    width:100%;
+    .btn{
+        margin-bottom:5px;
+    }
+
+}
+//STANDARD BUTTON
+.btn{
+    float:left;
+    padding:0 10px;
+    margin-right:5px;
+    background:#d1d1d1;
+    text-decoration:none;
+    color:black;
+    font-size:14px;
+    line-height:150%;
+    border:4px solid transparent;
+    cursor:pointer;
+    &:hover{
+        border-color:rgba(255,255,255,0.4);
+    }
+    i{
+        margin-left:10px;
+    }
+    //TEXT SIZE SWITCHES
+    &.larger, .larger{
+        font-size:125%;
+    }
+    &.largest, .largest{
+        font-size:150%;
+    }
+    &.smallest, .smallest{
+        font-size:50%;
+    }
+    &.smaller, .smaller{
+        font-size:75%;
+    }
+    //COLOR CLASS SWITCHES
+    &.action, .action{
+        color:white;
+        background-color:#045e9f;
+    }
+    &.action-2, .action-2{
+        color:white;
+        background-color:#4f99c6;
+    }
+    &.edit, .edit{
+        background-color:#f7d05b;
+        color:#333;
+    }
+    &.delete, .delete{
+        background-color:#d3413b;
+        color:white;
+    }
+    &.confirm, .confirm{
+        background-color:#87b75a;
+        color:white;
+    }
+    &.inverse, .inverse{
+        background-color:#555;
+        color:white;
+    }
+    &.purple, .purple{
+        background-color:#7461aa;
+        color:white;
+    }
+    &.light, .light{
+        background-color:#e1e1e1;
+        color:#666;
+    }
+    &.disabled{
+        opacity:0.7;
+        pointer-events:none;
+        cursor:default;
+    }
+
+    //APP STYLE BUTTONS
+    &.app{
+        padding:10px;
+        .rounded-all(5px);
+        text-align:center;
+        i{
+            display:block;
+            margin-left:0;
+            width:100%;
+            font-size:350%;
+            margin-bottom:5px;
+        }
+    }
+}
+//BUTTON GROUPS
+.btn-groups-example{
+    .btn-group{
+        clear:both;
+        margin-bottom:20px;
+    }
+}
+.btn-group{
+    float:left;
+    margin-bottom:5px;
+    box-shadow:0px 0px 2px #333;
+    overflow:hidden;
+    .btn{
+        margin:0;
+        + .btn{
+        box-shadow:-1px -1px 1px #333;
+        }
+        &.active{
+            pointer-events:none;
+            cursor:default;
+            color:white;
+            background:#666;
+        }
+        i{
+            margin-left:0;
+        }
+
+    }
+    &.vert{
+        .btn{
+            clear:both;
+            width:100%;
+            text-align:center;
+        }
+    }
+
+    &.two-button{
+        width:100%;
+        box-shadow:none;
+        overflow:visible;
+        .btn{
+            box-shadow:0px 0px 2px #333;
+            .rounded-left();
+        }
+        .btn + .btn{
+            float:right;
+            .rounded-right();
+        }
+    }
+}
+//BUTTON DROP DOWN MENUS
+.example-dropdowns{
+    .btn-dropdown-wrap{
+        margin-bottom:5px;
+    }
+}
+.btn-dropdown-wrap{
+    float:left;
+    .btn{
+        margin-bottom:0;
+    }
+    ul{
+        display:none;
+        position:absolute;
+        z-index:10;
+        background:white;
+        top:100%;
+        border:1px solid #333;
+        white-space:nowrap;
+        li{
+            float:left;
+            width:100%;
+            + li{
+                border-top:1px solid #999;
+            }
+            a{
+                float:left;
+                width:100%;
+                padding:10px;
+                font-size:12px;
+                text-decoration:none;
+                color:#333;
+                &:hover{
+                    background:#f1f1f1;
+                }
+            }
+        }
+    }
+}
+
+//APP STYLE BUTTONS
+.app-btn-examples{
+    float:left;
+    width:100%;
+}
+
+//BUTTON LABELS AND BADGES
+.btn-label-examples{
+    float:left;
+    width:100%;
+    margin-top:20px;
+    
+    .btn{
+        margin-right:15px;
+        margin-bottom:15px;
+    }
+}
+.btn sup{
+    position:absolute;
+    z-index:8;
+    width:100%;
+    left:0;
+    top:-15px;
+    color:white;
+    //POSITIONING
+    &.bottom{
+        bottom:-15px;
+        top:auto;
+    }
+    span{
+        margin:0 auto;
+        padding:5px 10px;
+        .rounded-all(8px);
+        font-size:10px;
+        background:#333;
+        &.left{
+            float:left;
+            padding:0px 10px;
+            margin-left:-12px;
+        }
+        &.right{
+            float:right;
+            padding:0px 10px;
+            margin-right:-12px;
+        }
+    }
+
+}

@@ -1,0 +1,349 @@
+﻿@using HUC.Web.App.Resources.Questions.Answers
+@using HUC.Web.App.Users.Courses
+@using HUC.Web.Models
+@model HUC.Web.App.Users.Courses.UserCourseModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = Model.Course.Name,
+        ContentTitle = "",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index")),
+            new BreadcrumbItem(Model.Course.Name)
+        }
+    };
+
+    string coursename = Model.Course.Name;
+    string username = Model.User.FirstName+" "+Model.User.LastName;
+    string Email = Model.User.Email;
+    var feedback = Model.User.UserCourses.Where(x => x.UserID == Model.UserID && x.CourseID == Model.CourseID).Select(x=>x.FeedBack).FirstOrDefault();
+}
+
+<style>
+    textarea {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: 100%;
+        /*  height: 300px;*/
+        display: block;
+        resize: none; /*Add this if you dont want users to resize */
+        color:black !important;
+        border: 2px solid #72bbb8 !important;
+        border-radius: 6px;
+    }
+</style>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Signika:100,200,300,400,500,600,700,800,900" media="all">
+<link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/UserCourses.css" />
+
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/assessment.css" rel="stylesheet" />
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/chart/dist/Chart.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/assessment.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/Preview/CompanyPreview.css" />
+<input type="hidden" id="hdnCourseId" value="@Model.Course.ID" />
+<input type="hidden" id="hdnApplicatonPath" value="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)" />
+@if (Model.Course.BackGroundType == false && !string.IsNullOrEmpty(Model.Course.Background))
+{
+    <style>
+        .full-page {
+            background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Course.Background) !important;
+        }
+    </style>
+}
+else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
+{
+    <style>
+        .full-page {
+          background:@Model.Course.Background !important;
+        }
+    </style>
+}
+
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="course-header">
+                @if (Model.Course.Name.Length > 25)
+                {
+                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                }
+                else
+                {
+                    <div>@Model.Course.Name</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 align-top-content1 "  >
+		<a class="btn btn-success  pull-left btn-blue-color-userclose" style="margin-left:16px; width:100px" href="#" onclick="Back();">
+            <i  class="fa fa-arrow-left"></i> Back
+        </a>
+		 <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"  href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard">
+             Dashboard
+        </a>
+       
+    </div>
+    
+</div>
+
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard">
+                Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="course-overview course-overview-top-asses " >
+    <div class="col-md-12 main-panel no-padding">
+        <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 ev-article">
+                        <h4>Course Feedback</h4>
+                        <p style="font-size:15px;">
+                            If you have any constructive criticisms about the course and how we could improve it, type in the box below. Maximum 500 (characters)
+                        </p>
+
+                        @*@if (!String.IsNullOrWhiteSpace(Model.Course.IntroCopy))
+        {
+            <p style="font-size:15px;">
+                @Html.Raw(Model.Course.IntroCopy)
+            </p>
+        }*@
+                        <div class="assessment-module" id="module-1">
+
+                            <div class="row">
+                                <div class="col-md-12" style="">
+                                    <div class="form-group">
+                                        @if (feedback == false)
+                                        {
+                                            <textarea id="txtareaFeed" maxlength="500" rows="5" cols="40"></textarea>
+                                        }
+
+                                        else
+                                        {
+                                            <textarea id="txtareaFeed" maxlength="500" rows="5" cols="40" disabled></textarea>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-12" style="">
+                                    <div class="form-group">
+                                        @if (feedback==false)
+                                        {
+
+                                            <input id="btnsubmit" type="button" onclick="FeedBackEmail()" value="Submit" class="btn btn-dark" />
+                                        }
+                                        else
+                                        {
+                                            <input id="btnsubmit" type="button" onclick="FeedBackEmail()" value="Submit" class="btn btn-dark" disabled />
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="thx" style="font-size:15px;">
+                            
+                        </p>
+
+
+
+                        @*<script>
+            $(document).ready(() => {
+                const jasonObj = {
+                    divId: "module-1",
+                    multi: [
+                        {
+                            title: "Giving Guidance to a Colleague",
+                            tag: "Colleague",
+                            question:
+                                'On a scale of 1-5 with 1 being "not at all" and 5 being "very", how confident are you that you could give guidance on <strong>@Model.Course.Name</strong> to a colleague?',
+                            max: 5,
+                            selected: @Model.ColleagueId == 0 ? 1 : @Model.ColleagueId,
+                        },
+                        {
+                            title: "Giving Guidance to a Client",
+                            tag: "Client",
+                            question:
+                                'On a scale of 1-5 with 1 being "not at all" and 5 being "very", how confident are you that you could give guidance on <strong>@Model.Course.Name</strong> to a client?',
+                            max: 5,
+                            selected: @Model.ClientId == 0 ? 1 : @Model.ClientId,
+                        },
+                        {
+                            title: "@Model.Course.Name Reporting and Your Work",
+                            tag: "Your Work",
+                            question:
+                                'On a scale of 1-5 with 1 being "not at all" and 5 being "very", how confident are you that you can apply <strong>@Model.Course.Name</strong> rules to your daily work?',
+                            max: 5,
+                            selected: @Model.WorkId == 0 ? 1 : @Model.WorkId,
+                        }
+                    ],
+                };
+
+                const assessment = new Assessment(jasonObj);
+                assessment.initialize();
+                //const slider = new slider(jasonObj);
+               // slider.initialize();
+            });
+        </script>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="panel" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 ev-article">
+                        @if (!String.IsNullOrWhiteSpace(Model.Course.OutroCopy))
+                        {
+                            <p>
+                                @Html.Raw(Model.Course.OutroCopy)
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <div class="row" @*style="margin-left:0px;margin-right:0px;"*@>
+            <div class="col-md-12"@*module-tile*@ style="padding: 20px 14px 20px 14px; font-size: 15px;">
+                <div class="row footer-tile" style="width:102%;">
+                    
+                    <div class="col-md-5" style="text-align:left !important;">
+                        @if (Model.Course.Resources.OrderBy(x => x.Sort).LastOrDefault() != null)
+                        {
+							<a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@Model.Course.Resources.OrderBy(x => x.Sort).LastOrDefault().ID" style="color:#fff !important;width:50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i>  Previous Module </a>
+                        }
+                    </div>
+                    <div class="col-md-2 footer-current-page">
+                        <div class="coursecounter">
+                            <span>@(Model.Course.Resources.Count() + 2)</span> of <span>@(Model.Course.Resources.Count() + 2)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-5" style="text-align:right;">
+
+                        @*"@Url.Action("DashBoard", "Index", new { id = Model.Course.ID })"*@
+                        <a class="btn btn-default pull-right" style="color:white !important;background-color:#000;height:38px;width:50%;" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard?CourseID=@Model.Course.ID">
+                            Finish
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function Back(){
+	window.history.back();
+  }
+    $("#logoid").hide();
+
+
+
+    function FeedBackEmail() {
+
+
+        if ($('#txtareaFeed').val() != "") {
+
+
+            $('#txtareaFeed').prop("disabled", true);
+            $('#btnsubmit').prop("disabled", true);
+            var feedback = $('#txtareaFeed').val();
+            var Course =@Html.Raw(Json.Encode(coursename));
+            var Username =@Html.Raw(Json.Encode(username));
+
+            var email =@Html.Raw(Json.Encode(Email));
+
+
+            var CourseId = $('#hdnCourseId').val();
+
+            var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/users/Courses/SubmitFeedback";
+
+            //  var url = 'Courses/SubmitFeedback';
+            var requestPerameters = {
+                "Course": Course,
+
+                "feedback": feedback,
+
+                "UserName": Username,
+                "Email": email,
+                "CourseId": CourseId
+            };
+
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: requestPerameters,
+                success: function (response) {
+
+                    if (response.Feedback == true) {
+                        debugger;
+                        $('#txtareaFeed').val('');
+                        /*  $('#thx').text("Thank you for your helpful comments");*/
+                        toastr.success("Thank you for your helpful comments");
+                    }
+                    else {
+
+                        //  toastr.error("Training officer not added");
+                    }
+
+                }
+            })
+        }
+        else {
+
+            toastr.error("Please enter feedback");
+        }
+        //AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
+
+
+        //    debugger;
+
+        //    if (response == true) {
+
+        //        toastr.success("Setting updated");
+
+        //    }
+        //    else {
+
+        //        toastr.error("Training officer not added");
+        //    }
+
+        //});
+      //  alert(Course+feedback );
+
+    }
+
+</script>

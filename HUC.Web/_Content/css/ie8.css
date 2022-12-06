@@ -1,0 +1,12 @@
+﻿.container {min-width: 0;}
+
+#header .login-section .large-button.desktop-ver {display: none;}
+#header .login-section .large-button.mobile-ver {display: block;}
+
+#nav-bar .nav li a {padding: 10px 8px; font-size: 16px;}
+#nav-bar .nav li .sub-nav {top: 36px;}
+#nav-bar .nav li .sub-nav li a {font-size: 13px;}
+
+#main-content .home-links ul li a span {font-size: 15px;}
+#main-content .sign-up-box .input-area input[type="text"] {width: 26%; padding-top: 7px; font-size: 18px;}
+#main-content .sign-up-box .input-area input[type="submit"] {margin-top: 2px;}

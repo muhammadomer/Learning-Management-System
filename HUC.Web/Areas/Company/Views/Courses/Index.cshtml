@@ -1,0 +1,384 @@
+﻿@using HUC.Web.App.Courses
+@using HUC.Web.Models
+@model IEnumerable<HUC.Web.App.Courses.CourseModel>
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Courses",
+        ContentTitle = "Courses",
+        ContentTitleDesc = "Here are all the courses in the system",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", null, "fa-briefcase")
+        }
+    };
+}
+<link href="~/_Content/css/vendors.bundle.css" rel="stylesheet" />
+@*<link data-require="sweet-alert" data-semver="0.4.2" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />*@
+<style>
+    .swal2-title {
+        font-size: 20px !important;
+    }
+
+    .swal-button--cancel {
+        color: white;
+        background-color: #000000;
+    }
+
+    .swal2-cancel {
+        width: 100px !important;
+        height: 39px;
+        margin-left: 15px !important;
+    }
+
+    .swal2-confirm {
+        width: 100px !important;
+        height: 39px;
+        background-color: black;
+        color: white !important;
+    }
+
+    .swal2-modal {
+        width: 503px !important;
+        height: 302px;
+    }
+
+    .swal2-image {
+        margin-top: -2px !important;
+    }
+</style>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#sortable').dataTable({
+            //    "bProcessing": true,
+            //    "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+            //    "sPaginationType": "full_numbers",
+            //    "aoColumns": [null, { "bSortable": false }],
+            //    "iDisplayLength": 10
+            //});
+            $('#sortable').dataTable({
+                "bProcessing": true,
+                "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [null, null, null, null, { "bSortable": false }],
+                "iDisplayLength": 10,
+                "oLanguage": { "Search": '<i class="icon-search"></i>' },
+                "aaSorting": [[0, "desc"]]
+            });
+            $('#sortable').addClass("panel panel-default");
+        });
+    </script>
+    <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+<style>
+    @@media (min-width: 768px) {
+        .full-page {
+            padding-top: 94px !important;
+        }
+    }
+
+    .content, .hbox, .vbox {
+        padding-top: 48px !important;
+    }
+
+    .vbox, .text-black {
+        margin-top: -26px !important;
+        margin-left: -16px;
+    }
+
+    .vbox, .content-desc {
+        float: left;
+        margin-left: -105%;
+    }
+
+    .dataTables_info, .dataTables_paginate {
+        padding: 15px;
+        color: #245c6f;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+
+    .dataTables_wrapper select, .dataTables_wrapper input {
+        font-size: 18px !important;
+        height: 40px !important;
+        padding: 5px 10px;
+        border-radius: 3px;
+        display: inline;
+        color: #72bbb8 !important;
+        border: 1px solid #72bbb8 !important;
+    }
+
+        .dataTables_wrapper select, .dataTables_wrapper input:focus {
+            border: 1px solid #72bbb8 !important;
+        }
+
+    .dataTables_wrapper label {
+        font-size: 20px !important;
+        color: white !important;
+    }
+
+    .dataTables_length, .dataTables_filter {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        /* padding: 15px; */
+    }
+</style>
+
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12 align-top-content btncoursecompany">
+            <a class="btn btn-success pull-right" href="@Url.Action("Create")">
+                <i class="fa fa-pencil" style="margin-right: 10px;"></i> Create New Course
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@Url.Action("Create")">
+                <i class="fa fa-pencil" style="margin-right: 10px;"></i> Create New Course
+            </a>
+        </div>
+    </div>
+</div>
+
+<p class="hidden">
+    <a href="@Url.Action("Create")" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create New</a>
+</p>
+<section @*class="panel panel-default"*@>
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th class="hidden">ID</th>
+                    <th style="width:460px;">Courses Name</th>
+                    <th style="width:160px;text-align:center;">Date Created</th>
+                    <th style="width:100px;text-align:center;">Status</th>
+
+                    <th style="width:158px; text-align:center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr id="cours-@course.ID">
+                        <td class="hidden"> @course.ID</td>
+                        <td style="vertical-align:middle">
+                            @course.Name
+                        </td>
+                        <td style="text-align: center;vertical-align:middle">
+                            @{ var dt = course.CreatedDate == null ? "N/A" : Convert.ToDateTime(course.CreatedDate).ToString("MM/dd/yyyy");}
+                            @dt
+                        </td>
+                        <td style="text-align:center;">
+                            @if (course.IsPublished)
+                            {
+                                <span class="btn btn-xs btn-success" style="opacity:0.25; cursor:default;color:green !important">
+                                    <i class="fa fa-check" style="color:green"></i> Published
+                                </span>
+                            }
+                            else
+                            {
+                                if (course.CanBePublished)
+                                {
+                                    <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded btn-success" style="background-color: #72bbb8; color: white !important;height:31px; width: 115px; text-align: center; padding:5px;padding-left:1px; ">
+                                        <i class="fa fa-check"></i> Publish
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
+                                          data-content="@PublishErrorsTooltip(course.PublishStatus)"
+                                          data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
+                                        <i class="fa fa-check"></i> Publish
+                                    </span>
+                                }
+                            }
+                        </td>
+                        <td @*style="text-align:center;"*@ style=" width: 160px;text-align:center;">
+                            <a data-toggle="tooltip" title="Preview" href="@Url.Action("PreviewCourse", "Courses", new { id = course.ID })" ><i class="fa fa-eye resource-icon" style="color:green"></i></a>&nbsp;&nbsp;
+                            <a href="javascript:void(0)" title="Duplicate" data-toggle="modal" data-target="#myModal-@course.ID"><i class="fa fa-files-o resource-icon" style="color:red;"></i></a>&nbsp;&nbsp;
+                            <a data-toggle="tooltip" title="Modules" href="@Url.Action("Index", "Resources", new { id = course.ID })"><img style="width:20px;height:25px;margin-bottom:10px;" src="~/_Content/images/duplicate.png" /></a>&nbsp;&nbsp;
+                            <a data-toggle="tooltip" title="Edit" href="@Url.Action("Edit", new { id = course.ID })"><i class="fa fa-pencil edit-icon"></i></a>&nbsp;&nbsp;
+                            <a data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
+                            <div id="myModal-@course.ID" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Duplicate This Course</h4>
+                                        </div>
+                                        <form action="@Url.Action("CreateCourseClone")">
+                                            <div class="modal-body">
+                                                <input type="hidden" name="CourseID" value="@course.ID" />
+                                                <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
+
+
+
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*<a href="" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-files-o"></i> Resources</a>
+                                <a href="@Url.Action("Edit", new { id = course.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                                <a href="@Url.Action("Delete", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@helper PublishErrorsTooltip(Dictionary<PublishabilityStatus, string> statuses)
+{
+    <div style='width:200px;'>
+        @foreach (var curStatus in statuses.OrderBy(x => x.Key))
+        {
+            switch (curStatus.Key)
+            {
+                case PublishabilityStatus.NoResources:
+                    <p>
+                        <strong>No Modules</strong>
+                    </p>
+                    break;
+                case PublishabilityStatus.NoResourceChapters:
+                    <p class='text-center'>
+                        <strong>Module(s) Without Chapters</strong>
+                    </p>
+                    <p>
+                        @curStatus.Value
+                    </p>
+                    break;
+                case PublishabilityStatus.NoResourceChapterContent:
+                    <p class='text-center'>
+                        <strong>Module Chapter(s) Without Content</strong>
+                    </p>
+                    <p>
+                        @curStatus.Value
+                    </p>
+                    break;
+                case PublishabilityStatus.NoResourceQuestions:
+                    <p class='text-center'>
+                        <strong>Module(s) Without Test Questions</strong>
+                    </p>
+                    <p>
+                        @curStatus.Value
+                    </p>
+                    break;
+                case PublishabilityStatus.NotEnoughResourceQuestionAnswers:
+                    <p class='text-center'>
+                        <strong>Test Question(s) With Too Few Answers</strong>
+                    </p>
+                    <p>
+                        @curStatus.Value
+                    </p>
+                    break;
+                case PublishabilityStatus.NoResourceQuestionAnswerIsCorrect:
+                    <p class='text-center'>
+                        <strong>Test Question(s) With No Correct Answer</strong>
+                    </p>
+                    <p>
+                        @curStatus.Value
+                    </p>
+                    break;
+            }
+        }
+    </div>
+}
+
+<script src="~/_Content/js/vendors.bundle.js"></script>
+<script src="~/_Content/js/scripts.bundle.js"></script>
+<script>
+    $(document).ready(function () {
+	  $(".intro-text").removeClass("button-deactive");
+        $(".btn-3").css("color", "#ffffff !important");
+        var CreatedId = '@TempData["ID"]';
+		
+         if (CreatedId > 0) {
+             swal({
+                 title: 'New course has been created. Do you want </br> to add course content now?',
+                 //title: 'New course has been created. Do you want to add course content now?',
+                 icon: "warning",
+                 imageUrl: '/TrainingCourses/_Content/images/warning-icon.png',
+                 imageWidth: 83,
+                 imageHeight: 83,
+                 imageAlt: 'Custom image',
+                 //animation: false
+                 showCancelButton: true,
+                 confirmButtonText: 'Reset'
+             });
+             $(".swal2-cancel").text("No");
+             $(".swal2-confirm").text("Yes");
+             $(".swal2-confirm").click(function () {
+                        var url = "/TrainingCourses/Company/Resources/Create?courseID=" + CreatedId;
+                        window.open(url, "_blank");
+             })
+        }
+        $(".btncoursecompany").removeClass("button-deactive");
+        $(".btncoursecompany").addClass("button-active");
+        $(".content-desc").removeClass("adjust-desc");
+    });
+    function OpenTab(PreviewId) {
+        var URLLink = "/TrainingCourses/Company/Courses/PreviewCourse/" +  PreviewId;
+        window.open(URLLink, "_blank");
+    }
+
+    function DeleteCourse(id) {
+	swal({
+            title: 'Are you sure you want to delete this course?',
+            icon: "warning",
+            imageUrl: '/TrainingCourses/_Content/images/warning-icon.png',
+            imageWidth: 83,
+            imageHeight: 83,
+            imageAlt: 'Custom image',
+            showCancelButton: true,
+            confirmButtonText: 'Reset'
+        });
+        $(".swal2-cancel").text("No");
+        $(".swal2-confirm").text("Yes");
+        $(".swal2-confirm").click(function () {
+           
+        var i = 1;
+        $("table tbody tr").each(function() {
+            var idd = $(this).attr('id');
+            
+            if (i == 1) {
+
+                $("#" + idd).removeClass('even');
+                $("#" + idd).addClass('odd');
+                i = 0;
+            } else {
+                i = 1;
+                $("#" + idd).removeClass('odd');
+
+                $("#" + idd).addClass('even');
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses/DeleteWithAjax?id=" + id,
+            success: function (response) {
+                if (response == "yes") {
+                    $("#cours-" + id).hide();
+                    toastr.success('Deleted successfully');
+
+                }
+            }
+        })
+})
+}
+</script>

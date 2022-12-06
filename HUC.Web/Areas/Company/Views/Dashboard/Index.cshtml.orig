@@ -1,0 +1,319 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.PageModels.CompanyDashboardPageModel
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Dashboard",
+        ContentTitle = "Dashboard",
+        ContentTitleDesc = "This is your company's dashboard. Here you can see your overall statistics, a login report of your users and also the latest test results.",
+        ActivePage = "dashboard"
+    };
+
+}
+
+<section class="row m-b-md">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Filter By Year
+        </h3>
+        <small>
+            Use the dropdown to filter the results and statistics shown below by year.
+        </small>
+        <br/>
+        <select class="chosen-select year-select" id="years-filter">
+            <option value="">All Time</option>
+            @foreach (var year in Model.YearsOptions())
+            {
+                <option value="@year" @if (Model.Year == year){<text>selected="selected"</text>}>@year</option>
+            }
+        </select>
+    </div>
+</section>
+<section class="row m-b-md">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Overall Statistics
+        </h3>
+        <small>
+            Here are the overall statistics for your company.
+        </small>
+    </div>
+</section>
+
+<div class="row">
+    <div class="col-md-6">
+        <section class="panel panel-default">
+            <header class="panel-heading font-bold">User Average Score Per Course (%)</header>
+            <div class="panel-body">
+                <div id="score-bar" style="height:240px;display:none;"></div>
+                <span id="score-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
+                <span id="score-bar-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-6">
+        <section class="panel panel-default">
+            <header class="panel-heading font-bold">User Average Time Spent Per Course (Minutes)</header>
+            <div class="panel-body">
+                <div id="revision-bar" style="height:240px;display:none;"></div>
+                <span id="revision-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
+                <span id="revision-bar-loading" class="chart-loading">Loading Statistics...</span>
+            </div>
+        </section>
+    </div>
+</div>
+
+<section class="row m-b-md">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Login Report
+        </h3>
+        <small>
+            Here you can see the list of users who have been recently active.
+        </small>
+    </div>
+</section>
+
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>
+                        User
+                    </th>
+                    <th>
+                        Last Login
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Company.AllUsers.Where(x => !x.IsAdmin).Take(10))
+                {
+                    <tr>
+                        <td>
+                            @user.User.FirstName @user.User.LastName
+                        </td>
+                        <td>
+                            @{
+                             var latestLogin = @user.User.Logins.OrderBy(x => x).LastOrDefault();
+                            }
+                            @if (latestLogin == default(DateTime))
+                            {
+                                @:Never
+                            }
+                            else
+                            {
+                                @:@latestLogin.ToLongDateString() @latestLogin.ToShortTimeString()
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="row m-b-md">
+    <div class="col-sm-6">
+        <h3 class="m-b-xs text-black">
+            Latest Test Results
+        </h3>
+        <small>
+            This shows the latest test scores for your users.
+        </small>
+    </div>
+</section>
+
+@*<section class="panel panel-default">
+    <div class="table-responsive">
+        <table id="sortable" class="table table-striped m-b-none">
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        User
+                    </th>
+                    <th>
+                        Course
+                    </th>
+                    <th>
+                        Test taken
+                    </th>
+                    <th>
+                        Time taken
+                    </th>
+                    <th>
+                        Score
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var curTest in Model.Company.LatestUserTests(Model.Year).OrderByDescending(x => x.StartOn))
+                {
+                    <tr>
+                        <td>
+                            @curTest.StartOn.ToShortDateString()
+                        </td>
+                        <td>
+                            @curTest.UserCourse.User.FirstName @curTest.UserCourse.User.LastName
+                        </td>
+                        <td>
+                            @curTest.Resource.Course.Name
+                        </td>
+                        <td>
+                            @curTest.Resource.Name
+                        </td>
+                        <td>
+                            @curTest.TimeTakenString
+                        </td>
+                        <td>
+                            @curTest.CorrectAnswerCount/@curTest.MaxScore
+
+
+          
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var defaultGraphOptions = {
+            grid: {
+                hoverable: true,
+                clickable: false,
+                borderWidth: 0
+            },
+            legend: {
+                show: false
+            },
+            series: {
+                shadowSize: 1
+            }
+        };
+
+        updateGraphs();
+
+        var isUpdating = false;
+
+        window.setInterval(function () {
+            if (!isUpdating)
+            {
+                updateGraphs();
+            }
+
+        }, 10000);
+        function updateGraphs() {
+            isUpdating = true;
+            $.get('/Company/Dashboard/PageData?year=@Model.Year', function (data) {
+                updateScoreGraph(data.UserAverageScorePerCourse);
+                updateRevisionGraph(data.UserAverageTimeSpentPerCourse);
+                isUpdating = false;
+            });
+        }
+
+        function updateScoreGraph(data) {
+            $("#score-bar-loading").hide();
+
+            if (data.noData == true) {
+                $("#score-bar").hide();
+                $("#score-bar-error").show();
+            } else {
+                $("#score-bar").show();
+                $("#score-bar-error").hide();
+
+                $("#score-bar").length && $.plot($("#score-bar"),
+                    [
+                        {
+                            label: "Target Compliance Score",
+                            data: data.barDataCompliance,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 0.75,
+                                order: 1,
+                                align: 'center',
+                                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                            },
+                            color: "black"
+                        }, {
+                            label: "Average Compliance Score",
+                            data: data.barDataAverage,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 0.75,
+                                order: 1,
+                                align: 'center',
+                                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                            },
+                            color: "#1aae88"
+                        }
+                    ],
+                    $.extend({}, defaultGraphOptions, {
+                        xaxis: {
+                            ticks: data.ticks
+                        },
+                        yaxis: {
+                            min: 0, max: 100, tickSize: 10
+                        }
+                    })
+                );
+            }
+        };
+        function updateRevisionGraph(data) {
+            $("#revision-bar-loading").hide();
+
+            if (data.noData == true) {
+                $("#revision-bar").hide();
+                $("#revision-bar-error").show();
+            } else {
+                $("#revision-bar").show();
+                $("#revision-bar-error").hide();
+
+                $("#revision-bar").length && $.plot($("#revision-bar"),
+                    [
+                        {
+                            label: "Revision Time Spent Per Course",
+                            data: data.barData,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 0.75,
+                                order: 1,
+                                align: 'center',
+                                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.9 }] }
+                            },
+                            color: "#6783b7"
+                        }
+                    ],
+                    $.extend({}, defaultGraphOptions, {
+                        xaxis: {
+                            ticks: data.ticks
+                        },
+                        yaxis: {
+                            min: 0, minTickSize: 1
+                        }
+                    })
+                );
+            }
+        };
+
+        //Year filter changes
+
+        $("#years-filter").change(function() {
+            window.location.href = '/Company?year=' + $(this).val();
+        });
+    });
+</script>

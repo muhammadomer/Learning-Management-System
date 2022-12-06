@@ -1,0 +1,54 @@
+﻿@model HUC.Web.App.Users.UserLoginModel
+@{
+    Layout = null;
+    var refreshTo = (string)ViewBag.RefreshTo;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1" />
+    <title>
+        Training Courses | Login
+    </title>
+    @Styles.Render("~/bundles/less")
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/js")
+</head>
+<body style="background: url(/_Content/images/colorbox/overlay.png) repeat;">
+    <div class="login-colorbox">
+        <div class="heading">
+            <img alt="Training Courses" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/loginbox-logo.png" />
+        </div>
+        <span class="login-bar">
+            Log in Area
+        </span>
+        <div class="login-area">
+            @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { target = "_parent"}))
+            {
+                @Html.TextBoxFor(x => x.Email, new { @placeholder = "Email Address" })
+                @Html.PasswordFor(x => x.Password, new { @placeholder = "Password" })
+
+                <input class="large-button orange" type="submit" value="Log in" />
+
+                <a class="reset">
+                    Forgotten password
+                </a>
+            }
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.reset').click(function () {
+                    parent.$.colorbox.close();
+                    window.parent.location.href = '/Auth/Reset';
+                });
+            });
+        </script>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,735 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DentonsEmployeesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Application Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="Application Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="250" />
+          <Property Name="Modal Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="App Url" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="CountryID" Type="int" />
+          <Property Name="Visible" Type="bit" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="Visible" Type="bit" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CurrencyCode" Type="varchar" MaxLength="3" />
+          <Property Name="NumCode" Type="int" />
+          <Property Name="PhoneCode" Type="int" Nullable="false" />
+          <Property Name="EUMember" Type="bit" />
+          <Property Name="IsExempted" Type="bit" />
+          <Property Name="CurrencyDescription" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DentonsEmployeesSettings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="MailServer" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="SMTPPort" Type="int" Nullable="false" />
+          <Property Name="EnableSSL" Type="bit" Nullable="false" />
+          <Property Name="MailUsername" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MailPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DentonsEmployeesURL" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="TwoFAEnable" Type="bit" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="License" Type="nvarchar(max)" />
+          <Property Name="HashCode" Type="nvarchar(max)" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CompanyLogo" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyAddress" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Visible" Type="bit" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="Office" Type="nvarchar" MaxLength="500" />
+          <Property Name="Address Line 1" Type="nvarchar" MaxLength="500" />
+          <Property Name="Address Line 2" Type="nvarchar" MaxLength="500" />
+          <Property Name="CityID" Type="int" />
+          <Property Name="State" Type="nvarchar" MaxLength="250" />
+          <Property Name="GPS Postal" Type="nvarchar" MaxLength="250" />
+          <Property Name="Mail Postal" Type="nvarchar" MaxLength="250" />
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="250" />
+          <Property Name="Longitude" Type="nvarchar" MaxLength="250" />
+          <Property Name="Latitude" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="PracticeGroups">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" />
+          <Property Name="Visible" Type="bit" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Visible" Type="bit" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="Last Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="Email" Type="nvarchar" MaxLength="250" />
+          <Property Name="Contact Number" Type="nvarchar" MaxLength="250" />
+          <Property Name="Job Title" Type="nvarchar" MaxLength="250" />
+          <Property Name="Username" Type="nvarchar" MaxLength="250" />
+          <Property Name="Password" Type="nvarchar" MaxLength="250" />
+          <Property Name="ProfileImage" Type="nvarchar" MaxLength="250" />
+          <Property Name="OfficeID" Type="int" />
+          <Property Name="Office" Type="nvarchar" MaxLength="250" />
+          <Property Name="Region" Type="nvarchar" MaxLength="250" />
+          <Property Name="Department" Type="nvarchar" MaxLength="250" />
+          <Property Name="Direct Number" Type="nvarchar" MaxLength="250" />
+          <Property Name="Mobile Number" Type="nvarchar" MaxLength="250" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="250" />
+          <Property Name="Fax Number" Type="nvarchar" MaxLength="250" />
+          <Property Name="Address Line 1" Type="nvarchar" MaxLength="250" />
+          <Property Name="Address Line 2" Type="nvarchar" MaxLength="250" />
+          <Property Name="City" Type="nvarchar" MaxLength="250" />
+          <Property Name="State" Type="nvarchar" MaxLength="250" />
+          <Property Name="GPS Postal" Type="nvarchar" MaxLength="250" />
+          <Property Name="Mail Postal" Type="nvarchar" MaxLength="250" />
+          <Property Name="Country" Type="nvarchar" MaxLength="250" />
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="Allow Card" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="ResetHash" Type="nvarchar" MaxLength="500" />
+          <Property Name="ResetRequestDate" Type="datetime" />
+          <Property Name="LastPasswordChange" Type="datetime" />
+          <Property Name="WrongPaswordAttempts" Type="int" Nullable="false" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" />
+          <Property Name="GoogleAuthenticatorSecretKey" Type="nvarchar(max)" />
+          <Property Name="IsGoogleAuthenticatorEnabled" Type="bit" Nullable="false" />
+          <Property Name="TwoFAEmailCode" Type="nvarchar(max)" />
+          <Property Name="TwoFAEmailCodeDateTime" Type="datetime" />
+          <Property Name="LevelPermissionID" Type="int" Nullable="false" />
+          <Property Name="DAC6LevelPermissionID" Type="int" />
+          <Property Name="PracticeGroup" Type="nvarchar" MaxLength="250" />
+          <Property Name="TCLevelPermissionId" Type="int" Nullable="false" />
+          <Property Name="TCUserId" Type="int" />
+          <Property Name="RolePersmission" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="UsersApplications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User ID" Type="int" />
+          <Property Name="Application ID" Type="int" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User Type" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <Association Name="FK_Users_UserTypes">
+          <End Role="UserTypes" Type="Self.UserTypes" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersApplications_Applications">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="0..1" />
+          <End Role="UsersApplications" Type="Self.UsersApplications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsersApplications">
+              <PropertyRef Name="Application ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersApplications_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UsersApplications" Type="Self.UsersApplications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsersApplications">
+              <PropertyRef Name="User ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DeleteConfiguration" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Filter" Type="nvarchar" Mode="In" />
+          <Parameter Name="RiskManagerDB" Type="nvarchar" Mode="In" />
+          <Parameter Name="Id" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="GetAllUserApplications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="DentonsEmployeesModelStoreContainer">
+          <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DentonsEmployeesSettings" EntityType="Self.DentonsEmployeesSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PracticeGroups" EntityType="Self.PracticeGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersApplications" EntityType="Self.UsersApplications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Users_UserTypes" Association="Self.FK_Users_UserTypes">
+            <End Role="UserTypes" EntitySet="UserTypes" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersApplications_Applications" Association="Self.FK_UsersApplications_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="UsersApplications" EntitySet="UsersApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersApplications_Users" Association="Self.FK_UsersApplications_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersApplications" EntitySet="UsersApplications" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DentonsEmployeesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DentonsEmployeesEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="GetAllUserApplications" ReturnType="Collection(DentonsEmployeesModel.GetAllUserApplications_Result)">
+          <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Applications" EntityType="DentonsEmployeesModel.Applications" />
+          <EntitySet Name="Cities" EntityType="DentonsEmployeesModel.Cities" />
+          <EntitySet Name="Countries" EntityType="DentonsEmployeesModel.Countries" />
+          <EntitySet Name="Country" EntityType="DentonsEmployeesModel.Country" />
+          <EntitySet Name="DentonsEmployeesSettings" EntityType="DentonsEmployeesModel.DentonsEmployeesSettings" />
+          <EntitySet Name="Departments" EntityType="DentonsEmployeesModel.Departments" />
+          <EntitySet Name="Location" EntityType="DentonsEmployeesModel.Location" />
+          <EntitySet Name="PracticeGroups" EntityType="DentonsEmployeesModel.PracticeGroups" />
+          <EntitySet Name="Regions" EntityType="DentonsEmployeesModel.Regions" />
+          <EntitySet Name="Users" EntityType="DentonsEmployeesModel.Users" />
+          <EntitySet Name="UsersApplications" EntityType="DentonsEmployeesModel.UsersApplications" />
+          <EntitySet Name="UserTypes" EntityType="DentonsEmployeesModel.UserTypes" />
+          <AssociationSet Name="FK_UsersApplications_Applications" Association="DentonsEmployeesModel.FK_UsersApplications_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="UsersApplications" EntitySet="UsersApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UserTypes" Association="DentonsEmployeesModel.FK_Users_UserTypes">
+            <End Role="UserTypes" EntitySet="UserTypes" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersApplications_Users" Association="DentonsEmployeesModel.FK_UsersApplications_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersApplications" EntitySet="UsersApplications" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteConfiguration">
+            <Parameter Name="Filter" Mode="In" Type="String" />
+            <Parameter Name="RiskManagerDB" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetAllUserApplications_Result">
+          <Property Type="Int32" Name="User_ID" Nullable="true" />
+          <Property Type="Int32" Name="Application_ID" Nullable="true" />
+          <Property Type="String" Name="Application_Name" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Icon" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Application_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Application_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Modal_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="App_Url" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="UsersApplications" Relationship="DentonsEmployeesModel.FK_UsersApplications_Applications" FromRole="Applications" ToRole="UsersApplications" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CountryID" Type="Int32" />
+          <Property Name="Visible" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="Visible" Type="Boolean" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CurrencyCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="NumCode" Type="Int32" />
+          <Property Name="PhoneCode" Type="Int32" Nullable="false" />
+          <Property Name="EUMember" Type="Boolean" />
+          <Property Name="IsExempted" Type="Boolean" />
+          <Property Name="CurrencyDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DentonsEmployeesSettings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="MailServer" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPPort" Type="Int32" Nullable="false" />
+          <Property Name="EnableSSL" Type="Boolean" Nullable="false" />
+          <Property Name="MailUsername" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DentonsEmployeesURL" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="TwoFAEnable" Type="Boolean" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="License" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HashCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyLogo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Visible" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="Office" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address_Line_1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address_Line_2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CityID" Type="Int32" />
+          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="GPS_Postal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Mail_Postal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PracticeGroups">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Visible" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Visible" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Contact_Number" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Job_Title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileImage" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OfficeID" Type="Int32" />
+          <Property Name="Office" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Direct_Number" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile_Number" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Fax_Number" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Address_Line_1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Address_Line_2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="GPS_Postal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Mail_Postal" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Allow_Card" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="ResetHash" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ResetRequestDate" Type="DateTime" Precision="3" />
+          <Property Name="LastPasswordChange" Type="DateTime" Precision="3" />
+          <Property Name="WrongPaswordAttempts" Type="Int32" Nullable="false" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" />
+          <Property Name="GoogleAuthenticatorSecretKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsGoogleAuthenticatorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFAEmailCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TwoFAEmailCodeDateTime" Type="DateTime" Precision="3" />
+          <Property Name="LevelPermissionID" Type="Int32" Nullable="false" />
+          <Property Name="DAC6LevelPermissionID" Type="Int32" />
+          <Property Name="PracticeGroup" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="TCLevelPermissionId" Type="Int32" Nullable="false" />
+          <Property Name="TCUserId" Type="Int32" />
+          <Property Name="RolePersmission" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserTypes" Relationship="DentonsEmployeesModel.FK_Users_UserTypes" FromRole="Users" ToRole="UserTypes" />
+          <NavigationProperty Name="UsersApplications" Relationship="DentonsEmployeesModel.FK_UsersApplications_Users" FromRole="Users" ToRole="UsersApplications" />
+        </EntityType>
+        <EntityType Name="UsersApplications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_ID" Type="Int32" />
+          <Property Name="Application_ID" Type="Int32" />
+          <NavigationProperty Name="Applications" Relationship="DentonsEmployeesModel.FK_UsersApplications_Applications" FromRole="UsersApplications" ToRole="Applications" />
+          <NavigationProperty Name="Users" Relationship="DentonsEmployeesModel.FK_UsersApplications_Users" FromRole="UsersApplications" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Type" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="DentonsEmployeesModel.FK_Users_UserTypes" FromRole="UserTypes" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_UsersApplications_Applications">
+          <End Type="DentonsEmployeesModel.Applications" Role="Applications" Multiplicity="0..1" />
+          <End Type="DentonsEmployeesModel.UsersApplications" Role="UsersApplications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsersApplications">
+              <PropertyRef Name="Application_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UserTypes">
+          <End Type="DentonsEmployeesModel.UserTypes" Role="UserTypes" Multiplicity="1" />
+          <End Type="DentonsEmployeesModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersApplications_Users">
+          <End Type="DentonsEmployeesModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="DentonsEmployeesModel.UsersApplications" Role="UsersApplications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UsersApplications">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DentonsEmployeesModelStoreContainer" CdmEntityContainer="DentonsEmployeesEntities">
+          <FunctionImportMapping FunctionImportName="GetAllUserApplications" FunctionName="DentonsEmployeesModel.Store.GetAllUserApplications">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DentonsEmployeesModel.GetAllUserApplications_Result">
+                <ScalarProperty Name="User_ID" ColumnName="User ID" />
+                <ScalarProperty Name="Application_ID" ColumnName="Application ID" />
+                <ScalarProperty Name="Application_Name" ColumnName="Application Name" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Applications">
+              <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="App_Url" ColumnName="App Url" />
+                <ScalarProperty Name="Modal_Name" ColumnName="Modal Name" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Application_Description" ColumnName="Application Description" />
+                <ScalarProperty Name="Application_Name" ColumnName="Application Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Cities">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Countries">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Country">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="CurrencyDescription" ColumnName="CurrencyDescription" />
+                <ScalarProperty Name="IsExempted" ColumnName="IsExempted" />
+                <ScalarProperty Name="EUMember" ColumnName="EUMember" />
+                <ScalarProperty Name="PhoneCode" ColumnName="PhoneCode" />
+                <ScalarProperty Name="NumCode" ColumnName="NumCode" />
+                <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DentonsEmployeesSettings">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.DentonsEmployeesSettings">
+              <MappingFragment StoreEntitySet="DentonsEmployeesSettings">
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="HashCode" ColumnName="HashCode" />
+                <ScalarProperty Name="License" ColumnName="License" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TwoFAEnable" ColumnName="TwoFAEnable" />
+                <ScalarProperty Name="DentonsEmployeesURL" ColumnName="DentonsEmployeesURL" />
+                <ScalarProperty Name="MailPassword" ColumnName="MailPassword" />
+                <ScalarProperty Name="MailUsername" ColumnName="MailUsername" />
+                <ScalarProperty Name="EnableSSL" ColumnName="EnableSSL" />
+                <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
+                <ScalarProperty Name="MailServer" ColumnName="MailServer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Departments">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Location">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="Mail_Postal" ColumnName="Mail Postal" />
+                <ScalarProperty Name="GPS_Postal" ColumnName="GPS Postal" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="Address_Line_2" ColumnName="Address Line 2" />
+                <ScalarProperty Name="Address_Line_1" ColumnName="Address Line 1" />
+                <ScalarProperty Name="Office" ColumnName="Office" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PracticeGroups">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.PracticeGroups">
+              <MappingFragment StoreEntitySet="PracticeGroups">
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Regions">
+              <MappingFragment StoreEntitySet="Regions">
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="RolePersmission" ColumnName="RolePersmission" />
+                <ScalarProperty Name="TCUserId" ColumnName="TCUserId" />
+                <ScalarProperty Name="TCLevelPermissionId" ColumnName="TCLevelPermissionId" />
+                <ScalarProperty Name="PracticeGroup" ColumnName="PracticeGroup" />
+                <ScalarProperty Name="DAC6LevelPermissionID" ColumnName="DAC6LevelPermissionID" />
+                <ScalarProperty Name="LevelPermissionID" ColumnName="LevelPermissionID" />
+                <ScalarProperty Name="TwoFAEmailCodeDateTime" ColumnName="TwoFAEmailCodeDateTime" />
+                <ScalarProperty Name="TwoFAEmailCode" ColumnName="TwoFAEmailCode" />
+                <ScalarProperty Name="IsGoogleAuthenticatorEnabled" ColumnName="IsGoogleAuthenticatorEnabled" />
+                <ScalarProperty Name="GoogleAuthenticatorSecretKey" ColumnName="GoogleAuthenticatorSecretKey" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="WrongPaswordAttempts" ColumnName="WrongPaswordAttempts" />
+                <ScalarProperty Name="LastPasswordChange" ColumnName="LastPasswordChange" />
+                <ScalarProperty Name="ResetRequestDate" ColumnName="ResetRequestDate" />
+                <ScalarProperty Name="ResetHash" ColumnName="ResetHash" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Allow_Card" ColumnName="Allow Card" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Mail_Postal" ColumnName="Mail Postal" />
+                <ScalarProperty Name="GPS_Postal" ColumnName="GPS Postal" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address_Line_2" ColumnName="Address Line 2" />
+                <ScalarProperty Name="Address_Line_1" ColumnName="Address Line 1" />
+                <ScalarProperty Name="Fax_Number" ColumnName="Fax Number" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Mobile_Number" ColumnName="Mobile Number" />
+                <ScalarProperty Name="Direct_Number" ColumnName="Direct Number" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Office" ColumnName="Office" />
+                <ScalarProperty Name="OfficeID" ColumnName="OfficeID" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Job_Title" ColumnName="Job Title" />
+                <ScalarProperty Name="Contact_Number" ColumnName="Contact Number" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last Name" />
+                <ScalarProperty Name="First_Name" ColumnName="First Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersApplications">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.UsersApplications">
+              <MappingFragment StoreEntitySet="UsersApplications">
+                <ScalarProperty Name="Application_ID" ColumnName="Application ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTypes">
+            <EntityTypeMapping TypeName="DentonsEmployeesModel.UserTypes">
+              <MappingFragment StoreEntitySet="UserTypes">
+                <ScalarProperty Name="User_Type" ColumnName="User Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteConfiguration" FunctionName="DentonsEmployeesModel.Store.DeleteConfiguration" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

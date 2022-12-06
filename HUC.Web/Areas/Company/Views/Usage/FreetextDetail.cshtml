@@ -1,0 +1,279 @@
+﻿@using HUC.Web.App.Resources
+@using HUC.Web.App.Users.Courses
+@using HUC.Web.App.Resources.Chapters.Contents
+@using HUC.Web.App.Resources.Questions.Answers
+@using HUC.Web.Models
+@model HUC.Web.App.Courses.CourseModel
+@{
+   
+}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Signika:100,200,300,400,500,600,700,800,900" media="all">
+
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/accordion.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/interview.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/flip.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/radio.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/slider.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/player.css" rel="stylesheet" />
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/truefalse.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/popper.min.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/scale/js/bootstrap.min.js"></script>
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/lib/jquery.signalR-2.2.1.js"></script>
+<script src="~/signalr/hubs"></script>
+<script>
+    $(document).ready(function () {
+        $("#modAdspic").empty();
+        $("#modAdspic").append('<a href="#"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Gdd-logo.jpg" style="max-height:106px;padding-right:50px;width:168px;"></a>');
+
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/UserCourses.css" />
+<input type="hidden" id="hdnCourseId" value="@Model.ID" />
+<input type="hidden" id="hdnApplicatonPath" value="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)" />
+@if (Model.BackGroundType == false && !string.IsNullOrEmpty(Model.Background))
+{
+    <style>
+        .full-page {
+            background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Background) !important;
+        }
+        textarea {
+            overflow-y: scroll;
+            height: 100px;
+            resize: none; /* Remove this if you want the user to resize the textarea */
+                    }
+    </style>
+}
+else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background))
+{
+    <style>
+        .full-page {
+          background:@Model.Background !important;
+        }
+        @@media screen and (min-width: 1401px) {
+            .full-page {
+                height: 50% !important;
+            }
+        }
+
+        @@media screen and (min-width: 1366px) {
+            .full-page {
+                height: 60%;
+            }
+        }
+    </style>
+}
+<style>
+    @@media only screen and (min-width: 768px) {
+        #btnLogout {
+            display: none;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        body {
+            padding: 0px !important;
+        }
+
+        .vbox {
+            position: absolute !important;
+        }
+    }
+    /* @@media only screen and (max-width: 1280px){
+
+                     .course-overview .main-panel {
+                         width: 110% !important;
+                         padding-left: 0;
+                     }
+                }*/
+    .ev-dragAndDrop-component .ev-drop-zone:nth-child(even) {
+        margin-left: unset;
+    }
+
+    .btn-blue-color {
+        color: white !important;
+        background-color: #3f51b5;
+    }
+.btn-blue-color-userclose{
+    color: #fff !important;
+    background-color: #000;
+    margin-left: 25px;
+    border: 1px solid #000;	
+}
+
+    /*New Design */
+    .no-padding {
+        padding: 0px 106px !important;
+    }
+
+    .align-top-content {
+        padding: 0px 90px;
+        top: 562px !important;
+    }
+
+    .module-tile-second {
+        background-color: #fff;
+    }
+
+    .row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .panel {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .course-overview-top {
+        top: 220px !important;
+        position: relative !important;
+    }
+
+</style>
+<div class="desktop-ver">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="course-header">
+                @if (Model.Name.Length > 25)
+                {
+                    <div style="font-size:33px !important;">@Model.Name</div>
+                }
+                else
+                {
+                    <div>@Model.Name</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 align-top-content">
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px"  href="#" onclick="Back();">
+            <i  class="fa fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+
+<div class="mobile-ver middle-btn">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Dashboard">
+                Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="course-overview course-overview-top" style="top:403px !important">
+    <div class="col-md-12 main-panel no-padding">
+        <div class="panel" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 ev-article">
+                        <h4>Modules  Assessment</h4>
+                        <hr />
+                        @if (ViewBag.Freetextanswers != null)
+                        {
+                            int qno = 1;
+                            int totalrecord = ViewBag.countlist;
+                            <input type="text" id="totalcountrecord" value="@totalrecord" hidden />
+                            foreach (var question in ViewBag.Freetextanswers)
+                            {
+                                <div id="div-@qno">
+                                    <div class="i-module-display">
+                                        <h3 style="font-weight:bold">Module:  @question.ModuleName</h3>
+                                    </div>
+                                    <div class="i-question-display">
+                                        <h3 style="font-weight:bold"> Q.No-@qno:  @question.Question.Question?</h3>
+                                    </div>
+                                    <div class="sectionfreetex" style="margin-bottom:20px">
+                                        <div class="radio-module" id="module-@question.ID"></div>
+                                        <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
+                                        <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                        <textarea rows='10' cols='138' style='width:100%;margin-top:16px;margin-bottom:2px;border-color:#66CC99;' id="textans-@question.ID" readonly>@question.Answer</textarea>
+                                        <div class="ev-buttons-cluster-bottom ev-clearfix">
+                                            <button type="button" class="ev-button ev-primary ev-buttons-action" data-question-id="@question.ID" onclick="submitResult('@question.ID', '@question.TestQuestionID', '@question.Sort', '@question.CourseUserId', '1', '@qno', '@Model.ID');" aria-hidden="true" aria-label="Select this button to submit your answer">
+                                                <span class="ev-button-text">
+                                                    Correct
+                                                </span>
+                                            </button>
+                                            <button type="button" class="ev-button ev-primary ev-buttons-action" data-question-id="@question.ID" onclick="submitResult('@question.ID', '@question.TestQuestionID', '@question.Sort',  '@question.CourseUserId','0' , '@qno' , '@Model.ID');" aria-hidden="true" aria-label="Select this button to submit your answer" style="margin-left:20px;">
+                                                <span class="ev-button-text">
+                                                    Incorrect
+                                                </span>
+                                            </button>
+                                            <div class="ev-buttons-marking-icon ev-icon ev-icon-check" style="display: none;"></div>
+                                            <div class="ev-buttons-marking-icon ev-icon ev-icon-cross" style="display: none;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                qno++;
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+ function Back(){
+	window.history.back();
+  }
+    function gotopage() {
+        window.location.href = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Dashboard/DashBoardView";
+    }
+    $(document).ready(function () {
+	 $(".intro-text").removeClass("button-deactive");
+        $(".btn-2").css("color", "#ffffff !important");
+        $(".align-top-content").removeClass("button-deactive");
+        $(".align-top-content").addClass("button-active");
+    })
+    function submitResult(Id, testquestion, sort,  userid, btnvalue, qno, courseId) {
+	debugger;
+        var QuestionId = Id;
+        var testQuestionId = testquestion;
+        var sortId = sort;
+        var answer = $("#textans-"+Id).val();
+        var userid = userid;
+        var btnvalue = btnvalue;
+        var totalcountrecord = $("#totalcountrecord").val();
+
+        var ApplicatiionPath = $("#hdnApplicatonPath").val();
+        var requestPerameters = {
+            "questionid": QuestionId,
+            "testquestion": testQuestionId,
+            "sort": sortId,
+            "Answer": answer,
+            "userid": userid,
+            "btnvalue": btnvalue
+        }
+        var url = ApplicatiionPath + '/Company/Usage/FreetextresultAnswers';
+        AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
+            if (response == 1) {
+                if (totalcountrecord == qno) {
+                    $("#div-" + qno).hide();
+                    toastr.success('Saved successfully');
+                    window.location.href = ApplicatiionPath + '/Company/Usage/Course/' + courseId;
+                }
+                else {
+                    $("#div-" + qno).hide();
+                    toastr.success('Saved successfully');
+                }
+
+            }
+        });
+    }
+    $("#logoid").hide();
+    $(".bg-white").hide();
+</script>

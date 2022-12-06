@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.PageTitle = "Fluid Layout";
+    Layout = "~/Areas/Scale/Views/Shared/_LayoutScale.cshtml";
+    ViewBag.PageName = "layout-fluid";
+    ViewBag.ParentPageName = "ui";
+    //Content title area
+    ViewBag.ContentTitle = "Fluid Layout";
+    ViewBag.ContentTitleDesc = " ";
+}
+
+@section Scripts{
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/demos/demo-datatables.js"></script>
+<link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
+}
+<section class="panel panel-default">
+    <header class="panel-heading">
+        GDP per capita average annual growth rate
+    </header>
+    <div class="table-responsive" id="growthrate">
+    </div>
+</section>

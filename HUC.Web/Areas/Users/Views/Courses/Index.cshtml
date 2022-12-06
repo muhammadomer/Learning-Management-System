@@ -1,0 +1,75 @@
+﻿@using HUC.Web.Models
+@model HUC.Web.App.Users.UserModel
+
+@*@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Courses",
+        ContentTitle = "Courses",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem("Courses")
+        }
+    };
+    var courselList = (List<int>)ViewBag.CourseList;
+}*@
+
+@if (Model.Company.Courses.Any())
+{
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Course Name
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.AllCourses(null).Where(x => courselList.Any(z => x.ID == z)).ToList())
+                {
+                    var userCourse = Model.UserCourses.FirstOrDefault(x => x.CourseID == item.ID);
+                    var isStarted = userCourse != null && userCourse.StartedOn.HasValue && !userCourse.IsComplete;
+                    var isComplete = userCourse != null && userCourse.StartedOn.HasValue && userCourse.IsComplete;
+
+                    <tr>
+                        <td>
+                            @item.Name
+                            @if (!isStarted && !isComplete)
+                            {
+                                <span class="label label-danger">Not Started</span>
+                            }
+                            @if (isStarted)
+                            {
+                                <span class="label label-primary">In Progress</span>
+                            }
+                            @if (isComplete)
+                            {
+                                <span class="label label-success">Complete</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!isStarted && !isComplete)
+                            {
+                                <a href="@Url.Action("Start", new { id = item.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-chevron-right"></i> Start Course</a>
+                            }
+                            @if (isStarted)
+                            {
+                                <a href="@Url.Action("View", new { id = item.ID })" class="btn btn-xs btn-rounded btn-primary"><i class="fa fa-chevron-right"></i> Continue Course</a>
+                            }
+                            @if (isComplete)
+                            {
+                                <a href="@Url.Action("View", new { id = item.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-reply"></i> Re-Visit Course</a>
+                                <a href="@Url.Action("Results", "Dashboard", new { id = item.ID })" class="btn btn-xs btn-rounded btn-success"><i class="fa fa-eye"></i> View Test Results</a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            
+            </div>
+        </section>
+}

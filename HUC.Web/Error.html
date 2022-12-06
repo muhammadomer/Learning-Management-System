@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1" />
+    <title>
+        Training Courses |  Error Page
+    </title>
+    <link href="../_Content/css/reset.less" rel="stylesheet" />
+    <link href="../_Content/css/site.less" rel="stylesheet" />
+    <link href="../_Content/css/width-1300.less" rel="stylesheet" />
+    <link href="../_Content/css/width-1250.less" rel="stylesheet" />
+    <link href="../_Content/css/width-1150.less" rel="stylesheet" />
+    <link href="../_Content/css/width-1050.less" rel="stylesheet" />
+    <link href="../_Content/css/width-640.less" rel="stylesheet" />
+    <link href="../_Content/css/width-480.less" rel="stylesheet" />
+    <link href="../_Content/css/width-400.less" rel="stylesheet" />
+
+    <script src="../_Content/js/lib/jquery-1.8.2.js"></script>
+    <script src="../_Content/js/lib/jquery-ui-1.9.2.js"></script>
+    <script src="../_Content/js/lib/jquery.unobtrusive-ajax.js"></script>
+
+    <script src="../_Content/js/main.js"></script>
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="/_Content/css/lib/ie8.css" />
+    <![endif]-->
+</head>
+<body>
+    <div class="notification-bar" style="display: none;">
+        <p class="notification-title">
+
+        </p>
+        <span class="notification-message">
+
+        </span>
+        <a href="#" class="notification-close">x</a>
+    </div>
+    <!-- HEADER -->
+    <div id="header">
+        <div class="container">
+            <div class="content">
+                <a class="logo" href="/">
+                    <img alt="Training Courses" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/main-logo.png" />
+                </a>
+                <p class="points">
+                    Compliance e-Learning & Consultancy Services
+                </p>
+                <div class="login-section">
+                    <a class="large-button grey" href="/../Auth/Login">
+                        Login
+                    </a>
+             
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <div class="mobile-nav">
+        <img alt="Open menu" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/mobile-menu.png" />
+    </div>
+
+    <div id="nav-bar">
+        <div class="container">
+            <div class="content">
+                <ul class="nav">
+                    <li>
+                        <a href="/">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/About">
+                            Who we are
+                        </a>
+                        <ul class="sub-nav">
+
+                            <!--<li>
+                                <a href="/About/Services">
+                                    Our Services
+                                </a>
+                            </li>-->
+                            <li>
+                                <a href="/About/Testimonials">
+                                    Testimonials
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Course">
+                            Our courses
+                        </a>
+                    </li>
+                    <!--<li>
+                        <a href="/Consultancy">
+                            Consultancy Services
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Funding">
+                            Funding Support
+                        </a>
+                    </li>-->
+                    <li>
+                        <a href="/News">
+                            News
+                        </a>
+                    </li>
+                    <li class="last-item  ">
+                        <a href="/Contact">
+                            Contact us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Request">
+                            Request demo
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+        <div id="title-bar">
+            <div class="container">
+                <div class="content">
+                    <h1>
+                        Error
+                    </h1>
+                    
+                    <div class="breadcrumb">
+                        <a href="/">home</a>
+                        /
+                        <span>error</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+
+
+
+
+        <div class="full-page standard-bg">
+            <div class="container">
+                <div class="content">
+                    <h2>
+                        An Error Has Occurred
+                    </h2>
+                    <p>
+                        Unfortunately the page you are trying to access could not be found. 
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footer">
+        <div class="container">
+            <div class="content">
+                <div class="width-50">
+                    <ul>
+                        <li>
+                            <h3>
+                                Sitemap
+                            </h3>
+                        </li>
+                        <li>
+                            <a href="/">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Course">
+                                Our courses
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Request">
+                                Request demo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Funding">
+                                Funding support
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Aimed">
+                                Who is it aimed at?
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <h3>
+                                Company
+                            </h3>
+                        </li>
+                        <li>
+                            <a href="/About">
+                                Who we are
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Contact">
+                                Contact
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Privacy">
+                                Privacy policy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Conditions">
+                                Conditions of usage
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="width-50 contact">
+                    <form action="/Contact" method="post">
+                        <h3>
+                            Contact us
+                        </h3>
+                        <div class="main-inputs">
+                            <input data-val="true" data-val-required="The Your name field is required." id="Name" name="Name" placeholder="Your name" type="text" value="" />
+                            <input data-val="true" data-val-required="The Email address field is required." id="Email" name="Email" placeholder="Email address" type="text" value="" />
+                        </div>
+                        <div class="message-area">
+                            <textarea cols="20" data-val="true" data-val-required="The Your message field is required." id="Message" name="Message" placeholder="Your message..." rows="2"></textarea>
+                        </div>
+                        <input class="large-button orange" type="submit" value="Send" />
+                    </form>
+                </div>
+
+                <p class="copyright">
+                    &copy; 2020 Ghost Digital &amp; Data. All rights reserved.
+                </p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</body>
+</html>
+

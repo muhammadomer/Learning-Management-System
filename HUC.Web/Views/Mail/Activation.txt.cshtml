@@ -1,0 +1,11 @@
+﻿@using ActionMailer.Net.Mvc
+@model HUC.Web.App.Users.UserModel
+@{
+    Layout = null;
+}
+
+Hi, @Model.FirstName
+
+An account has been created for you on Training Courses. Click the link below to activate your account.
+
+@Url.AbsoluteAction("Activate", "Auth", new { area = "", code = Model.ActivateKey })
