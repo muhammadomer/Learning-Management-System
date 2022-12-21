@@ -31,6 +31,16 @@ namespace HUC.Web.Controllers
 
         public ActionResult Login(string ReturnUrl = null)
         {
+
+            //string dbName_SinglePointName = (string)Session["SinglePointDBName"];
+            //LogApp.Log4Net.WriteLog("sending email for database : " + dbName_SinglePointName.ToString(), LogApp.LogType.GENERALLOG);
+            //employeesEntities.Database.Connection.ConnectionString = employeesEntities.Database.Connection.ConnectionString.Replace("DentonsEmployeesForRiskManager", dbName_SinglePointName.ToString());
+            //var model = employeesEntities.DentonsEmployeesSettings.FirstOrDefault();
+            //var url = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
+
+            //return Redirect(model.DentonsEmployeesURL);
+
+            //return Redirect("http://localhost:33366/");
             return View();
         }
 
@@ -216,6 +226,13 @@ namespace HUC.Web.Controllers
                 {
                     string SinglePointDBName = accountDetailDecrypted.Split(new string[] { "$$$" }, StringSplitOptions.None)[4];
                     HttpContext.Session["SinglePointDBName"] = SinglePointDBName;
+
+
+                    //employeesEntities.Database.Connection.ConnectionString = employeesEntities.Database.Connection.ConnectionString.Replace("DentonsEmployeesForRiskManager", SinglePointDBName);
+
+                    //var _model = employeesEntities.DentonsEmployeesSettings.FirstOrDefault();
+                    //Redirect(_model.DentonsEmployeesURL);
+
                     HttpContext.Session.Timeout = 400;
                     LogApp.Log4Net.WriteLog("SinglePointDBName: " + SinglePointDBName + " and CompanyId:" + CompanyId, LogApp.LogType.GENERALLOG);
                 }

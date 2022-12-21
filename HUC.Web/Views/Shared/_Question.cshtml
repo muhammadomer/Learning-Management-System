@@ -35,7 +35,7 @@
     });
     QuestionTypeList.Add(new SelectListItem
     {
-        Text = "Single Question,multiple answers" +
+        Text = "Single Answer,multiple statements" +
         "",
         Value = "5"
     });
@@ -211,6 +211,7 @@
         var selectitemedit = $('#QuestionType').val();
         if (selectitemedit == 7) {
             $("#Attempts").val(1);
+            $("#optionlabal").text("Option");
             $("#Attempts").attr("disabled", true);
             $("#Feedback").attr("disabled", true);
             $("#Attempts").css("background-color", "#eee");
@@ -219,6 +220,10 @@
             $("#chk-1").prop('checked', false);
             $("#chk-1").attr('disabled', true);
             $("#btn-1").attr('disabled', true);
+        }
+        else if (selectitemedit == 5) {
+            $("#labeltext").text("Answer");
+            $("#optionlabal").text("Statements");
         }
         else {
             $("#Attempts").attr("disabled", false);
@@ -238,7 +243,7 @@
        // $("#labeltext").text(text);
         if (selectitem == 7) {
             $("#Attempts").val(1);
-            $("#labeltext").text("Question");
+            $("#optionlabal").text("Option");
             $("#Attempts").attr("disabled", true);
             $("#Feedback").attr("disabled", true);
             $("#Attempts").css("background-color", "#eee");
@@ -429,22 +434,23 @@
         //$("#labeltext").text(text);
         if (id == 4) {
             $("#Question").attr('readonly', true);
-			$("#optionlabal").text("Statement");
+			$("#optionlabal").text("Statements");
             $("#labeltext").text("Statement");
             $("#textoption").text("Correct Statement");
             $("#Question").val("Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.");
         } else if (id == 6) {
-			$("#optionlabal").text("Statement");
+			$("#optionlabal").text("Statements");
             $("#labeltext").text("Instruction");
             $("#textoption").text("Correct Statement");
             $("#Question").attr('readonly', true);
             $("#Question").val("Select \"True Or False\" from the Dropdown placed at the end of each question.");
 
         }  else if (id == 5) {
-            
-			$("#optionlabal").text("Options");
+            $("#labeltext").text("Answer");
+            $("#optionlabal").text("Statements");
+			
 			$("#textoption").text("Correct option");
-            $("#labeltext").text("Question");
+          
 			 $("#Question").attr('readonly', false)
             $("#Question").val("");
         }

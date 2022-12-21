@@ -412,8 +412,15 @@ namespace HUC.Web.Areas.Company.Controllers
                     }
 
 
+                    var _Course = Database.GetSingle<CourseModel>(CourseId);
+
+                    int ans = (_Course.PassingPercentage * questions) / 100;
+
                     ViewBag.Questions = questions;
-                    ViewBag.Answers = answers;
+                    ViewBag.Answers = ans;
+
+
+
 
                     LogApp.Log4Net.WriteLog("Question:"+questions, LogApp.LogType.GENERALLOG);
 
@@ -424,11 +431,9 @@ namespace HUC.Web.Areas.Company.Controllers
                             if (get.IsPass)
                             {
                                 LogApp.Log4Net.WriteLog("get.IsPass" + get.IsPass, LogApp.LogType.GENERALLOG);
+
+
                                 var curUserCourse = Database.GetSingle<CourseModel>(CourseId);
-
-
-                            
-
                                 ViewBag.Course = curUserCourse;
                                 ViewBag.align = type;
                                 var certifalready = Database.Query<Certificate>("SELECT * FROM Certificates WHERE UserId = " + companyUser.User.ID + "and CourseId = " + CourseId).Count();
@@ -486,7 +491,7 @@ namespace HUC.Web.Areas.Company.Controllers
             PointF answersLocation = new PointF(620f, 2040f);
 
 
-            string imageFilePath = Server.MapPath("~/_Content/images/Certificate/certificatev2.png"); 
+            string imageFilePath = Server.MapPath("~/_Content/images/Certificate/certificatev3.png"); 
             Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
             LogApp.Log4Net.WriteLog("imageFilePath--bitmapfrom:" + imageFilePath, LogApp.LogType.GENERALLOG);
             using (Graphics graphics = Graphics.FromImage(bitmap))

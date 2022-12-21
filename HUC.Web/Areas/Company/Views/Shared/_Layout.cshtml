@@ -38,6 +38,7 @@
     <!--[if lte IE 8]>
         <link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/css/ie8.css" />
     <![endif]-->
+<link href="~/_Content/Scale/css/custom .css" rel="stylesheet" />
     @if (ViewBag.OtherApplication == "1")
     {
         @Styles.Render("~/bundles/scale/k6css")
@@ -53,15 +54,22 @@
     <style>
         .Inactive-navbarbtn {
             font-weight: 600;
-            color: #245c6f !important;
+            color: #ffffff !important;
+        }
+        .full-page {
+            background: linear-gradient( to bottom, #8CC63E 0%, #8CC63E 330px, #e8eaef 0%, #e8eaef 100%);
+        }
+        .bg-white {
+            background-color: #8CC63E !important;
         }
     </style>
 </head>
 <body>
-    <header class="bg-white header header-md navbar navbar-fixed-top-xs">
+    <header class="bg-white header header-md navbar navbar-fixed-top-xs" >
         <div class="navbar-header aside-md dk">
             <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
                 <i class="fa fa-bars"></i>
+                
             </a>
             @if (ViewBag.OtherApplication == "1")
             {
@@ -69,7 +77,7 @@
             }
             else
             {
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/main-logo.png" class="m-r-sm"></a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/Elephant-Logo-AW-Grey.png" class="m-r-sm"></a>
 
             }
             <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
@@ -96,11 +104,11 @@
                 <div class="seperator hidden-xs pull-right hidden"></div>
             </p>
             <p class="intro-text hidden-xs pull-right padder button-deactive">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Settings" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-5" style="color: #245c6f !important;">Settings</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Settings" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-5" style="color: #000000 !important;">Settings</a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
             <p class="intro-text hidden-xs pull-right padder button-deactive">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/AssignCourse" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-1" style="color: #245c6f !important;">Assign Courses</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/AssignCourse" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-1" style="color: #000000 !important;">Assign Courses</a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
 
@@ -108,19 +116,19 @@
 
 
             <p class="intro-text hidden-xs pull-right padder button-deactive">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-2" style="color: #245c6f !important;">Users</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-2" style="color: #000000 !important;">Users</a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
             if (Convert.ToBoolean(Session["CourseAllowAdmin"]) == true)
             {
                 <p class="intro-text hidden-xs pull-right padder  ManageCourseLink">
-                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-3" style="color: #245c6f !important;">Manage Courses</a>
+                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-3" style="color: #000000 !important;">Manage Courses</a>
                     <div class="seperator hidden-xs pull-right"></div>
                 </p>
             }
 
             <p class="intro-text hidden-xs pull-right padder">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-4" style="color: #245c6f !important;">Dashboard</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-4" style="color: #000000 !important;">Dashboard</a>
 
             </p>
             <ul class="nav navbar-nav navbar-right m-n hidden-xs nav-user user hidden">

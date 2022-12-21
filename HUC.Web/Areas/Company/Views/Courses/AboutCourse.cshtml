@@ -28,21 +28,29 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
     <div class="row">
         <div class="col-md-12">
             <div class="course-header">
-                @if (Model.Name.Length > 25)
+                @if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background))
                 {
-                    if (Model.Name.Length > 41)
+                    if (Model.Name.Length > 25)
                     {
-                        <div style="font-size:33px !important;">@Model.Name</div>
+                        if (Model.Name.Length > 41)
+                        {
+                            <div style="font-size:33px !important;">@Model.Name</div>
+                        }
+                        else
+                        {
+                            <div style="font-size:33px !important;">@Model.Name</div>
+                        }
+
                     }
                     else
                     {
-                        <div style="font-size:33px !important;">@Model.Name</div>
+                        <div>@Model.Name</div>
                     }
-
                 }
                 else
                 {
-                    <div>@Model.Name</div>
+                    <p style="margin-top:220px"></p>
+
                 }
             </div>
         </div>

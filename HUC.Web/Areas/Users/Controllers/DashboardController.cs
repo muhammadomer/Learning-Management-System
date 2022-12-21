@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
 using HUC.Web.App.Courses.Time;
+using HUC.Web.App.Courses;
 namespace HUC.Web.Areas.Users.Controllers
 {
     public class DashboardController : UsersBaseController
@@ -92,7 +93,7 @@ namespace HUC.Web.Areas.Users.Controllers
 
                     LogApp.Log4Net.WriteLog("Result: "+result+" pss per:"+passper, LogApp.LogType.GENERALLOG);
 
-                if (result >= passper && userCourse.IsPass == true)
+                if (result >= passper && userCourse.IsPass == true && userCourse.FeedBack==false)
                  
                     {
 
@@ -100,7 +101,7 @@ namespace HUC.Web.Areas.Users.Controllers
                         SendEmailOnPassedCourse(um, userCourse);
                         LogApp.Log4Net.WriteLog("User Passed--- " + "Course Name:" + CourseNAme, LogApp.LogType.GENERALLOG);
                     }
-                    else
+                    else if(userCourse.IsPass == false)
                     {
                         SendEmailOnFailedCourse(um, CourseNAme);
                         LogApp.Log4Net.WriteLog("User Failed--- " + "Course Name:" + CourseNAme, LogApp.LogType.GENERALLOG);
@@ -458,8 +459,11 @@ namespace HUC.Web.Areas.Users.Controllers
                 }
 
 
+                var curUserCourse = Database.GetSingle<CourseModel>(CourseId);
+                int ans = (curUserCourse.PassingPercentage * questions) / 100;
+
                 ViewBag.Questions = questions;
-                ViewBag.Answers = answers;
+                ViewBag.Answers = ans;
 
 
 
@@ -668,13 +672,13 @@ namespace HUC.Web.Areas.Users.Controllers
             {
                 mail.To.Add(TrainingOfficer.TrainingOfficerEmail);
             }
-            string appemail = ConfigurationManager.AppSettings["ApplicationEmails"];
+            //string appemail = ConfigurationManager.AppSettings["ApplicationEmails"];
 
 
-            foreach (var address in appemail.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                mail.To.Add(address);
-            }
+            //foreach (var address in appemail.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
+            //{
+            //    mail.To.Add(address);
+            //}
 
 
             mail.From = new MailAddress(model.MailUsername);

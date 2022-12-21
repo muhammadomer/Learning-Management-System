@@ -27,6 +27,7 @@ namespace HUC.Web.Areas.Users.Controllers
 
             var user = new UsersService().GetLoggedInUserModel();
 
+            
             var count = Database.Query<int>("select count(*) from CompanyUsers where CompanyID=" + user.Company.ID +
                          " and UserId = " + user.ID +
                           " and(isadmin = 1 or isbackupadmin = 1) " +
@@ -43,6 +44,6 @@ namespace HUC.Web.Areas.Users.Controllers
             }
            
         }
-
+        
     }
 }

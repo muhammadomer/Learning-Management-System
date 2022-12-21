@@ -87,6 +87,13 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
         .full-page {
           background:@Model.Course.Background !important;
         }
+       
+
+    </style>
+
+}
+<style>
+      
         .disabled-link {
            /* cursor: no-drop;*/
             pointer-events: none;
@@ -95,38 +102,43 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
         .disable-icon {
             cursor: no-drop;
         }
-     
-    </style>
-    
-}
 
+</style>
 <div class="desktop-ver">
     <div class="row">
         <div class="col-md-12">
             <div class="course-header">
-                @if (Model.Course.Name.Length > 25)
+                @if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
                 {
-                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    if (Model.Course.Name.Length > 25)
+                    {
+                        <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    }
+                    else
+                    {
+                        <div>@Model.Course.Name</div>
+                    }
                 }
                 else
                 {
-                    <div>@Model.Course.Name</div>
+                    <p style="margin-top:220px"></p>
+
                 }
             </div>
         </div>
     </div>
 </div>
-<div class="row" >
-    <div class="col-md-12 align-top-content1 "  >
-		<a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important"  href="#" onclick="Back();">
-            <i  class="fa fa-arrow-left"></i> Back
+<div class="row">
+    <div class="col-md-12 align-top-content1 ">
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important" href="#" onclick="Back();">
+            <i class="fa fa-arrow-left"></i> Back
         </a>
-		 <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"  href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard">
-             Dashboard
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard">
+            Dashboard
         </a>
-       
+
     </div>
-    
+
 </div>
 
 
@@ -139,7 +151,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
         </div>
     </div>
 </div>
-<div class="course-overview course-overview-top-module " >
+<div class="course-overview course-overview-top-module ">
     <div class="col-md-12 main-panel no-padding">
         <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
             <div class="panel-body">
@@ -192,12 +204,12 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         break;
 
                                     case ContentType.Audio:
-									 <style>
-										
-										 .audiojs {
-										width:946px !important;
-									}
-									</style>
+                                        <style>
+
+                                            .audiojs {
+                                                width: 946px !important;
+                                            }
+                                        </style>
                                         <audio src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Media/Uploads/@content.Value" preload="auto"></audio>
                                         break;
                                     case ContentType.PDF:
@@ -225,14 +237,14 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         <center>  <iframe width="960" height="315" src="//www.youtube.com/embed/@content.Value?controls=2&modestbranding=1&rel=0" frameborder="0" allowfullscreen></iframe></center>
                                         break;
                                     case ContentType.VideoVimeo:
-                                         <div class="row" style="background-color:black;width: 945px;margin-left: 0px;">
-											<div class="col-md-2"></div>
-											<div class="col-md-8" style="margin-top:7px;">
-												<iframe   src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-											</div>
-											<div class="col-md-2"></div>
-										</div>
-									break;
+                                        <div class="row" style="background-color:black;width: 945px;margin-left: 0px;">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8" style="margin-top:7px;">
+                                                <iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                        break;
                                     case ContentType.VideoWistia:
                                         <center>     <iframe src="//fast.wistia.net/embed/iframe/@content.Value" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="960" height="360"></iframe></center>
                                         break;
@@ -306,8 +318,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
                                     {
                                         @*<p>
-                        <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
-                    </p>*@
+                                                <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                            </p>*@
                                         <div class="radio-module" id="module-@question.ID"></div>
                                         <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
                                         <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
@@ -348,7 +360,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             answerList.Add(new TestQuestionAnswerModelForJson
                                             {
                                                 answerid = curAnswer.ID.ToString(),
-                                                option =answer, /*curAnswer.Answer.Replace("\n", "").Replace("\r", ""),*/
+                                                option = answer, /*curAnswer.Answer.Replace("\n", "").Replace("\r", ""),*/
                                                 type = curAnswer.IsCorrect == true ? "true" : "false",
                                                 selected = curAnswer.ID == question.AnswerId.FirstOrDefault() ? "true" : "false"
                                             });
@@ -359,14 +371,14 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             var ansObj = [];
 
                                             for (let i = 0; i < answers.length; i++) {
-                                             
+
                                                 let obj = answers[i];
                                                 obj.option.replace("/", "");
                                                 ansObj.push(obj);
 
                                                 console.log(obj.answerid);
                                             }
-                                          
+
 													var jasonObj = {
 														divId: "module-@question.ID",
                                                         title: "Part @question.Sort: Multiple Choice",
@@ -389,8 +401,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
                                     {
                                         @*<p>
-                        <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
-                    </p>*@
+                                                <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                            </p>*@
                                         <div class="radio-module" id="module-@question.ID"></div>
                                         <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
                                         <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
@@ -441,7 +453,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             var ansObj = [];
 
                                             for (let i = 0; i < answers.length; i++) {
-                                                
+
                                                 let obj = answers[i];
                                                 obj.option.replace("/", "");
                                                 ansObj.push(obj);
@@ -471,8 +483,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
                                     {
                                         @*<p>
-                        <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
-                    </p>*@
+                                                <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                            </p>*@
                                         <div class="radio-module" id="module-@question.ID"></div>
                                         <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
                                         <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="0" />
@@ -512,7 +524,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             answerList.Add(new TestQuestionAnswerModelForJson
                                             {
                                                 answerid = curAnswer.ID.ToString(),
-                                                option =answer, /*curAnswer.Answer.Replace("\n", "").Replace("\r", ""),*/
+                                                option = answer, /*curAnswer.Answer.Replace("\n", "").Replace("\r", ""),*/
                                                 type = curAnswer.IsCorrect == true ? "true" : "false",
 
                                             });
@@ -523,7 +535,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             var ansObj = [];
                                            // debugger;
                                             for (let i = 0; i < answers.length; i++) {
-                                                
+
                                                 let obj = answers[i];
                                                 obj.option.replace("/", "");
                                                 ansObj.push(obj);
@@ -532,7 +544,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             }
                                           //  debugger;
                                             var jasonObj = {
-                                                
+
 														divId: "module-@question.ID",
                                                         title: "Part @question.Sort: Slider",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
@@ -556,8 +568,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 else if (question.QuestionType == 4)
                                 {
                                     @*<p>
-                    <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
-                </p>*@
+                                            <label class="hidden">Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                        </p>*@
                                     <div class="truefalse-module" id="module-@question.ID"></div>
                                     <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
                                     <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="@question.ID" />
@@ -597,7 +609,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         answerList.Add(new TestQuestionAnswerModelForJson
                                         {
                                             answerid = curAnswer.ID.ToString(),
-                                            option =answer, /*curAnswer.Answer.Replace("\n", "").Replace("\r", ""),*/
+                                            option = answer, /*curAnswer.Answer.Replace("\n", "").Replace("\r", ""),*/
                                             type = curAnswer.IsCorrect == true ? "true" : "false",
                                             selected = question.AnswerId.Count() == 0 ? "" :
                                                         question.AnswerId.Where(x => question.AnswerId.Contains(curAnswer.ID)).Count() > 0 ? "true" : "false",
@@ -610,7 +622,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         var ansObj = [];
 
                                         for (let i = 0; i < answers.length; i++) {
-                                           
+
                                             let obj = answers[i];
                                             obj.option.replace("/", "");
                                             ansObj.push(obj);
@@ -630,15 +642,15 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 													trueFalse.initialize();
                                     </script>
                                 }
-                                
+
                                 else if (question.QuestionType == 5)
                                 {
 
                                     var formId = "submitAnswer" + question.ID;
 
                                     @*<p>
-                    <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
-                </p>*@
+                                            <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                        </p>*@
                                     <div class="truefalse-module" id="module-@question.ID"></div>
                                     <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
                                     <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="@question.ID" />
@@ -702,20 +714,20 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                            trueFalse.initialize();*@
 
                                         $(document).ready(function () {
-                                           
+
                                 // Here you create Jason Object and initialize Interview instance
                                             var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
                                             var ansObj = [];
 
                                             for (let i = 0; i < answers.length; i++) {
-                                              
+
                                                 let obj = answers[i];
                                                 obj.option.replace("/", "");
                                                 ansObj.push(obj);
 
                                                 console.log(obj.answerid);
                                             }
-                                           
+
                                 const jasonObj = {
                                     divId: "module-@question.ID",
                                     title: "Part @question.Sort: True or False",
@@ -747,8 +759,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 {
                                     int i = 1;
                                     @*<p>
-                    <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
-                </p>*@
+                                            <label>Flag Question For Later? @Html.CheckBox("flagged")</label>
+                                        </p>*@
                                     <div class="truefalse-module" id="module-@question.ID"></div>
                                     <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
                                     <input type="hidden" name="question" id="hdnQuestionId-@question.ID" value="@question.ID" />
@@ -800,7 +812,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         i++;
                                     }
 
-                        <script>
+                                    <script>
                                             // True False
                                             @*var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
                                             var jasonObj = {
@@ -819,7 +831,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 var ansObj = [];
 
                                 for (let i = 0; i < answers.length; i++) {
-                                 
+
                                     let obj = answers[i];
                                     obj.option.replace("/", "");
                                     ansObj.push(obj);
@@ -844,7 +856,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 
 
                             });
-                        </script>
+                                    </script>
                                 }
 
                                 else if (question.QuestionType == 7)
@@ -854,7 +866,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     {
                                         foreach (var curAnswer in question.Answers)
                                         {
-											if (curAnswer.CourseUserId == Convert.ToInt32(TempData["CurrentUserId"]))
+                                            if (curAnswer.CourseUserId == Convert.ToInt32(TempData["CurrentUserId"]))
                                             {
                                                 <script>
                                                     $(document).ready(function () {
@@ -880,13 +892,13 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         question: "@question.Question.Replace("\n", "").Replace("\r", "")",
                                                         statement: "Write your answer in the text box below." + "\n" + "<textarea id='freetext-" + @question.ID +"'" + "name='FreeTextAnswer' rows='10' cols='138' style='width:100%;margin-top:16px;margin-bottom:2px;border-color:#66CC99;color:black;font: caption;' ></textarea> ",
                                                         adminpreviewAns: "@ViewBag.adminAns",
-                                                      
+
                                                         attempts: @question.Attempts,
                                                         get multi() {
 															return @Html.Raw(Json.Encode(answerList))
 														},
                                             };
-                                         
+
                                             var freetext = new FreeText(jasonObj);
                                             freetext.initialize();
                                         </script>
@@ -905,17 +917,17 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                 <div class="row footer-tile footer-tile-detail" style="width:102%;">
                     @if (Model.PrevResource != null)
                     {
-					
+
                         <div class="col-md-5" style="text-align:left !important;margin-top:5px;">
-						                  <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@Model.PrevResource.ID" style="color:#fff !important;width: 50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i> Previous Module </a>
+                            <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@Model.PrevResource.ID" style="color:#fff !important;width: 50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i> Previous Module </a>
                         </div>
                     }
 
                     @if (Model.Sort == 1)
                     {
-                        
+
                         <div class="col-md-5" style="text-align:left !important;margin-top:5px;">
-						                           <a class="btn btn-success  pull-left btn-blue-color-close"  href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/AboutCourse/@Model.Course.ID" style="color:#fff !important;width: 50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i> About this course</a>
+                            <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/AboutCourse/@Model.Course.ID" style="color:#fff !important;width: 50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i> About this course</a>
                         </div>
                     }
 
@@ -933,43 +945,43 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         //if (true)
                         {
                             <div class="col-md-5" style="text-align:right !important;margin-top:5px;">
-							
+
                                 <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@Model.NextResource.ID" style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;">Next Module <i class="fa fa-arrow-right" style="color:#fff !important"></i> </a>
-							</div>
-                           
+                            </div>
+
                         }
                         else
                         {
-                <div class="col-md-5 disable-icon ">
+                            <div class="col-md-5 disable-icon ">
 
-                   
-                        <a  class="btn btn-success disabled-link    pull-left btn-blue-color-close   " href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@Model.NextResource.ID" style=" color: #fff !important; width: 50%; height: 38px; margin-left: 53%;" >Next Module <i class="fa fa-arrow-right  disabled-link" style="color:#fff !important"></i> </a>
 
-                  
-                   
+                                <a class="btn btn-success disabled-link    pull-left btn-blue-color-close   " href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@Model.NextResource.ID" style=" color: #fff !important; width: 50%; height: 38px; margin-left: 53%;">Next Module <i class="fa fa-arrow-right  disabled-link" style="color:#fff !important"></i> </a>
 
-                    </div>
 
-                    }
-                    }
-                    else
-                    {
-                    if (Model.ModuleCompleted)
-                    //if (true)
-                    {
-                    <div class="col-md-5" style="text-align:right !important; margin-top:5px;">
-                        <a class="btn btn-success  pull-left  " style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;background-color:black" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/Assessment/@Model.Course.ID">Course Feedback <i class="fa fa-arrow-right" style="color:#fff !important"></i> </a>
-                    </div>
 
+
+                            </div>
+
+                        }
                     }
                     else
                     {
-                    <div class="col-md-5 disable-icon" style="text-align:right !important; margin-top:5px;">
-                        <a class="btn btn-success disabled-link  pull-left btn-blue-color-close " href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/Assessment/@Model.Course.ID"style=" color: #fff !important; width: 50%; height: 38px; margin-left: 53%;" >Course Feedback <i class="fa fa-arrow-right" style="color:#fff !important"></i></a>
+                        if (Model.ModuleCompleted)
+                        //if (true)
+                        {
+                            <div class="col-md-5" style="text-align:right !important; margin-top:5px;">
+                                <a class="btn btn-success  pull-left  " style="color:#fff !important;width: 50%;height:38px;margin-left: 53%;background-color:black" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/Assessment/@Model.Course.ID">Course Feedback <i class="fa fa-arrow-right" style="color:#fff !important"></i> </a>
+                            </div>
 
-                    </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-5 disable-icon" style="text-align:right !important; margin-top:5px;">
+                                <a class="btn btn-success disabled-link  pull-left btn-blue-color-close " href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/Assessment/@Model.Course.ID" style=" color: #fff !important; width: 50%; height: 38px; margin-left: 53%;">Course Feedback <i class="fa fa-arrow-right" style="color:#fff !important"></i></a>
 
-                    }
+                            </div>
+
+                        }
                     }
 
                 </div>

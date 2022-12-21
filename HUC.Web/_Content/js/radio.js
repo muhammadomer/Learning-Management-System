@@ -25,6 +25,8 @@ function Radio(jasonObj) {
         .map((item, i) => {
             if (this.jasonObj.multi[i].type == "true") {
                 answer = this.jasonObj.multi[i].option;
+                console.log("line-1-"+answer);
+                
             }
         })
         .join("");
@@ -211,7 +213,7 @@ function Radio(jasonObj) {
             //store selected answer
             selectAnswer = $(e.target).siblings().children("span");
             filterSelectAnswer = $.trim(selectAnswer.text());
-
+            console.log("line-2-"+filterSelectAnswer);
             // enable submit button
             btnSubmit = $(e.target)
                 .parent()
@@ -228,6 +230,7 @@ function Radio(jasonObj) {
 
         //show popup by clicking submit button
         $("button." + this.jasonObj.divId).on("click", (e) => {
+            debugger;
             $("#ev-prompt-title-" + this.jasonObj.divId).show();
             $("#ev-prompt-title-" + this.jasonObj.divId).prev().show();
             if ($.trim($(e.target).children().text()) === "Submit") {

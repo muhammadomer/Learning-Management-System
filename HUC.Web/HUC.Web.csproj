@@ -10403,7 +10403,8 @@
     <Content Include="_Content\Scale\css\animate.css" />
     <Content Include="_Content\Scale\css\app.css" />
     <Content Include="_Content\Scale\css\bootstrap.css" />
-    <Content Include="_Content\Scale\css\custom.css" />
+    <Content Include="_Content\Scale\css\custom .css" />
+    <Content Include="_Content\Scale\css\customA.css" />
     <Content Include="_Content\Scale\css\font-awesome.css" />
     <Content Include="_Content\Scale\css\font.css" />
     <Content Include="_Content\Scale\css\ie8.css" />

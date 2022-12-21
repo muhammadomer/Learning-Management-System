@@ -2,7 +2,7 @@
 @model HUC.Web.App.Users.UserLoginModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
     ViewBag.PageData = new PageDataModel
     {
         Title = "Login",
@@ -13,7 +13,9 @@
         }
     };
 }
-
+<script>
+    window.location.href = window.location.origin;
+</script>
 <div class="desc-form standard-bg">
     <div class="container">
         <div class="content">

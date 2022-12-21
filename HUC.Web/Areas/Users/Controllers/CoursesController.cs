@@ -1023,17 +1023,6 @@ namespace HUC.Web.Areas.Users.Controllers
 
                 var TrainingOfficer = Database.GetAll<SettingsModel>("WHERE CompanyID = " + companyID).FirstOrDefault();
 
-               // string connectionString = ConfigurationManager.ConnectionStrings["SinglePoint_Entities"].ConnectionString;
-
-               //System.Data.SqlClient.SqlConnectionStringBuilder builder = new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
-
-               // string clouddb = builder.InitialCatalog;
-
-               // string query = "select AccountId from "+clouddb+".dbo.Accounts where TrainingCoursesCompanyId = " + companyID;
-               // var data1 = Database.Query(query);
-
-              
-               //     int dbName_SinglePointName = data1.Select(x => x.AccountId).FirstOrDefault();
 
 
                

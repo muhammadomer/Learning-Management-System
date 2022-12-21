@@ -332,7 +332,29 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return RedirectToAction("View", new { id = chapter.ResourceID });
         }
+        public ActionResult ChapterDeleteWithAjax(int id)
+        {
+            bool confirm =true;
+            var chapter = Database.GetSingle<ResourceChapterModel>(id);
+            if (chapter.Resource.Course.IsPublished)
+            {
+                AddError("This Course is published.");
+                return RedirectToAction("View", new { id = chapter.ResourceID });
+            }
 
+            if (confirm)
+            {
+                Database.HardDelete("ResourceChapters", id);
+                FixChapterSorts(chapter.ResourceID);
+               // AddDeleted("Chapter");
+            }
+            else
+            {
+                AddDeleteConfirm("Chapter", Url.Action("ChapterDelete", new { id = id, confirm = true }));
+            }
+
+            return Json("yes", JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ContentDelete(int id, bool confirm = false)
         {
             var content = Database.GetSingle<ChapterContentModel>(id);
@@ -350,7 +372,25 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return RedirectToAction("View", new { id = content.Chapter.ResourceID });
         }
+        public ActionResult DeleteWithAjax(int id,bool confirm=true)
+        {
+          
+            var content = Database.GetSingle<ChapterContentModel>(id);
 
+            if (confirm)
+            {
+                Database.HardDelete("ChapterContents", id);
+                FixContentSorts(content.ChapterID);
+              //  AddDeleted("Section");
+            }
+            else
+            {
+                AddDeleteConfirm("Section", Url.Action("ContentDelete", new { id = id, confirm = true }));
+            }
+
+
+            return Json("yes", JsonRequestBehavior.AllowGet);
+        }
         List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Audio, ContentType.PDF };
 
         public ActionResult ContentCreate(int id, int? type = null)
@@ -861,6 +901,32 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return RedirectToAction("Test", new { id = question.ResourceID });
         }
+        public ActionResult DeleteQuestionWithAjax(int id)
+        {
+             bool confirm = true;
+            var question = Database.GetSingle<TestQuestionModel>(id);
+            if (question.Resource.Course.IsPublished)
+            {
+                AddError("This Course is published.");
+                return RedirectToAction("Test", new { id = question.ResourceID });
+            }
+
+            if (confirm)
+            {
+                Database.HardDelete("TestQuestions", id);
+                FixQuestionSorts(question.ResourceID);
+               // AddDeleted("Question");
+            }
+            else
+            {
+                AddDeleteConfirm("Question", Url.Action("QuestionDelete", new { id = id, confirm = true }));
+            }
+
+           
+            return Json("yes", JsonRequestBehavior.AllowGet);
+
+        }
+
 
         public ActionResult AnswerCreate(int id)
         {
@@ -994,6 +1060,34 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return RedirectToAction("Test", new { id = answer.Question.ResourceID });
         }
+        public ActionResult AnswerDeletewithAjax(int id, bool confirm = true)
+        {
+            var answer = Database.GetSingle<TestQuestionAnswerModel>(id);
+            if (answer.Question.Resource.Course.IsPublished)
+            {
+                AddError("This Course is published.");
+                return RedirectToAction("Test", new { id = answer.Question.ResourceID });
+            }
+
+            if (confirm)
+            {
+                Database.HardDelete("TestQuestionAnswers", id);
+                  FixAnswerSorts(answer.TestQuestionID);
+               // AddDeleted("Answer");
+            }
+            else
+            {
+                AddDeleteConfirm("Answer", Url.Action("AnswerDelete", new { id = id, confirm = true }));
+            }
+
+           
+            return Json("yes", JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
         [HttpPost]
         public ActionResult UploadFiles()
         {

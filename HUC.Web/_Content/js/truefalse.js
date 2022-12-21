@@ -1,3 +1,4 @@
+
 function TrueFalse(jasonObj) {
     this.jasonObj = jasonObj;
     var autoTrigger = 0;
@@ -173,15 +174,15 @@ function TrueFalse(jasonObj) {
         /* Events fired on the drag target */
         $("#" + this.jasonObj.divId).on("dragstart", (event) => {
             event.originalEvent.dataTransfer.setData("Text", event.target.id);
-			console.log('drag start');
+            console.log('drag start');
         });
 
         $("#" + this.jasonObj.divId).on("dragend", (event) => {
-			console.log('drag end');
-		});
+            console.log('drag end');
+        });
 
         $("#" + this.jasonObj.divId + "-true").on("dragenter", (event) => {
-			console.log('drag enter true');
+            console.log('drag enter true');
             $("#" + this.jasonObj.divId + "-true")
                 .parent()
                 .parent()
@@ -193,7 +194,7 @@ function TrueFalse(jasonObj) {
         });
 
         $("#" + this.jasonObj.divId + "-false").on("dragenter", (event) => {
-			console.log('drag enter false');
+            console.log('drag enter false');
             $("#" + this.jasonObj.divId + "-false")
                 .parent()
                 .parent()
@@ -206,15 +207,15 @@ function TrueFalse(jasonObj) {
 
         $("#" + this.jasonObj.divId).on("dragover", (event) => {
             event.preventDefault();
-			console.log('drag over');
-			//$("<style>body { display: none; }</style>").appendTo("head")
-			//$("<style>body { display: block; }</style>").appendTo("head")
-			//document.getElementsByTagName("body");.style.setProperty("height", "409px", "important");
-			//$('.hidden').hide();
+            console.log('drag over');
+            //$("<style>body { display: none; }</style>").appendTo("head")
+            //$("<style>body { display: block; }</style>").appendTo("head")
+            //document.getElementsByTagName("body");.style.setProperty("height", "409px", "important");
+            //$('.hidden').hide();
         });
 
         $("#" + this.jasonObj.divId + "-false").on("dragover", (event) => {
-			console.log('drag over false');
+            console.log('drag over false');
             $("#" + this.jasonObj.divId + "-false")
                 .parent()
                 .parent()
@@ -226,7 +227,7 @@ function TrueFalse(jasonObj) {
         });
 
         $("#" + this.jasonObj.divId + "-true").on("dragover", (event) => {
-			console.log('drag over true');
+            console.log('drag over true');
             $("#" + this.jasonObj.divId + "-true")
                 .parent()
                 .parent()
@@ -238,7 +239,7 @@ function TrueFalse(jasonObj) {
         });
 
         $("#" + this.jasonObj.divId + "-true").on("dragleave", (event) => {
-			console.log('drag leave true');
+            console.log('drag leave true');
             $("#" + this.jasonObj.divId + "-true")
                 .parent()
                 .parent()
@@ -249,7 +250,7 @@ function TrueFalse(jasonObj) {
                 .css("background-color", "#66cc99");
         });
         $("#" + this.jasonObj.divId + "-false").on("dragleave", (event) => {
-			console.log('drag leave false');
+            console.log('drag leave false');
             $("#" + this.jasonObj.divId + "-false")
                 .parent()
                 .parent()
@@ -261,7 +262,7 @@ function TrueFalse(jasonObj) {
         });
 
         $("#" + this.jasonObj.divId).on("drop", (event) => {
-			console.log('drop');
+            console.log('drop');
             event.preventDefault();
             if ($(event.target).hasClass("droptarget")) {
                 let data = event.originalEvent.dataTransfer.getData("Text");
@@ -353,7 +354,7 @@ function TrueFalse(jasonObj) {
                         decrementAttempts(e);
                         changeAttemptsText(e);
                         // show reset button.
-                        enableReset(); 
+                        enableReset();
                         // enable feedback button.
                         enableFeedback(e);
                         //disable all multiple choice.
@@ -373,7 +374,7 @@ function TrueFalse(jasonObj) {
                 }
                 trueAnswerList = new Array();
                 if ($("#" + this.jasonObj.divId + "-true button").length != 0) {
-              //      debugger;
+                    //      debugger;
                     saveTrueList = $("#" + this.jasonObj.divId + "-true").html();
                     console.log("saveTrueList");
                     console.log(saveTrueList);
@@ -386,7 +387,7 @@ function TrueFalse(jasonObj) {
                     trueAnswerList.push(0);
                 }
                 if ($("#" + this.jasonObj.divId + "-false button").length != 0) {
-           //         debugger
+                    //         debugger
                     saveFalseList = $("#" + this.jasonObj.divId + "-false").html();
                     console.log("saveFalseList");
                     $("#" + this.jasonObj.divId + "-false button").each(function () {
@@ -409,7 +410,7 @@ function TrueFalse(jasonObj) {
                 enableChoice(e);
             }
             else if ($.trim($(e.target).children().text()) == "Close") {
-           //     debugger;
+                //     debugger;
                 var questionId = this.jasonObj.divId.split('-')[1]
                 if (autoTrigger == 1) {
                     autoTrigger = 0;
@@ -418,7 +419,7 @@ function TrueFalse(jasonObj) {
                     var ModuleId = $("#hdnModuleId").val();
                     var CourseId = $("#hdnCourseId-" + questionId).val();
                     var ApplicatiionPath = $("#hdnApplicatonPath").val();
-var freetext = "";
+                    var freetext = "";
                     var url = ApplicatiionPath + '/Users/Courses/SubmitAnswer';
                     var requestPerameters = {
                         "id": ModuleId,
@@ -426,14 +427,14 @@ var freetext = "";
                         "answer": trueAnswerList,
                         "question": questionId,
                         "flagged": false,
-"FreeTextAnswer": freetext
+                        "FreeTextAnswer": freetext
                     }
                     AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
                         if (response.Feedback) {
                             if (response.IsComplete) {
                                 console.log("Alhumdulillah");
                                 var nextModuleId = $("#hdnNextModuleId").val();
-                                var nextModuleURL = $("#hdnApplicatonPath").val() +"/Users/Courses/ModuleDetail/" + nextModuleId;
+                                var nextModuleURL = $("#hdnApplicatonPath").val() + "/Users/Courses/ModuleDetail/" + nextModuleId;
                                 if (nextModuleId == 0) {
                                     nextModuleId = $("#hdnCourseId").val();
                                     nextModuleURL = $("#hdnApplicatonPath").val() + "/Users/Courses/Assessment/" + nextModuleId;
@@ -448,11 +449,11 @@ var freetext = "";
             }
             else if ($.trim($(e.target).children().text()) == "Show Feedback") {
                 $("#ev-prompt-body-" + this.jasonObj.divId).empty();
-                $("#ev-prompt-body-" + this.jasonObj.divId).append( jasonObj.feedback);
-               
+                $("#ev-prompt-body-" + this.jasonObj.divId).append(jasonObj.feedback);
+
                 enableSimpleFeedback(e);
 
-                
+
 
                 $("#myModal-" + this.jasonObj.divId).modal("show");
             }
@@ -1124,7 +1125,7 @@ function TrueFalse2(jasonObj) {
                     }
                 }
                 //saving data in DB
-               
+
                 if (ans == ques) {
                     // show popup with excellent message.
                     $("#ev-prompt-body-" + this.jasonObj.divId).text(popUpMessage3);
@@ -1147,7 +1148,7 @@ function TrueFalse2(jasonObj) {
                         .css("color", "green");
                     $("#myModal-" + this.jasonObj.divId).modal("show");
                     // enable feedback button
-                   // enableFeedback(e);
+                    // enableFeedback(e);
                     // disable submit button
                     disableSubmit();
                     // green tick icon shows between feedback button.
@@ -1230,7 +1231,7 @@ function TrueFalse2(jasonObj) {
                 $("#myModal-" + this.jasonObj.divId).modal("hide");
             }
             else if ($.trim($(e.target).children().text()) == "Show Feedback") {
-               
+
                 enableSimpleFeedback(e);
                 $("#ev-prompt-body-" + this.jasonObj.divId).empty();
                 $("#ev-prompt-body-" + this.jasonObj.divId).append(jasonObj.feedback);
@@ -1249,7 +1250,7 @@ function TrueFalse2(jasonObj) {
                 .fill()
                 .map((item, i) => {
                     if (this.jasonObj.question[i].selected == "" || this.jasonObj.question[i].selected == "false") {
-                        console.log("ss " + i++);                    
+                        console.log("ss " + i++);
                     } else {
                         spaceFound = true;
                     }
@@ -1500,7 +1501,7 @@ function TrueFalse2(jasonObj) {
         btnSubmit.prop("disabled", true);
     };
     let PushDataToDB = () => {
-   //     debugger;
+        //     debugger;
         //if (remainingAttempts <= 0) {
         //    trueAnswerList = new Array();
         //    $("#myModal-" + this.jasonObj.divId).modal("hide");
@@ -1514,7 +1515,7 @@ function TrueFalse2(jasonObj) {
             var ModuleId = $("#hdnModuleId").val();
             var CourseId = $("#hdnCourseId-" + questionId).val();
             var ApplicatiionPath = $("#hdnApplicatonPath").val();
-		var freetext = "";
+            var freetext = "";
             if (ApplicatiionPath == "") {
                 hr = window.location.href.split("/");
                 ApplicatiionPath = hr[0] + "//" + hr[2];
@@ -1526,14 +1527,14 @@ function TrueFalse2(jasonObj) {
                 "answer": trueAnswerList,
                 "question": questionId,
                 "flagged": false,
-"FreeTextAnswer": freetext
+                "FreeTextAnswer": freetext
             }
             AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
                 if (response.Feedback) {
                     if (response.IsComplete) {
                         console.log("Alhumdulillah");
                         var nextModuleId = $("#hdnNextModuleId").val();
-                        var nextModuleURL = $("#hdnApplicatonPath").val() +"/Users/Courses/ModuleDetail/" + nextModuleId;
+                        var nextModuleURL = $("#hdnApplicatonPath").val() + "/Users/Courses/ModuleDetail/" + nextModuleId;
                         if (nextModuleId == 0) {
                             nextModuleId = $("#hdnCourseId").val();
                             nextModuleURL = $("#hdnApplicatonPath").val() + "/Users/Courses/Assessment/" + nextModuleId;
@@ -1549,7 +1550,7 @@ function TrueFalse2(jasonObj) {
 
     let enableFeedback = (e) => {
         $(e.target).siblings("button.ev-buttons-feedback").prop("disabled", false);
-       
+
     };
     let enableSimpleFeedback = (e) => {
 
@@ -1577,12 +1578,8 @@ function TrueFalse2(jasonObj) {
         $(e.target).siblings("div.ev-icon-check").css("display", "block");
     };
 }
-
-//This for True False With DropDown
-
-
 function TrueFalse1(jasonObj) {
-//    debugger
+    //    debugger
     this.jasonObj = jasonObj;
     let remainingAttempts = this.jasonObj.attempts;
     let title = this.jasonObj.title;
@@ -1601,7 +1598,7 @@ function TrueFalse1(jasonObj) {
     let popUpMessage1 = "Incorrect, this is a incorrect answer"; //"That is incorrect. Re-read the module then try again.";
     let popUpMessage2 = "Incorrect, this is a incorrect answer";//"That is incorrect and your final attempt";
     let popUpMessage3 = "Well done, this is a correct answer.";
-let popUpMessage4 = "";
+    let popUpMessage4 = "";
     let attemptsText =
         remainingAttempts == 1 ? " final attempt" : " attempts remaining";
     Array(length)
@@ -1748,7 +1745,7 @@ let popUpMessage4 = "";
 
     this.initialize = () => {
         $(".truefalse-module#" + this.jasonObj.divId).append(module);
-
+     
         /* Events fired on the drag target */
         $("#" + this.jasonObj.divId).on("dragstart", (event) => {
             event.originalEvent.dataTransfer.setData("Text", event.target.id);
@@ -1827,7 +1824,7 @@ let popUpMessage4 = "";
 
         $(".ev-input-text").on("change", (event) => {
             var j = 0;
-       //     debugger
+            //     debugger
             for (var i = 1; i <= length; i++) {
                 if ($("#inid" + i + "-" + questionID).val() != '') {
                     j++;
@@ -1835,7 +1832,7 @@ let popUpMessage4 = "";
             }
             if (j == length) {
                 btnSubmit = $("#" + this.jasonObj.divId + "-submit");
-                btnSubmit.prop("disabled", false);
+                btnSubmit.prop("disabled", false);btnSubmit.prop("disabled", false);
             } else {
                 btnSubmit = $("#" + this.jasonObj.divId + "-submit");
                 btnSubmit.prop("disabled", true);
@@ -1847,16 +1844,23 @@ let popUpMessage4 = "";
 
         $("button." + this.jasonObj.divId + "-dragtarget").on("click", (e) => { });
 
+        
+
+    
         //show popup by clicking submit button
 
         $("button." + this.jasonObj.divId).on("click", (e) => {
-
+            debugger;
             $("#ev-prompt-title-" + this.jasonObj.divId).show();
             $("#ev-prompt-title-" + this.jasonObj.divId).prev().show();
 
-
+           
             if ($.trim($(e.target).children().text()) === "Submit") {
-               // debugger
+
+
+
+
+                debugger;
                 var s = 0;
                 trueAnswerList = new Array();
                 for (var i = 1; i <= length; i++) {
@@ -1867,15 +1871,15 @@ let popUpMessage4 = "";
                     if ($("#inid" + i + "-" + questionID).val().toLowerCase() == "true") {
 
                         trueAnswerList.push(this.jasonObj.question[i - 1].answerid);
-                      } 
-                  //  trueAnswerList.push(this.jasonObj.question[i - 1].answerid);
+                    }
+                    //  trueAnswerList.push(this.jasonObj.question[i - 1].answerid);
                 }
                 $('h2').show();
 
                 if (trueAnswerList.length == 0) {
                     trueAnswerList.push(0);
                 }
-                
+
                 PushDataToDB();
                 if (s == length) {
                     // show popup with excellent message.
@@ -1902,7 +1906,7 @@ let popUpMessage4 = "";
 
                     disableinput();
                     // enable feedback button
-                  //  enableFeedback(e);
+                    //  enableFeedback(e);
                     // disable submit button
                     disableSubmit();
                     // green tick icon shows between feedback button.
@@ -1942,7 +1946,7 @@ let popUpMessage4 = "";
                         decrementAttempts(e);
                         changeAttemptsText(e);
                         // show reset button.
-                        enableReset();
+                       // enableReset();
                         // enable feedback button.
                         enableFeedback(e);
                         //disable all multiple choice.
@@ -1958,11 +1962,12 @@ let popUpMessage4 = "";
                         // remaining attempts value decrease.
                         decrementAttempts(e);
                         // show reset button.
-                        enableReset();
+                      //  enableReset();
                         // enable feedback button.
                         enableFeedback(e);
                         // disable all multiple choice.
                         disableChoice(e);
+
                     }
                 }
                 if ($("#" + this.jasonObj.divId + "-true button").length != 0) {
@@ -1973,6 +1978,8 @@ let popUpMessage4 = "";
                 }
             }
             else if ($.trim($(e.target).children().text()) == "Reset") {
+                debugger;
+
                 // change reset button to submit button
                 btnSubmit.children().text("Submit");
                 // disable submit button
@@ -1988,17 +1995,19 @@ let popUpMessage4 = "";
             else if ($.trim($(e.target).children().text()) == "Show Feedback") {
 
 
-              
+
 
                 enableSimpleFeedback(e);
 
                 $("#ev-prompt-body-" + this.jasonObj.divId).empty();
                 $("#ev-prompt-body-" + this.jasonObj.divId).append(jasonObj.feedback);
-              
+
                 $("#myModal-" + this.jasonObj.divId).modal("show");
-            } else if ($.trim($(e.target).children().text()) == "Show Answer") {
+            }
+            else if ($.trim($(e.target).children().text()) == "Show Answer") {
                 showCorrectAnswer();
-            } else if ($.trim($(e.target).children().text()) == "Hide Answer") {
+            }
+            else if ($.trim($(e.target).children().text()) == "Hide Answer") {
                 hideCorrectAnswer();
             }
         });
@@ -2006,7 +2015,7 @@ let popUpMessage4 = "";
         ////////////////////USMAN
         let spaceFound = 0;
         if (autoTrigger = 0) {
-            
+
             Array(length)
                 .fill()
                 .map((item, i) => {
@@ -2015,11 +2024,11 @@ let popUpMessage4 = "";
                     }
                 })
                 .join("");
-          
+
         }
 
         if (spaceFound == 0) {
-       //     debugger
+            //     debugger
             if (parseInt(remainingAttempts) != 3) {
                 Array(length)
                     .fill()
@@ -2049,7 +2058,7 @@ let popUpMessage4 = "";
                 $("button." + this.jasonObj.divId).trigger("click");
                 $("#myModal-" + this.jasonObj.divId).modal("hide");
             }
-           
+
         }
 
         ////////////////////USMAN
@@ -2213,6 +2222,8 @@ let popUpMessage4 = "";
         $("#" + this.jasonObj.divId + "-true button").css("cursor", "default");
         $("#" + this.jasonObj.divId + "-false button").css("cursor", "default");
         // $("." + this.jasonObj.divId + "-li").off("click");
+      //  btnSubmit.prop("disabled", true);
+       
     };
 
     let enableChoice = (e) => {
@@ -2260,7 +2271,7 @@ let popUpMessage4 = "";
 
     let enableFeedback = (e) => {
         $(e.target).siblings("button.ev-buttons-feedback").prop("disabled", false);
-       
+
     };
 
 
@@ -2274,9 +2285,9 @@ let popUpMessage4 = "";
         //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().children().children().removeClass("ev-icon-cross-circle");
         //$('h2').hide();
 
-      
 
-     
+
+
     };
 
 
@@ -2294,7 +2305,7 @@ let popUpMessage4 = "";
         $(e.target).siblings("div.ev-icon-check").css("display", "block");
     };
     let PushDataToDB = () => {
-    //    debugger;
+        //    debugger;
         //if (remainingAttempts <= 0) {
         //    trueAnswerList = new Array();
         //    $("#myModal-" + this.jasonObj.divId).modal("hide");
@@ -2320,14 +2331,14 @@ let popUpMessage4 = "";
                 "answer": trueAnswerList,
                 "question": questionId,
                 "flagged": false,
- 		"FreeTextAnswer": freetext
+                "FreeTextAnswer": freetext
             }
             AjaxPostRequestWithRequestPerameters(url, requestPerameters, function (response) {
                 if (response.Feedback) {
                     if (response.IsComplete) {
                         console.log("Alhumdulillah");
                         var nextModuleId = $("#hdnNextModuleId").val();
-                        var nextModuleURL = $("#hdnApplicatonPath").val() +"/Users/Courses/ModuleDetail/" + nextModuleId;
+                        var nextModuleURL = $("#hdnApplicatonPath").val() + "/Users/Courses/ModuleDetail/" + nextModuleId;
                         if (nextModuleId == 0) {
                             nextModuleId = $("#hdnCourseId").val();
                             nextModuleURL = $("#hdnApplicatonPath").val() + "/Users/Courses/Assessment/" + nextModuleId;
@@ -2342,8 +2353,12 @@ let popUpMessage4 = "";
     }
     $("#inid" + "-" + questionID).on('change', function () {
         btnSubmit.prop("enabled", true);
+       
     })
 
 }
+
+
+
 
 

@@ -112,7 +112,7 @@
             @*<a href="../Admin/Courses" class="navbar-brand"><img src="../_content/images/main-logo.png" class="m-r-sm"></a>*@
             @if (ViewBag.OtherApplication == "1")
             {
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/k6/main-logo.png" class="m-r-sm"></a>
+                @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/k6/main-logo.png" class="m-r-sm"></a>*@
             }
             else
             {
