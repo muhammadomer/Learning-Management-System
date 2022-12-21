@@ -9703,7 +9703,6 @@
     <None Include="Areas\Scale\Views\Templates\widgets.cshtml" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="GulpFile.js" />
     <Content Include="Models\SinglePoint\SinglePoint.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SinglePoint.Context.cs</LastGenOutput>
