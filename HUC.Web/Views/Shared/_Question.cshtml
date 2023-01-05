@@ -9,7 +9,7 @@
     //    Value = "1"
     //});
     string button = "Create";
-    if(Model != null && Model.Question != null)
+    if (Model != null && Model.Question != null)
     {
         button = "Update";
     }
@@ -20,22 +20,22 @@
     });
     QuestionTypeList.Add(new SelectListItem
     {
-        Text = "Radio Buttons unlimited responses",
+        Text = "Multiple Choice with Radio Buttons",
         Value = "2"
     });
     QuestionTypeList.Add(new SelectListItem
     {
-        Text = "Sliding bar with number of answers",
+        Text = "Slide Bar to the correct answer",
         Value = "3"
     });
     QuestionTypeList.Add(new SelectListItem
     {
-        Text = "True or False drag and drop",
+        Text = "Drag and drop to the true or false column",
         Value = "4"
     });
     QuestionTypeList.Add(new SelectListItem
     {
-        Text = "Single Answer,multiple statements" +
+        Text = "Single answer match" +
         "",
         Value = "5"
     });
@@ -56,21 +56,22 @@
         Text = "2",
         Value = "2"
     });
-    attemptlist.Add(new SelectListItem
-    {
-        Text = "3",
-        Value = "3"
-    });
-    attemptlist.Add(new SelectListItem
-    {
-        Text = "4",
-        Value = "4"
-    });
+    //attemptlist.Add(new SelectListItem
+    //{
+    //    Text = "3",
+    //    Value = "3"
+    //});
+    //attemptlist.Add(new SelectListItem
+    //{
+    //    Text = "4",
+    //    Value = "4"
+    //});
 }
 <style>
     .form-control:focus {
         border-color: dimgray !important;
     }
+
     .form-control {
         color: #72bbb8 !important;
         border: 2px solid #72bbb8 !important;
@@ -78,6 +79,7 @@
         height: 40px !important;
         max-width: 500px !important;
     }
+
     .divpadding {
         padding-top: 10px;
     }
@@ -97,14 +99,14 @@
         @Html.ValidationSummary(true)
         @if (Model != null && Model.ID != Model.ResourceID)
         {
-         
+
             <input type="hidden" id="Qid" value="@Model.ID" />
             @Html.HiddenFor(x => x.ID)
         }
         else
         {
-            
-            <input type="hidden" id="ID" name="ID" value="0" />
+
+            <input type="hidden" id="ID" name="ID" value="" />
             <input type="hidden" id="Qid" value="0" />
         }
 
@@ -128,12 +130,12 @@
                     @Html.ValidationMessageFor(model => model.Question)
                 </div>
             </div>
-            <div class="form-group" >
-                <label class="control-label" id = "optionlabal">Options</label>
+            <div class="form-group">
+                <label class="control-label" id="optionlabal">Options</label>
             </div>
         </div>
 
-        <div class="col-md-6" >
+        <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(model => model.Attempts)
                 <div class="input-field full">
@@ -144,7 +146,9 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Feedback)
+                <label class="control-label" id="Feedbacktext">Feedback</label>
+
+                @*@Html.LabelFor(model => model.Feedback)*@
                 <div class="input-field full">
                     @Html.TextAreaFor(model => model.Feedback, new { @class = "form-control", @style = "height:160px !Important" })
                     @Html.ValidationMessageFor(model => model.Feedback)
@@ -156,22 +160,22 @@
 
         @if (ViewBag.Answers != null)
         {
-    <div id="addanswer">
-        @foreach (var item in ViewBag.Answers)
-        {
-        
-        <div class="col-md-8" style="display:inline-flex;margin-bottom: 14px;">   
-                <input type="hidden" value="@item.ID" id="ansid-@sd" />
-                <input type="text" id="ans-@sd" value="@item.Answer" class="form-control" />     
-        </div>
-        <div class="col-md-4">
-            <input type="checkbox" checked="@item.IsCorrect" id="chk-@sd" onclick="BoxChecker(@sd)" style="margin-top: 18px;margin-left: -16px;" /> <span id="textoption">Correct option</span> <a class="btn btn-default hidden" style="float:right;" id="btn-@sd" onclick="AddNewAnswer(@sd)"><i class="fa fa-plus"></i></a>
-        </div>
+            <div id="addanswer">
+                @foreach (var item in ViewBag.Answers)
+                {
 
-            sd++;
-        }
+                    <div class="col-md-8" style="display:inline-flex;margin-bottom: 14px;">
+                        <input type="hidden" value="@item.ID" id="ansid-@sd" />
+                        <input type="text" id="ans-@sd" value="@item.Answer" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="checkbox" checked="@item.IsCorrect" id="chk-@sd" onclick="BoxChecker(@sd)" style="margin-top: 18px;margin-left: -16px;" /> <span id="textoption">Correct option</span> <a class="btn btn-default hidden" style="float:right;" id="btn-@sd" onclick="AddNewAnswer(@sd)"><i class="fa fa-plus"></i></a>
+                    </div>
 
-    </div>
+                    sd++;
+                }
+
+            </div>
             <script>
                 var counter = $('input:checkbox').length;
                 $("#btn-" + counter).removeClass("hidden");
@@ -208,32 +212,77 @@
 <script src="~/_Content/js/lib/jquery.validate.unobtrusive.min.js"></script>
 <script>
     $(document).ready(function () {
+        $("#Feedbacktext").text("Embedded text on publication");
+        $("#Feedback").attr("disabled", true);
+        $("#Feedback").css("background-color", "#eee");
         var selectitemedit = $('#QuestionType').val();
         if (selectitemedit == 7) {
             $("#Attempts").val(1);
-            $("#optionlabal").text("Option");
             $("#Attempts").attr("disabled", true);
-            $("#Feedback").attr("disabled", true);
+            
             $("#Attempts").css("background-color", "#eee");
-            $("#Feedback").css("background-color", "#eee");
+          
             $("#ans-1").attr("disabled", true);
             $("#chk-1").prop('checked', false);
             $("#chk-1").attr('disabled', true);
             $("#btn-1").attr('disabled', true);
         }
+        else if (selectitemedit == 4) {
+            $("#Question").val("Drag each statement to the correct column");
+            $("#Feedback").hide();
+            $("#Feedbacktext").hide();
+            $("#labeltext").text("Embedded text on publication");
+            $("#Question").attr('readonly', true);
+        }
+       else if (selectitemedit == 6) {
+            $("#Question").val("Select True or False from the dropdown after each statement");
+
+            $("#Feedback").hide();
+            $("#Feedbacktext").hide();
+            $("#labeltext").text("Embedded text on publication");
+            $("#Question").attr('readonly', true);
+        }
         else if (selectitemedit == 5) {
-            $("#labeltext").text("Answer");
             $("#optionlabal").text("Statements");
+            $("#textoption").text("Correct option");
+            $("#labeltext").text("Answer");
+            $("#Question").attr('readonly', false)
+       
+            $("#Feedback").val("Drag the answer to the correct statement");
+
+            $("#Feedback").show();
+            $("#Feedbacktext").show();
+        }
+        else if (selectitemedit == 3) {
+            $("#optionlabal").text("Options");
+            $("#textoption").text("Correct option");
+            $("#labeltext").text("Question");
+            $("#Question").attr('readonly', false)
+       
+            $("#Feedback").val("Move the slider to the correct option");
+
+            $("#Feedback").show();
+            $("#Feedbacktext").show();
+
+        }
+        else if (selectitemedit == 2) {
+            $("#labeltext").text("Question");
+            $("#Question").attr('readonly', false)
+      
+            $("#Feedback").val("Select the correct option");
+
+            $("#Feedback").show();
+            $("#Feedbacktext").show();
         }
         else {
             $("#Attempts").attr("disabled", false);
-            $("#Feedback").attr("disabled", false);
+            
             $("#Attempts").css("background-color", "#FFFFFF");
-            $("#Feedback").css("background-color", "#FFFFFF");
+            
             $("#ans-1").attr("disabled", false);
             $("#chk-1").attr('disabled', false);
             $("#btn-1").attr('disabled', false);
-            $("#ans-1").val(0);
+          //  $("#ans-1").val(0);
         }
     });
     $("#QuestionType").change(function () {
@@ -243,11 +292,11 @@
        // $("#labeltext").text(text);
         if (selectitem == 7) {
             $("#Attempts").val(1);
-            $("#optionlabal").text("Option");
+            $("#labeltext").text("Question");
             $("#Attempts").attr("disabled", true);
-            $("#Feedback").attr("disabled", true);
+            
             $("#Attempts").css("background-color", "#eee");
-            $("#Feedback").css("background-color", "#eee");
+           
             $("#ans-1").attr("disabled", true);
             $("#chk-1").prop('checked', false);
             $("#chk-1").attr('disabled', true);
@@ -255,13 +304,13 @@
         }
         else {
             $("#Attempts").attr("disabled", false);
-            $("#Feedback").attr("disabled", false);
+           
             $("#Attempts").css("background-color", "#FFFFFF");
-            $("#Feedback").css("background-color", "#FFFFFF");
+            
             $("#ans-1").attr("disabled", false);
             $("#chk-1").attr('disabled', false);
             $("#btn-1").attr('disabled', false);
-            $("#ans-1").val(0);
+         //   $("#ans-1").val(0);
             for (var i = 1; i <= totalCheckboxes; i++) {
                 $("#chk-" + i).prop('checked', false);
             }
@@ -327,7 +376,7 @@
 				if(boxtype == 4){
 					text = " Correct Statement";
 				}
-				
+
 				if(boxtype == 6){
 					text = " Correct Statement";
 				}
@@ -373,7 +422,7 @@
 
         }
         else {
-            
+
             if (!BoxValidator()) {
                 toastr.error('One answer should be true please mark a checkbox');
                 return false;
@@ -386,8 +435,15 @@
         //$("#alist").val(JSON.stringify({ 'alist': list }));
         // $('#submitform').clone().attr('type', 'submit').insertAfter('#submitform').prev().remove();
         // $("#submitform").submit();
-
-        var data = $("#myform").serialize();
+        var data = $("#myform").serializeArray();
+        if (questiontype == 4) {
+            // $("#Question").val("Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.");
+            data[5].value = "Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.";
+        }
+        else if (questiontype == 6) {
+            // $("#Question").val("Select True Or False into the Dropdown after the question.");
+            data[5].value = "Select True Or False into the Dropdown after the question.";
+        }
         if (!$("#myform").valid()) {
             return false;
         }
@@ -427,56 +483,74 @@
                 });
     }
 
-  
-       $("#QuestionType").on("change", function () {
+
+    $("#QuestionType").on("change", function () {
         var id = parseInt($(this).val());
         var text = $("#QuestionType option:selected").text();
         //$("#labeltext").text(text);
         if (id == 4) {
             $("#Question").attr('readonly', true);
-			$("#optionlabal").text("Statements");
-            $("#labeltext").text("Statement");
+            $("#optionlabal").text("Statement");
+            $("#labeltext").text("Embedded text on publication");
             $("#textoption").text("Correct Statement");
-            $("#Question").val("Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.");
+            $("#Question").val("Drag each statement to the correct column");
+            $("#Feedback").hide();
+            $("#Feedbacktext").hide();
+
+
         } else if (id == 6) {
-			$("#optionlabal").text("Statements");
-            $("#labeltext").text("Instruction");
+            $("#optionlabal").text("Statement");
+            $("#labeltext").text("Embedded text on publication");
             $("#textoption").text("Correct Statement");
             $("#Question").attr('readonly', true);
-            $("#Question").val("Select \"True Or False\" from the Dropdown placed at the end of each question.");
+            $("#Question").val("Select True or False from the dropdown after each statement");
 
-        }  else if (id == 5) {
-            $("#labeltext").text("Answer");
+            $("#Feedback").hide();
+            $("#Feedbacktext").hide();
+        } else if (id == 5) {
+
             $("#optionlabal").text("Statements");
-			
-			$("#textoption").text("Correct option");
-          
-			 $("#Question").attr('readonly', false)
+            $("#textoption").text("Correct option");
+            $("#labeltext").text("Answer");
+            $("#Question").attr('readonly', false)
             $("#Question").val("");
+            $("#Feedback").val("Drag the answer to the correct statement");
+
+            $("#Feedback").show();
+            $("#Feedbacktext").show();
         }
         else if (id == 3) {
             $("#optionlabal").text("Options");
-			$("#textoption").text("Correct option");
-            $("#labeltext").text("Question");
-			 $("#Question").attr('readonly', false)
-            $("#Question").val("");
-        }
-        else if (id == 2) {
-          
-           
+            $("#textoption").text("Correct option");
             $("#labeltext").text("Question");
             $("#Question").attr('readonly', false)
             $("#Question").val("");
-          
+            $("#Feedback").val("Move the slider to the correct option");
+
+            $("#Feedback").show();
+            $("#Feedbacktext").show();
+
+        }
+        else if (id == 2) {
+
+            $("#labeltext").text("Question");
+            $("#Question").attr('readonly', false)
+            $("#Question").val("");
+            $("#Feedback").val("Select the correct option");
+
+            $("#Feedback").show();
+            $("#Feedbacktext").show();
+
         }
 
         else {
-		 $("#optionlabal").text("Options");
+            $("#optionlabal").text("Options");
             $("#Question").attr('readonly', false);
-			$("#textoption").text("Correct option");
+            $("#textoption").text("Correct option");
             $("#Question").val("");
-            
+            $("#Feedback").val("");
+
         }
-       
+
     })
 </script>

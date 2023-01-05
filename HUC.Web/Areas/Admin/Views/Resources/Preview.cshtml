@@ -91,14 +91,22 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
     <div class="row">
         <div class="col-md-12">
             <div class="course-header">
-                @if (Model.Course.Name.Length > 25)
+                @if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
                 {
-                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    if (Model.Course.Name.Length > 25)
+                    {
+                        <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    }
+                    else
+                    {
+                        <div>@Model.Course.Name</div>
+                    }
                 }
                 else
                 {
-                    <div>@Model.Course.Name</div>
+                    <p style="margin-top:130px"></p>
                 }
+
             </div>
         </div>
     </div>
@@ -301,10 +309,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
 													var jasonObj = {
 														divId: "module-@question.ID",
-                                                        title: "Part @question.Sort: Multiple Choice",
+                                                        title: "Question @question.Sort:",
                                                         feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
-														statement: "Select the answer you think is correct.",
+                                                        statement: "Select the correct option.",
 														attempts: @question.Attempts,
 														get multi() {
 															return @Html.Raw(Json.Encode(answerList))
@@ -341,10 +349,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
 													var jasonObj = {
 														divId: "module-@question.ID",
-                                                        title: "Part @question.Sort: Multiple Choice",
+                                                        title: "Question @question.Sort:",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
-														statement: "Select the answer you think is correct.",
+                                                        statement: "Select the correct option.",
 														attempts: @question.Attempts,
 														get multi() {
 															return @Html.Raw(Json.Encode(answerList))
@@ -383,9 +391,9 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
 													var jasonObj = {
 														divId: "module-@question.ID",
-                                                        title: "Part @question.Sort: Slider",
+                                                        title: "Question @question.Sort:",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
-														subHeading: "Move the slider position between 1 - " + answers.length + " and then click submit.&nbsp;",
+                                                        subHeading: "Move the slider to the correct option",
 														max: answers.length,
 														selected: @question.AnswerOrder == 0? 0 : @question.AnswerOrder,
 														selectedAnswer: @question.AnswerOrder,
@@ -425,10 +433,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
 													var jasonObj = {
 														divId: "module-@question.ID",
-                                                        title: "Part @question.Sort: True or False",
+                                                        title: "Question @question.Sort:",
                                                         feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														statement:
-															"Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.",
+															"Drag each statement to the correct column.",
 														attempts: @question.Attempts,
 														question:  @Html.Raw(Json.Encode(answerList)),
 													};
@@ -478,10 +486,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
                                 const jasonObj = {
                                     divId: "module-@question.ID",
-                                    title: "Part @question.Sort: True or False",
+                                    title: "Question @question.Sort:",
                                     feedback: @Html.Raw(Json.Encode(question.Feedback)),
                                     statement:
-                                        "The answer here corresponds to one of the statements below. Associate the answer with the right question by dragging and dropping",
+                                        "Drag the answer to the correct statement",
                                     attempts: @question.Attempts,
                                     answer: [
                                         {
@@ -544,10 +552,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 // Here you create Jason Object and initialize Interview instance
                                 const jasonObj = {
                                     divId: "module-@question.ID",
-                                    title: "Part @question.Sort: True or False",
+                                    title: "Question @question.Sort: ",
                                    feedback: @Html.Raw(Json.Encode(question.Feedback == null ? "" : question.Feedback)),
                                     statement:
-                                        "Select True Or False from the Dropdown after the question.",
+                                        "Select True or False from the dropdown after each statement.",
                                     attempts: @question.Attempts,
                                     question: @Html.Raw(Json.Encode(answerList)),
 

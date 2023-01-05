@@ -147,13 +147,7 @@ function Slider(jasonObj) {
                   aria-label="Select this button to submit your answer"
                 >
                   <span class="ev-button-text">Submit</span></button
-                ><button
-                   type="button" disabled=""
-                  class="ev-button ev-primary ev-buttons-feedback ev-button-icon-before ${this.jasonObj.divId}"
-                  aria-label="Select this button to show the feedback"
                 >
-                  <span class="ev-button-text">Show Feedback</span>
-                </button>
                 <div class="ev-buttons-marking-icon ev-icon ev-icon-check" style="display: none;"></div>
                 <div class="ev-buttons-marking-icon ev-icon ev-icon-cross" style="display: none;"></div>
               </div>
@@ -243,7 +237,7 @@ function Slider(jasonObj) {
                         // red cross icon show between feedback button
                         incorrectIcon(e);
                         //enable feedback button.
-                        enableFeedback(e);
+                        
                         //disable all multiple choice.
                         disableChoice(e);
                     } else if (remainingAttempts == 1) {
@@ -256,7 +250,7 @@ function Slider(jasonObj) {
                         // show reset button.
                         enableReset(e);
                         // enable feedback button.
-                        enableFeedback(e);
+                       
                         //disable all multiple choice.
                         disableChoice(e);
                     } else { 
@@ -268,7 +262,7 @@ function Slider(jasonObj) {
                         // show reset button.
                         enableReset(e);
                         // enable feedback button.
-                        enableFeedback(e);
+                        
                         // disable all multiple choice.
                         disableChoice(e);
                     }
@@ -280,7 +274,7 @@ function Slider(jasonObj) {
                 // disable submit button
                 $(e.target).prop("disabled", false);
                 // disable feedback button
-                disableFeedback(e);
+               
                 // enable All multiple choice
                 enableChoice(e);
             }
@@ -327,14 +321,7 @@ function Slider(jasonObj) {
                     $("#myModal-" + this.jasonObj.divId).modal("hide");
                 }
             }
-            else if ($.trim($(e.target).children().text()) == "Show Feedback") {
-                debugger;
-                $("#ev-prompt-body-" + this.jasonObj.divId).empty();
-                $("#ev-prompt-body-" + this.jasonObj.divId).append(jasonObj.feedback);
-
-                enableSimpleFeedback(e);
-                $("#myModal-" + this.jasonObj.divId).modal("show");
-            }
+        
             else if ($.trim($(e.target).children().text()) == "Show Answer") {
                 showCorrectAnswer(e);
             }
@@ -486,29 +473,10 @@ function Slider(jasonObj) {
         $(e.target).prop("disabled", true);
     };
 
-    let enableFeedback = (e) => {
-        $(e.target)
-            .siblings("button.ev-buttons-feedback")
-            .prop("disabled", false);
-    };
-
-    let disableFeedback = (e) => {
-        $(e.target).siblings("button.ev-buttons-feedback").prop("disabled", true);
-    };
-    let enableSimpleFeedback = (e) => {
-
-        debugger;
-        $("#ev-prompt-title-" + this.jasonObj.divId).hide();
-        $("#ev-prompt-title-" + this.jasonObj.divId).prev().hide();
-        //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().siblings().removeClass("ev-notify-glyph");
-        //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().children().removeClass("ev-notify-icon");
-        //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().children().children().removeClass("ev-icon-cross-circle");
-        //$('h2').hide();
 
 
 
 
-    };
     let incorrectIcon = (e) => {
         $(e.target).siblings("div.ev-icon-cross").css("display", "block");
     };

@@ -826,11 +826,11 @@ namespace HUC.Web.Areas.Users.Controllers
             // if (curUserCourseTest.TestQuestions.Count() == curUserCourseTest.UserQuestions.Count() && !curUserCourseTest.IsComplete)
 
             //OMER: Commedted below because not needed, we already completing course if last question submitted for last module/ Assessment(course, true);
-            //if (sssd == curUserCourse.Course.MaxScore && !curUserCourseTest.IsComplete)
-            //{
+            if (sssd == curUserCourse.Course.MaxScore && !curUserCourseTest.IsComplete)
+            {
             //    Database.ExecuteUpdate("UserCourses", new[] { "IsComplete", "CompleteOn" }, new { ID = curUserCourse.ID, IsComplete =false, CompleteOn = DateTime.Now });
-            //    CompleteTest(curUserCourseTest.ID);
-            //}
+                CompleteTest(curUserCourseTest.ID);
+            }
 
             //curUserCourse.CourseStageID = curUserCourse.CourseStage.NextStage.ID;
             //Database.ExecuteUpdate(curUserCourse);

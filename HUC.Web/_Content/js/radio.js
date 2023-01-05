@@ -152,11 +152,7 @@ function Radio(jasonObj) {
                                       Submit
                                   </span>
                               </button>
-                              <button type="button" disabled="" class="ev-button ev-primary ev-buttons-feedback ev-button-icon-before ${this.jasonObj.divId}" aria-label="Select this button to show the feedback">
-                                  <span class="ev-button-text">
-                                      Show Feedback
-                                  </span>
-                              </button>
+                            
                               <div class="ev-buttons-marking-icon ev-icon ev-icon-check" style="display: none;"></div>
                               <div class="ev-buttons-marking-icon ev-icon ev-icon-cross" style="display: none;"></div>
                           </div>
@@ -284,7 +280,7 @@ function Radio(jasonObj) {
                         // red cross icon show between feedback button
                         incorrectIcon(e);
                         //enable feedback button.
-                        enableFeedback(e);
+                        
                     } else if (remainingAttempts == 1) {
                         // main page change text remaining attempts to final attempts
                         $("#myModal-" + this.jasonObj.divId).modal("show");
@@ -295,7 +291,7 @@ function Radio(jasonObj) {
                         // show reset button.
                         enableReset();
                         // enable feedback button.
-                        enableFeedback(e);
+                        
                         //disable all multiple choice.
                         disableChoice(e);
                     } else {
@@ -306,7 +302,7 @@ function Radio(jasonObj) {
                         // show reset button.
                         enableReset();
                         // enable feedback button.
-                        enableFeedback(e);
+                       
                         // disable all multiple choice.
                         disableChoice(e);
                     }
@@ -318,7 +314,7 @@ function Radio(jasonObj) {
                 // disable submit button
                 btnSubmit.prop("disabled", true);
                 // disable feedback button
-                disableFeedback(e);
+                
                 // enable All multiple choice
                 enableChoice(e);
             }
@@ -362,14 +358,7 @@ var freetext = "";
                     $("#myModal-" + this.jasonObj.divId).modal("hide");
                 }
             }
-            else if ($.trim($(e.target).children().text()) == "Show Feedback") {
-               
-                $("#ev-prompt-body-" + this.jasonObj.divId).empty();
-                $("#ev-prompt-body-" + this.jasonObj.divId).append(jasonObj.feedback);
-
-                enableSimpleFeedback(e);
-                $("#myModal-" + this.jasonObj.divId).modal("show");
-            } else if ($.trim($(e.target).children().text()) == "Show Answer") {
+        else if ($.trim($(e.target).children().text()) == "Show Answer") {
                 showCorrectAnswer(e);
             } else if ($.trim($(e.target).children().text()) == "Hide Answer") {
                 hideCorrectAnswer(e);
@@ -543,27 +532,6 @@ var freetext = "";
         btnSubmit.prop("disabled", true);
     };
 
-    let enableFeedback = (e) => {
-        $(e.target).siblings("button.ev-buttons-feedback").prop("disabled", false);
-    };
-
-    let disableFeedback = (e) => {
-        $(e.target).siblings("button.ev-buttons-feedback").prop("disabled", true);
-    };
-    let enableSimpleFeedback = (e) => {
-
-        debugger;
-        $("#ev-prompt-title-" + this.jasonObj.divId).hide();
-        $("#ev-prompt-title-" + this.jasonObj.divId).prev().hide();
-        //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().siblings().removeClass("ev-notify-glyph");
-        //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().children().removeClass("ev-notify-icon");
-        //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().children().children().removeClass("ev-icon-cross-circle");
-        //$('h2').hide();
-
-
-
-
-    };
 
 
     let starIcon = (e) => {

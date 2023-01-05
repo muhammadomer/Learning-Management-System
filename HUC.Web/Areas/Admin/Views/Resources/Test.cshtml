@@ -106,14 +106,14 @@ else
         <div class="modal-content">
             @if (ViewBag.OtherApplication == "1")
             {
-                <div class="modal-header" style="background-color:black;color:#fff">
+                <div class="modal-header" style="background-color: #72bbb8; color:white ">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Manage Question</h4>
                 </div>
             }
             else
             {
-                <div class="modal-header" style="background-color:#72bbb8;color:#fff">
+                <div class="modal-header" style="background-color: #72bbb8; color: white ">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Manage Question</h4>
                 </div>
@@ -244,7 +244,8 @@ else
     var AddEdit=function(Id,check){
         var url = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/Question?id=" + Id + "&check=" + check;
         console.log(url);
-        $("#myModalBodyDiv").load(url,function(){
+        $("#myModalBodyDiv").load(url, function () {
+            $('#myModal').modal({ backdrop: 'static', keyboard: false });
             $("#myModal").modal("show");
 
         })

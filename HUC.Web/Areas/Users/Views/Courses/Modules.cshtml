@@ -51,7 +51,8 @@
 {
     <style>
         .full-page {
-            background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Course.Background) !important;
+            background-image: url( @HttpContext.Current.Request.ApplicationPath /_Media/Uploads/ @Model.Course.Background ) !important;
+           
         }
     </style>
 }
@@ -59,7 +60,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 {
     <style>
         .full-page {
-          background:@Model.Course.Background !important;
+            background: @Model.Course.Background !important;
+          
         }
     </style>
 }
@@ -380,9 +382,11 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                 <div class="row">
                     <div class="col-md-12 module-tile-first " style="height:100px!important" >
                         <h4><b>Final Assessment</b></h4>
-                        <p style="font-size:16px;">Final Assessment: Your @Model.Course.Name Confidence Levels</p>
+                        <p style="font-size:16px;">
+                            Give us your feedback on the course.  Anything you can contribute to make the course better will be much appreciated
+                        </p>
                         <span class="module-assessed-by hidden"><b>Assessment:</b> 2 questions</span>
-                        <span class="module-time">Duration: <small> 5 Minute </small></span>
+                        <span class="module-time">Duration: <small> 2 Minutes </small></span>
                     </div>
                     <div class="col-md-12 module-tile-second">
                         <div class="row">
@@ -443,5 +447,6 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
         $("#modAdspic").append('<a href="#"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Gdd-logo.jpg" style="max-height:106px;padding-right:50px;width:168px;"></a>');
 
     });*@
-    $("#logoid").hide();
+                $("#logoid").hide();
+                $("section").removeclass("full-page");
             </script>

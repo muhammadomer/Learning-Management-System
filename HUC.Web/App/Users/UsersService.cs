@@ -136,7 +136,7 @@ namespace HUC.Web.App.Users
         //        LogApp.Log4Net.WriteLog(ex.InnerException.Message, LogApp.LogType.GENERALLOG);
         //    }
         //}
-        public void SendEmailByCompany(EmailSenders sender, DentonsEmployeesSettings modelsmtp)
+        public void SendEmailByCompany(EmailSenders sender, DentonsEmployeesSettings modelsmtp,string username)
         {
             try
             {
@@ -181,23 +181,23 @@ namespace HUC.Web.App.Users
 
                     string _Courses = "";
 
-                    foreach (var item in sender.courses)
-                    {
-                        if (sender.courses.Count > 1)
-                        {
-                            _Courses += "<b> " + item + ", </b>";
-                        }
-                        else
-                        {
-                            _Courses += "<b> " + item + "</b>";
-                        }
+                    //foreach (var item in sender.courses)
+                    //{
+                    //    if (sender.courses.Count > 1)
+                    //    {
+                    //        _Courses += "<b> " + item + ", </b>";
+                    //    }
+                    //    else
+                    //    {
+                    //        _Courses += "<b> " + item + "</b>";
+                    //    }
 
-                    }
-                    if (sender.courses.Count > 1)
-                    {
-                        _Courses = _Courses.Substring(0, _Courses.Length - 5);
-                        _Courses = _Courses + "</b>";
-                    }
+                    //}
+                    //if (sender.courses.Count > 1)
+                    //{
+                    //    _Courses = _Courses.Substring(0, _Courses.Length - 5);
+                    //    _Courses = _Courses + "</b>";
+                    //}
 
 
 
@@ -213,19 +213,21 @@ namespace HUC.Web.App.Users
 
                     var TrainingOfficer = Database.GetAll<SettingsModel>("WHERE CompanyID = " + companyID).FirstOrDefault();
 
-                    //Body += "<p>They should be started by <b>"+startdt.ToString("dd/MM/yyyy")+"</b> and continue for <b>"+TrainingOfficer.TrainingCoursesWeeks+" weeks</b>. " +
-                    //        "Your target finish date is therefore <b>"+finishdt.ToString("dd/MM/yyyy")+"</b>. If you finish these on time, " +
-                    //        "you will not receive any more emails on this subject," +
-                    //        " but reminder emails will be sent if you go over the allotted time.</p></br>";
 
-                    //    Body += "<p> We hope you enjoy the courses above and find them easy and instructive to follow.</p></br>";
+
+                   
 
 
 
+                    Body = Body.Replace("[Account Id]", company.Name);
+                    Body = Body.Replace("[User Name]", username);
 
-                    Body = Body.Replace("[start_date]", startdt.ToString("dd/MM/yyyy"));
-                    Body = Body.Replace("[finish_date]", finishdt.ToString("dd/MM/yyyy"));
-                    Body = Body.Replace("[Training Courses Weeks]", TrainingOfficer.TrainingCoursesWeeks.ToString());
+                    Body = Body.Replace("[URL]", "<a href=" + modelsmtp.DentonsEmployeesURL + ">" + modelsmtp.DentonsEmployeesURL + "</a>");
+
+
+                    //Body = Body.Replace("[start_date]", startdt.ToString("dd/MM/yyyy"));
+                    //Body = Body.Replace("[finish_date]", finishdt.ToString("dd/MM/yyyy"));
+                    //Body = Body.Replace("[Training Courses Weeks]", TrainingOfficer.TrainingCoursesWeeks.ToString());
 
 
 

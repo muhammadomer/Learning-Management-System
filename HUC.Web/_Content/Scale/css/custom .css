@@ -44,7 +44,7 @@
     padding-left: 0px !important;
 }
 
-.table > tbody > tr:nth-child(even) > td {
+/*.table > tbody > tr:nth-child(even) > td {
     background-color: #e6e8ea !important;
 }
 
@@ -54,7 +54,7 @@
 
     .table.black-header tr th:last-child {
         border-right: 0px !important;
-    }
+    }*/
 
 .bg-white a, .bg-white .logout-btn:hover, .bg-white a:hover {
     color: #fff !important;

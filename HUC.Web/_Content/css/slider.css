@@ -156,16 +156,17 @@
   margin-left: -21px;
 }
 .ev-buttons.ev-buttons-full .ev-button {
-  width: 49.5%;
+  width: 100%;
 }
 .ev-buttons.ev-buttons-full .ev-buttons-display {
   text-align: center;
 }
-.ev-buttons .ev-buttons-cluster-bottom {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-}
+    .ev-buttons .ev-buttons-cluster-bottom {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 .ev-buttons .ev-buttons-display {
   text-align: left;
 }

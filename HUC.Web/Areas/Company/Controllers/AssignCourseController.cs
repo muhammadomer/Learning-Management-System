@@ -93,7 +93,8 @@ namespace HUC.Web.Areas.Company.Controllers
                         employeesEntities.Database.Connection.ConnectionString = employeesEntities.Database.Connection.ConnectionString.Replace("DentonsEmployeesForRiskManager",  dbName_SinglePointName);
 
                         var model = employeesEntities.DentonsEmployeesSettings.FirstOrDefault();
-
+                        var username = employeesEntities.Users.Where(x=>x.Email== mail.emails).Select(x=>x.Username).FirstOrDefault();
+                       
 
                         bool assigncourse;
                         assigncourse = Database.Query<bool>("select EmailAssignCourse from settings where companyid=" + companyID).First();
@@ -102,7 +103,7 @@ namespace HUC.Web.Areas.Company.Controllers
 
                         if (assigncourse)
                         {
-                            _usersService.SendEmailByCompany(mail, model);
+                            _usersService.SendEmailByCompany(mail, model,username);
                         }
 
 
@@ -208,7 +209,7 @@ namespace HUC.Web.Areas.Company.Controllers
                             assigncourse = Database.Query<bool>("select EmailAssignCourse from settings where companyid=" + companyID).First();
                             if (assigncourse)
                             {
-                                _usersService.SendEmailByCompany(email, model);
+                                _usersService.SendEmailByCompany(email, model,user.Username);
                             }
 
                             if (uncheckList != null && uncheckList.Count > 0)
