@@ -69,19 +69,19 @@
 
 
 <div class="row" >
-    <div class="col-md-6" style="text-align: left;margin-top:-60px">
-        <a id="logoid" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView" ><img id="logoimgid" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Elephant-TMS-black-Logo-AW-02.png" width="70" height="35" ></a>
+    <div class="col-md-6" style="text-align: left;margin-top:-40px">
+        <a id="logoid" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView" ><img id="logoimgid" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Elephant-TMS-black-Logo-AW-02.png" width="108" height="40" ></a>
 
     </div>
-    <div class="col-md-6" style="text-align: right!important; margin-top: -60px;width:100%">
+    <div class="col-md-6" style="text-align: right!important; margin-top: -40px;width:100%">
         @if (Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["HucLogo"]) == 1 || ViewBag._IsSimpleUser == 0)
         {
-            <a id="btnLogout" href="@Url.Action("Logout", "Auth", new { area = ""})"  style="font-weight:bold;color: #ffffff !important;">Close <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 25px;" /></a>
+            <a id="btnLogout" href="@Url.Action("Logout", "Auth", new { area = ""})"  style="font-size:16px;font-family:'Franklin Gothic Medium', 'Arial Narrow';color: #ffffff !important;">Close <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 0px;" /></a>
 
         }
         else
         {
-            <a id="btnLogout" href="@Url.Action("LogoutGdd", "Auth", new { area = ""})"  style="font-weight: bold; color: #ffffff !important;">Logout <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 25px;" /></a>
+            <a id="btnLogout" href="@Url.Action("LogoutGdd", "Auth", new { area = ""})"  style="font-size: 16px; color: #ffffff !important;">Logout <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 0px;" /></a>
 
         }
     </div>
@@ -125,7 +125,7 @@
     @if (user.LastUserCourse != null)
     {
         <div class="row">
-            <div class="col-md-12 align-top-content" style="margin-top:110px !important">
+            <div class="col-md-12 align-top-content" style="margin-top:130px !important">
                 <a class="btn btn-success pull-right" href="@Url.Action("Modules", "Courses", new {id = user.LastUserCourse.CourseID})" style="font-family:'Franklin Gothic Book'">
                     Continue from last time<i style="margin-left: 10px;" class="fa fa-chevron-right"></i>
                 </a>
@@ -134,7 +134,7 @@
     }
 </div>
 
-<div class="hbox" style="margin-top: 120px;">
+<div class="hbox" style="margin-top: 140px;">
     <aside class="aside-lg bg-light lter b-r profile-area hidden">
         <section class="vbox">
             <section class="scrollable">
