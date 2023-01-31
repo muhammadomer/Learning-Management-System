@@ -79,6 +79,7 @@ header {
 .align-top-content {
     padding: 0px 90px;
     top: 420px !important;
+
 }
 
 .align-top-content1 {
@@ -394,7 +395,9 @@ header {
 @media screen and (min-width: 1366px) {
     .full-page {
         height: 60%;
-    }
+       
+        }
+   
 }
 
 @media screen and (min-width: 1920px) {
@@ -414,6 +417,7 @@ header {
     .align-top-content {
         top: 530px;
         z-index: 1;
+        
     }
 
     .course-overview-top-module {

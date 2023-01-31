@@ -125,7 +125,7 @@
     @if (user.LastUserCourse != null)
     {
         <div class="row">
-            <div class="col-md-12 align-top-content" style="margin-top:130px !important">
+            <div class="col-md-12 align-top-content" style="margin-top:230px !important">
                 <a class="btn btn-success pull-right" href="@Url.Action("Modules", "Courses", new {id = user.LastUserCourse.CourseID})" style="font-family:'Franklin Gothic Book'">
                     Continue from last time<i style="margin-left: 10px;" class="fa fa-chevron-right"></i>
                 </a>
@@ -526,7 +526,7 @@
                     }
                     else
                     {
-                        <tr><td class="hidden">1</td><td>No Data Found</td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td class="hidden">1</td><td></td><td></td><td></td><td></td><td></td></tr>
                     }
                 </tbody>
             </table>

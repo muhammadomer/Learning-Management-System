@@ -26,7 +26,7 @@ namespace HUC.Web.App.Users.Courses
         public int? WorkId { get; set; }
         public DateTime? RetakeDate { get; set; }
         public DateTime? CoolDownHoursTime { get; set; }
-        public bool? FeedBack { get; set; }
+        public int? FeedBack { get; set; }
         //Lazy
         private CourseModel _course;
         private UserModel _user;

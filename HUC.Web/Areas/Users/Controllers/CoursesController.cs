@@ -1092,7 +1092,7 @@ namespace HUC.Web.Areas.Users.Controllers
 
                 int ID = usercourse.ID;
 
-                Database.ExecuteUpdate("UserCourses", new[] { "FeedBack" }, new { ID = ID, FeedBack = true });
+                Database.ExecuteUpdate("UserCourses", new[] { "FeedBack" }, new { ID = ID, FeedBack = 1 });
 
 
             }

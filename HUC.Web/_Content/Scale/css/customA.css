@@ -1,7 +1,9 @@
-﻿.bg-white {
+﻿.bg-white-admin {
     background-color: #1A6935 !important;
 }
-
+.bg-white {
+    background-color: #72bbb8 !important;
+}
 .table tr th {
     background-color: #e6e8ea !important;
     color: #808487 !important;
@@ -199,7 +201,9 @@ h3.text-black {
 }
 
 
-
+.full-page-admin {
+    background: linear-gradient( to bottom, #1A6935 0%, #1A6935 330px, #e8eaef 0%, #e8eaef 100%);
+}
 .full-page {
     background: linear-gradient( to bottom, #1A6935 0%, #1A6935 330px, #e8eaef 0%, #e8eaef 100%);
 }

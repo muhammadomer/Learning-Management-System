@@ -181,18 +181,18 @@ namespace HUC.Web.App.Users
 
                     string _Courses = "";
 
-                    //foreach (var item in sender.courses)
-                    //{
-                    //    if (sender.courses.Count > 1)
-                    //    {
-                    //        _Courses += "<b> " + item + ", </b>";
-                    //    }
-                    //    else
-                    //    {
-                    //        _Courses += "<b> " + item + "</b>";
-                    //    }
+                    foreach (var item in sender.courses)
+                    {
+                        if (sender.courses.Count > 1)
+                        {
+                            _Courses +=  item + " Course <br/>";
+                        }
+                        else
+                        {
+                            _Courses +=  item + " Course ";
+                        }
 
-                    //}
+                    }
                     //if (sender.courses.Count > 1)
                     //{
                     //    _Courses = _Courses.Substring(0, _Courses.Length - 5);
@@ -203,7 +203,8 @@ namespace HUC.Web.App.Users
 
 
 
-                    Body = Body.Replace("[Course List Assigned]", string.Join<string>(", ",sender.courses.ToList()));
+                    //  Body = Body.Replace("[Course List Assigned]", string.Join<string>(", ",sender.courses.ToList()));
+                    Body = Body.Replace("[Course List Assigned]", _Courses);
 
 
 
@@ -225,9 +226,9 @@ namespace HUC.Web.App.Users
                     Body = Body.Replace("[URL]", "<a href=" + modelsmtp.DentonsEmployeesURL + ">" + modelsmtp.DentonsEmployeesURL + "</a>");
 
 
-                    //Body = Body.Replace("[start_date]", startdt.ToString("dd/MM/yyyy"));
-                    //Body = Body.Replace("[finish_date]", finishdt.ToString("dd/MM/yyyy"));
-                    //Body = Body.Replace("[Training Courses Weeks]", TrainingOfficer.TrainingCoursesWeeks.ToString());
+                    Body = Body.Replace("[start_date]", startdt.ToString("dd/MM/yyyy"));
+                    Body = Body.Replace("[finish_date]", finishdt.ToString("dd/MM/yyyy"));
+                    Body = Body.Replace("[Training Courses Weeks]", TrainingOfficer.TrainingCoursesWeeks.ToString());
 
 
 

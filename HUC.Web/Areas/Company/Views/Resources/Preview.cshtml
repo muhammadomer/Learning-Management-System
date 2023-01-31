@@ -489,8 +489,8 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     attempts: @question.Attempts,
                                     answer: [
                                         {
-                                            @*title: @Html.Raw(Json.Encode(question.Question)),*@
-                                            title: "True. Drag OR Drop this against the correct statement",
+                                            title: @Html.Raw(Json.Encode(question.Question)),
+                                           /* title: "True. Drag OR Drop this against the correct statement",*/
                                             type: "true",
                                         }
                                     ],

@@ -1,7 +1,7 @@
-﻿
-.bg-white {
+﻿.bg-white {
     background-color: #72bbb8 !important;
 }
+
 .table tr th {
     background-color: #e6e8ea !important;
     color: #808487 !important;
@@ -47,14 +47,14 @@
 /*.table > tbody > tr:nth-child(even) > td {
     background-color: #e6e8ea !important;
 }
-
-.table > tbody > tr:nth-child(odd) > td, .table > tbody > tr:nth-child(odd) > th {
+*/
+/*.table > tbody > tr:nth-child(odd) > td, .table > tbody > tr:nth-child(odd) > th {
     background-color: #fff !important;
-}
+}*/
 
     .table.black-header tr th:last-child {
         border-right: 0px !important;
-    }*/
+    }
 
 .bg-white a, .bg-white .logout-btn:hover, .bg-white a:hover {
     color: #fff !important;
@@ -137,7 +137,7 @@ h3.text-black {
 
 .align-top-content {
     position: absolute;
-    top: -80px;
+    top: 26px;
     right: 0px;
     /*padding-right: 0px;*/
 }
@@ -199,10 +199,10 @@ h3.text-black {
 }
 
 
-
 .full-page {
     background: linear-gradient( to bottom, #72bbb8 0%, #72bbb8 330px, #e8eaef 0%, #e8eaef 100%);
 }
+
 .fa-check-circle, .fa-times-circle {
     font-size: 15px;
 }
@@ -232,9 +232,9 @@ h3.text-black {
     }
 }
 .adjust-desc {
-    float: right;
-    color: #ffffff !important;
-    margin-top: 31px !important;
+    float:right;
+    color:#245c6f !important;
+    margin-top:31px !important;
 }
 
 .button-active {

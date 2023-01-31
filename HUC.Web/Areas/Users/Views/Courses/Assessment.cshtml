@@ -139,7 +139,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                             <div class="row">
                                 <div class="col-md-12" style="">
                                     <div class="form-group">
-                                        @if (feedback == false)
+                                        @if (feedback == 0)
                                         {
                                             <textarea id="txtareaFeed" maxlength="500" rows="5" cols="40"></textarea>
                                         }
@@ -158,7 +158,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                             <div class="row">
                                 <div class="col-md-12" style="">
                                     <div class="form-group">
-                                        @if (feedback==false)
+                                        @if (feedback==0)
                                         {
 
                                             <input id="btnsubmit" type="button" onclick="FeedBackEmail()" value="Submit" class="btn btn-dark" />

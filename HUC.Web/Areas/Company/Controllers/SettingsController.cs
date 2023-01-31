@@ -23,59 +23,55 @@ namespace HUC.Web.Areas.Company.Controllers
 
 
             SettingsModel settingsModel = new SettingsModel();
-
+            int companyID = new UsersService().GetLoggedInUserModel().Company.ID;
+            var model = Database.GetAll<SettingsModel>("where companyid=" + companyID).FirstOrDefault();
             try
             {
 
            
 
 
-            //ViewBag.Settings = Database.GetAll<SettingsModel>("where companyid=" + companyID);
+           
 
-            int companyID = new UsersService().GetLoggedInUserModel().Company.ID;
-            var model = Database.GetAll<SettingsModel>("where companyid="+companyID ).FirstOrDefault();
-
-
-
-           // if model null
-          // insert into setting table
-
-
-            if (model == null)
-            {
-             
-                Database.ExecuteInsert("settings", new[] { "CompanyId", "TrainingCoursesWeeks", "DaysReminder1", "DaysReminder2", "DaysReminder3", "EmailReminder", "EmailCourseComplete", "EmailAssignCourse", "EmailCompliance" }, new {  CompanyId = companyID, TrainingCoursesWeeks = 4, DaysReminder1 = 1, DaysReminder2 = 1, DaysReminder3 = 1, EmailReminder = false, EmailCourseComplete = false, EmailAssignCourse = false, EmailCompliance = false });
-
-                List<EmailConfigurationModel> EmailConfigurations = new List<EmailConfigurationModel>();
-
-
-                EmailConfigurations = Database.GetAll<EmailConfigurationModel>("where companyid=-1").ToList();
-
-
-                foreach (var item in EmailConfigurations)
-                {
-                    Database.ExecuteInsert("EmailConfigurations", new[] { "CompanyId", "Title", "Subject", "Body", "Description" }, new { CompanyId = companyID, Title = item.Title, Subject = item.Subject, Body = item.Body, Description = item.Description });
-
-                }
+           
 
 
 
-            }
+         
 
 
-
-
-            //if (Database.Query<int>("select companyid from settings where companyid=" + companyID).Count() > 0)
+            //if (model == null)
             //{
-            //    CompCount = Database.Query<int>("select companyid from settings where companyid=" + companyID).FirstOrDefault();
+             
+            //    Database.ExecuteInsert("settings", new[] { "CompanyId", "TrainingCoursesWeeks", "DaysReminder1", "DaysReminder2", "DaysReminder3", "EmailReminder", "EmailCourseComplete", "EmailAssignCourse", "EmailCompliance" }, new {  CompanyId = companyID, TrainingCoursesWeeks = 4, DaysReminder1 = 1, DaysReminder2 = 1, DaysReminder3 = 1, EmailReminder = false, EmailCourseComplete = false, EmailAssignCourse = false, EmailCompliance = false });
+
+            //    List<EmailConfigurationModel> EmailConfigurations = new List<EmailConfigurationModel>();
+
+
+            //    EmailConfigurations = Database.GetAll<EmailConfigurationModel>("where companyid=-1").ToList();
+
+
+            //    foreach (var item in EmailConfigurations)
+            //    {
+            //        Database.ExecuteInsert("EmailConfigurations", new[] { "CompanyId", "Title", "Subject", "Body", "Description" }, new { CompanyId = companyID, Title = item.Title, Subject = item.Subject, Body = item.Body, Description = item.Description });
+
+            //    }
+
+
+
             //}
 
 
 
 
-            var newModel = Database.GetAll<SettingsModel>("where companyid="+ companyID).FirstOrDefault();
+          
 
-                settingsModel = Database.GetAll<SettingsModel>("where companyid=" + companyID).FirstOrDefault();
+
+
+
+            //var newModel = Database.GetAll<SettingsModel>("where companyid="+ companyID).FirstOrDefault();
+
+            //    settingsModel = Database.GetAll<SettingsModel>("where companyid=" + companyID).FirstOrDefault();
 
 
               
@@ -86,7 +82,7 @@ namespace HUC.Web.Areas.Company.Controllers
             }
             catch(Exception ex) { LogApp.Log4Net.WriteLog(ex.Message, LogApp.LogType.GENERALLOG); }
 
-            return View(settingsModel);
+            return View(model);
 
         }
 

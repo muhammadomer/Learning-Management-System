@@ -7,15 +7,19 @@
     {
         pageData = new PageDataModel();
     }
-}
 
+    var user = Html.User();
+    var userslist = user.Company.AllUsers.ToList();
+    var getuser = userslist.Where(x => x.UserID == user.ID && x.IsAdmin == false && x.IsBackupAdmin == true);
+    var courseUser = user.Company.AllUsers.FirstOrDefault();
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, maximum-scale=1" />
     <title>
-        Training Courses | Admin @(String.IsNullOrWhiteSpace(pageData.Title) ? "" : "| " + pageData.Title)
+        Training Courses | Company @(String.IsNullOrWhiteSpace(pageData.Title) ? "" : "| " + pageData.Title)
     </title>
     @if (ViewBag.OtherApplication == "1")
     {
@@ -34,6 +38,7 @@
     <!--[if lte IE 8]>
         <link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/css/ie8.css" />
     <![endif]-->
+<link href="~/_Content/Scale/css/custom .css" rel="stylesheet" />
     @if (ViewBag.OtherApplication == "1")
     {
         @Styles.Render("~/bundles/scale/k6css")
@@ -43,150 +48,181 @@
     {
         @Styles.Render("~/bundles/scale/css")
     }
+    @Styles.Render("~/bundles/company/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/modernizr")
     <style>
-        #accordionList {
-            list-style-type: none;
-            padding: 0px;
+        .Inactive-navbarbtn {
+            font-weight: 600;
+            color: #ffffff !important;
         }
-
-            #accordionList li {
-                background-color: #f6f6f6;
-                background-color: #f6f6f6;
-                padding: 10px;
-                border: solid 1px;
-                margin-bottom: 2px;
-                cursor: grab;
-            }
-
-            #accordionList .removeItem {
-                float: right;
-                cursor: pointer;
-            }
-
-            #accordionList .accordiontitle {
-                font-weight: bold;
-                padding-left: 5px;
-                padding-right: 5px;
-            }
-
-            #accordionList .accordiondescription {
-                padding-left: 5px;
-            }
-
-        .red-border {
-            border: solid 1px red !important;
+        .full-page {
+            background: linear-gradient( to bottom, #8CC63E 0%, #8CC63E 330px, #e8eaef 0%, #e8eaef 100%);
         }
-
-        @@media (min-width: 768px) {
-            .full-page {
-                padding-top: 140px !important;
-            }
+        .bg-white {
+            background-color: #8CC63E !important;
         }
-        /*we start from here*/
-        .padder {
-            padding-left: 32px !important;
-            padding-right: 26px !important;
-        }
-
-        .align-top-content {
-            padding-right: 26px !important;
-        }
-
-        .pull-right {
-            padding-left: 7px;
-        }
-
-        .row {
-            margin-left: -15px !important;
-        }
-       
     </style>
 </head>
 <body>
-    <header class="bg-white header header-md navbar navbar-fixed-top-xs">
+    <header class="bg-white header header-md navbar navbar-fixed-top-xs" >
         <div class="navbar-header aside-md dk">
             <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
                 <i class="fa fa-bars"></i>
+                
             </a>
-            @*<a href="../Admin/Courses" class="navbar-brand"><img src="../_content/images/main-logo.png" class="m-r-sm"></a>*@
             @if (ViewBag.OtherApplication == "1")
             {
-                @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/k6/main-logo.png" class="m-r-sm"></a>*@
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/k6/main-logo.png" class="m-r-sm"></a>
             }
             else
             {
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/main-logo.png" class="m-r-sm"></a>
-            }
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/Elephant-Logo-AW-Grey.png" class="m-r-sm" style="padding-left:15px"></a>
 
-            <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
-                Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" />
+            }
+            <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+                <i class="i i-user3"></i> @*  @user.FirstName @user.LastName*@
             </a>
         </div>
         @if (!pageData.StrippedLayout)
         {
             <p class="intro-text hidden-xs hidden">
-                Welcome to the Training Courses Admin System
+                Welcome to Training Courses, @user.Company.Name
             </p>
-
-            <p class="intro-text hidden-xs pull-right" @*padder*@>
-                <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="pull-right logout-btn">Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" /></a>
+            <p class="intro-text hidden-xs pull-right padder">
+                <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="pull-right logout-btn m-l-lg Inactive-navbarbtn">Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" /></a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
 
-            <p class="intro-text hidden-xs pull-right "@*padder*@>
-                Welcome to the Training Courses Admin System
-            </p>
-
             <p class="intro-text hidden-xs pull-right padder hidden">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses" class="pull-right logout-btn m-l-lg">Courses</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company" class="pull-right logout-btn m-l-lg Inactive-navbarbtn">Usage Reports</a>
                 <div class="seperator hidden-xs pull-right hidden"></div>
             </p>
 
             <p class="intro-text hidden-xs pull-right padder hidden">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard" class="pull-right logout-btn m-l-lg">Dashboard</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage" class="pull-right logout-btn m-l-lg Inactive-navbarbtn ">Usage Statistics</a>
+                <div class="seperator hidden-xs pull-right hidden"></div>
+            </p>
+            <p class="intro-text hidden-xs pull-right padder button-deactive">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Settings" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-5" style="color: #000000 !important;">Settings</a>
+                <div class="seperator hidden-xs pull-right"></div>
+            </p>
+            <p class="intro-text hidden-xs pull-right padder button-deactive">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/AssignCourse" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-1" style="color: #000000 !important;">Assign Courses</a>
+                <div class="seperator hidden-xs pull-right"></div>
+            </p>
+
+
+
+
+            <p class="intro-text hidden-xs pull-right padder button-deactive">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-2" style="color: #000000 !important;">Users</a>
+                <div class="seperator hidden-xs pull-right"></div>
+            </p>
+            if (Convert.ToBoolean(Session["CourseAllowAdmin"]) == true)
+            {
+                <p class="intro-text hidden-xs pull-right padder  ManageCourseLink">
+                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-3" style="color: #000000 !important;">Manage Courses</a>
+                    <div class="seperator hidden-xs pull-right"></div>
+                </p>
+            }
+
+            <p class="intro-text hidden-xs pull-right padder">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-4" style="color: #000000 !important;">Dashboard</a>
 
             </p>
+            <ul class="nav navbar-nav navbar-right m-n hidden-xs nav-user user hidden">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="i i-user3"></i>
+                        @user.FirstName @user.LastName <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <span class="arrow top"></span>
+                        @if (courseUser.IsBackupAdmin && courseUser.IsBackupAdminCourseUsable)
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "Dashboard", new { area = "Users"})">To User <i class="i i-newtab"></i></a>
+                            </li>
+                            <li class="divider"></li>
+
+                        }
+                        @if (user.RepresentableCompanies.Count() > 1)
+                        {
+                            foreach (var curCompany in user.RepresentableCompanies)
+                            {
+                                <li @if (user.RepresentingCompany.ID == curCompany.ID) { <text> class="active" </text> }>
+                                    <a href="@Url.Action("ActiveCompany", "Auth", new { area = "", id = curCompany.ID })">@curCompany.Name</a>
+                                </li>
+                            }
+                            <li class="divider"></li>
+                        }
+                        <li>
+                            <a href="@Url.Action("Logout", "Auth", new { area = ""})">Logout <i class="i i-logout"></i></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         }
     </header>
     <section class="hbox stretch full-page">
         <!-- .aside -->
-        @*@Html.Partial("~/Areas/Admin/Views/Shared/Partials/LeftArea.cshtml")*@
+        @*@Html.Partial("~/Areas/Company/Views/Shared/Partials/LeftArea.cshtml")*@
         <!-- /.aside -->
         <section id="content">
             <section class="hbox stretch">
-                <section class="vbox scrollable padder">
+                <section class="vbox scrollable padder" style="padding-top:156px">
                     <!-- .breadcrumb -->
                     @*@Breadcrumb(pageData)*@
                     <!-- / .breadcrumb -->
                     @if (!String.IsNullOrWhiteSpace(pageData.ContentTitle))
                     {
-                        <section class="row m-b-md">
-                            <div class="col-md-11 col-sm-6">
-                                <small class="content-desc white-color" style="font-size:20px !important;"> @ViewBag.CourseName </small>
-                              
-                                <h3 class="m-b-xs text-black" >
+                        if (pageData.ContentTitle != "Assign Courses")
+                        {
+                            int ttl = 6;
+                            int ddc = 6;
+                            if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
+                            {
 
-                                    @if (pageData.ContentTitle.Length > 35)
-                                    {
-                                        <text> @pageData.ContentTitle.Substring(0, 35) ... </text>
-                                    }
-                                    else
-                                    {
-                                        <text> @pageData.ContentTitle </text>
-                                    }
-
+                            }
+                            else
+                            {
+                                ttl = 11;
+                                ddc = 1;
+                            }
+                    <section class="row m-b-md ">
+                        <div class="col-sm-10 col-md-@ttl">
+                            <h3 class="m-b-xs text-black">
+                                @pageData.ContentTitle
+                            </h3>
+                           
+                        </div>
+                        <div class="col-sm-10 col-md-@ddc">
+                            
+                            @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
+                            {
+                                <h3 class="content-desc adjust-desc" style="">
+                                    @pageData.ContentTitleDesc
                                 </h3>
-                                @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
-                                {
-                                    <small class="content-desc" style="font-size:20px !important;">
-                                        @pageData.ContentTitleDesc
-                                    </small>
-                                }
-                            </div>
-                        </section>
+                            }
+                            else
+                            {
+                                <a href="javascript:history.back()" class="btn btn-success" style="margin-top:12px;float:right;"><i class="fa fa-arrow-left"></i> Back</a>
+                            }
+                        </div>
+                    </section>
+                        }
+
                     }
+                    @*<div class="col-md-6"><h3 style="color:white;">Admininstrative View</h3></div>
+                    <div class="col-md-6">
+                        @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
+                        {
+                            <h3 class="content-desc" style="float:right;color:#245c6f !important;">
+                                @pageData.ContentTitleDesc
+                            </h3>
+                        }
+                    </div>*@
                     @RenderBody()
                 </section>
                 <!-- side content -->
@@ -296,10 +332,9 @@
         </section>
     </section>
     @Scripts.Render("~/bundles/scale/js")
-    @Scripts.Render("~/bundles/admin/js")
+    @Scripts.Render("~/bundles/company/js")
     @RenderSection("scripts", required: false)
     @{
-
         var notification = (NotificationModel)TempData[BaseController.NotificationKey];
         if (notification != null)
         {
@@ -309,7 +344,7 @@
                 console.log('notification time!');
                 @switch (notification.Type)
                 {
-                   case NoteType.Error:
+                    case NoteType.Error:
                         @:toastr.error('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
                         //@:addError('@notification.Message.ForNotification()', '@notification.Title.ForNotification()');
                                                                                 break;
@@ -327,30 +362,17 @@
                                                                                 break;
                
                 }
-                setTimeout(function () {
-                    $(".ui-pnotify-closer").trigger("click");
-                }, 5000);
             </script>
         }
-        <script>
-		
-            $(document).ready(function () {
-				$(".col-md-1").hide();
-                //setTimeout(function () {
-                //    $(".ui-pnotify-closer").trigger("click");
-                //}, 4000);
-                setTimeout(function () {
-                    $(".ui-pnotify").remove();
-                }, 5000);
-            });
-        </script>
     }
 </body>
-</html>@helper Breadcrumb(PageDataModel pageData)
+</html>
+
+@helper Breadcrumb(PageDataModel pageData)
 {
     var breadcrumb = new List<BreadcrumbItem>
     {
-        new BreadcrumbItem("Dashboard", "/Admin", "fa-home")
+        new BreadcrumbItem("Dashboard", "/Company", "fa-home")
     };
 
     if (pageData != null && pageData.Breadcrumb != null)
@@ -362,8 +384,8 @@
             var count = breadcrumb.Count();
             foreach (var item in breadcrumb)
             {
-                <li @if (count == 1) { <text> class="active" </text>    }>
-                    @if (!String.IsNullOrWhiteSpace(item.Link) && count != 1)
+                <li @if (count == 1) { <text> class="active" </text>  }>
+                    @if (!String.IsNullOrWhiteSpace(item.Link))
                     {
                         <a href="@item.Link">
                             @if (!String.IsNullOrWhiteSpace(item.Icon))
@@ -387,3 +409,31 @@
         }
     </ul>
 }
+<script>
+    var s = window.location.href;
+    $('a.pull-right').each(function () {
+      
+        var d = $(this).attr('href').split('/');
+        var b = d[d.length-1];
+        if (b != null) {
+            if (s.toLowerCase().indexOf(b.toLowerCase()) != -1) {
+                $(this).parent().addClass('button-active');
+                $(this).parent().removeClass('button-deactive');
+            }
+            else {
+                if (b.toLowerCase() != "logout") {
+                    $(this).parent().removeClass('button-active');
+                    $(this).parent().addClass('button-deactive');
+                }
+                }           
+            }
+        
+    })
+
+    $("#logout").click(function () {
+        window.close();
+    })
+	 $(document).ready(function () {
+        $(".col-md-1").hide();
+    })
+</script>

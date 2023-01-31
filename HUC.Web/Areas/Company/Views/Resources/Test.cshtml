@@ -63,12 +63,23 @@
     .swal2-image {
         margin-top: -2px !important;
     }
+
+    @@media screen and (min-width: 1920px) {
+        .create-new-question {
+            padding-right: 24%!important ;
+        }
+    }
+    @@media screen and (min-width: 1366px) {
+        .create-new-question {
+            margin-right: 22.5% !important;
+        }
+    }
 </style>
 @if (!Model.Course.IsPublished)
 {
     <div class="desktop-ver">
         <div class="row">
-            <div class="col-md-12 align-top-content k6" style="margin-top:142px;margin-right: 45.5%;">
+            <div class="col-md-12 align-top-content k6 create-new-question" style="margin-top:142px;">
                 <a @*href="@Url.Action("QuestionCreate", new { id = Model.ID })"*@ onclick="AddEdit(@Model.ID,0)" class="btn btn-success pull-right"><i class="fa fa-pencil"></i> Create New Question</a>
                 <a class="btn btn-success pull-right" href="@Url.Action("Index", new { id = Model.CourseID})" style="margin-right: 15px;">
                     <i class="fa fa-arrow-left"></i> Back
@@ -93,7 +104,7 @@ else
 {
     <div class="desktop-ver">
         <div class="row">
-            <div class="col-md-12 align-top-content">
+            <div class="col-md-12 align-top-content" style="top:166px!important;right:300px!important">
                 <a class="btn btn-success pull-right" href="@Url.Action("Index", new { id = Model.CourseID})">
                     <i class="fa fa-arrow-left"></i> Back
                 </a>
@@ -108,7 +119,7 @@ else
         <div class="modal-content">
             @if (ViewBag.OtherApplication == "1")
             {
-                <div class="modal-header" style="background-color:black;color:#fff">
+                <div class="modal-header" style="background-color: black; color: #72bbb8">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Manage Question</h4>
                 </div>

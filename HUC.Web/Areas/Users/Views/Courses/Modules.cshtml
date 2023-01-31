@@ -147,10 +147,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 
         <div class="row" style="margin-left:0px;margin-right:0px;">
             @*<div class="col-md-6 module-tile box">
-                <div class="row inner">
+            <div class="row inner">
 
-                </div>
-            </div>*@
+            </div>
+        </div>*@
             @foreach (var item in Model.Course.Resources.OrderBy(x => x.Sort))
             {
                 int sd = 0;
@@ -160,6 +160,9 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                 {
 
                     test = Model.Course.Resources.Where(x => x.ID == item.ID).FirstOrDefault().LatestUserTestFor(Model.ID);
+
+                  
+
                 }
                 if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
                 {
@@ -168,6 +171,9 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                     {
                         foreach (var ques in item.Questions)
                         {
+
+
+
                             var Userq = test.UserQuestions.FirstOrDefault(x => x.TestQuestionID == ques.ID);
                             if (Userq != null)
                             {
@@ -246,7 +252,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                 ////}
                 <div class="col-md-6 module-tile box">
                     <div class="row inner">
-                        <div class="col-md-12 module-tile-first ev-component-title" >
+                        <div class="col-md-12 module-tile-first ev-component-title">
                             <h4>Module @item.Sort</h4>
                             <h4 style="font-size:18px !important; font-family:'Franklin Gothic'; margin-bottom:0px !important">@item.Name</h4>
                             @if (!String.IsNullOrWhiteSpace(item.TestIntroCopy))
@@ -281,7 +287,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 <span class="module-time">Duration: <small> 1 Minute </small></span>
                             }
                         </div>
-                        <div class="col-md-12 module-tile-second" >
+                        <div class="col-md-12 module-tile-second">
                             <div class="row">
                                 <div class="col-md-8" style="margin-top:10px;">
                                     <div class="progress" style="margin-bottom:0px;">
@@ -296,13 +302,13 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 </div>
                                 <div class="col-md-3">
                                     @*@if (check || (!check && notin))
-                                    {
-                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;cursor:no-drop;border: 1px solid gray;">View</a>
-                                    }*@
+                                {
+                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;cursor:no-drop;border: 1px solid gray;">View</a>
+                                }*@
                                     @if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
                                     {
                                         <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
@@ -312,46 +318,46 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;cursor:no-drop;border: 1px solid gray;">View</a>
                                     }
                                     @*@if (!check && notin)
-                                    {
-                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
-                                    }*@
+                                {
+                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="width:85px;">View</a>
+                                }*@
                                 </div>
                                 @*<div class="col-md-6 m-t-md">
-                                    <div class="row">
-                                        <div class="col-md-11">
-                                            <div class="progress" style="margin-bottom:0px;">
-                                                <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width:@progress%">
-                                                    <span class="sr-only">70% Complete</span>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        <div class="progress" style="margin-bottom:0px;">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:@progress%">
+                                                <span class="sr-only">70% Complete</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-1" style="padding:0px">
-
-
-                                            <span>@progress%</span>
-
-
-                                        </div>
                                     </div>
-                                </div>*@
+                                    <div class="col-md-1" style="padding:0px">
+
+
+                                        <span>@progress%</span>
+
+
+                                    </div>
+                                </div>
+                            </div>*@
                                 @* <div class="col-md-6">
-                                                            @if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
-                                {
-                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
-                                } else
-                                                            {
-                                                                <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;">View</a>
-                                                            }
-                                                           @if (check)
-                                                            {
-                                                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
-                                                            }
-                                                            @if (!check && notin)
-                                                            {
-                                                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
-                                                            }
-                                                        </div>*@
+                                                        @if (Model.CourseStage.ResourceID != null && Model.CourseStage.ResourceID >= item.ID)
+                            {
+                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                            } else
+                                                        {
+                                                            <a class="btn btn-dark pull-right" style="width:85px; opacity:0.5;">View</a>
+                                                        }
+                                                       @if (check)
+                                                        {
+                                                            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                                                        }
+                                                        @if (!check && notin)
+                                                        {
+                                                            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Courses/ModuleDetail/@item.ID" class="btn btn-dark pull-right" style="margin-top:15px;">View</a>
+                                                        }
+                                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -367,10 +373,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                 asses = 0;
             }
             @*<div class="col-md-6 module-tile box">
-                <div class="row inner">
-                  
-                </div>
-            </div>*@
+            <div class="row inner">
+
+            </div>
+        </div>*@
 
 
         </div>

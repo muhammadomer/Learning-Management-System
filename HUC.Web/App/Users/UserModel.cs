@@ -360,23 +360,23 @@ FROM cte;
                 {
                     var ctx = HttpContext.Current;
 
-                  
 
 
-                  //  if (ctx.Session != null && ctx.Session[RepresentingCompanyKey] != null)
-                   // if ( ctx.Session[RepresentingCompanyKey] != null)
-                   // {
-                        var repID = (int?)ctx.Session[RepresentingCompanyKey];
 
-                        if (repID == null)
-                        {
-                            repID = Company.ID;
-                            ctx.Session[RepresentingCompanyKey] = repID.Value;
-                        }
+                    //if (ctx.Session != null && ctx.Session[RepresentingCompanyKey] != null)
+                    //    if (ctx.Session[RepresentingCompanyKey] != null)
+                    //    {
+                            var repID = (int?)ctx.Session[RepresentingCompanyKey];
 
-                        _activeCompany = Database.GetSingle<CompanyModel>(repID.Value);
-                  //  }
-                   
+                            if (repID == null)
+                            {
+                                repID = Company.ID;
+                                ctx.Session[RepresentingCompanyKey] = repID.Value;
+                            }
+
+                            _activeCompany = Database.GetSingle<CompanyModel>(repID.Value);
+                    //    }
+
                 }
                 return _activeCompany;
             }

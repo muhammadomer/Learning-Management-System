@@ -21,15 +21,9 @@
     <title>
         Training Courses | Company @(String.IsNullOrWhiteSpace(pageData.Title) ? "" : "| " + pageData.Title)
     </title>
-    @if (ViewBag.OtherApplication == "1")
-    {
-        <link rel="shortcut icon" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/K6/favicon.ico" type="image/x-icon" />
-    }
-    else
-    {
-        <link rel="shortcut icon" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/favicon.ico" type="image/x-icon" />
-    }
+    <link rel="shortcut icon" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/favicon.ico" type="image/x-icon" />
     <meta name="description" content="@pageData.ContentTitleDesc" />
+   
     <!--[if lt IE 9]>
         <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/html5shiv.js"></script>
         <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/ie/respond.min.js"></script>
@@ -38,48 +32,29 @@
     <!--[if lte IE 8]>
         <link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/css/ie8.css" />
     <![endif]-->
-<link href="~/_Content/Scale/css/custom .css" rel="stylesheet" />
-    @if (ViewBag.OtherApplication == "1")
-    {
-        @Styles.Render("~/bundles/scale/k6css")
 
-    }
-    else
-    {
-        @Styles.Render("~/bundles/scale/css")
-    }
+    @Styles.Render("~/bundles/scale/css")
     @Styles.Render("~/bundles/company/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/modernizr")
-    <style>
-        .Inactive-navbarbtn {
-            font-weight: 600;
-            color: #ffffff !important;
-        }
-        .full-page {
-            background: linear-gradient( to bottom, #8CC63E 0%, #8CC63E 330px, #e8eaef 0%, #e8eaef 100%);
-        }
-        .bg-white {
-            background-color: #8CC63E !important;
-        }
-    </style>
+   <style>
+       .Inactive-navbarbtn {
+           font-weight: 600;
+           color: #ffffff !important;
+       }
+
+       .full-page {
+    background: linear-gradient( to bottom, #8CC63E 0%, #8CC63E 330px, #e8eaef 0%, #e8eaef 100%);
+}
+   </style>
 </head>
 <body>
-    <header class="bg-white header header-md navbar navbar-fixed-top-xs" >
+    <header class="bg-white-admin header header-md navbar navbar-fixed-top-xs">
         <div class="navbar-header aside-md dk">
             <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
                 <i class="fa fa-bars"></i>
-                
             </a>
-            @if (ViewBag.OtherApplication == "1")
-            {
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/k6/main-logo.png" class="m-r-sm"></a>
-            }
-            else
-            {
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/Elephant-Logo-AW-Grey.png" class="m-r-sm" style="padding-left:15px"></a>
-
-            }
+            <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/dashboard/graphs" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/images/Elephant-TMS-black-Logo-AW-02.png" class="m-r-sm" style="padding-left:13px"></a>
             <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
                 <i class="i i-user3"></i> @*  @user.FirstName @user.LastName*@
             </a>
@@ -90,7 +65,7 @@
                 Welcome to Training Courses, @user.Company.Name
             </p>
             <p class="intro-text hidden-xs pull-right padder">
-                <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="pull-right logout-btn m-l-lg Inactive-navbarbtn">Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" /></a>
+                <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="pull-right logout-btn m-l-lg Inactive-navbarbtn" >Close <img src="~/_Content/images/CloseIcon.png" style="margin-left: 2px;" /></a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
 
@@ -100,26 +75,24 @@
             </p>
 
             <p class="intro-text hidden-xs pull-right padder hidden">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage" class="pull-right logout-btn m-l-lg Inactive-navbarbtn ">Usage Statistics</a>
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage" class="pull-right logout-btn m-l-lg Inactive-navbarbtn">Usage Statistics</a>
                 <div class="seperator hidden-xs pull-right hidden"></div>
             </p>
-            <p class="intro-text hidden-xs pull-right padder button-deactive">
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Settings" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-5" style="color: #000000 !important;">Settings</a>
-                <div class="seperator hidden-xs pull-right"></div>
-            </p>
+
             <p class="intro-text hidden-xs pull-right padder button-deactive">
                 <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/AssignCourse" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-1" style="color: #000000 !important;">Assign Courses</a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
-
-
-
+ 		<p class="intro-text hidden-xs pull-right padder button-deactive">
+                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Settings" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-5" style="color: #000000 !important;">Settings</a>
+                <div class="seperator hidden-xs pull-right"></div>
+            </p>
 
             <p class="intro-text hidden-xs pull-right padder button-deactive">
                 <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-2" style="color: #000000 !important;">Users</a>
                 <div class="seperator hidden-xs pull-right"></div>
             </p>
-            if (Convert.ToBoolean(Session["CourseAllowAdmin"]) == true)
+            if(Convert.ToBoolean(Session["CourseAllowAdmin"]) == true)
             {
                 <p class="intro-text hidden-xs pull-right padder  ManageCourseLink">
                     <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-3" style="color: #000000 !important;">Manage Courses</a>
@@ -201,7 +174,7 @@
                             
                             @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
                             {
-                                <h3 class="content-desc adjust-desc" style="margin-top:36px !important">
+                                <h3 class="content-desc adjust-desc" style="color:#ffffff !important;margin-top:36px !important">
                                     @pageData.ContentTitleDesc
                                 </h3>
                             }

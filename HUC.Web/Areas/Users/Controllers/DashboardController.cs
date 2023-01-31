@@ -86,22 +86,23 @@ namespace HUC.Web.Areas.Users.Controllers
                 LogApp.Log4Net.WriteLog("User email: " + um.Email +"Result:"+result, LogApp.LogType.GENERALLOG);
 
    
-                if (userCourse.IsComplete == true)
+                if (userCourse.IsComplete == true && userCourse.FeedBack == 1)
                 {
-                    LogApp.Log4Net.WriteLog("Course complete : ", LogApp.LogType.GENERALLOG);
+                    LogApp.Log4Net.WriteLog("IsPass:"+userCourse.IsPass, LogApp.LogType.GENERALLOG);
 
 
                     LogApp.Log4Net.WriteLog("Result: "+result+" pss per:"+passper, LogApp.LogType.GENERALLOG);
 
-                if (result >= passper && userCourse.IsPass == true && userCourse.FeedBack==false)
+                if (result >= passper && userCourse.IsPass == true )
                  
                     {
 
 
                         SendEmailOnPassedCourse(um, userCourse);
-                        LogApp.Log4Net.WriteLog("User Passed--- " + "Course Name:" + CourseNAme, LogApp.LogType.GENERALLOG);
+                            Database.ExecuteUpdate("UserCourses", new[] { "FeedBack" }, new { ID = userCourse.ID, FeedBack = 2 });
+                            LogApp.Log4Net.WriteLog("User Passed--- " + "Course Name:" + CourseNAme, LogApp.LogType.GENERALLOG);
                     }
-                    else if(userCourse.IsPass == false)
+                    else //if(userCourse.IsPass == false)
                     {
                         SendEmailOnFailedCourse(um, CourseNAme);
                         LogApp.Log4Net.WriteLog("User Failed--- " + "Course Name:" + CourseNAme, LogApp.LogType.GENERALLOG);
@@ -584,14 +585,14 @@ namespace HUC.Web.Areas.Users.Controllers
 
                 if (TrainingOfficer.TrainingOfficerEmail != "")
                 {
-                    mail.To.Add(TrainingOfficer.TrainingOfficerEmail);
+               //     mail.To.Add(TrainingOfficer.TrainingOfficerEmail);
                 }
 
                 string appemail = ConfigurationManager.AppSettings["ApplicationEmails"];
 
                 foreach (var address in appemail.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    mail.To.Add(address);
+              //      mail.To.Add(address);
                 }
 
 
@@ -670,7 +671,7 @@ namespace HUC.Web.Areas.Users.Controllers
 
             if (TrainingOfficer.TrainingOfficerEmail != "")
             {
-                mail.To.Add(TrainingOfficer.TrainingOfficerEmail);
+          //      mail.To.Add(TrainingOfficer.TrainingOfficerEmail);
             }
             //string appemail = ConfigurationManager.AppSettings["ApplicationEmails"];
 
