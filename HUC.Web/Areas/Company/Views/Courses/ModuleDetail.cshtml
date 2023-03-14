@@ -90,14 +90,16 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 align-top-content1 " >
-	<a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important"  href="#" onclick="Back();">
-            <i  class="fa fa-arrow-left"></i> Back
+    <div class="col-md-12 align-top-content1 ">
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important" href="#" onclick="Back();">
+            <i class="fa fa-arrow-left"></i> Back
         </a>
-		 <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"  href="javascript:window.open('','_self').close();">
+        @*<a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"  href="javascript:window.open('','_self').close();">
              Dashboard
+        </a>*@
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses">
+            Dashboard
         </a>
-       
     </div>
 </div>
 
@@ -105,7 +107,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 <div class="mobile-ver middle-btn">
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-md-12">
-            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Dashboard">
+            <a class="btn btn-success pull-right" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Dashboard/graphs">
                 Back to Dashboard<i style="margin-left: 10px;" class="fa fa-arrow-right"></i>
             </a>
         </div>
@@ -120,11 +122,11 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         <h4>@Model.Sort - @Model.Name</h4>
                         @if (!String.IsNullOrWhiteSpace(Model.TestIntroCopy))
                         {
-                            <p><strong>Module Content:</strong> @Model.TestIntroCopy</p>
+                            <p><strong>Module Content:</strong><span style="font-weight:100"> @Model.TestIntroCopy </span></p>
                         }
                         @if (@Model.ModuleTime != null && @Model.ModuleTime > 1)
                         {
-                            <p class="margin-top-10"><strong>Expected time to completion:</strong> @Convert.ToInt32(Model.ModuleTime) Minutes</p>
+                            <p class="margin-top-10"><strong>Expected time to completion:</strong><span style="font-weight:100"> @Convert.ToInt32(Model.ModuleTime) Minutes </span></p>
                         }
                         else
                         {
@@ -135,11 +137,11 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         {
                             if (Model.Questions.Count() == 1)
                             {
-                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() question</p>
+                                <p class="margin-top-10"><strong style="font-family:Bahnschrift">Assessment:</strong><span style="font-weight:100"> @Model.Questions.Count() question </span></p>
                             }
                             else if (Model.Questions.Count() > 1)
                             {
-                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() questions</p>
+                                <p class="margin-top-10"><strong style="font-family:Bahnschrift">Assessment:</strong><span style="font-weight:100"> @Model.Questions.Count() questions </span></p>
                             }
                         }
                     </div>
@@ -300,7 +302,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         title: "Question @question.Sort:",
                                                         feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
-														statement: "Select the answer you think is correct.",
+                                                        statement: "Select the correct option.",
 														attempts: @question.Attempts,
 														get multi() {
 															return @Html.Raw(Json.Encode(answerList))
@@ -340,7 +342,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         title: "Question @question.Sort:",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
-														statement: "Select the answer you think is correct.",
+                                                        statement: "Select the correct option",
 														attempts: @question.Attempts,
 														get multi() {
 															return @Html.Raw(Json.Encode(answerList))
@@ -381,7 +383,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 														divId: "module-@question.ID",
                                                         title: "Question @question.Sort:",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
-														subHeading: "Move the slider position between 1 - " + answers.length + " and then click submit.&nbsp;",
+                                                        subHeading: "Move the slider to the correct option ",
 														max: answers.length,
 														selected: @question.AnswerOrder == 0? 0 : @question.AnswerOrder,
 														selectedAnswer: @question.AnswerOrder,
@@ -423,7 +425,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         title: "Question @question.Sort:",
                                                         feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														statement:
-															"Read the statements below. Decide whether they are true or false and then drag them onto corresponding answer.",
+															"Drag each statement to the correct column",
 														attempts: @question.Attempts,
 														question:  @Html.Raw(Json.Encode(answerList)),
 													};
@@ -493,7 +495,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         }) ;
 
                                     }
-                                    <script>
+                        <script>
                                             // True False
                                             @*var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
                                             var jasonObj = {
@@ -508,7 +510,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                            trueFalse.initialize();*@
 
                                         $(document).ready(function () {
-                                           
+
                                 // Here you create Jason Object and initialize Interview instance
                                             var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
 
@@ -522,7 +524,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                 if (obj.option.includes('\"')) {
                                                     obj.option.replace("/", "");
                                                 }
-                                               
+
                                                 ansObj.push(obj);
 
                                                 console.log(obj.answerid);
@@ -532,7 +534,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             var answerid = answers[0].answerid;
                                             var option = answers[0].option.replace("/", "");
                                             var type = answers[0].type;
-                                          
+
 
                                             const ans = [{ answerid, option, type }];
                                             const myjsonstring = JSON.stringify(ans);
@@ -545,17 +547,17 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     title: "Question @question.Sort:",
                                     feedback: @Html.Raw(Json.Encode(question.Feedback)),
                                     statement:
-                                        "The answer here corresponds to one of the statements below. Associate the answer with the right question by dragging and dropping",
+                                        "Drag the answer to the correct statement",
                                     attempts: @question.Attempts,
                                     answer: [
                                         {
-                                            @*title: @Html.Raw(Json.Encode(question.Question)),*@
-                                            title: "True. Drag OR Drop this against the correct statement",
+                                            title: @Html.Raw(Json.Encode(question.Question)),
+                                            @*title: "True. Drag OR Drop this against the correct statement",*@
                                             type: "true",
                                         }
                                     ],
                                     question: ansObj, @*@Html.Raw(Json.Encode(answerList)),*@
-                                   
+
 
                                 };
 
@@ -567,7 +569,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                             });
 
 
-                                    </script>
+                        </script>
 
                                 }
                                 else if (question.QuestionType == 6)
@@ -612,7 +614,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     title: "Question @question.Sort:",
                                    feedback: @Html.Raw(Json.Encode(question.Feedback == null ? "" : question.Feedback)),
                                     statement:
-                                        "Select True Or False from the Dropdown after the question.",
+                                        "Select True or False from the dropdown after each statement",
                                     attempts: @question.Attempts,
                                     question: @Html.Raw(Json.Encode(answerList)),
 

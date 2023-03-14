@@ -54,16 +54,18 @@
             background-image: url( @HttpContext.Current.Request.ApplicationPath /_Media/Uploads/ @Model.Course.Background ) !important;
            
         }
+
     </style>
 }
 else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
 {
-    <style>
+<style>
         .full-page {
             background: @Model.Course.Background !important;
-          
+
         }
-    </style>
+   
+</style>
 }
 
 
@@ -254,7 +256,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                     <div class="row inner">
                         <div class="col-md-12 module-tile-first ev-component-title">
                             <h4>Module @item.Sort</h4>
-                            <h4 style="font-size:18px !important; font-family:'Franklin Gothic'; margin-bottom:0px !important">@item.Name</h4>
+                            <h4 style="font-size:18px !important; font-family:Bahnschrift; margin-bottom:0px !important">@item.Name</h4>
                             @if (!String.IsNullOrWhiteSpace(item.TestIntroCopy))
                             {
                                 <p style="font-size:16px;" title="@Html.Raw(item.TestIntroCopy)">
@@ -388,7 +390,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                 <div class="row">
                     <div class="col-md-12 module-tile-first " style="height:100px!important" >
                         <h4><b>Final Assessment</b></h4>
-                        <p style="font-size:16px;">
+                        <p style="font-family:Bahnschrift; font-size: 16px;">
                             Give us your feedback on the course.  Anything you can contribute to make the course better will be much appreciated
                         </p>
                         <span class="module-assessed-by hidden"><b>Assessment:</b> 2 questions</span>

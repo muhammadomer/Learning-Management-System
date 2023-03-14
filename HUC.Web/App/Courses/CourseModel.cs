@@ -267,7 +267,21 @@ namespace HUC.Web.App.Courses
             }
             set { _maxScore = value; }
         }
+        public int? Year; //{ get; set; }
 
+        public IEnumerable<int> YearsOptions()
+        {
+            var list = new List<int>();
+            var currentDate = DateTime.Now;
+            var oldestYear = new DateTime(2013, 1, 1);
+            for (var date = oldestYear; date.Year <= currentDate.Year; date = date.AddYears(1))
+            {
+                list.Add(date.Year);
+            }
+
+
+            return list.OrderByDescending(x => x);
+        }
         public IEnumerable<UserCourseModel> UserCoursesInCompany(int companyID)
         {
             return Database.GetAll<UserCourseModel>(
@@ -279,9 +293,16 @@ namespace HUC.Web.App.Courses
             );
         }
 
-        public static CourseModel GetIfInCompany(int courseID, int companyID)
+        public static CourseModel GetIfInCompany(int courseID, int companyID,int? year=null )
         {
             var Database = new AtlasDatabase();
+
+            string yearStr = "";
+            if (year != null)
+            {
+                yearStr = "year(completeon)=" + year + "and ";
+
+            }
 
             var course = Database.GetAll<CourseModel>(
                     "WHERE ID = @CourseID " +
@@ -290,7 +311,7 @@ namespace HUC.Web.App.Courses
                     "       SELECT CourseID FROM CompanyCourses WHERE CompanyID = @CompanyID" +
                     "   ) " +
                     "   OR ID IN (" +
-                    "       SELECT CourseID FROM UserCourses WHERE UserID IN (" +
+                    "       SELECT CourseID FROM UserCourses WHERE "+yearStr+"  UserID IN (" +
                     "           SELECT UserID FROM CompanyUsers WHERE CompanyID = @CompanyID" +
                     "       )" +
                     "   )" +

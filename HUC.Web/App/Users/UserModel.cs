@@ -203,14 +203,15 @@ FROM cte;
 
                 var userEnteredCourses = Database.Query<CourseModel>(
                     "SELECT Courses.* FROM Courses  INNER JOIN AssignedCourses ac on ac.CourseID = Courses.ID " +
-                    "WHERE ac.UserID = @UserID AND Courses.ID IN (" +
-                        "   SELECT CourseID FROM UserCourses WHERE UserID = @UserID" +
-                        (year.HasValue ? $" AND year(StartedOn) = {year}" : "") +
-                        ") "
-                        +
+                    "WHERE ac.UserID = @UserID AND year(createdDate) = @Year " +
+                   // "AND Courses.ID IN (" +
+                     //   "   SELECT CourseID FROM UserCourses WHERE UserID = @UserID" +
+                       // (year.HasValue ? $" AND year(StartedOn) = {year}" : "") +
+                      //  ") "
+                      //  +
                         (all.Any() ? "AND Courses.ID NOT IN (" + String.Join(", ", all.Select(x => x.ID)) + ")" : "")
                         ,
-                        new {UserID = this.ID});
+                        new {UserID = this.ID,Year=year});
                     
                    all.AddRange(userEnteredCourses);
             //var userEnteredCourses = Database.Query<CourseModel>(

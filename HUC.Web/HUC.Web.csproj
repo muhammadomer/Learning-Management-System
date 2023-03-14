@@ -9738,6 +9738,7 @@
     <Content Include="_Content\css\lib\jquery.pnotify.default.css" />
     <Content Include="_Content\css\lib\redactor.css" />
     <Content Include="_Content\css\player.css" />
+    <Content Include="_Content\css\Preview\CompanyPreview.css" />
     <Content Include="_Content\css\Preview\CompanyPreview1.css" />
     <Content Include="_Content\css\radio.css" />
     <Content Include="_Content\css\reset.css" />
@@ -12470,6 +12471,11 @@
     <Content Include="node_modules\node-gyp\CHANGELOG.md" />
     <Content Include="node_modules\node-gyp\CONTRIBUTING.md" />
     <Content Include="node_modules\node-gyp\gyp\AUTHORS" />
+    <Content Include="fonts\FranklinGothic.ttf" />
+    <Content Include="fonts\zero-light.ttf" />
+    <Content Include="fonts\Oscan Expanded.ttf" />
+    <Content Include="fonts\Franklin Gothic Medium Regular.ttf" />
+    <Content Include="fonts\Franklin Gothic Book Regular.ttf" />
     <None Include="node_modules\node-gyp\gyp\codereview.settings" />
     <Content Include="node_modules\node-gyp\gyp\DEPS" />
     <Content Include="node_modules\node-gyp\gyp\gyp" />
@@ -13877,6 +13883,7 @@
     <Content Include="_Content\Scale\k6css\scale.css.map">
       <DependentUpon>scale.css</DependentUpon>
     </Content>
+    <Content Include="_Content\Scale\fonts\Bahnschrift\Bahnschrift.woff" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

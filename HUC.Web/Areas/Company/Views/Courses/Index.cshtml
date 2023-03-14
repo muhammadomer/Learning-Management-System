@@ -90,7 +90,7 @@
 
     .vbox, .content-desc {
         float: left;
-        margin-left: -105%;
+        margin-left: -108%;
     }
 
     .dataTables_info, .dataTables_paginate {
@@ -106,12 +106,12 @@
         padding: 5px 10px;
         border-radius: 3px;
         display: inline;
-        color: #72bbb8 !important;
-        border: 1px solid #72bbb8 !important;
+        color: #1A6935 !important;
+        border: 1px solid #1A6935 !important;
     }
 
         .dataTables_wrapper select, .dataTables_wrapper input:focus {
-            border: 1px solid #72bbb8 !important;
+            border: 1px solid #1A6935 !important;
         }
 
     .dataTables_wrapper label {
@@ -155,7 +155,7 @@
             <thead>
                 <tr>
                     <th class="hidden">ID</th>
-                    <th style="width:460px;">Courses Name</th>
+                    <th style="width:460px;">Course Name</th>
                     <th style="width:160px;text-align:center;">Date Created</th>
                     <th style="width:100px;text-align:center;">Status</th>
 
@@ -163,7 +163,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var course in Model)
+                 @foreach (var course in Model)
                 {
                     <tr id="cours-@course.ID">
                         <td class="hidden"> @course.ID</td>
@@ -177,24 +177,24 @@
                         <td style="text-align:center;">
                             @if (course.IsPublished)
                             {
-                                <span class="btn btn-xs btn-success" style="opacity:0.25; cursor:default;color:green !important">
-                                    <i class="fa fa-check" style="color:green"></i> Published
+                                <span class="btn btn-xs " style="cursor: default; color: white !important; background-color: #8CC63E; height: 28px; width: 115px;padding-top:3px; ">
+                                    <i class="fa fa-check" style="color:white"></i> Published
                                 </span>
                             }
                             else
                             {
                                 if (course.CanBePublished)
                                 {
-                                    <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded btn-success" style="background-color: #72bbb8; color: white !important;height:31px; width: 115px; text-align: center; padding:5px;padding-left:1px; ">
-                                        <i class="fa fa-check"></i> Publish
+                                    <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded " style="background-color:orange; color: white !important; height: 31px; width: 115px; text-align: center; padding: 5px; padding-left: 1px; ">
+                                        <i class="fa fa-times" style="color:white"></i> UnPublished
                                     </a>
                                 }
                                 else
                                 {
-                                    <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
+                                    <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: orange; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
                                           data-content="@PublishErrorsTooltip(course.PublishStatus)"
                                           data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
-                                        <i class="fa fa-check"></i> Publish
+                                        <i class="fa fa-times" style="color:white"></i> UnPublished
                                     </span>
                                 }
                             }

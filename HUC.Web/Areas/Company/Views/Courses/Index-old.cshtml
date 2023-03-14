@@ -90,7 +90,7 @@
 
     .vbox, .content-desc {
         float: left;
-        margin-left: -105%;
+        margin-left: -108%;
     }
 
     .dataTables_info, .dataTables_paginate {
@@ -106,12 +106,12 @@
         padding: 5px 10px;
         border-radius: 3px;
         display: inline;
-        color: #72bbb8 !important;
-        border: 1px solid #72bbb8 !important;
+        color: #1A6935 !important;
+        border: 1px solid #1A6935 !important;
     }
 
         .dataTables_wrapper select, .dataTables_wrapper input:focus {
-            border: 1px solid #72bbb8 !important;
+            border: 1px solid #1A6935 !important;
         }
 
     .dataTables_wrapper label {
@@ -128,7 +128,7 @@
 
 <div class="desktop-ver">
     <div class="row">
-        <div class="col-md-12 align-top-content btncoursecompany">
+        <div class="col-md-12 align-top-content btncoursecompany" >
             <a class="btn btn-success pull-right" href="@Url.Action("Create")">
                 <i class="fa fa-pencil" style="margin-right: 10px;"></i> Create New Course
             </a>
@@ -163,82 +163,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var course in Model)
-                {
-                    <tr id="cours-@course.ID">
-                        <td class="hidden"> @course.ID</td>
-                        <td style="vertical-align:middle">
-                            @course.Name
-                        </td>
-                        <td style="text-align: center;vertical-align:middle">
-                            @{ var dt = course.CreatedDate == null ? "N/A" : Convert.ToDateTime(course.CreatedDate).ToString("MM/dd/yyyy");}
-                            @dt
-                        </td>
-                        <td style="text-align:center;">
-                            @if (course.IsPublished)
-                            {
-                                <span class="btn btn-xs btn-success" style="opacity:0.25; cursor:default;color:green !important">
-                                    <i class="fa fa-check" style="color:green"></i> Published
-                                </span>
-                            }
-                            else
-                            {
-                                if (course.CanBePublished)
-                                {
-                                    <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded btn-success" style="background-color: #72bbb8; color: white !important;height:31px; width: 115px; text-align: center; padding:5px;padding-left:1px; ">
-                                        <i class="fa fa-check"></i> Publish
-                                    </a>
-                                }
-                                else
-                                {
-                                    <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
-                                          data-content="@PublishErrorsTooltip(course.PublishStatus)"
-                                          data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
-                                        <i class="fa fa-check"></i> Publish
-                                    </span>
-                                }
-                            }
-                        </td>
-                        <td @*style="text-align:center;"*@ style=" width: 160px;text-align:center;">
-                            <a data-toggle="tooltip" title="Preview" href="#" onclick="OpenTab(@course.ID)"><i class="fa fa-eye resource-icon" style="color:green"></i></a>&nbsp;&nbsp;
-                            <a href="javascript:void(0)" title="Duplicate" data-toggle="modal" data-target="#myModal-@course.ID"><i class="fa fa-files-o resource-icon" style="color:red;"></i></a>&nbsp;&nbsp;
-                            <a data-toggle="tooltip" title="Modules" href="@Url.Action("Index", "Resources", new { id = course.ID })"><img style="width:20px;height:25px;margin-bottom:10px;" src="~/_Content/images/duplicate.png" /></a>&nbsp;&nbsp;
-                            <a data-toggle="tooltip" title="Edit" href="@Url.Action("Edit", new { id = course.ID })"><i class="fa fa-pencil edit-icon"></i></a>&nbsp;&nbsp;
-                            <a data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
-                            <div id="myModal-@course.ID" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Duplicate This Course</h4>
-                                        </div>
-                                        <form action="@Url.Action("CreateCourseClone")">
-                                            <div class="modal-body">
-                                                <input type="hidden" name="CourseID" value="@course.ID" />
-                                                <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
-
-
-
-                                            </div>
-                                            <div class="modal-footer">
-
-                                                <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
-                            @*<a href="" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-files-o"></i> Resources</a>
-                                <a href="@Url.Action("Edit", new { id = course.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-                                <a href="@Url.Action("Delete", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>*@
-                        </td>
-                    </tr>
-                }
-            </tbody>
+               
+                        </tbody>
         </table>
     </div>
 </section>
@@ -333,7 +259,7 @@
         $(".content-desc").removeClass("adjust-desc");
     });
     function OpenTab(PreviewId) {
-        var URLLink = "~/TrainingCourses/Company/Courses/PreviewCourse/" + PreviewId;
+        var URLLink = "~/TrainingCourses/Company/Courses/PreviewCourse/" +  PreviewId;
         window.open(URLLink, "_blank");
     }
 

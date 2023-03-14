@@ -2,6 +2,7 @@
 @using HUC.Web.Models
 @model IEnumerable<HUC.Web.App.Courses.CourseModel>
 @{
+    var company = ViewBag.company;
     ViewBag.PageData = new PageDataModel
     {
         Title = "Courses",
@@ -94,8 +95,8 @@
         padding: 5px 10px;
         border-radius: 3px;
         display: inline;
-        color: #72bbb8 !important;
-        border: 1px solid #72bbb8 !important;
+        color: #1A6935 !important;
+        border: 1px solid #1A6935 !important;
     }
 
         .dataTables_wrapper select, .dataTables_wrapper input:focus {
@@ -179,26 +180,26 @@
 
                             @if (course.IsPublished)
                             {
-                                <span class="btn btn-xs  btn-success" style="opacity:0.25; cursor:default;color:green !important">
-                                    <i class="fa fa-check" style="color:green"></i> Published
+                                <span class="btn btn-xs  " style="cursor: default; color: white !important; background-color: #8CC63E; height: 28px; width: 115px;padding-top:3px; ">
+                                    <i class="fa fa-check" style="color:white"></i> Published
                                 </span>
                             }
                             else
                             {
                                 if (course.CanBePublished)
                                 {
-                                    <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded btn-success " style="background-color: #72bbb8; color: white !important;height:28px; width: 115px; text-align: center; padding: 3px;">
-                                        <i class="fa fa-check"></i> Publish
-                                    </a>
+                        <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded  " style="background-color:orange; color: white !important; height: 31px; width: 115px; text-align: center; padding: 5px; padding-left: 1px; ">
+                            <i class="fa fa-times" style="color:white"></i> UnPublished
+                        </a>
                                 }
                                 else
                                 {
 
-                                    <span href="#" class="btn btn-xs btn-rounded btn-success" style=" height:28px; width: 115px; text-align: center; padding: 3px;background-color: darkgray; color: white !important;" data-toggle="popover" data-html="true" data-placement="top"
-                                          data-content="@PublishErrorsTooltip(course.PublishStatus)"
-                                          data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
-                                        <i class="fa fa-check"></i> Publish
-                                    </span>
+                        <span href="#" class="btn btn-xs btn-rounded " style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: orange; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
+                              data-content="@PublishErrorsTooltip(course.PublishStatus)"
+                              data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
+                            <i class="fa fa-times" style="color:white"></i> UnPublished
+                        </span>
                                 }
                             }
                         </td>
@@ -263,16 +264,59 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Duplicate This Course</h4>
+                                        <h4 class="modal-title" style="margin-bottom:0px">Duplicate This Course</h4>
+                                        <h5 style="margin-top:0px;padding-right:7px">With an amended filename</h5>
                                     </div>
                                     <form action="@Url.Action("CreateCourseClone")">
                                         <div class="modal-body">
                                             <input type="hidden" name="CourseID" value="@course.ID" />
                                             <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
 
+                                         
+                                                <table style="width: 200px !important; background-color: white;margin-left:155px" >
+                                                    <thead>
 
+                                                        <tr style="background-color: white;width:200px;">
+            <td style="width: 50px; height: 26px; border: 0px !important; background-color: white"><b> Cloud</b></td>
+            <td style="background-color:white;border:0px!important;width:20px">
+                @*@Html.RadioButton("CourseCopy", "Cloud", new { @id = "rdCloud", @onclick = "showhide({@course.ID})", @style = "width:20px" })*@
+                <input checked id="rdCloud" name="CourseCopy" onclick="showhide(@course.ID)" style="width:20px" type="radio" value="Cloud">
+
+            </td>
+            <td style="width: 50px; height: 26px; background-color: white; border: 0px !important"><b> Company</b></td>
+            <td style="background-color: white; border: 0px !important;width:20px;height:26px">
+
+                @*@Html.RadioButton("CourseCopy", "Company", new { @id = "rdCompany", @style = "width:20px" })*@
+
+                <input id="rdCompany" name="CourseCopy" onclick="showhide1(@course.ID)" style="width:20px" type="radio" value="Company">
+
+
+            </td>
+
+
+        </tr>
+
+                                                       
+                                                    </thead>
+                                                </table>
+                                                                                        
+                                       
+                                        <div class="form-group hidden" id="lstcompany-@course.ID">
+                                            <select name="company"  style="width:200px">
+                                                @foreach (var cmp in ViewBag.company)
+                                                {
+                                                    <option value="@cmp.Id">@cmp.Name</option>
+                                                }
+                                            </select>
 
                                         </div>
+
+                                         
+                                               
+        
+
+                                        </div>
+                                      
                                         <div class="modal-footer">
 
                                             <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
@@ -380,9 +424,10 @@
 
 
     function OpenTab(PreviewId) {
-       
-        var URLLink = "/Admin/Courses/Preview/" + PreviewId;
-      
+       // var URLLink = "/Admin/Courses/Preview/" + PreviewId;
+
+        var URLLink = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/Preview/" + PreviewId;
+
         window.open(URLLink, "_blank");
     }
 
@@ -420,8 +465,8 @@
         $(".swal2-cancel").text("No");
         $(".swal2-confirm").text("Yes");
         $(".swal2-confirm").click(function () {
-           
-		
+
+
         var i = 1;
         $("table tbody tr").each(function() {
             var idd = $(this).attr('id');
@@ -447,7 +492,50 @@
                 }
             }
         })
-       
+
 		})
-	}
+    }
+
+    function showhide(id) {
+        debugger;
+        $("#lstcompany-"+id).addClass('hidden');
+
+
+    }
+    function showhide1(id) {
+        debugger;
+        $("#lstcompany-" + id).removeClass('hidden');
+
+
+    }
+
+
+
+
+    $("#rdCompany").on("click", function () {
+        debugger;
+        $("#rdCloud").prop("checked", false);
+        // $("#lstcompany").show();
+        $("#lstcompany").removeClass('hidden');
+
+
+    })
+    $("#rdCloud").on("click", function () {
+        debugger;
+        $("#rdCompany").prop("checked", false);
+        $("#lstcompany").addClass('hidden');
+        // $("#lstcompany").hide();
+
+
+    })
+
+
+    $("#rdCloud").prop("checked", true);
+  //  $("#rdCompany").prop("checked", false);
+   // $("#lstcompany").addClass('hidden');
+   // $("#lstcompany").hide();
+
+
+
+
 </script>

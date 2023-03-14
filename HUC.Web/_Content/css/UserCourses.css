@@ -108,7 +108,7 @@ header {
     display: block;
     width: 100%;
     color: #454545;
-    font-family: 'Franklin Gothic';
+    font-family:Bahnschrift;
     font-size: 16px;
     font-weight: 700;
     line-height: 1.25;
@@ -137,7 +137,7 @@ header {
 .ev-component-title > p {
     color: #454545;
     text-align: left;
-    font-family: Franklin Gothic Book;
+    font-family:Bahnschrift;
     font-size: 15px;
     font-weight: 400;
     line-height: 1.25;
@@ -197,7 +197,7 @@ color: #339966
     .ev-article, .ev-article > p, .ev-dialog-item-message > p .ev-component-body-inner > p, .ev-article > p strong, .ev-article ul, .ev-article > strong, .footer-tile, .footer-current-page {
         color: #454545;
         text-align: left;
-        font-family: Franklin Gothic Book !important;
+        font-family: Bahnschrift!important;
         font-size: 16px;
         font-weight: 400;
         line-height: 1.25;

@@ -24,6 +24,7 @@ ${this.jasonObj.flip[i].heading ? `<div class="ev-flip-card-item-front-image"  s
                       </div>`}
                       
                       <div class="ev-flip-card-item-front-inner ev-is-center-alignment" style="overflow-y: auto;">
+<p style="position:absolute;top: 10px;left: 10px;color:lightgray">Click to Flip</p>
                           <div class="ev-flip-card-item-content"></div>
                       </div>
                   </div>
@@ -33,7 +34,8 @@ ${this.jasonObj.flip[i].heading ? `<div class="ev-flip-card-item-front-image"  s
 }</style>
 <div class="ev-flip-card-item-back-inner"  style="height:310px;width:440px;background-color:${this.jasonObj.flip[i].backcolor};display:flex;margin-left: 10px;" >
                          <div style="text-align: center;vertical-align: middle;padding:12px;margin:auto;color:#000000;" >
-                            ${this.jasonObj.flip[i].backdescription}
+  <p style="position:absolute;top: 10px;left: 10px;color:gray">Click to Flip</p>
+ ${this.jasonObj.flip[i].backdescription}
                         </div>
                       </div>
                       

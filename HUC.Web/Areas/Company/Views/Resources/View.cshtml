@@ -3,6 +3,7 @@
 @using HUC.Web.Models
 @model HUC.Web.App.Resources.ResourceModel
 @{
+    var abc = new EnumContentType().getByOrder();
     ViewBag.CourseName = Model.Course.Name;
     ViewBag.PageData = new PageDataModel
     {
@@ -31,6 +32,17 @@
     @@media screen and (min-width: 2048px) {
         .k6 {
             margin-right: 48% !important;
+        }
+    }
+    @@media screen and (min-width: 1920px) {
+        .create-new-chapter {
+             margin-right: 860px;
+        }
+    }
+
+    @@media screen and (min-width: 1366px) {
+        .create-new-chapter {
+            margin-right: 280px;
         }
     }
 </style>
@@ -82,8 +94,8 @@
 {
     <div class="desktop-ver">
         <div class="row">
-            <div class="col-md-12" style="margin-top: -49px;margin-left: -40%;">
-                <a href="@Url.Action("ChapterCreate", new { id = Model.ID })" class="btn btn-success pull-right k6" style="margin-right: 100px;"><i class="fa fa-pencil"></i> Create New Chapter</a>
+            <div class="col-md-12 " style="margin-top: -49px;">
+                <a href="@Url.Action("ChapterCreate", new { id = Model.ID })" class="btn btn-success pull-right k6 create-new-chapter" style=""><i class="fa fa-pencil"></i> Create New Chapter</a>
                 <a class="btn btn-success pull-right" href="@Url.Action("Index", new { id = Model.CourseID})" style="margin-right: 15px;">
                     <i class="fa fa-arrow-left"></i> Back
                 </a>
@@ -157,15 +169,30 @@ else
                         </li>
                     }
                     <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-plus"></i> Add Control</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-plus"></i> Add Content</a>
                         <ul class="dropdown-menu animated fadeInRight">
                             <span class="arrow top"></span>
-                            @foreach (ContentType val in Enum.GetValues(typeof(ContentType)))
-                            {
-                                <li>
-                                    <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
-                                </li>
-                            }
+
+
+                            @*@foreach (ContentType val in Enum.GetValues(typeof(ContentType)))
+        {
+            <li>
+                <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+            </li>
+        }*@
+
+
+                            @foreach (var val in abc)
+        {
+            <li>
+                <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+            </li>
+        }
+
+
+
+
+
                         </ul>
                     </li>
                 </ul>

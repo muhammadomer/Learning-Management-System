@@ -15,6 +15,8 @@
     };
     //  Model.Company.Courses.OrderBy(x => x.Course.Name);
     var company = (CompanyModel)ViewBag._Company;
+
+
 }
 <style>
     .next {
@@ -34,7 +36,7 @@
         text-align: center;
     }
 </style>
-<section class="row m-b-md hidden">
+@*<section class="row m-b- hidden ">
     <div class="col-sm-6">
         <h3 class="m-b-xs text-black">
             Filter By Year
@@ -43,7 +45,7 @@
             Use the dropdown to filter the results and statistics shown below by year.
         </small>
         <br />
-        <select class="chosen-select year-select" id="years-filter">
+        <select class="chosen-select year-select" id="years-filter1">
             <option value="">All Time</option>
             @foreach (var year in Model.YearsOptions())
             {
@@ -51,16 +53,39 @@
             }
         </select>
     </div>
-</section>
-<section class="row m-b-md hidden">
-    <div class="col-sm-6">
-        <h3 class="m-b-xs text-black">
-            Overall Statistics
-        </h3>
-        <small>
-            Here are the overall statistics for your company.
-        </small>
+</section>*@
+<section class="row ">
+    <div class="col-md-6">
+        <div class="col-md-6" style="padding:0px">
+            <h3 class="m-b-xs text-black">
+                Administration View
+            </h3>
+
+        </div>
+        <div class="col-md-6" style="text-align:right;padding:0px;">
+            <select class="chosen-select year-select" id="years-filter" style=" width:100px">
+                <option value="">All Time</option>
+                @foreach (var year in Model.YearsOptions())
+                {
+
+                    <option value="@year" @if (Model.Year == year) { <text> selected="selected" </text> }>@year</option>
+
+                }
+            </select>
+
+        </div>
+
+
     </div>
+    <div class="col-md-6" style="text-align:right">
+        <h3 class="m-b-xs text-black" style="font-size:20px!important">
+            Here are the overall statistics of the company
+        </h3>
+
+    </div>
+
+
+
 </section>
 
 <div class="row">
@@ -74,9 +99,13 @@
                 <div id="score-bar" style="height:240px;display:none;"></div>
                 <span id="score-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
                 <span id="score-bar-loading" class="chart-loading">No data available</span>
+                <div class="row" style="padding-left:0px"><label id="yeartxt2">All Time</label></div>
+
             </div>
+
         </section>
     </div>
+
 
     <div class="col-md-6">
 
@@ -88,6 +117,8 @@
                 <div id="revision-bar" style="height:240px;display:none;"></div>
                 <span id="revision-bar-error" class="chart-error" style="display:none;">No Statistics Available</span>
                 <span id="revision-bar-loading" class="chart-loading">No data available</span>
+                <div class="row" style="padding-left:0px"><label id="yeartxt1">All Time</label></div>
+
             </div>
         </section>
     </div>
@@ -129,35 +160,79 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var curCompanyCourse in Model.Company.Courses.Where(x=>x.Course.IsDeleted==false).OrderBy(x => x.Course.Name, new StrCmpLogicalComparer()))
+                    @{
 
-                    {
-                        var curCompanyUser = company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First());
-                        <tr>
-                            <td>
-                                @curCompanyCourse.Course.Name
-                            </td>
-                            @if (curCompanyCourse.HasFreeTextCheck == 1 )
+                        var _year = Model.Year.HasValue;
+
+                        if (Model.Year.HasValue)
+                        {
+                            foreach (var curCompanyCourse in Model.Company.Courses.Where(x => x.Course.IsDeleted == false && Convert.ToDateTime(x.Course.CreatedDate).Year == Model.Year).OrderBy(x => x.Course.Name, new StrCmpLogicalComparer()))
                             {
-                                <td class="aligntd">
-                                    <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID">Reviews Pending</a>
-                                </td>
+
+                                var curCompanyUser = company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First());
+                                <tr>
+                                    <td>
+                                        @curCompanyCourse.Course.Name
+                                    </td>
+                                    @if (curCompanyCourse.HasFreeTextCheck == 1)
+                                    {
+                                        <td class="aligntd">
+                                            <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID">Reviews Pending</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="aligntd">No Review Pending</td>
+                                    }
+                                    <td class="aligntd">
+                                        @curCompanyCourse.AverageTimeString
+                                    </td>
+                                    <td class="aligntd">
+                                        @curCompanyCourse.ComplianceScoreAverage/@curCompanyCourse.Course.MaxScore
+                                    </td>
+                                    <td class="text-center aligntd">
+                                        @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseEdit/@curCompanyCourse.ID" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>*@
+                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID?year=@Model.Year"><i class="fa fa-bar-chart-o"></i></a>
+                                    </td>
+                                </tr>
                             }
-                            else
+                        }
+                        else
+                        {
+                            foreach (var curCompanyCourse in Model.Company.Courses.Where(x => x.Course.IsDeleted == false).OrderBy(x => x.Course.Name, new StrCmpLogicalComparer()))
                             {
-                                <td class="aligntd">No Review Pending</td>
+
+                                var curCompanyUser = company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First());
+                                <tr>
+                                    <td>
+                                        @curCompanyCourse.Course.Name
+                                    </td>
+                                    @if (curCompanyCourse.HasFreeTextCheck == 1)
+                                    {
+                                        <td class="aligntd">
+                                            <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID">Reviews Pending</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="aligntd">No Review Pending</td>
+                                    }
+                                    <td class="aligntd">
+                                        @curCompanyCourse.AverageTimeString
+                                    </td>
+                                    <td class="aligntd">
+                                        @curCompanyCourse.ComplianceScoreAverage/@curCompanyCourse.Course.MaxScore
+                                    </td>
+                                    <td class="text-center aligntd">
+                                        @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseEdit/@curCompanyCourse.ID" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>*@
+                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID?year=@Model.Year"><i class="fa fa-bar-chart-o"></i></a>
+                                    </td>
+                                </tr>
                             }
-                            <td class="aligntd">
-                                @curCompanyCourse.AverageTimeString
-                            </td>
-                            <td class="aligntd">
-                                @curCompanyCourse.ComplianceScoreAverage/@curCompanyCourse.Course.MaxScore
-                            </td>
-                            <td class="text-center aligntd">
-                                @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseEdit/@curCompanyCourse.ID" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>*@
-                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/Course/@curCompanyCourse.CourseID"><i class="fa fa-bar-chart-o"></i></a>
-                            </td>
-                        </tr>
+
+                        }
+
+
                     }
                 </tbody>
             </table>
@@ -176,80 +251,128 @@
         </small>
     </div>
 </section>
-<section class="row">
-    <div class="col-sm-12 col-md-6">
-        <h3 class="m-b-xs text-background" style="font-size:24px !important">
-            Recent User Assessments
-        </h3>
-    </div>
-    <div class="col-sm-12 col-md-6">
 
-    </div>
-</section>
-<div class="col-md-12">
-    <section class="panel panel-default">
-        <div class="table-responsive">
-            @*<span class="table-header">Latest 10 test scores of users</span>*@
-            <table id="sortable" class="table table-striped m-b-none black-header">
-                <thead>
-                    <tr>
-                        <th class="aligntd">
-                            Date
-                        </th>
-                        <th class="aligntd">
-                            User
-                        </th>
-                        <th class="aligntd">
-                            Course
-                        </th>
-                        <th class="aligntd">
-                            Test Taken
-                        </th>
-                        <th class="aligntd">
-                            Time Taken
-                        </th>
-                        <th class="aligntd">
-                            Score
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var curTest in Model.Company.LatestUserTests().Where(x=>x.UserCourse.Course.IsDeleted==false).OrderByDescending(x => x.StartOn).Take(10))
-                    {
-                        <tr class="aligntd">
-                            <td>
-                                @curTest.StartOn.ToShortDateString()
-                            </td>
-                            <td>
-                                @curTest.UserCourse.User.FirstName @curTest.UserCourse.User.LastName
-                            </td>
-                            <td>
-                                @curTest.Resource.Course.Name
-                            </td>
-                            <td>
-                                @curTest.Resource.Name
-                            </td>
-                            <td>
-                                @curTest.TimeTakenString
-                            </td>
-                            <td>
-                                @curTest.CorrectAnswerCount/@curTest.MaxScore
+@if (Model.Year == DateTime.Now.Year || Model.Year == null)
+{
+    <section class="row">
+        <div class="col-sm-12 col-md-6">
+            <h3 class="m-b-xs text-background" style="font-size:24px !important">
+                Recent User Assessments
+            </h3>
+        </div>
+        <div class="col-sm-12 col-md-6">
 
-
-                                @*<i class="fa fa-check-circle"></i>
-                    <i class="fa fa-times-circle"></i>*@
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
         </div>
     </section>
-</div>
+    <div class="col-md-12">
+        <section class="panel panel-default">
+            <div class="table-responsive">
+                @*<span class="table-header">Latest 10 test scores of users</span>*@
+                <table id="sortable" class="table table-striped m-b-none black-header">
+                    <thead>
+                        <tr>
+                            <th class="aligntd">
+                                Date
+                            </th>
+                            <th class="aligntd">
+                                User
+                            </th>
+                            <th class="aligntd">
+                                Course
+                            </th>
+                            <th class="aligntd">
+                                Test Taken
+                            </th>
+                            <th class="aligntd">
+                                Time Taken
+                            </th>
+                            <th class="aligntd">
+                                Score
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            if (Model.Year.HasValue && Model.Year == DateTime.Now.Year)
+                            {
+
+
+
+                                foreach (var curTest in Model.Company.LatestUserTests().Where(x => x.UserCourse.Course.IsDeleted == false && Convert.ToDateTime(x.UserCourse.Course.CreatedDate).Year == Model.Year).OrderByDescending(x => x.StartOn).Take(10))
+                                {
+                                    <tr class="aligntd">
+                                        <td>
+                                            @curTest.StartOn.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @curTest.UserCourse.User.FirstName @curTest.UserCourse.User.LastName
+                                        </td>
+                                        <td>
+                                            @curTest.Resource.Course.Name
+                                        </td>
+                                        <td>
+                                            @curTest.Resource.Name
+                                        </td>
+                                        <td>
+                                            @curTest.TimeTakenString
+                                        </td>
+                                        <td>
+                                            @curTest.CorrectAnswerCount/@curTest.MaxScore
+
+
+                                            @*<i class="fa fa-check-circle"></i>
+                                                <i class="fa fa-times-circle"></i>*@
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else if (Model.Year == null)
+                            {
+                                foreach (var curTest in Model.Company.LatestUserTests().Where(x => x.UserCourse.Course.IsDeleted == false).OrderByDescending(x => x.StartOn).Take(10))
+                                {
+                                    <tr class="aligntd">
+                                        <td>
+                                            @curTest.StartOn.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @curTest.UserCourse.User.FirstName @curTest.UserCourse.User.LastName
+                                        </td>
+                                        <td>
+                                            @curTest.Resource.Course.Name
+                                        </td>
+                                        <td>
+                                            @curTest.Resource.Name
+                                        </td>
+                                        <td>
+                                            @curTest.TimeTakenString
+                                        </td>
+                                        <td>
+                                            @curTest.CorrectAnswerCount/@curTest.MaxScore
+
+
+                                            @*<i class="fa fa-check-circle"></i>
+                                                <i class="fa fa-times-circle"></i>*@
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+}
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $(".intro-text").removeClass("button-deactive");
-       
+
         $(".btn-4").css("color", "#ffffff !important");
         $('#sortabletbl').dataTable({
             "bProcessing": true,
@@ -258,7 +381,7 @@
             // "aoColumns": [null, null, { "bSortable": true }],
             "iDisplayLength": 100
         });
-        $(".col-sm-6").hide();//for the time being
+       $(".col-sm-6").hide();//for the time being
         $("#sortabletbl_processing").hide();
     });
 
@@ -314,12 +437,15 @@
             //}, 5000);
 
 
+       // $("#yeartxt1").text("All Time");
 
 
             //Year filter changes
 
-            $("#years-filter").change(function() {
-                window.location.href = '/company/dashboard/Graphs?year=' + $(this).val();
+        $("#years-filter").change(function () {
+
+            window.location.href = '/company/dashboard/Graphs?year=' + $(this).val();
+
             });
         });
     var defaultGraphOptions = {
@@ -339,6 +465,8 @@
     //$("#score-bar").UseTooltip();
     function updateGraphs(count, co) {
 
+        $("#yeartxt1").text(@Model.Year);
+         $("#yeartxt2").text(@Model.Year);
 
 
 

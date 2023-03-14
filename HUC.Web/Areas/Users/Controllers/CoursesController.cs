@@ -923,8 +923,9 @@ namespace HUC.Web.Areas.Users.Controllers
           
             
                 userCourseTestEdit.IsComplete = true;
-            
-           
+
+            userCourseTestEdit.StartOn = now;
+
             userCourseTestEdit.CompleteOn = now;
             Database.ExecuteUpdate(userCourseTestEdit);
             Database.Execute("Insert into UserComletedCourseDates (UserCourseID, CompletedDate) Values(@UserCourseID, @CompletedDate)",

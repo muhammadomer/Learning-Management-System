@@ -218,10 +218,11 @@ namespace HUC.Web.Areas.Company.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Statistics(int id)
+        public ActionResult Statistics(int id,int? year)
         {
             var company = _users.GetLoggedInUserModel().RepresentingCompany;
             var companyUser = Database.GetSingle<CompanyUserModel>(id);
+            companyUser.Year = year;
             //employeesEntities.Database.Connection.ConnectionString = employeesEntities.Database.Connection.ConnectionString.Replace("DentonsEmployeesForRiskManager", "HUC");
             ViewBag.CourseList = _users.GetAssignedCourses(companyUser.UserID);
             if (companyUser == null || !company.AllDescendantUsersIncludingSelf.Any(x => x.ID == companyUser.ID))
@@ -232,10 +233,12 @@ namespace HUC.Web.Areas.Company.Controllers
             return View(companyUser);
         }
 
-        public JsonResult StatisticsData(int id,int next = 0)
+        public JsonResult StatisticsData(int id, int? year=null, int next = 0)
         {
             var company = _users.GetLoggedInUserModel().RepresentingCompany;
             var companyUser = Database.GetSingle<CompanyUserModel>(id);
+            //companyUser.Year = year;
+           // Database.ExecuteUpdate(companyUser);
             if (companyUser == null || !company.AllDescendantUsersIncludingSelf.Any(x => x.ID == companyUser.ID))
             {
                 return null;
@@ -247,9 +250,9 @@ namespace HUC.Web.Areas.Company.Controllers
             var timePerCourseHasData = false;
             var scorePerCourseHasData = false;
             var courseCount = 1;
-            foreach (var curCourse in companyUser.User.AllCourses().Skip(next*10).Take(10))
+            foreach (var curCourse in companyUser.User.AllCourses(year).Skip(next*10).Take(10))
             {
-                var userCourse = companyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == curCourse.ID);
+                var userCourse = companyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == curCourse.ID );
 
                 var courseNameSmall = curCourse.Name;
                 if (courseNameSmall.Length > 15)

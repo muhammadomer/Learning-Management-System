@@ -29,7 +29,7 @@ namespace HUC.Web.Areas.Company.Controllers
             {
                 employeesEntities.Database.Connection.ConnectionString = employeesEntities.Database.Connection.ConnectionString.Replace("DentonsEmployeesForRiskManager", dbName_SinglePoint);
                 ViewBag.UserList = employeesEntities.Users.Where(x => x.IsDeleted == false && x.RolePersmission.Contains("2")).ToList();
-                ViewBag.DepartmentList = employeesEntities.Users.Where(x => x.TCLevelPermissionId == 2).Select(x => x.Department).Distinct().ToList();
+                ViewBag.DepartmentList = employeesEntities.Users.Where(x => x.TCLevelPermissionId == 1).Select(x => x.Department).Distinct().ToList();
                 ViewBag.PracticeGroupList = employeesEntities.Users.Where(x => x.TCLevelPermissionId == 2).Select(x => x.PracticeGroup).Distinct().ToList();
                 ViewBag.AllDepartments = employeesEntities.Departments.Where(x => x.Visible == true).ToList();
                 var GetLoggedInUser = new UsersService().GetLoggedInUserModel();

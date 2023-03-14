@@ -62,19 +62,19 @@
 .dataTables_wrapper .paginate_active {
     cursor: pointer;
     outline: 0;
-    border: 1px solid #72bbb8;
+    border: 1px solid #1A6935;
     border-right-width: 0;
     background: #fff;
     padding: 4px 8px;
-    color: #72bbb8;
-    font-size:18px;
+    color: #1A6935;
+    font-size: 18px;
 }
 .dataTables_wrapper .paginate_active {
-    background-color: #72bbb8;
-    color:#fff;
+    background-color: #1A6935;
+    color: #fff;
 }
 .dataTables_wrapper .paginate_button_disabled {
-    color: #72bbb8;
+    color: #1A6935 ;
     background-color: #fafafa;
 }
 .paginate_button.first {

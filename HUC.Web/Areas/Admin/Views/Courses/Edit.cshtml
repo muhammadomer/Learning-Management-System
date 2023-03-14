@@ -282,7 +282,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.RetakeDuration)
                     <div class="input-field">
-                        @Html.DropDownListFor(model => model.RetakeDuration, duration, "Select Renewal", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.RetakeDuration, duration, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.RetakeDuration)
                     </div>
                 </div>

@@ -1307,9 +1307,9 @@ fieldset[disabled] .btn-primary.active {
   border-color: #177bbb;
 }
 .btn-success {
-    color: #72bbb8 !important;
-    background-color: #fff;
-    border-color: #fff;
+    color: #fff !important;
+    background-color: #1A6935;
+    border-color: #1A6935;
 }
 /*.btn-success:hover,
 .btn-success:focus,
@@ -1455,19 +1455,19 @@ fieldset[disabled] .btn-danger.active {
   border-color: #e33244;
 }
 .btn-dark {
-  color: #fff !important;
-  background-color: #222733;
-  border-color: #222733;
+    color: #fff !important;
+    background-color: #1A6935;
+    border-color: #1A6935;
 }
-.btn-dark:hover,
-.btn-dark:focus,
-.btn-dark:active,
-.btn-dark.active,
-.open .dropdown-toggle.btn-dark {
-  color: #fff !important;
-  background-color: #181b24;
-  border-color: #12141b;
-}
+    .btn-dark:hover,
+    .btn-dark:focus,
+    .btn-dark:active,
+    .btn-dark.active,
+    .open .dropdown-toggle.btn-dark {
+        color: #fff !important;
+        background-color: #1A6935;
+        border-color: #1A6935;
+    }
 .btn-dark:active,
 .btn-dark.active,
 .open .dropdown-toggle.btn-dark {
@@ -1491,10 +1491,11 @@ fieldset[disabled] .btn-dark.active {
   background-color: #222733;
   border-color: #222733;
 }
+
 .btn {
   font-weight: 500;
   border-radius: 6px;
-  font-family:'Franklin Gothic Book';
+  font-family:Bahnschrift;
 }
 .btn-icon {
   padding-left: 0 !important;

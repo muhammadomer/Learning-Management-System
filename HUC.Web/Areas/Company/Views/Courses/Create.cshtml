@@ -33,15 +33,15 @@
     }
 
     .form-control {
-        color: #72bbb8 !important;
-        border: 2px solid #72bbb8 !important;
+        color: #1A6935 !important;
+        border: 2px solid #1A6935 !important;
         border-radius: 6px;
         height: 40px !important;
         max-width: 500px !important;
     }
 
     .redactor_editor {
-        border: 1px solid #72bbb8 !important;
+        border: 1px solid #1A6935 !important;
         min-height: 200px !important;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -49,7 +49,7 @@
     }
 
     .redactor_toolbar {
-        border: 2px solid #72bbb8 !important;
+        border: 2px solid #1A6935 !important;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px
     }
@@ -61,7 +61,7 @@
         max-width: 500px !important;
     }*/
     td > b {
-        color: #72bbb8 !important;
+        color: #1A6935 !important;
         font-size: 16px;
         margin-left: 5px;
     }
@@ -102,7 +102,7 @@
         padding: 0px;
         /* background-color only for content */
         background-clip: content-box;
-        border: 5px solid #72bbb8;
+        border: 5px solid #1A6935;
         background-color: #ffffff;
         border-radius: 50%;
         margin-top: 6px;
@@ -184,12 +184,12 @@
                         <div class="form-group">
                             <label> Course header </label>
                             <div class="input-field">
-                                <table style="border:2px solid #72bbb8">
+                                <table style="border: 2px solid #1A6935">
                                     <thead>
 
                                         <tr>
                                             <td style="width:200px;height: 36px;"><b> Image</b></td>
-                                            <td style="border-right:2px solid #72bbb8;width:30px;"> <input type="radio" id="pic" @*name="BackGroundType"*@ checked /></td>
+                                            <td style="border-right: 2px solid #1A6935; width: 30px;"> <input type="radio" id="pic" @*name="BackGroundType"*@ checked /></td>
                                             <td style="width:200px;height: 36px;"><b> Solid Color</b></td>
                                             <td style="width:30px;"> <input type="radio" id="colid" @*name="BackGroundType"*@ /></td>
                                         </tr>
@@ -264,19 +264,19 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.RetakeDuration)
                             <div class="input-field">
-                                @Html.DropDownListFor(model => model.RetakeDuration, duration, "Select Renewal", new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.RetakeDuration, duration, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.RetakeDuration)
                             </div>
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.ReTake)
                             <div class="input-field">
-                                <table style="border:2px solid #72bbb8">
+                                <table style="border: 2px solid #1A6935">
                                     <thead>
 
                                         <tr>
                                             <td style="width:200px;height: 36px;"><b> Yes</b></td>
-                                            <td style="border-right:2px solid #72bbb8;width:30px;"> <input type="radio" id="yes" /></td>
+                                            <td style="border-right: 2px solid #1A6935; width: 30px;"> <input type="radio" id="yes" /></td>
                                             <td style="width:200px;height: 36px;"><b> No</b></td>
                                             <td style="width:30px;"> <input type="radio" id="no" checked /></td>
                                         </tr>

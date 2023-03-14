@@ -168,43 +168,86 @@ namespace HUC.Web.Areas.Company.Controllers
             var userAverageTimeSpentPerCourseData = new List<decimal[]>();
             var userAverageScorePerCourseHasData = false;
             var userAverageTimeSpentPerCourseHasData = false;
-            var courseCount = 1;         
-            foreach (var curCourse in company.Courses.OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
+            var courseCount = 1;  
+            
+            if (year == null)
             {
-                var courseNameSmall = curCourse.Course.Name;
-                if (courseNameSmall.Length > 15)
+                foreach (var curCourse in company.Courses.OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
                 {
-                    courseNameSmall = courseNameSmall.Substring(0, 10) + "...";
-                }
+                    var courseNameSmall = curCourse.Course.Name;
+                    if (courseNameSmall.Length > 15)
+                    {
+                        courseNameSmall = courseNameSmall.Substring(0, 10) + "...";
+                    }
 
-                //courseTicks.Add(new object[] { courseCount, courseNameSmall });
+                    //courseTicks.Add(new object[] { courseCount, courseNameSmall });
 
-                var userCourses = year.HasValue
-                    ? curCourse.UserCourses.Where(x => x.StartedOn.HasValue && x.StartedOn.Value.Year == year).ToList()
-                    : curCourse.UserCourses;
+                    var userCourses = year.HasValue
+                        ? curCourse.UserCourses.Where(x => x.StartedOn.HasValue).ToList()
+                        : curCourse.UserCourses;
 
-                if (userCourses.Any(/*x => x.IsComplete*/ ))
-                {
-                    courseTicks.Add(new object[] { courseCount, courseNameSmall });
-                    userAverageScorePerCourseHasData = true;
-                    int scoremin = (curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore;
-                    
-                    targetCompliancePerCourseData.Add(new[] { courseCount, /*((curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore)*/scoremin });
-                    userAverageScorePerCourseData.Add(new[] { courseCount, Math.Round(((curCourse.ComplianceScoreAverage * 100) / curCourse.Course.MaxScore)) });
+                    if (userCourses.Any(/*x => x.IsComplete*/ ))
+                    {
+                        courseTicks.Add(new object[] { courseCount, courseNameSmall });
+                        userAverageScorePerCourseHasData = true;
+                        int scoremin = (curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore;
+
+                        targetCompliancePerCourseData.Add(new[] { courseCount, /*((curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore)*/scoremin });
+                        userAverageScorePerCourseData.Add(new[] { courseCount, Math.Round(((curCourse.ComplianceScoreAverage * 100) / curCourse.Course.MaxScore)) });
+                    }
+                    if (userCourses.Any())
+                    {
+                        userAverageTimeSpentPerCourseHasData = true;
+                        userAverageTimeSpentPerCourseData.Add(new[] { courseCount, Math.Round((decimal)curCourse.AverageTime.TotalMinutes) });
+                        courseCount++;
+                        //if (courseCount.Equals(11))
+                        //{
+                        //    break;
+                        //}
+                    }
+
                 }
-                if (userCourses.Any())
-                {                  
-                    userAverageTimeSpentPerCourseHasData = true;
-                    userAverageTimeSpentPerCourseData.Add(new[] { courseCount, Math.Round((decimal)curCourse.AverageTime.TotalMinutes) });
-                    courseCount++;
-                    //if (courseCount.Equals(11))
-                    //{
-                    //    break;
-                    //}
-                }
-               
             }
-           
+            else
+            {
+                foreach (var curCourse in company.Courses.Where(w => w.Course.CreatedDate.Value.Year == year).OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
+                {
+                    var courseNameSmall = curCourse.Course.Name;
+                    if (courseNameSmall.Length > 15)
+                    {
+                        courseNameSmall = courseNameSmall.Substring(0, 10) + "...";
+                    }
+
+                    //courseTicks.Add(new object[] { courseCount, courseNameSmall });
+
+                    var userCourses = year.HasValue
+                        ? curCourse.UserCourses.Where(x => x.StartedOn.HasValue && x.Course.CreatedDate.Value.Year == year).ToList()
+                        : curCourse.UserCourses;
+
+                    if (userCourses.Any(/*x => x.IsComplete*/ ))
+                    {
+                        courseTicks.Add(new object[] { courseCount, courseNameSmall });
+                        userAverageScorePerCourseHasData = true;
+                        int scoremin = (curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore;
+
+                        targetCompliancePerCourseData.Add(new[] { courseCount, /*((curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore)*/scoremin });
+                        userAverageScorePerCourseData.Add(new[] { courseCount, Math.Round(((curCourse.ComplianceScoreAverage * 100) / curCourse.Course.MaxScore)) });
+                    }
+                    if (userCourses.Any())
+                    {
+                        userAverageTimeSpentPerCourseHasData = true;
+                        userAverageTimeSpentPerCourseData.Add(new[] { courseCount, Math.Round((decimal)curCourse.AverageTime.TotalMinutes) });
+                        courseCount++;
+                        //if (courseCount.Equals(11))
+                        //{
+                        //    break;
+                        //}
+                    }
+
+                }
+
+            }
+
             bool isdata = userAverageScorePerCourseData.Skip(next * 10).Take(10).Count() > 0 ? true : false;
             userAverageScorePerCourseHasData = isdata;
             userAverageTimeSpentPerCourseHasData = isdata;

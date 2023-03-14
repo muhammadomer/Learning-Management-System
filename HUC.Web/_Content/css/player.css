@@ -585,7 +585,7 @@
   text-align: left;
   font-family: Signika;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 100;
   line-height: 1.25;
 }
 @media all and (max-width: 760px) {
@@ -3832,7 +3832,7 @@ input[type="search"].ev-input-search {
     border-left: 1px none #454545;
     border-radius: 0px 0px 0px 0px;
     color: #161616;
-    font-family: Franklin Gothic Book;
+    font-family:Bahnschrift;
     font-size: 16px;
     font-weight: 400;
     line-height: 1.25;
@@ -16011,7 +16011,7 @@ table td a {
 }
 .ev-mcq-component .ev-mcq-item-inner {
     flex: auto;
-    font-family: Franklin Gothic Book;
+    font-family:Bahnschrift;
     font-size: 15px;
     font-weight: 400;
     line-height: 1.25;

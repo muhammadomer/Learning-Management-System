@@ -163,24 +163,39 @@ namespace HUC.Web.App.Resources
         }
 
         [DBIgnore]
-        public IEnumerable<UserCourseTestModel> LatestUserTestsForCompany(int companyID)
+        public IEnumerable<UserCourseTestModel> LatestUserTestsForCompany(int companyID,int? year=null)
         {
             var tmpList = new List<UserCourseTestModel>();
 
-            foreach (var curUserTests in this.UserTestsForCompany(companyID).GroupBy(x => x.UserCourse.UserID))
+            foreach (var curUserTests in this.UserTestsForCompany(companyID,year).GroupBy(x => x.UserCourse.UserID))
             {
-                tmpList.Add(curUserTests.OrderByDescending(x => x.StartOn).First());
+                //if (year == null)
+                //{
+                    tmpList.Add(curUserTests.OrderByDescending(x => x.StartOn).First());
+
+                //}
+                //else
+                //{
+                //    tmpList.Add(curUserTests.Where(x => Convert.ToDateTime(x.CompleteOn).Year == year).OrderByDescending(x => x.StartOn).First());
+
+                //}
             }
 
             return tmpList;
         }
 
         [DBIgnore]
-        public IEnumerable<UserCourseTestModel> UserTestsForCompany(int companyID)
+        public IEnumerable<UserCourseTestModel> UserTestsForCompany(int companyID,int? year=null)
         {
 
+            string yearStr = "";
+            if (year != null)
+            {
+                yearStr = "year(starton)="+year+ " and ";
+            }
+
             var model = Database.GetAll<UserCourseTestModel>(
-                "WHERE ResourceID = @ID AND UserCourseID IN (SELECT ID FROM UserCourses WHERE UserID IN (SELECT UserID FROM CompanyUsers WHERE CompanyID = @CompanyID))", 
+                "WHERE ResourceID = @ID AND UserCourseID IN (SELECT ID FROM UserCourses WHERE "+yearStr+" UserID IN (SELECT UserID FROM CompanyUsers WHERE CompanyID = @CompanyID))", 
                 new { ID = this.ID, CompanyID = companyID });
 
             return model;

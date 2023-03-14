@@ -95,7 +95,7 @@
             if(Convert.ToBoolean(Session["CourseAllowAdmin"]) == true)
             {
                 <p class="intro-text hidden-xs pull-right padder  ManageCourseLink">
-                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-3" style="color: #000000 !important;">Manage Courses</a>
+                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses" class="pull-right logout-btn m-l-lg Inactive-navbarbtn btn-3" style="color: #000000 !important;">Manage My Courses</a>
                     <div class="seperator hidden-xs pull-right"></div>
                 </p>
             }
@@ -148,45 +148,7 @@
                     <!-- .breadcrumb -->
                     @*@Breadcrumb(pageData)*@
                     <!-- / .breadcrumb -->
-                    @if (!String.IsNullOrWhiteSpace(pageData.ContentTitle))
-                    {
-                        if (pageData.ContentTitle != "Assign Courses")
-                        {
-                            int ttl = 6;
-                            int ddc = 6;
-                            if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
-                            {
-
-                            }
-                            else
-                            {
-                                ttl = 11;
-                                ddc = 1;
-                            }
-                    <section class="row">
-                        <div class="col-sm-10 col-md-@ttl">
-                            <h3 class="m-b-xs text-black">
-                                @pageData.ContentTitle
-                            </h3>
-                           
-                        </div>
-                        <div class="col-sm-10 col-md-@ddc">
-                            
-                            @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))
-                            {
-                                <h3 class="content-desc adjust-desc" style="color:#ffffff !important;margin-top:36px !important">
-                                    @pageData.ContentTitleDesc
-                                </h3>
-                            }
-                            else
-                            {
-                                <a href="javascript:history.back()" class="btn btn-success" style="margin-top:12px;float:right;"><i class="fa fa-arrow-left"></i> Back</a>
-                            }
-                        </div>
-                    </section>
-                        }
-
-                    }
+                   
                     @*<div class="col-md-6"><h3 style="color:white;">Admininstrative View</h3></div>
                     <div class="col-md-6">
                         @if (!String.IsNullOrWhiteSpace(pageData.ContentTitleDesc))

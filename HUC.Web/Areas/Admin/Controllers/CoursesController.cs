@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -32,6 +34,37 @@ namespace HUC.Web.Areas.Admin.Controllers
                 TempData["ID"] = Convert.ToInt32(TempData["NewCourseId"]);
             }
             var model = Database.GetAll<CourseModel>("WHERE IsDeleted = 0 and IsCreatedBy = 0 ");
+
+
+           // Company _company = new Company();
+
+            string ConString = ConfigurationManager.ConnectionStrings["SinglePoint_Entities"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(ConString))
+            {
+                SqlDataAdapter da = new SqlDataAdapter("select * from Accounts where isdeleted=0", connection);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                List<Company> companies = dt.AsEnumerable()
+                    .Select(row => new Company
+                    {
+                        Id=row.Field<int>("trainingcoursescompanyid"),
+                        Name=row.Field<string>("userid")
+                    }).ToList();
+
+
+              
+                ViewBag.company = companies;
+
+
+               
+            }
+
+
+
+
+
             return View(model);
         }
 
@@ -306,7 +339,7 @@ namespace HUC.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CreateCourseClone(int CourseID , string CourseName)
+        public ActionResult CreateCourseClone(int CourseID , string CourseName,string company,string CourseCopy)
         {
             List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Audio, ContentType.PDF };
             var oldmodel = Database.GetSingle<CourseModel>(CourseID);
@@ -326,7 +359,23 @@ namespace HUC.Web.Areas.Admin.Controllers
             model.CourseDescription = oldmodel.CourseDescription;
             model.Background = oldmodel.Background;
             model.CreatedDate = DateTime.Now;
-            model.IsCreatedBy = false;
+
+            if (CourseCopy == "Cloud")
+            {
+                model.IsCreatedBy = false;
+
+            }
+            else
+            {
+                model.IsCreatedBy = true;
+                model.CompanyId =Convert.ToInt32(company);
+                model.Name = CourseName + " - Cloud Copy";
+            }
+
+
+
+
+
             model.ReTake = oldmodel.ReTake;
             model.PassingPercentage = oldmodel.PassingPercentage;
             model.RetakeDuration = oldmodel.RetakeDuration;
@@ -505,6 +554,12 @@ namespace HUC.Web.Areas.Admin.Controllers
         {
             var curUserCourse = Database.GetSingle<CourseModel>(id);
             return View(curUserCourse);
+        }
+
+        public class Company
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
 
        

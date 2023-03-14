@@ -90,14 +90,14 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                     @*<div class="col-md-12 module-tile box">*@
 
                     <div class="col-md-12 module-tile-first ev-component-title">
-                        <h4>About this course</h4>
+                        <h4 style="font-weight:400!important">About this course</h4>
                         @if (!String.IsNullOrWhiteSpace(Model.IntroCopy))
                         {
                             <p style="font-size:16px;" title="@Html.Raw(Model.IntroCopy)">
                                 @*@Html.Raw(Model.IntroCopy)*@
                             </p>
                         }
-                        <span class="module-time">Duration: <small>1 Minute</small></span>
+                        <span class="module-time">Duration: <small style="font-weight:400">2 Minute</small></span>
                         <span class="module-time" style="padding-right:50px">
                             <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses/AboutCourse/@Model.ID" class="btn btn-dark pull-right" style="width:85px;">Start</a>
                         </span>
@@ -161,8 +161,8 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                 <div class="col-md-6 module-tile box">
                     <div class="row inner">
                         <div class="col-md-12 module-tile-first ev-component-title">
-                            <h4>Module @item.Sort</h4>
-                            <h4 style="font-size:18px !important; font-family:'Franklin Gothic'; margin-bottom:0px !important">@item.Name</h4>
+                            <h4 style="font-weight:400!important">Module @item.Sort</h4>
+                            <h4 style=" font-family:Bahnschrift; margin-bottom:0px !important">@item.Name</h4>
                             @if (!String.IsNullOrWhiteSpace(item.TestIntroCopy))
                             {
                                 <p style="font-size:16px;" title="@Html.Raw(item.TestIntroCopy)">
@@ -188,7 +188,7 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                             }
                             @if (@item.ModuleTime != null && @item.ModuleTime > 1)
                             {
-                                <span class="module-time">Duration: <small> @Convert.ToInt32(item.ModuleTime) Minutes </small></span>
+                                <span class="module-time">Duration: <small style="font-weight:400"> @Convert.ToInt32(item.ModuleTime) Minutes </small></span>
                             }
                             else
                             {
@@ -291,11 +291,11 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
 
                     <div class="col-md-12 module-tile-first " style="height:100px!important">
                         <h4>Assessment</h4>
-                        <p style="font-size:16px;">
+                        <p style="font-size:16px;font-weight:100">
                             Give us your feedback on the course.  Anything you can contribute to make the course better will be much appreciated
                         </p>
                         <span class="module-assessed-by hidden"><b>Assessment:</b> 2 questions</span>
-                        <span class="module-time">Duration: <small> 2 Minutes </small></span>
+                        <span class="module-time">Duration: <small style="font-weight:400"> 2 Minutes </small></span>
                     </div>
                     <div class="col-md-12 module-tile-second">
                         <div class="row">

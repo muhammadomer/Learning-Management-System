@@ -17,6 +17,8 @@
 
     var company = (CompanyModel)ViewBag._Company;
     var userList = (List<string>)ViewBag.UserList;
+
+    var cid = Model.ID;
 }
 <style>
 	.vbox .row .col-md-1{
@@ -78,7 +80,23 @@
     </script>
     <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/Scale/js/datatables/datatables.css" rel="stylesheet" />
 }
+<div class="row">
+    <div class="col-md-4" style="text-align:right;padding-right:12px;padding-bottom:5px;">
+        <select class="chosen-select year-select" id="years-filter" style=" width:100px">
+            <option value="">All Time</option>
+            @foreach (var year in Model.YearsOptions())
+            {
+              
 
+                <option value="@year" @if (Model.Year == year) { <text> selected="selected" </text> }>@year</option>
+
+            }
+        </select>
+
+    </div>
+
+
+</div>
 <div class="row">
     <div class="col-md-4">
         <section class="panel panel-default" style="height:324px">
@@ -87,6 +105,8 @@
                 <div id="score-bar" style="height: 240px; display: none;"></div>
                 <span id="score-bar-error" class="chart-error" style="display: none;">No Statistics Available</span>
                 <span id="score-bar-loading" class="chart-loading">Loading Statistics...</span>
+                <div class="row" style="padding-left:0px;height:5px"><label id="yeartxt1">All Time</label></div>
+
             </div>
         </section>
     </div>
@@ -98,6 +118,8 @@
                 </div>
                 <span id="pass-fail-pie-error" class="chart-error" style="display: none;">No Statistics Available</span>
                 <span id="pass-fail-pie-loading" class="chart-loading">Loading Statistics...</span>
+                <div class="row" style="padding-left:0px;height:5px"><label id="yeartxt2">All Time</label></div>
+
             </div>
         </section>
     </div>
@@ -108,6 +130,8 @@
                 <div id="revision-bar" style="height: 210px; display: none;"></div>
                 <span id="revision-bar-error" class="chart-error" style="display: none;">No Statistics Available</span>
                 <span id="revision-bar-loading" class="chart-loading">Loading Statistics...</span>
+                <div class="row" style="padding-left:10px"><label id="yeartxt3">All Time</label></div>
+
             </div>
         </section>
     </div>
@@ -115,7 +139,7 @@
 
 <div class="row">
     <div class="col-md-12 course-table">
-        <section 
+        <section> 
             <div class="table-responsive">
                 <table id="sortable" class="table table-striped m-b-none">
                     <thead>
@@ -138,20 +162,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var curCompanyUser in company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First()))
+                        @foreach (var curCompanyUser in company.AllUsers.GroupBy(x => x.UserID ).Select(x => x.First() ))
                         {
-							var result = 0 ;
+                            var result = 0 ;
                             bool isInList = userList.IndexOf(curCompanyUser.UserID.ToString()) != -1;
                             if (!isInList)
                             {
                                 continue;
                             }
-                            var curUserCourse = curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID);
+                            var curUserCourse =Model.Year==null? curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID ): curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID && Convert.ToDateTime(x.StartedOn).Year == Model.Year)     ;
                             var isStarted = curUserCourse != null && curUserCourse.StartedOn.HasValue && !curUserCourse.IsComplete;
-							if(curUserCourse != null){
-							
-                             result =  ((curUserCourse.TotalScore * 100 ) / curUserCourse.Course.MaxScore);
-							}
+                            if(curUserCourse != null){
+
+                                result =  ((curUserCourse.TotalScore * 100 ) / curUserCourse.Course.MaxScore);
+                            
                             <tr>
                                 <td  class="alignnametd">
                                     @curCompanyUser.User.FirstName @curCompanyUser.User.LastName
@@ -227,7 +251,7 @@
                                     }
                                 </td>
                                 <td  class="aligntd">
-                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users/Statistics/@curCompanyUser.ID"><i class="fa fa-bar-chart-o"></i></a>
+                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users/Statistics/@curCompanyUser.ID?year=@Model.Year"><i class="fa fa-bar-chart-o"></i></a>
                                 </td>
                                 @if (curUserCourse != null)
                                 {
@@ -271,6 +295,7 @@
                                    
                                 }
                             </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -321,6 +346,23 @@
         if (message != "" && message != undefined) {
             alert("Certificate Already Issue");
         }
+
+
+        //$("#yeartxt1").text('All Time');
+        //$("#yeartxt2").text('All Time');
+        //$("#yeartxt3").text('All Time');
+
+
+
+        $("#years-filter").change(function () {
+            debugger;
+            var year = $("#years-filter").val();
+
+            window.location.href = '/company/usage/Course?id=' +@cid+'&year=' + year;
+
+        });
+       
+
     })
 
     function NewTab(id,userid, courseid) {
@@ -330,6 +372,10 @@
       //  var url = "/Company/Usage/IssueCertificate?id=" + userid + "&&CourseId=" + courseid + "&&type=" + 1;
         window.open(url, "_blank");
     }
+
+
+
+
  //   $("#dropdownselect").change(function () {
 
  //       var typeid = $("#dropdownselect").val();
@@ -364,13 +410,27 @@
                 shadowSize: 1
             }
         };
+        var year = $("#years-filter").val();
 
-        updateGraphs();
+        updateGraphs(year);
+        debugger;
+        if (year == "") {
+            $("#yeartxt1").text('All Time');
+            $("#yeartxt2").text('All Time');
+            $("#yeartxt3").text('All Time');
+        }
+        else {
+            $("#yeartxt1").text(year);
+            $("#yeartxt2").text(year);
+            $("#yeartxt3").text(year);
+        }
+       
+
         //window.setInterval(function () {
         //    updateGraphs();
         //}, 5000);
-        function updateGraphs() {
-            $.get('@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseData/@Model.ID', function (data) {
+        function updateGraphs(yr) {
+            $.get('@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Usage/CourseData/@Model.ID?year=' + yr, function (data) {
                 updateAverageTimeRevisingGraph(data.AverageTimeRevising);
                 updateAverageScoreGraph(data.AverageScore);
                 updatePassFailPie(data.PassFail);

@@ -3,6 +3,13 @@ using Dapper;
 using dotless.Core.Abstractions;
 using HUC.Web.App.Companies;
 using HUC.Web.App.Companies.Users;
+using HUC.Web.App.Courses;
+using HUC.Web.App.MediaItems;
+using HUC.Web.App.Resources;
+using HUC.Web.App.Resources.Chapters;
+using HUC.Web.App.Resources.Chapters.Contents;
+using HUC.Web.App.Resources.Questions;
+using HUC.Web.App.Resources.Questions.Answers;
 using HUC.Web.App.Shared;
 using HUC.Web.App.Users;
 using HUC.Web.Controllers;
@@ -11,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 
@@ -22,6 +30,8 @@ namespace HUC.Web.Services.Controllers
     {
         private UsersService _usersService;
         private AtlasDatabase Database = new AtlasDatabase();
+        private FileManipulation _files = new FileManipulation();
+
         public UserServiceController()
         {
             _usersService = new UsersService();
@@ -309,6 +319,7 @@ namespace HUC.Web.Services.Controllers
                     detailModel.CourseIDs = courseid;
                 }
                 detailModel.UserLimit = model.UserLimit;
+               // detailModel.CourseIDs = model.CourseIDs;
                 Database.ExecuteUpdate(detailModel);
                 UpdateEnumerables(detailModel.ID, detailModel.CourseIDs);
 
@@ -394,6 +405,31 @@ namespace HUC.Web.Services.Controllers
                     sql += "INSERT INTO CompanyCourses(CompanyID, CourseID) VALUES(@ID, " + curNewCourse + ");";
                 }
             }
+            else
+            {
+                var prevCourses = prevCompany.Courses;
+                foreach (var curPrevCourse in prevCourses)
+                {
+                    if (CourseIDs.Any(x => x == curPrevCourse.CourseID))
+                    {
+                        //We have a match, do nothing to preserve company customisations.
+
+                    }
+                    else
+                    {
+                        //Item only exists in old company, doesn't exist in new model. Remove occurance
+                        sql += "DELETE FROM CompanyCourses WHERE ID = " + curPrevCourse.ID + ";";
+                    }
+                }
+
+            //    sql += "DELETE FROM CompanyCourses WHERE ID = " + curPrevCourse.ID + ";";
+
+            }
+
+
+
+
+
 
             if (!String.IsNullOrWhiteSpace(sql))
             {
@@ -403,11 +439,61 @@ namespace HUC.Web.Services.Controllers
         #endregion
 
         #region simple user registration
+
         [AcceptVerbs("GET", "POST")]
+
+        public HttpResponseMessage EmailAlreadyExist(CompanyUserAddModel model)
+        {
+            string email = model.UserAdd.Email.Split('+')[0].Trim();
+            int tcuserid = model.UserID;
+            int emailcount = Database.Query<int>("select count(*)  from users where email='" + email + "'").FirstOrDefault();
+            LogApp.Log4Net.WriteLog("email count: " +emailcount, LogApp.LogType.GENERALLOG);
+
+            if (emailcount > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Email already exist");
+
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "1");
+            }
+        }
+       
+        [AcceptVerbs("GET", "POST")]
+
+
+        public HttpResponseMessage updateEmailAlreadyExist(useremail model)
+        {
+            string email = model.Email;
+            int tcuserid = model.UserID;
+            int emailcount = Database.Query<int>("select count(*)  from users where email='" + email + "' and id!="+tcuserid  ).FirstOrDefault();
+            LogApp.Log4Net.WriteLog("email count: " + emailcount, LogApp.LogType.GENERALLOG);
+
+            if (emailcount > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Email already exist");
+
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "1");
+            }
+        }
+
+        [AcceptVerbs("GET", "POST")]
+
+
         public HttpResponseMessage CreateUser(CompanyUserAddModel model)
         {
             string[] splittedEmails = model.UserAdd.Email.Split(new string[] { "$$$" }, StringSplitOptions.None);
             bool IfExistUser = false;
+
+
+           // string email1 = model.UserAdd.Email.Split('+')[0].Trim();
+           // int emailcount = Database.Query<int>("select id  from users where email='" + email1 + "'").FirstOrDefault();
+
+
             if (splittedEmails.Count() > 1)
             {
                 var response = "";
@@ -580,6 +666,7 @@ namespace HUC.Web.Services.Controllers
                 }
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid user data for Training Courses");
+            
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -660,8 +747,64 @@ namespace HUC.Web.Services.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, "1");
         }
+
+
+        [AcceptVerbs("GET", "POST")]
+        public HttpResponseMessage ChangeDeletedAccountUserEmailAddress(int companyid)
+        {
+            var users = Database.GetAll<CompanyUserModel>().Where(x => x.CompanyID == companyid).ToList();
+
+          
+
+            foreach(var user in users)
+            {
+
+               var _users = Database.GetSingle<UserModel>(user.UserID);
+
+                _users.Email = user.UserID + "-@compendiumframework.com";
+
+                _users.IsDeleted = true;
+               
+                Database.ExecuteUpdate(_users);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, "1");
+
+        }
+
+
+
         #endregion
+
+
+
+
+
+
+
+
+
+
+       
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public class CompanyUserRoleModel
     {
@@ -678,6 +821,11 @@ namespace HUC.Web.Services.Controllers
         public int CompanyId { get; set; }
         public int UserId { get; set; }
 
+    }
+    public class useremail
+    {
+        public int UserID { get; set; }
+        public string Email { get; set; }
     }
 
     public class CompanyEmailConfig

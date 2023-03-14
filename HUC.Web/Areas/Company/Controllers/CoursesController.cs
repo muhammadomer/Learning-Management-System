@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -38,6 +41,23 @@ namespace HUC.Web.Areas.Company.Controllers
                 TempData["ID"] = Convert.ToInt32(TempData["NewCourseId"]);
             }
             var model = Database.GetAll<CourseModel>("WHERE IsDeleted = 0 and IsCreatedBy = 1 and CompanyId = " + companyId);
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
             return View(model);
         }
 

@@ -37,16 +37,26 @@ namespace HUC.Web.Areas.Company.Controllers
         
 
 
-        public ActionResult Course(int id)
+        public ActionResult Course(int id,int? year=null)
         {
             var company = _users.GetLoggedInUserModel().RepresentingCompany;
-            var course = CourseModel.GetIfInCompany(id, company.ID);
+            var course = CourseModel.GetIfInCompany(id, company.ID,year);
+            course.Year = year;
             if (course == null)
             {
                 AddError("Invalid Course Provided.");
                 return RedirectToAction("Index");
             }
-            var userList= Database.Query<string>("SELECT [UserID] FROM [AssignedCourses] WHERE CourseID = " + id + "and CompanyID = "+ company.ID).ToList();
+            string yearStr="";
+            //if (year != null)
+            //{
+            //    yearStr = " year(assignedcoursedate)="+year + "and ";
+            //}
+            //else
+            //{
+            var userList = Database.Query<string>("SELECT [UserID] FROM [AssignedCourses] WHERE   CourseID = " + id + "and CompanyID = " + company.ID).ToList();
+
+            //}
             ViewBag._Company = company;
             var resources = course.Resources.ToList();
             if(userList != null)
@@ -210,14 +220,16 @@ namespace HUC.Web.Areas.Company.Controllers
             return View(model);
         }
 
-        public JsonResult CourseData(int id)
+        public JsonResult CourseData(int id,int? year=null)
         {
             var company = _users.GetLoggedInUserModel().RepresentingCompany;
-            var course = CourseModel.GetIfInCompany(id, company.ID);
+            var course = CourseModel.GetIfInCompany(id, company.ID,year);
             if (course == null)
             {
                 return null;
             }
+
+            
 
             var testTicks = new List<object[]>();
             var timeRevisingData = new List<decimal[]>();
@@ -235,7 +247,7 @@ namespace HUC.Web.Areas.Company.Controllers
 
                 testTicks.Add(new object[] { testCount, testNameSmall });
 
-                var latestTests = curTestResource.LatestUserTestsForCompany(company.ID);
+                var latestTests = curTestResource.LatestUserTestsForCompany(company.ID,year);
 
                 if (latestTests.Any())
                 {
@@ -258,7 +270,7 @@ namespace HUC.Web.Areas.Company.Controllers
             if (company.Courses.Select(x => x.CourseID).Contains(course.ID))
             {
                 //All company users have access
-                usersForCourse = company.AllUsers.Where(x=>x.User!=null).Select(x => x.User);
+                usersForCourse = company.AllUsers.Where(x=>x.User!=null && x.User.IsDeleted==false).Select(x => x.User);
             }
             else
             {
@@ -271,9 +283,17 @@ namespace HUC.Web.Areas.Company.Controllers
                         CompanyID = company.ID
                     });
             }
+
+
             foreach (var curUser in usersForCourse.GroupBy(x => x.ID).Select(x => x.First()))
             {
-                var userCourse = curUser.UserCourses.FirstOrDefault(x => x.CourseID == course.ID);
+
+                if (year == null)
+                {
+
+                }
+
+                var userCourse = year == null ? curUser.UserCourses.FirstOrDefault(x => x.CourseID == course.ID): curUser.UserCourses.FirstOrDefault(x => x.CourseID == course.ID && Convert.ToDateTime(x.StartedOn).Year==year)  ;
 
                 if (userCourse != null)
                 {

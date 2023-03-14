@@ -403,6 +403,7 @@ namespace HUC.Web.Areas.Users.Controllers
                 {
                  Database.ExecuteUpdate("UserCourses", new[] { "IsComplete", "CompleteOn", "CourseStageID" }, new { ID = curUserCourse.ID, IsComplete = false, CompleteOn = DateTime.Now, CourseStageID = curUserCourse.Course.FirstStage.ID });
                 }
+               // Database.ExecuteUpdate("UserCourseTests", new[] {"StartOn" },new {ID=curUserCourseTest.ID,StartOn=DateTime.Now});
                 CompleteTest(curUserCourseTest.ID);
             }
             return RedirectToAction("Modules","Courses", new { id = CourseID});
@@ -414,6 +415,7 @@ namespace HUC.Web.Areas.Users.Controllers
             var userCourseTestEdit = Database.GetSingle<UserCourseTestModel>(id);
             userCourseTestEdit.IsComplete = false;
             userCourseTestEdit.CompleteOn = now;
+           // userCourseTestEdit.StartOn = now;
             Database.ExecuteUpdate(userCourseTestEdit);
             Database.Execute("Insert into UserComletedCourseDates (UserCourseID, CompletedDate) Values(@UserCourseID, @CompletedDate)",
                new { UserCourseID = userCourseTestEdit.UserCourseID, CompletedDate = now });

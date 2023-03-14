@@ -13,7 +13,7 @@
 }
 
     .table tr th {
-        background-color: #72bbb8 !important;
+        background-color: #1A6935 !important;
         color: #fff !important;
         border-right: 1px solid #fff !important;
     }
@@ -87,9 +87,14 @@
 
 .header p.intro-text {
     font-size: 16px !important;
-    font-family: Franklin Gothic Medium !important;
+    font-family:Bahnschrift;
     color: #fff !important;
 }
+
+
+
+
+
 
 .header p:empty {
     display: none;

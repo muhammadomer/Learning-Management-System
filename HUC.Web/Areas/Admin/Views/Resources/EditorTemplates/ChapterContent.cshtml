@@ -592,7 +592,7 @@
         </script>
         <div class="form-group">
             @Html.LabelFor(model => model.Value, "Audio File : MP3 Format"@*, new { @class = "control-label white-color" }*@)
-            <div style="font-size:16px;font-family:'Franklin Gothic Book';">
+            <div style="font-size:16px;font-family:Bahnschrift;">
                 @if (fileProvided)
                 {
                     <input type="file" class="form-control" name="value_file" value="@fileaudio" />
@@ -642,7 +642,7 @@
                     <i class="fa fa-2x fa-file-powerpoint-o"style="color:#72bbb8"></i>
                 </div>
             </div>
-            <div style="font-size:16px;font-family:'Franklin Gothic Book';width:370px;height:40px;padding:5px!important">
+            <div style="font-size:16px;font-family:Bahnschrift;width:370px;height:40px;padding:5px!important">
                 <input type="file" name="value_file" style="padding:5px;" class="form-control" accept=".pdf, .docx, .xlsx, .doc, .pptx, .ppt, .odp" @if (fileProvidedPDF) { <text> style="display:none;" </text> } />
                 @*<p id="filetxt" style="display:none">No file choosen</p>*@
                 @if (fileProvidedPDF)

@@ -16,3 +16,9 @@
   font-weight: 700;
   src: local('Open Sans Bold'), local('OpenSans-Bold'), url('../fonts/opensans/opensans-bold.woff') format('woff');
 }
+@font-face {
+    font-family: 'Bahnschrift';
+    font-weight: normal;
+    font-style: normal;
+    src: local('Bahnschrift'), url('../fonts/Bahnschrift/Bahnschrift.woff') format('woff');
+}

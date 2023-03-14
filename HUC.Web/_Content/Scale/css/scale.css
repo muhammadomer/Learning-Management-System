@@ -55,7 +55,7 @@ h3.text-black {
 }
 p,
 small {
-    font-family: Franklin Gothic Book;
+    font-family: Bahnschrift;
     color: #4d4d4d;
     font-size: 14px;
 }
@@ -79,7 +79,7 @@ small strong {
   border-right: 1px solid #ddd;
 }
  .table tr td {
-  font-family: Franklin Gothic Book;
+  font-family: Bahnschrift;
  }
 .table tr td .btn {
   margin-right: 5px;
@@ -87,7 +87,7 @@ small strong {
     .table tr th {
         background-color: white;
         color: #e40424;
-        font-family: Franklin Gothic Medium;
+        font-family: Bahnschrift;
         font-size: 14px;
     }
 .btn-rounded {

@@ -25,7 +25,7 @@
 
     .full-page {
         padding-top: 140px !important;
-        background: linear-gradient( to bottom, #8CC63E 0%, #8CC63E 330px, #e8eaef 0%, #e8eaef 100%)!important;
+        background: linear-gradient( to bottom, #8CC63E 0%, #8CC63E 330px, #e8eaef 0%, #e8eaef 100%) !important;
     }
 
     .next {
@@ -39,16 +39,18 @@
         overflow: hidden;
         position: relative;
     }
-   
-  
 </style>
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
             $("#content").css('padding', '10px');
+            if ($.fn.DataTable.isDataTable('#sortable')) {
+                $('#sortable').DataTable().destroy();
+            }
 
             $('#sortable').dataTable({
                 "bProcessing": true,
+                "bDestroy": true,
                 "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
                 "sPaginationType": "full_numbers",
                 "iDisplayLength": 100
@@ -68,45 +70,58 @@
 
 
 
-<div class="row" >
-    <div class="col-md-6" style="text-align: left;margin-top:-40px">
-        <a id="logoid" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView" ><img id="logoimgid" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Elephant-TMS-black-Logo-AW-02.png" width="108" height="40" ></a>
+<div class="row">
+    <div class="col-md-6" style="text-align: left;">
+        <a id="logoid" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView"><img id="logoimgid" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Elephant-TMS-black-Logo-AW-02.png" width="108" height="40"></a>
 
     </div>
     <div class="col-md-6" style="text-align: right!important; margin-top: -40px;width:100%">
         @if (Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["HucLogo"]) == 1 || ViewBag._IsSimpleUser == 0)
         {
-            <a id="btnLogout" href="@Url.Action("Logout", "Auth", new { area = ""})"  style="font-size:16px;font-family:'Franklin Gothic Medium', 'Arial Narrow';color: #ffffff !important;">Close <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 0px;" /></a>
+            <a id="btnLogout" href="@Url.Action("Logout", "Auth", new { area = ""})" style="font-size:16px;font-family:Bahnschrift, 'Arial Narrow';color: #ffffff !important;">Close <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 0px;" /></a>
 
         }
         else
         {
-            <a id="btnLogout" href="@Url.Action("LogoutGdd", "Auth", new { area = ""})"  style="font-size: 16px; color: #ffffff !important;">Logout <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 0px;" /></a>
+            <a id="btnLogout" href="@Url.Action("LogoutGdd", "Auth", new { area = ""})" style="font-size: 16px; color: #ffffff !important;">Logout <img src="~/_Content/images/k6-close.png" height="22" width="24" style="margin-left: 2px;margin-right: 0px;" /></a>
 
         }
     </div>
 </div>
 
 
+<div class="row " style="margin-top:100px">
+    <div class="col-md-6">
+        <div class="col-md-10" style="padding:0px">
+            <h3 class="m-b-xs text-black">
+                Welcome @user.FirstName @user.LastName
+            </h3>
 
-<section class="row m-b-md hidden">
-    <div class="col-sm-6">
-        <h3 class="m-b-xs text-black">
-            Filter By Year
-        </h3>
-        <small>
-            Use the dropdown to filter the results and statistics shown below by year.
-        </small>
-        <br />
-        <select class="chosen-select year-select" id="years-filter">
-            <option value="">All Time</option>
-            @foreach (var year in Model.YearsOptions())
-            {
-                <option value="@year" @if (Model.Year == year) { <text> selected="selected" </text> }>@year</option>
-            }
-        </select>
+        </div>
+        <div class="col-md-2" style="text-align:right;padding:0px">
+            <select class="chosen-select year-select" id="years-filter">
+                <option value="">All Time</option>
+                @foreach (var year in Model.YearsOptions())
+                {
+                    <option value="@year" @if (Model.Year == year) { <text> selected="selected" </text> }>@year</option>
+                }
+            </select>
+
+        </div>
+
+
     </div>
-</section>
+
+    <div class="col-md-6">
+        @if (user.LastUserCourse != null)
+        {
+            <a class="btn btn-success pull-right" href="@Url.Action("Modules", "Courses", new { id = user.LastUserCourse.CourseID })" style="font-family:Bahnschrift;padding-top:10px">
+                Continue from last time<i style="margin-left: 10px;" class="fa fa-chevron-right"></i>
+            </a>
+        }
+        </div>
+
+</div>
 
 <div class="mobile-ver middle-btn">
     @if (user.LastUserCourse != null)
@@ -126,15 +141,15 @@
     {
         <div class="row">
             <div class="col-md-12 align-top-content" style="margin-top:230px !important">
-                <a class="btn btn-success pull-right" href="@Url.Action("Modules", "Courses", new {id = user.LastUserCourse.CourseID})" style="font-family:'Franklin Gothic Book'">
+                @*<a class="btn btn-success pull-right" href="@Url.Action("Modules", "Courses", new {id = user.LastUserCourse.CourseID})" style="font-family:Bahnschrift">
                     Continue from last time<i style="margin-left: 10px;" class="fa fa-chevron-right"></i>
-                </a>
+                </a>*@
             </div>
         </div>
     }
 </div>
 
-<div class="hbox" style="margin-top: 140px;">
+<div class="hbox" style="">
     <aside class="aside-lg bg-light lter b-r profile-area hidden">
         <section class="vbox">
             <section class="scrollable">
@@ -198,6 +213,8 @@
                                     <div id="revision-bar" style="height:240px;display:none;"></div>
                                     <span id="revision-bar-error" class="chart-error" style="display:none;">No Data Available...</span>
                                     <span id="revision-bar-loading" class="chart-loading">No Data Available...</span>
+                                    <div class="row" style="padding-left:10px"><label id="yeartxt1">All Time</label></div>
+
                                 </div>
                             </section>
                         </div>
@@ -211,6 +228,8 @@
                                     <div id="score-bar" style="height:240px;display:none;"></div>
                                     <span id="score-bar-error" class="chart-error" style="display:none;">No Data Available...</span>
                                     <span id="score-bar-loading" class="chart-loading">No Data Available...</span>
+                                    <div class="row" style="padding-left:10px"><label id="yeartxt2">All Time</label></div>
+
                                 </div>
                             </section>
                         </div>
@@ -237,7 +256,7 @@
                 <thead>
                     <tr>
                         <th sy>
-                            Courses Name
+                            Course Name
                         </th>
                         <th width="250px" style="text-align: center;">
                             Time Taken
@@ -252,7 +271,7 @@
                             View Test Results
                         </th>
                         <th width="200px" class="text-center">
-                            Usage Statistics
+                            Course Dynamic
                         </th>
                         <th width="150px" class="text-center">Certificate</th>
                     </tr>
@@ -314,6 +333,7 @@
                             }
                             var isStarted = userCourse != null && userCourse.StartedOn.HasValue && !userCourse.IsComplete;
                             var isComplete = userCourse != null && userCourse.StartedOn.HasValue && userCourse.IsComplete;
+
                             if (userCourse != null && attemptedques == course.MaxScore)
                             {
                                 isComplete = true;
@@ -409,36 +429,51 @@
                                     }
                                 </td>
                                 <td style="text-align: center;vertical-align:middle">
-                                    @if (!isStarted && !isComplete)
-                                    {
-                                        <i class="fa fa-times-circle" style="color:grey"></i>
-                                        @:Not Started
-                                    }
-                                    else if (isStarted && !isComplete)
-                                    {
-                                        @:In Progress
-                                    }
-
-                                    else
-                                    {
-                                        result = ((userCourse.TotalScore * 100) / userCourse.Course.MaxScore);
-                                        if (userCourse.Course.RetakeDuration == 0)
+                                    @*@if (!isStarted && !isComplete)
                                         {
-                                            @: Not Applicable
+                                            <i class="fa fa-times-circle" style="color:grey"></i>
+                                            @:Not Started
                                         }
-                                        else if (result >= course.PassingPercentage && freetextanswer == 0)
+                                        else if (isStarted && !isComplete)
+                                        {
+                                            @:In Progress
+                                        }
+
+                                                                    else
+                                                                    {
+
+                                                                        result = ((userCourse.TotalScore * 100) / userCourse.Course.MaxScore);*@
+
+                                    @if (course.RetakeDuration != 0)
+                                    {
+
+
+
+                                        if (result >= course.PassingPercentage && freetextanswer == 0)
                                         {
                                             <i class="fa fa-check-circle"></i> @: Compliant
                                         }
                                         else if (freetextanswer != 0)
                                         {
-                                            @:  In Progress
+                                            @:  Not Compliant
+
                                         }
                                         else
                                         {
                                             <i class="fa fa-times-circle" style="color:red"></i> @:Not Compliant
                                         }
+
+
+
                                     }
+                                    else
+                                    {
+                                        @: Not Applicable
+
+                                    }
+
+
+                                    @*}*@
                                 </td>
                                 <td class="text-center">
                                     @if (isComplete && freetextanswer == 0)
@@ -512,13 +547,15 @@
                                 <td>
                                     @if (modelissue != null)
                                     {
-                                        <a href="@Url.Action("IssueCertificate", new { id = modelissue.UserId, CourseId = modelissue.CourseId , type = 1 })" target="_blank" class="btn btn-xs btn-rounded btn-success"><i class="fa fa-check-circle"></i>  View Certificate</a>
+                                        <a href="@Url.Action("IssueCertificate", new { id = modelissue.UserId, CourseId = modelissue.CourseId , type = 1 })" target="_blank" style="width:115px;margin-left:30px;padding-left:5px" class="btn btn-xs btn-rounded btn-success"><i class="fa fa-check-circle"></i>  View Certificate</a>
                                     }
                                     else
                                     {
                                         <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 23px; width: 115px; text-align: center;  padding:1px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:30px;">
                                             Not Available
                                         </span>
+
+
                                     }
                                 </td>
                             </tr>
@@ -591,8 +628,8 @@
             //Year filter changes
 
             $("#years-filter").change(function() {
-                window.location.href = '/company/dashboard/Graphs?year=' + $(this).val();
-            });
+                window.location.href = '/users?year=' + $(this).val();
+         });
         });
     var defaultGraphOptions = {
         grid: {
@@ -609,7 +646,14 @@
 
     };
     //$("#score-bar").UseTooltip();
-     function updateGraphs(count,co) {
+    function updateGraphs(count, co) {
+
+
+         $("#yeartxt1").text(@Model.Year);
+         $("#yeartxt2").text(@Model.Year);
+
+
+
          $.get('@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/PageData?year=@Model.Year' + '&next=' + count, function (data) {
              totalDataScoreinGraph = data.TotalRecordScoreInGraph;
              totalDataTimeinGraph = data.TotalRecordTimeInGraph;
