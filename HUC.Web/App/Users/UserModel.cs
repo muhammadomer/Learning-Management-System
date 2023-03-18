@@ -330,6 +330,26 @@ FROM cte;
             }
             set { _userCourses = value; }
         }
+        [DBIgnore]
+
+        public UserCourseModel AssignedCourses(int courseId)
+        {
+
+            var usercourses = Database.Query<UserCourseModel>("select * from usercourses where " +
+                "UserId=@userid and courseid=@CourseId" +
+                "", new { UserId = this.ID, CourseId = courseId }).FirstOrDefault();
+
+            //var assignedCourses = Database.Query<AssignedCoursesModel>(" " +
+            //    "select * from assignedcourses where UserId=@userid" +
+            //    " and courseid=@CourseId and courseid!="+usercourses.ID+// not in (" + String.Join(", ", usercourses.Select(x => x.CourseID)) + ")" +
+            //    "" +
+            //    "" +
+            //    "",new {UserId=this.ID, CourseId = courseId }).FirstOrDefault();
+
+
+
+            return usercourses;
+        }
 
         private IEnumerable<CourseModel> _directCourses;
         [DBIgnore]

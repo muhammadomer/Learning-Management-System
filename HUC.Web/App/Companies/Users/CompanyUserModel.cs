@@ -57,7 +57,7 @@ namespace HUC.Web.App.Companies.Users
         }
 
 
-        public int? Year { get; set; }
+        public int? Year; //{ get; set; } 
 
         public IEnumerable<int> YearsOptions()
         {

@@ -21,9 +21,9 @@
     var cid = Model.ID;
 }
 <style>
-	.vbox .row .col-md-1{
+    /*.vbox .row .col-md-1{
         display:block !important;
-    }
+    }*/
 
     .dataTables_info, .dataTables_paginate {
         padding: 15px;
@@ -55,26 +55,29 @@
         padding-right: 0px !important;
         padding-left: 0px !important;
     }
-	.aligntd{
-	vertical-align: middle !important;
-    text-align: center !important;
-	}
-	.alignnametd{
-	vertical-align: middle !important;
-   
-	}
+
+    .aligntd {
+        vertical-align: middle !important;
+        text-align: center !important;
+    }
+
+    .alignnametd {
+        vertical-align: middle !important;
+    }
 </style>
 
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#sortable').dataTable({
+            $('#sortable').dataTable({               
+               
                 "bProcessing": true,
                 "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
                 "sPaginationType": "full_numbers",
-                "aoColumns": [null, null, null, null, { "bSortable": false }],
+                "aoColumns": [null, null, null, null, null, { "bSortable": false }],
                 "iDisplayLength": 10
             });
+           
         });
         $('#sortable').addClass("panel panel-default");
     </script>
@@ -86,7 +89,7 @@
             <option value="">All Time</option>
             @foreach (var year in Model.YearsOptions())
             {
-              
+
 
                 <option value="@year" @if (Model.Year == year) { <text> selected="selected" </text> }>@year</option>
 
@@ -138,22 +141,22 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12 course-table">
-        <section> 
+    <div class="col-md-12 ">
+        <section>
             <div class="table-responsive">
-                <table id="sortable" class="table table-striped m-b-none">
+                <table id="sortable" class="table table-striped m-b-none dataTables_paginate">
                     <thead>
                         <tr>
                             <th class="alignnametd">
                                 User
                             </th>
-							<th width="250" class="aligntd">
+                            <th width="250" class="aligntd">
                                 Time Spent
                             </th>
                             <th class="aligntd">
                                 Course Status
                             </th>
-                            
+
                             <th width="200" class="aligntd">
                                 Compliance Status
                             </th>
@@ -162,140 +165,185 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var curCompanyUser in company.AllUsers.GroupBy(x => x.UserID ).Select(x => x.First() ))
+                        @foreach (var curCompanyUser in company.AllUsers.GroupBy(x => x.UserID).Select(x => x.First()))
                         {
-                            var result = 0 ;
+                            var result = 0;
                             bool isInList = userList.IndexOf(curCompanyUser.UserID.ToString()) != -1;
                             if (!isInList)
                             {
                                 continue;
                             }
-                            var curUserCourse =Model.Year==null? curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID ): curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID && Convert.ToDateTime(x.StartedOn).Year == Model.Year)     ;
+                            var curUserCourse = Model.Year == null ? curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID) : curCompanyUser.User.UserCourses.FirstOrDefault(x => x.CourseID == Model.ID && Convert.ToDateTime(x.StartedOn).Year == Model.Year);
+
+                            var curAssigendCourses = curCompanyUser.User.AssignedCourses(Model.ID);
+
                             var isStarted = curUserCourse != null && curUserCourse.StartedOn.HasValue && !curUserCourse.IsComplete;
-                            if(curUserCourse != null){
 
-                                result =  ((curUserCourse.TotalScore * 100 ) / curUserCourse.Course.MaxScore);
-                            
-                            <tr>
-                                <td  class="alignnametd">
-                                    @curCompanyUser.User.FirstName @curCompanyUser.User.LastName
-                                </td>
-								<td class="aligntd">
-                                    @if (curUserCourse != null)
+                            if (curUserCourse != null)
+                            {
+
+                                result = ((curUserCourse.TotalScore * 100) / curUserCourse.Course.MaxScore);
+
+                        <tr>
+                            <td class="alignnametd">
+                                @curCompanyUser.User.FirstName @curCompanyUser.User.LastName
+                            </td>
+                            <td class="aligntd">
+                                @if (curUserCourse != null)
+                                {
+                                    @:@curUserCourse.TimeTakenString
+                                }
+                                else
+                                {
+                                    @:0 minute 0 second
+                                }
+                            </td>
+                            <td class="aligntd">
+                                @if (curUserCourse == null || !curUserCourse.StartedOn.HasValue)
+                                {
+                                    @:Not Started
+                                }
+                                else if (curUserCourse.IsComplete)
+                                {
+                                    if (curCompanyUser.HasFreeText == 1)
                                     {
-                                        @:@curUserCourse.TimeTakenString
+                                        <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a data-toggle="tooltip" title="review" href="@Url.Action("FreetextDetail", new { id = Model.ID , userid =  curCompanyUser.User.ID })" style="margin-left: -6px;">Review Pending</a>
+                                    }
+                                    else if (result >= curUserCourse.Course.PassingPercentage)
+                                    {
+                                        <i class="fa fa-check-circle"></i> @:Passed
                                     }
                                     else
                                     {
-                                        @:0 minute 0 second
+                                        <i class="fa fa-times-circle" style="color:red"></i> @:Failed
                                     }
-                                </td>
-                                <td class="aligntd">
-                                    @if (curUserCourse == null || !curUserCourse.StartedOn.HasValue)
-                                    {
-                                        @:Not Started
-                                    }
-                                    else if (curUserCourse.IsComplete)
-                                    {
-                                        if (curCompanyUser.HasFreeText == 1)
-                                        {
-                                            <i style="margin-left:-9px;"><img src="~/_Content/fonts/reistered.svg" height="24" width="30" /></i> <a data-toggle="tooltip" title="review" href="@Url.Action("FreetextDetail", new { id = Model.ID , userid =  curCompanyUser.User.ID })" style="margin-left: -6px;">Review Pending</a>
-                                        }
-                                        else if (result >= curUserCourse.Course.PassingPercentage)
-                                        {
-                                            <i class="fa fa-check-circle"></i> @:Passed
-                                        }
-                                        else
-                                        {
-                                            <i class="fa fa-times-circle" style="color:red"></i> @:Failed
-                                        }
-                                    }
-                                    else
+                                }
+                                else
+                                {
+
+                                    @:In Progress
+                                }
+                            </td>
+
+                            <td class="aligntd">
+                                @if (curUserCourse != null)
+                                {
+                                    if (curUserCourse.IsComplete)
                                     {
 
-                                        @:In Progress
-                                    }
-                                </td>
-                                
-                                <td class="aligntd">
-                                    @if (curUserCourse != null)
-                                    {
-                                        if (curUserCourse.IsComplete)
+                                        if (curCompanyUser.HasFreeText != 1)
                                         {
-
-                                            if (curCompanyUser.HasFreeText != 1)
+                                            if (curUserCourse.Course.RetakeDuration == 0)
                                             {
-                                                if (curUserCourse.Course.RetakeDuration == 0)
-                                                {
-                                                    @: Not Applicable
-                                                }
+                                                @: Not Applicable
+                                            }
 
-                                                else if (result >= curUserCourse.Course.PassingPercentage)
-                                                {
-                                                    <i class="fa fa-check-circle" style="color:green"></i> @: Compliant
-                                                }
-                                                else
-                                                {
-                                                    <i class="fa fa-times-circle" style="color:red"></i>@: Not Compliant
-                                                }
+                                            else if (result >= curUserCourse.Course.PassingPercentage)
+                                            {
+                                                <i class="fa fa-check-circle" style="color:green"></i> @: Compliant
                                             }
                                             else
                                             {
-                                                @:  In Progress
+                                                <i class="fa fa-times-circle" style="color:red"></i>@: Not Compliant
                                             }
                                         }
+                                        else
+                                        {
+                                            @:  In Progress
+                                        }
                                     }
-                                    else
-                                    {
-                                        @: Not Started
-                                    }
-                                </td>
-                                <td  class="aligntd">
-                                    <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users/Statistics/@curCompanyUser.ID?year=@Model.Year"><i class="fa fa-bar-chart-o"></i></a>
-                                </td>
+                                }
+                                else
+                                {
+                                    @: Not Started
+                                }
+                            </td>
+                            <td class="aligntd">
+                                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Users/Statistics/@curCompanyUser.ID?year=@Model.Year"><i class="fa fa-bar-chart-o"></i></a>
+                            </td>
+                            <td class="aligntd">
                                 @if (curUserCourse != null)
                                 {
                                     if (curUserCourse.IsComplete && curCompanyUser.HasFreeText != 1)
                                     {
                                         if (result >= curUserCourse.Course.PassingPercentage)
-										{
-											if (curCompanyUser.IsIssueCertificate == 0)
-											{
-												<td class="text-center">
-												<a onclick="NewTab('@curCompanyUser.ID','@curUserCourse.UserID', '@curUserCourse.CourseID');" class="btn btn-xs btn-rounded btn-success" style="background-color: #72bbb8; color: white !important;height:31px; width: 115px; text-align: center; padding:5px;padding-left:1px;margin-left: 11px; " data-toggle="tooltip" title="Certificate" >Issue Certificate</a>
-												</td>
-											}
-											else
-											{
-												<td class="text-center">
-												<span class="btn btn-xs btn-success" style="opacity:0.25; cursor:default;color:green !important">
-												<i class="fa fa-check" style="color:green"></i> Certificate Issued
-												</span>
-												</td>
-											}
-										}
+                                        {
+                                            if (curCompanyUser.IsIssueCertificate == 0)
+                                            {
+                                                @*<td class="text-center">*@
+                                                <a onclick="NewTab('@curCompanyUser.ID','@curUserCourse.UserID', '@curUserCourse.CourseID');" class="btn btn-xs btn-rounded btn-success" style="background-color: #72bbb8; color: white !important;height:31px; width: 115px; text-align: center; padding:5px;padding-left:1px;margin-left: 11px; " data-toggle="tooltip" title="Certificate">Issue Certificate</a>
+                                                @*</td>*@
+                                            }
+                                            else
+                                            {
+                                                @*<td class="text-center">*@
+                                                <span class="btn btn-xs btn-success" style="opacity:0.25; cursor:default;color:green !important">
+                                                    <i class="fa fa-check" style="color:green"></i> Certificate Issued
+                                                </span>
+                                                @*</td>*@
+                                            }
+                                        }
                                     }
                                     else
                                     {
 
-                                        <td class="aligntd">
-								 <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;" >
-                                         Not Available
-                                    </span>
-								</td>
+                                        @*<td class="aligntd">*@
+                                        <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;">
+                                            Not Available
+                                        </span>
+                                        @*</td>*@
                                     }
                                 }
                                 else
                                 {
-								<td class="aligntd">
-								 <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;" >
-                                         Not Available
+                                    @*<td class="aligntd">*@
+                                    <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;">
+                                        Not Available
                                     </span>
-								</td>
-                                   
+                                    @*</td>*@
+
                                 }
-                            </tr>
+                            </td>
+                        </tr>
                             }
+
+                            if (curAssigendCourses == null)
+                            {
+                                <tr>
+                                    <td class="alignnametd">
+                                        @curCompanyUser.User.FirstName @curCompanyUser.User.LastName
+                                    </td>
+                                    <td class="aligntd">
+
+                                        0 minute 0 second
+
+                                    </td>
+                                    <td class="aligntd">
+
+                                        :Not Started
+
+                                    </td>
+
+                                    <td class="aligntd">
+
+                                        Not Started
+
+                                    </td>
+                                    <td class="aligntd">
+                                        Not Available
+                                    </td>
+
+                                    <td class="aligntd">
+                                        <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:10px;">
+                                            Not Available
+                                        </span>
+                                    </td>
+
+
+                                </tr>
+
+                            }
+
                         }
                     </tbody>
                 </table>
@@ -361,7 +409,7 @@
             window.location.href = '/company/usage/Course?id=' +@cid+'&year=' + year;
 
         });
-       
+
 
     })
 
@@ -424,7 +472,7 @@
             $("#yeartxt2").text(year);
             $("#yeartxt3").text(year);
         }
-       
+
 
         //window.setInterval(function () {
         //    updateGraphs();
@@ -604,9 +652,9 @@
 </script>
 <script>
     $(document).ready(function () {
-		$('.btn-4').removeAttr('style');
-			$(".intro-text").removeClass("button-deactive");
-			$(".btn-4").css("color", "#ffffff !important");
-       
+        $('.btn-4').removeAttr('style');
+        $(".intro-text").removeClass("button-deactive");
+        $(".btn-4").css("color", "#ffffff !important");
+
     });
 </script>

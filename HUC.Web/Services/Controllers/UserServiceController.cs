@@ -518,7 +518,7 @@ namespace HUC.Web.Services.Controllers
                 {
                     Database.HardDelete("CompanyUsers",id);
                 }
-
+                if (isDeleted == false) { 
                 foreach (var item in val)
                 {
                     if(item == 1)
@@ -573,6 +573,7 @@ namespace HUC.Web.Services.Controllers
                         }
                     }
                 }
+                }
                 var user = new UserModel();
                 if (userid > 0)
                 {
@@ -592,6 +593,7 @@ namespace HUC.Web.Services.Controllers
                 if (user != null)
                 {
                     IfExistUser = true;
+                    if (!isDeleted) { 
                     if (ModelState.IsValid)
                     {
                         var editModel = new CompanyUserEditModel();
@@ -632,6 +634,7 @@ namespace HUC.Web.Services.Controllers
                         //}
                         LogApp.Log4Net.WriteLog("Message: This is from when Updating User. " + "UserID:" + user.ID + " Deleted:" + isDeleted + "CompanyID:" + CompanyId + " Email : " + Email + " First Name: " + model.UserAdd.FirstName + " Last Name: " + model.UserAdd.LastName + " CurrentUserLevel : " + CurrentUserLevel + " CurrentUserLevel : " + PrevUserLevel, LogApp.LogType.GENERALLOG);
                         return Request.CreateResponse(HttpStatusCode.OK, user.ID.ToString());
+                    }
                     }
                 }
                 else

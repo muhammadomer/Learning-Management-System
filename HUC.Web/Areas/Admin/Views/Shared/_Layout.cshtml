@@ -172,11 +172,11 @@
                             <div class="col-md-11 col-sm-6">
                                 <small class="content-desc white-color" style="font-size:20px !important;"> @ViewBag.CourseName </small>
                               
-                                <h3 class="m-b-xs text-black" >
+                                <h3 class="m-b-xs text-black" data-toggle="tooltip" title="@pageData.ContentTitle"  >
 
                                     @if (pageData.ContentTitle.Length > 35)
                                     {
-                                        <text> @pageData.ContentTitle.Substring(0, 35) ... </text>
+                                        <text > @pageData.ContentTitle.Substring(0, 35) ... </text>
                                     }
                                     else
                                     {

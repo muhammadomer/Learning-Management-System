@@ -133,7 +133,8 @@ foreach (var curCompany in companies)
 
     //Iterate the users within, then iterate the sub-companies
     //foreach (var user in curCompany.AllUsers.OrderByDescending(x => x.IsAdmin).ThenByDescending(x => x.IsBackupAdmin))
-    foreach (var user in curCompany.AllUsers.Where(x => !x.IsAdmin && !x.IsBackupAdmin && !x.User.IsDeleted ).OrderBy(x => x.User.FirstName))
+    foreach (var user in curCompany.AllUsers.Where(x => !x.IsAdmin && !x.IsBackupAdmin && !x.User.IsDeleted).OrderBy(x => x.User.FirstName)
+)
     {
                 <tr>
                     <td>

@@ -2,17 +2,17 @@
 @using HUC.Web.App.Companies
 @model HUC.Web.App.PageModels.CompanyDashboardPageModel
 @{
-    ViewBag.PageData = new PageDataModel
-    {
-        Title = "Dashboard",
-        ContentTitle = "Administration View",
-        ContentTitleDesc = "Here are the overall statistics of the company",
-        ActivePage = "usage-graphs",
-        Breadcrumb = new List<BreadcrumbItem>
-{
-            new BreadcrumbItem("Useage Graphs", null, "i-statistics")
-        }
-    };
+    //    ViewBag.PageData = new PageDataModel
+    //    {
+    //        Title = "Dashboard",
+    //        ContentTitle = "Administration View",
+    //        ContentTitleDesc = "Here are the overall statistics of the company",
+    //        ActivePage = "usage-graphs",
+    //        Breadcrumb = new List<BreadcrumbItem>
+    //{
+    //            new BreadcrumbItem("Useage Graphs", null, "i-statistics")
+    //        }
+    //    };
     //  Model.Company.Courses.OrderBy(x => x.Course.Name);
     var company = (CompanyModel)ViewBag._Company;
 
