@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_PreviewLayout.cshtml";
     ViewBag.PageData = new PageDataModel
     {
+
         Title = "Module - " + Model.Sort + " " + Model.Name,
         ContentTitle = "",
         ActivePage = "courses",
@@ -82,9 +83,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
         .full-page {
           background:@Model.Course.Background !important;
         }
-	.audiojs {
-        width:960px !important;
-    }
+      
     </style>
 }
 
@@ -92,28 +91,36 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
     <div class="row">
         <div class="col-md-12">
             <div class="course-header">
-                @if (Model.Course.Name.Length > 25)
+                @if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
                 {
-                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    if (Model.Course.Name.Length > 25)
+                    {
+                        <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    }
+                    else
+                    {
+                        <div>@Model.Course.Name</div>
+                    }
                 }
                 else
                 {
-                    <div>@Model.Course.Name</div>
+                    <p style="margin-top:130px"></p>
                 }
+
             </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 align-top-content2">
-		<a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important"  href="javascript:window.open('','_self').close();" >
-            <i  class="fa fa-arrow-left"></i> Back
+    <div class="col-md-12 align-top-content2" >
+	
+       <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px;margin-left:14px !important"  href="javascript:window.open('','_self').close();" >
+            <i style="margin-left: 10px;" class="fa fa-arrow-left"></i> Back
         </a>
-		
     </div>
 </div>
 
-<div class="course-overview course-overview-top-preview2">
+<div class="course-overview course-overview-top-preview2" >
     <div class="col-md-12 main-panel no-padding">
         <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
             <div class="panel-body">
@@ -122,7 +129,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         <h4>@Model.Sort - @Model.Name</h4>
                         @if (!String.IsNullOrWhiteSpace(Model.TestIntroCopy))
                         {
-                            <p><strong>Module Content:</strong><span style="font-weight:100"></span> @Model.TestIntroCopy</p>
+                            <p><strong>Module Content:</strong> @Model.TestIntroCopy</p>
                         }
                         @if (@Model.ModuleTime != null && @Model.ModuleTime > 1)
                         {
@@ -137,11 +144,11 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         {
                             if (Model.Questions.Count() == 1)
                             {
-                                <p class="margin-top-10"><strong style="font-family:Bahnschrift">Assessment:</strong> @Model.Questions.Count() question</p>
+                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() question</p>
                             }
                             else if (Model.Questions.Count() > 1)
                             {
-                                <p class="margin-top-10"><strong style="font-family:Bahnschrift">Assessment:</strong> @Model.Questions.Count() questions</p>
+                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() questions</p>
                             }
                         }
                     </div>
@@ -166,14 +173,13 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         break;
 
                                     case ContentType.Audio:
-                                        <style>
+									 <style>
 											
 										.audiojs {
 											width:946px !important;
 										}
 										</style>
                                         <audio src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Media/Uploads/@content.Value" preload="auto"></audio>
-                                        
                                         break;
                                     case ContentType.PDF:
                                         var absoluteurl = HttpContext.Current.Request.Url.AbsoluteUri.Split('/');
@@ -201,19 +207,19 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                         break;
                                     case ContentType.VideoVimeo:
 									 <div class="row" style="background-color:black">
-										<div class="col-md-2"></div>
-										<div class="col-md-8" style="margin-top:7px;">
-											<iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-										</div>
-										<div class="col-md-2"></div>
-									</div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" style="margin-top:7px;">
+                                <iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
                                         
                                         break;
                                     case ContentType.VideoWistia:
                                         <center>     <iframe src="//fast.wistia.net/embed/iframe/@content.Value" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="640" height="360"></iframe></center>
                                         break;
                                     case ContentType.Accordion:
-                                        <div class="accordion-module" id="module-@content.ID" style="margin-top:20px !important;margin-bottom:20px !important"></div>
+                                        <div class="accordion-module" id="module-@content.ID"></div>
                                         <script>
 												var jasonObj = {
 													divId: "module-@content.ID",
@@ -238,7 +244,6 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 												};
 												var flip = new Flip(jasonObj);
 												flip.initialize();
-												
                                         </script>
                                         break;
                                     case ContentType.Interview:
@@ -307,7 +312,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         title: "Question @question.Sort:",
                                                         feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
-														statement: "Select the correct option.",
+                                                        statement: "Select the correct option.",
 														attempts: @question.Attempts,
 														get multi() {
 															return @Html.Raw(Json.Encode(answerList))
@@ -347,7 +352,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         title: "Question @question.Sort:",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														question:"@question.Question.Replace("\n", "").Replace("\r", "")",
-														statement: "Select the correct option.",
+                                                        statement: "Select the correct option.",
 														attempts: @question.Attempts,
 														get multi() {
 															return @Html.Raw(Json.Encode(answerList))
@@ -388,7 +393,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 														divId: "module-@question.ID",
                                                         title: "Question @question.Sort:",
                                                        feedback: @Html.Raw(Json.Encode(question.Feedback)),
-														subHeading: "Move the slider to correct option.&nbsp;",
+                                                        subHeading: "Move the slider to the correct option",
 														max: answers.length,
 														selected: @question.AnswerOrder == 0? 0 : @question.AnswerOrder,
 														selectedAnswer: @question.AnswerOrder,
@@ -431,7 +436,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                                         title: "Question @question.Sort:",
                                                         feedback: @Html.Raw(Json.Encode(question.Feedback)),
 														statement:
-															"Drag each statement to correct column.",
+															"Drag each statement to the correct column.",
 														attempts: @question.Attempts,
 														question:  @Html.Raw(Json.Encode(answerList)),
 													};
@@ -477,7 +482,6 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                            trueFalse.initialize();*@
 
                             $(document).ready(function () {
-                                
                                 // Here you create Jason Object and initialize Interview instance
                                 var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
                                 const jasonObj = {
@@ -485,7 +489,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                     title: "Question @question.Sort:",
                                     feedback: @Html.Raw(Json.Encode(question.Feedback)),
                                     statement:
-                                        "Drag the answer to correct statement",
+                                        "Drag the answer to the correct statement",
                                     attempts: @question.Attempts,
                                     answer: [
                                         {
@@ -548,10 +552,10 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 // Here you create Jason Object and initialize Interview instance
                                 const jasonObj = {
                                     divId: "module-@question.ID",
-                                    title: "Question @question.Sort:",
+                                    title: "Question @question.Sort: ",
                                    feedback: @Html.Raw(Json.Encode(question.Feedback == null ? "" : question.Feedback)),
                                     statement:
-                                        "Select True Or False from the Dropdown after each statement.",
+                                        "Select True or False from the dropdown after each statement.",
                                     attempts: @question.Attempts,
                                     question: @Html.Raw(Json.Encode(answerList)),
 
@@ -617,12 +621,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 <input type="hidden" id="cID" value="@Model.CourseID" />
 <input type="hidden" id="isTest" value="true" />
 
-
 <script>
-    $(document).ready(function () {
-        $(".align-top-content").removeClass("button-deactive");
-        $(".align-top-content").addClass("button-active");
-    })
     $("#logoid").hide();
     $(".bg-white").hide();
 </script>

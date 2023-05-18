@@ -25,6 +25,7 @@ function Radio(jasonObj) {
         .map((item, i) => {
             if (this.jasonObj.multi[i].type == "true") {
                 answer = this.jasonObj.multi[i].option;
+                answer = $.trim(answer);
                 console.log("line-1-"+answer);
                 
             }

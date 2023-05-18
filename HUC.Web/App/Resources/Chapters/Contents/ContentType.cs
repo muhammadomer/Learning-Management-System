@@ -44,20 +44,26 @@ namespace HUC.Web.App.Resources.Chapters.Contents
         [Order(5)]
 
         Audio = 200,
+        [StringValue("Video (MP4)")]
+        // [Display(Order = 5)]
+        [Order(6)]
+
+        Video = 201,
+
 
         // [Display(Order = 6)]
-        
+
         [StringValue("Flip Card")]
         // [Display(Order = 7)]
-        [Order(6)]
+        [Order(7)]
 
         Flip = 500,
         [StringValue("2-way interview")]
         // [Display(Order = 8)]
-        [Order(7)]
+        [Order(8)]
 
         Interview = 600,
-        [Order(8)]
+        [Order(9)]
 
         Accordion = 400,
 

@@ -102,17 +102,33 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
 </div>
 <div class="course-overview course-overview-top-asses" >
     <div class="col-md-12 main-panel no-padding">
+        <div class="panel" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 ev-article">
+                        <h4>Conclusion</h4>
+
+                        @if (!String.IsNullOrWhiteSpace(Model.OutroCopy))
+                        {
+                            <p>
+                                @Html.Raw(Model.OutroCopy)
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12 ev-article">
                         <h4>Course Feedback</h4>
                         @*@if (!String.IsNullOrWhiteSpace(Model.Course.IntroCopy))
-        {
-            <p style="font-size:15px;">
-                @Html.Raw(Model.Course.IntroCopy)
-            </p>
-        }*@
+                        {
+                            <p style="font-size:15px;">
+                                @Html.Raw(Model.Course.IntroCopy)
+                            </p>
+                        }*@
                         <p style="font-size:15px;">
                             If you have any constructive criticisms about the course and how we could improve it, type in the box below. Maximum 500 (characters)
                         </p>
@@ -134,7 +150,7 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                                 <div class="col-md-12" style="">
                                     <div class="form-group">
 
-                                        <input type="button" onclick="FeedBackEmail()" value="Submit" class="btn btn-dark" disabled/>
+                                        <input type="button" onclick="FeedBackEmail()" value="Submit" class="btn btn-dark" disabled />
 
                                     </div>
                                 </div>
@@ -150,28 +166,28 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
             </div>
         </div>
 
-       
+
         <div class="row" @*style="margin-left:0px;margin-right:0px;"*@>
             <div class="col-md-12" @*module-tile*@ style="padding: 20px 14px 20px 14px; font-size: 15px;">
                 <div class="row footer-tile" style="width:102%;">
-                    
+
                     <div class="col-md-5" style="text-align:left !important;">
                         @if (Model.Resources.OrderBy(x => x.Sort).LastOrDefault() != null)
                         {
                             <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/ModuleDetail/@Model.Resources.OrderBy(x => x.Sort).LastOrDefault().ID" style="color:#fff !important;width:50%;height:38px;"><i class="fa fa-arrow-left" style="color:#fff !important"></i>  Previous Module </a>
-                      }
+                        }
                     </div>
                     <div class="col-md-2 footer-current-page">
                         <div class="coursecounter">
-                           @* <span>@(Model.Resources.Count() + 2)</span> of <span>@(Model.Resources.Count() + 2)</span>*@
+                            @* <span>@(Model.Resources.Count() + 2)</span> of <span>@(Model.Resources.Count() + 2)</span>*@
                         </div>
                     </div>
                     <div class="col-md-3">
 
                     </div>
                     <div class="col-md-2" style="text-align:right;">
-                        <a class="btn btn-default pull-right" style="color:white !important;background-color:#000;height:38px;width:100%;"  href="javascript:window.open('','_self').close();">
-                            Finish 
+                        <a class="btn btn-default pull-right" style="color:white !important;background-color:#000;height:38px;width:100%;" href="javascript:window.open('','_self').close();">
+                            Finish
                         </a>
                     </div>
                 </div>

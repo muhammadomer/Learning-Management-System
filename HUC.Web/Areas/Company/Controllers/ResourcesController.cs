@@ -391,7 +391,7 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return Json("yes", JsonRequestBehavior.AllowGet);
         }
-        List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Audio, ContentType.PDF };
+        List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Audio,ContentType.Video, ContentType.PDF };
 
         public ActionResult ContentCreate(int id, int? type = null)
         {
@@ -412,20 +412,63 @@ namespace HUC.Web.Areas.Company.Controllers
         }
 
         [HttpPost]
+
         public ActionResult ContentCreate(ChapterContentAddModel model, HttpPostedFileBase value_file)
         {
+
+
+            
+
+
+            //HttpFileCollectionBase files = Request.Files;
+            //LogApp.Log4Net.WriteLog("Total no requested files " + Request.Files.Count, LogApp.LogType.GENERALLOG);
+
+            //for (int i = 0; i < files.Count; i++)
+            //{
+               
+            //    HttpPostedFileBase file = files[i];
+            //    string fileName = file.FileName;
+            //    LogApp.Log4Net.WriteLog("File Name " + file.FileName, LogApp.LogType.GENERALLOG);
+            //    LogApp.Log4Net.WriteLog("File Size " + file.ContentLength, LogApp.LogType.GENERALLOG);
+
+
+            //}
+
+
+            //LogApp.Log4Net.WriteLog("Model content type " + model.ContentType, LogApp.LogType.GENERALLOG);
+            //LogApp.Log4Net.WriteLog("Model value " + model.Value, LogApp.LogType.GENERALLOG);
+
+
+            // if (value_file.ContentLength >= 19841325)
+            // {
+            // ModelState.AddModelError("Value", "The file size must not above 50mb");
+
+            // }
+            // else
+            // { 
             if (_uploadRequiredContentTypes.Contains(model.ContentType))
             {
                 //We require a file to be uploaded (or to already be present)!
                 if (value_file != null)
                 {
-                    //File present, upload!
-                    var validFileTypes = new List<FileType> { FileType.Any };
+                    LogApp.Log4Net.WriteLog("value_file != null", LogApp.LogType.GENERALLOG);
+                    if (value_file.ContentLength >= 19841325)
+                         {
+                         ModelState.AddModelError("Value", "The file size must not above 50mb");
+
+                         }
+
+                        //File present, upload!
+                        var validFileTypes = new List<FileType> { FileType.Any };
                     switch (model.ContentType)
                     {
                         case ContentType.Audio:
                             validFileTypes = new List<FileType> { FileType.Audio };
                             break;
+                        case ContentType.Video:
+                            validFileTypes = new List<FileType> { FileType.Video };
+                            break;
+
                         case ContentType.PDF:
                             validFileTypes = new List<FileType> { FileType.PDF };
                             break;
@@ -453,6 +496,8 @@ namespace HUC.Web.Areas.Company.Controllers
                 }
                 else if (!String.IsNullOrWhiteSpace(model.Value))
                 {
+                    //LogApp.Log4Net.WriteLog("value_file != null", LogApp.LogType.GENERALLOG);
+
                     //No file, but value is present. No errors!
                     ModelState.Remove("Value");
                 }
@@ -480,10 +525,24 @@ namespace HUC.Web.Areas.Company.Controllers
                 AddSuccessCreate("Section");
                 return RedirectToAction("View", new { id = model.Chapter.ResourceID });
             }
-
+           // }
             AddErrorModel();
             return View(model);
         }
+
+        [HttpPost]
+
+        public ActionResult UploadMP4Files()
+        {
+
+            var postedfile = Request.Files.Count;
+
+            return Json("yes", JsonRequestBehavior.AllowGet);
+            //  return Request.CreateResponse(HttpStatusCode.OK, fileName);
+
+        }
+
+
 
         public ActionResult ContentEdit(int id)
         {

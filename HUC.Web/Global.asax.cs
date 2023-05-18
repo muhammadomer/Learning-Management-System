@@ -32,7 +32,7 @@ namespace HUC.Web
             Log4Net.EnableDBLOG = true;
             Log4Net.EnableERRORLOG = true;
             Log4Net.EnableGENERALLOG = true;
-            Log4Net.FileSize = 10;
+            Log4Net.FileSize = 50;
             Log4Net.TotalFiles = 10;
             Log4Net.Activate(true);
             Log4Net.WriteLog("Application Log initiazlize successfully", LogType.GENERALLOG);

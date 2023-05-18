@@ -16,19 +16,22 @@
         height: 40px !important;
         max-width: 500px !important;
     }
-	.accordiontitle , .accordiondescription {
+
+    .accordiontitle, .accordiondescription {
         margin-left: 10px;
         margin-right: 4px;
     }
+
     .removeItem {
         float: right;
         margin-right: 10px;
     }
-	#accordionList li {
+
+    #accordionList li {
         background-color: #f6f6f6;
         border: solid 1px;
         margin-bottom: 2px;
-        padding:5px;
+        padding: 5px;
         cursor: grab;
     }
 </style>
@@ -48,6 +51,7 @@
         var optionList = [];
         var IndexId = 1;
         var imageerror = 0;
+        var filesize = 0;
         $("#loading").hide();
         console.log("model");
         if (model == 400) {
@@ -87,7 +91,7 @@
             }
         }
         $("#btSubmit").on("click", function (e) {
-
+            debugger;
             e.preventDefault();
             JsonList = [];
             var itemLength = $('#accordionList li').length;
@@ -265,10 +269,18 @@
                     imageerror = 0;
                 }
                 else {
+                    //var size = $('#submitform')["0"].firstChild.files["0"].size;
+                    //if (filesize > 1234567) {
+                    //    return
+                    //}
+                 //   uploadVideo();
+
                     $("#submitform").submit();
                 }
             }
         });
+
+
 
         $("#addItemToList").on("click", function () {
             if (model == 400) {
@@ -505,6 +517,9 @@
             $("#txtDescription").val("");
             $("#backtxtDescription").val("");
         };
+
+
+
 		$(document).on("click", ".removeItem", function () {
         $(this).parent().remove();
         JsonList = [];
@@ -533,6 +548,21 @@
     });
 
 
+    function SizeCheck() {
+        debugger;
+        var fileInput = document.getElementById('vFile').files;
+        var fsize = fileInput[0].size;
+        var file = Math.round((fsize / 1024));
+        if (file >= 10240) {     //10MB
+            //Add Alert Here If
+            // $('#upload_error').html("* File Size < 10MB");
+            alert("size exceed");
+        }
+        else {
+            // $('#invoice_error').html("");
+            alert("size ok");
+        }
+    }
 
 
     function isNumber(evt) {
@@ -543,6 +573,27 @@
         }
         return true;
     }
+
+     function uploadVideo() {
+        debugger;
+        var formData = new FormData();
+        formData.append("file", $("#file")[0].files[0]);
+        $.ajax({
+            url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/UploadMP4Files',
+
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+            }
+        });
+    }
+
+
+
 </script>
 
 @switch (Model.ContentType)
@@ -622,12 +673,66 @@
             })
         </script>
         break;
+    case ContentType.Video:
+        var fileProvidedVideo = Model != null && !String.IsNullOrWhiteSpace(Model.Value);
+        var filevideo = Model.Value;
+        <script>
+            $(".panel").css('width', '40%');
+        </script>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, "Video File : MP4 Format"@*, new { @class = "control-label white-color" }*@)
+            <div style="font-size:16px;font-family:Bahnschrift;">
+                @if (fileProvidedVideo)
+        {
+            <input id="value_file"  type="file" class="form-control" name="value_file" value="@filevideo"  />
+            <label id="filename">@filevideo</label>
+        }
+        else
+        {
+            <input type="file" class="form-control" name="value_file" />
+        }
+        @Html.HiddenFor(x => x.Value)
+        @Html.ValidationMessageFor(model => model.Value)
+
+                @*<input type="file" id="file" />*@
+            </div>
+        </div>
+        <script>
+            $('input[type="file"]').change(function (e) {
+                debugger;
+                var fileName = e.target.files[0].name;
+               // filesize=e.target.files[0].size;
+                $("#filename").text(fileName);
+                var filesize = e.target.files[0].size;
+
+                if (filesize > 52428800) {
+                   
+                  
+
+                    var input = $(this);
+                    var next = this.nextSibling;
+                    var parent = input.parent();
+                    var form = $("<form></form>");
+                    form.append(input);
+                    form[0].reset();
+                    if (next) {
+                        $(next).before(input);
+                    } else {
+                        parent.append(input);
+                    }
+                    toastr.error("File size can't be more than 50mb");
+                   
+                }
+               
+            })
+        </script>
+        break;
 
     case ContentType.PDF:
         var fileProvidedPDF = Model != null && !String.IsNullOrWhiteSpace(Model.Value);
-		var filename = Model.Value;
+        var filename = Model.Value;
         <style>
-            
+
             .fa-2x {
                 font-size: 1.5em !important;
             }
@@ -653,12 +758,12 @@
                 </div>
             </div>
             <div class="form-group" style="font-size:16px;font-family:Bahnschrift;width:370px;height:40px;padding:5px!important">
-               
+
                 @if (fileProvidedPDF)
                 {
-                    <input type="file" name="value_file"  style="padding:7px;" class="form-control" accept=".pdf, .docx, .xlsx, .doc, .pptx, .ppt, .odp" value="@filename"/>
-                    <label id="filename" >@filename</label>
-//                    <p>A file is already uploaded. <a href="#" class="revealUpload" style="color:cornflowerblue">Click here</a> to replace it.</p>
+                    <input type="file" name="value_file" style="padding:7px;" class="form-control" accept=".pdf, .docx, .xlsx, .doc, .pptx, .ppt, .odp" value="@filename" />
+                    <label id="filename">@filename</label>
+                    //                    <p>A file is already uploaded. <a href="#" class="revealUpload" style="color:cornflowerblue">Click here</a> to replace it.</p>
                 }
                 else
                 {
@@ -672,12 +777,14 @@
             $('input[type="file"]').change(function (e) {
                 var fileName = e.target.files[0].name;
                 $("#filename").text(fileName);
-            })     
+
+               
+            })
         </script>
         break;
 
 
-  case ContentType.VideoYoutube:
+    case ContentType.VideoYoutube:
         <script>
             $(".panel").css('width', '35%');
             $(".edit-create-form").css('margin-top', '10px');
@@ -725,13 +832,13 @@
             <div>
                 @if (Model.Value != null)
                 {
-                    <input type="text" id="ValueVimeoVideo" class = "form-control" value="https://vimeo.com/@Model.Value" />
-                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-vimo-vid" , @style = "display:none" })
+                    <input type="text" id="ValueVimeoVideo" class="form-control" value="https://vimeo.com/@Model.Value" />
+                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-vimo-vid", @style = "display:none" })
                     @Html.ValidationMessageFor(model => model.Value)
                 }
                 else
                 {
-                    <input type="text" id="ValueVimeoVideo" class = "form-control" />
+                    <input type="text" id="ValueVimeoVideo" class="form-control" />
                     @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @id = "js-vimo-vid", @style = "display:none" })
                     @Html.ValidationMessageFor(model => model.Value)
                 }
@@ -743,7 +850,7 @@
                     $this = $(this);
                 if (newval = $this.val().replace('https://vimeo.com/', '')) {
                     $("#js-vimo-vid").val(newval);
-                } 
+                }
             });
         </script>
         break;
@@ -774,9 +881,9 @@
             $('#ValueWistiaVideo').on('change', function () {
                 var newval = '',
                     $this = $(this);
-                if (newval = $this.val().replace('http://fast.wistia.net/embed/iframe/' , '')) {
+                if (newval = $this.val().replace('http://fast.wistia.net/embed/iframe/', '')) {
                     $("#js-Wistia-vid").val(newval);
-                } 
+                }
             });
         </script>
         break;
@@ -787,16 +894,17 @@
             $(".edit-create-form").css('margin-left', '8px');
 
         </script>
-		<style>
+        <style>
             .form-control-desc {
                 color: #72bbb8 !important;
                 border: 2px solid #72bbb8 !important;
                 border-radius: 6px;
             }
+
             .edit-create-form .input-field input[type="text"], .edit-create-form .input-field input[type="password"], .edit-create-form .input-field input[type="email"], .edit-create-form .input-field input[type="number"], .edit-create-form .input-field textarea {
                 float: left;
                 width: 98%;
-                max-width: 100%; 
+                max-width: 100%;
                 padding: 0 5px;
                 font-size: 16px;
                 font-family: roboto-regular, Arial, sans-serif;
@@ -876,15 +984,15 @@
             ];
             var fontColors = [
                 {
-                    text:"White",
-                    value:"#72bbb8"
+                    text: "White",
+                    value: "#72bbb8"
                 }
             ];
             $(document).ready(function () {
                 $("#btSubmit").hide();
                 $(".action-button").css({ "margin-right": "57%!important" });
                 $("#btSubmit").val("Finish");
-				$("#cncelb").css("margin-left" , "-3px !important");
+                $("#cncelb").css("margin-left", "-3px !important");
                 $(".tab-content #front").addClass('in active');
                 $('#backBackgroundcolor').colorselector();
                 $('#Backgroundcolor').colorselector();
@@ -931,7 +1039,7 @@
                     showFooter: false,
                     fontName: fonts,
                     fontSize: textfontsize,
-                   // fontColor: fontColors,
+                    // fontColor: fontColors,
                     tools: {
                         font: ["fontName", "fontSize", "fontColor", "backgroundColor"],
                         style: ["bold", "italic", "underline"]
@@ -972,12 +1080,12 @@
             $(document).ready(function () {
                 $('#txtDescription_Iframe').contents().find('body').css('backgroundColor', '#72bbb8');
                 $('#backtxtDescription_Iframe').contents().find('body').css('backgroundColor', '#e8eaef');
-               // $('#txtDescription_Iframe').contents().find('body').css('caret-color', '#72bbb8');
-              //  $('#backtxtDescription_Iframe').contents().find('body').css('caret-color', '#e8eaef');
+                // $('#txtDescription_Iframe').contents().find('body').css('caret-color', '#72bbb8');
+                //  $('#backtxtDescription_Iframe').contents().find('body').css('caret-color', '#e8eaef');
 
                 $('ul.dropdown-menu').click(function (e) {
                     var color = $('#Backgroundcolor').val();
-                   // $('#txtDescription_Iframe').contents().find('body').css('caret-color', color);
+                    // $('#txtDescription_Iframe').contents().find('body').css('caret-color', color);
                     $('#txtDescription_Iframe').contents().find('body').css('backgroundColor', color);
                 });
                 $('ul.dropdown-caret').click(function (e) {
@@ -1078,7 +1186,7 @@
                 color: black !important;
             }
 
-			
+
             table {
                 width: 500px;
                 border-radius: 6px;
@@ -1178,7 +1286,7 @@
                                     </div>
                                     <div class="col-md-2" style="margin-left: -30px; margin-top: 8px;">
                                         <select id="Backgroundcolor" name="Backgroundcolor">
-                                            <option value="#72bbb8"  data-color="#72bbb8" selected>Hex</option>
+                                            <option value="#72bbb8" data-color="#72bbb8" selected>Hex</option>
                                             <option value="#ffffff" data-color="#ffffff">White</option>
                                             <option value="#A0522D" data-color="#A0522D">sienna</option>
                                             <option value="#FF4500" data-color="#FF4500">orangered</option>
@@ -1204,7 +1312,7 @@
                         </div>
                         <div class="form-group" id="introid" style="width: 440px;display:none">
                             <div class="input-field">
-                               
+
                                 @Html.TextArea("Description", new { @class = "flipdescription", @id = "txtDescription", @name = "txtDescription", @placeholder = "Flip Cover Text" })
                             </div>
                         </div>
@@ -1251,9 +1359,9 @@
                     </div>
                 </div>
                 <div class="form-group" id="introid" style="margin-top:-15px;width: 440px;">
-                    Text 
+                    Text
                     <div class="input-field">
-                      
+
                         @Html.TextArea("backDescription", new { @class = "backfliptxtDescription", @id = "backtxtDescription", @name = "backtxtDescription", @placeholder = "Back Flip  Text" })
                     </div>
                 </div>

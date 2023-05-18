@@ -172,14 +172,25 @@ else
                                         break;
 
                                     case ContentType.Audio:
-									<style>
-        
-					 .audiojs {
-        width:946px !important;
-    }
-    </style>
+                                        <style>
+
+                                            .audiojs {
+                                                width: 946px !important;
+                                            }
+                                        </style>
                                         <audio src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Media/Uploads/@content.Value" preload="auto"></audio>
                                         break;
+                                    case ContentType.Video:
+                                        <style>
+
+                                            .audiojs {
+                                                width: 946px !important;
+                                                margin-top: 20px;
+                                            }
+                                        </style>
+                                        <video style="padding-top:15px;width:946px" src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Media/Uploads/@content.Value" controls preload="auto"></video>
+                                        break;
+
                                     case ContentType.PDF:
                                         var absoluteurl = HttpContext.Current.Request.Url.AbsoluteUri.Split('/');
                                         var urlpath = absoluteurl[0] + "//" + absoluteurl[2];
@@ -206,12 +217,12 @@ else
                                         break;
                                     case ContentType.VideoVimeo:
                                         <div class="row" style="background-color:black;width: 945px;margin-left: 0px;">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8" style="margin-top:7px;">
-                                <iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8" style="margin-top:7px;">
+                                                <iframe src="//player.vimeo.com/video/@content.Value?badge=0&byline=0&title=0" width="600" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
                                         break;
                                     case ContentType.VideoWistia:
                                         <center>     <iframe src="//fast.wistia.net/embed/iframe/@content.Value" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="960" height="360"></iframe></center>

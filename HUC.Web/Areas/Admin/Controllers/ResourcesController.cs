@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Dapper;
 using HUC.Web.App.Courses;
 using HUC.Web.App.MediaItems;
 using HUC.Web.App.Resources;
@@ -15,6 +14,16 @@ using HUC.Web.App.Resources.Questions.Answers;
 using HUC.Web.App.Shared;
 using HUC.Web.App.Users;
 using HUC.Web.App.Users.Courses;
+using Dapper;
+
+using System.Web.Http.Results;
+using dotless.Core.Abstractions;
+
+
+using System.Net;
+using System.Net.Http;
+
+
 
 namespace HUC.Web.Areas.Admin.Controllers
 {
@@ -372,7 +381,7 @@ namespace HUC.Web.Areas.Admin.Controllers
             {
                 Database.HardDelete("ChapterContents", id);
                 FixContentSorts(content.ChapterID);
-              //  AddDeleted("Section");
+              //  AddDeleted("Section"); view pr
             }
             else
             {
@@ -404,7 +413,7 @@ namespace HUC.Web.Areas.Admin.Controllers
 
 
 
-        List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Audio, ContentType.PDF };
+        List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Video, ContentType.Audio, ContentType.PDF };
 
         public ActionResult ContentCreate(int id, int? type = null)
         {
@@ -425,78 +434,185 @@ namespace HUC.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+       // [DisableRequestSizeLimit]
         public ActionResult ContentCreate(ChapterContentAddModel model, HttpPostedFileBase value_file)
         {
-            if (_uploadRequiredContentTypes.Contains(model.ContentType))
+           // HttpPostedFileBase value_file = valuefile as HttpPostedFileBase;
+
+           // LogApp.Log4Net.WriteLog("value_file " + value_file + "-" + valuefile, LogApp.LogType.GENERALLOG);
+            // var httpPostedFile = Request.Files[0];
+             LogApp.Log4Net.WriteLog("posted file " + value_file , LogApp.LogType.GENERALLOG);
+
+            //IFormFile formFile = null;
+
+            try
             {
-                //We require a file to be uploaded (or to already be present)!
-                if (value_file != null)
+                if (_uploadRequiredContentTypes.Contains(model.ContentType))
                 {
-                    //File present, upload!
-                    var validFileTypes = new List<FileType> { FileType.Any };
-                    switch (model.ContentType)
-                    {
-                        case ContentType.Audio:
-                            validFileTypes = new List<FileType> { FileType.Audio };
-                            break;
-                        case ContentType.PDF:
-                            validFileTypes = new List<FileType> { FileType.PDF };
-                            break;
-                    }
+                    LogApp.Log4Net.WriteLog("model content type: " +model.ContentType , LogApp.LogType.GENERALLOG);
 
-                    if (!validFileTypes.Contains(_files.GetFileType(value_file)))
+                    //We require a file to be uploaded (or to already be present)!
+                    if (value_file != null)
                     {
-                        ModelState.AddModelError("Value", "Invalid file type provided.");
-                    }
-                    else
-                    {
-                        string fileName, errorMessage = null;
-                        if (_files.TryUpload(value_file, FileType.Any, out fileName, out errorMessage))
+                        LogApp.Log4Net.WriteLog("value file is not null: " , LogApp.LogType.GENERALLOG);
+
+                        //File present, upload!
+                        var validFileTypes = new List<FileType> { FileType.Any };
+                        switch (model.ContentType)
                         {
-                            model.Value = fileName;
+                            case ContentType.Audio:
+                                validFileTypes = new List<FileType> { FileType.Audio };
+                                break;
+                            case ContentType.Video:
+                                validFileTypes = new List<FileType> { FileType.Video };
+                                break;
 
-                            ModelState.Remove("Value");
+                            case ContentType.PDF:
+                                validFileTypes = new List<FileType> { FileType.PDF };
+                                break;
+                        }
+
+                        if (!validFileTypes.Contains(_files.GetFileType(value_file)))
+                        {
+                            ModelState.AddModelError("Value", "Invalid file type provided.");
                         }
                         else
                         {
-                            ModelState.AddModelError("Value", errorMessage);
-                        }
-                    }
+                            string fileName, errorMessage = null;
+                            if (_files.TryUpload(value_file, FileType.Any, out fileName, out errorMessage))
+                            {
+                                model.Value = fileName;
 
-                }
-                else if (!String.IsNullOrWhiteSpace(model.Value))
-                {
-                    //No file, but value is present. No errors!
-                    ModelState.Remove("Value");
+                                ModelState.Remove("Value");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("Value", errorMessage);
+                            }
+                        }
+
+                    }
+                    else if (!String.IsNullOrWhiteSpace(model.Value))
+                    {
+                        LogApp.Log4Net.WriteLog("model value not null or whitespace: "+model.Value, LogApp.LogType.GENERALLOG);
+
+                        //No file, but value is present. No errors!
+                        ModelState.Remove("Value");
+                    }
+                    else
+                    {
+                        LogApp.Log4Net.WriteLog("model value null or whitespace: " + model.Value, LogApp.LogType.GENERALLOG);
+
+                        //No file, no value, many errors!
+                        ModelState.AddModelError("Value", "The " + model.ContentType.StringValue() + " file is required.");
+                    }
                 }
                 else
                 {
-                    //No file, no value, many errors!
-                    ModelState.AddModelError("Value", "The " + model.ContentType.StringValue() + " file is required.");
+                    if (String.IsNullOrWhiteSpace(model.Value))
+                    {
+                        LogApp.Log4Net.WriteLog("model value null or whitespace: " + model.Value, LogApp.LogType.GENERALLOG);
+
+                        ModelState.AddModelError("Value", "The " + model.ContentType.StringValue() + " field is required.");
+                    }
                 }
-            }
-            else
-            {
-                if (String.IsNullOrWhiteSpace(model.Value))
+
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("Value", "The " + model.ContentType.StringValue() + " field is required.");
+                    var prevContents = Database.GetAll<ChapterContentModel>("WHERE ChapterID = @ChapterID", new { ChapterID = model.ChapterID });
+                    var lastSort = prevContents.Any() ? prevContents.Max(x => x.Sort) : 0;
+                    model.Sort = lastSort + 1;
+                    Database.ExecuteInsert(model);
+
+                    AddSuccessCreate("Section");
+                    return RedirectToAction("View", new { id = model.Chapter.ResourceID });
                 }
-            }
 
-            if (ModelState.IsValid)
+                AddErrorModel();
+                           }
+            catch(Exception ex)
             {
-                var prevContents = Database.GetAll<ChapterContentModel>("WHERE ChapterID = @ChapterID", new { ChapterID = model.ChapterID });
-                var lastSort = prevContents.Any() ? prevContents.Max(x => x.Sort) : 0;
-                model.Sort = lastSort + 1;
-                Database.ExecuteInsert(model);
+                LogApp.Log4Net.WriteException(ex);
 
-                AddSuccessCreate("Section");
-                return RedirectToAction("View", new { id = model.Chapter.ResourceID });
+            }
+            return View(model);
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult UploadMP4Files()
+        {
+
+            try
+            {
+               
+
+               // Fetch the File.
+                HttpPostedFile postedFile =System.Web. HttpContext.Current.Request.Files[0];
+
+                //Fetch the File Name.
+                string fileName =System.Web.HttpContext.Current.Request.Form["fileName"] + Path.GetExtension(postedFile.FileName);
+
+               // var httpPostedFile = HttpContext.Request.Files[0];
+
+                LogApp.Log4Net.WriteLog("posted file " + postedFile.ContentType, LogApp.LogType.GENERALLOG);
+
+            }
+            catch (Exception ex)
+            {
+                LogApp.Log4Net.WriteException(ex);
+
             }
 
-            AddErrorModel();
-            return View(model);
+
+
+            return Json("yes", JsonRequestBehavior.AllowGet);
+          //  return Request.CreateResponse(HttpStatusCode.OK, fileName);
+
         }
+
+
+        [HttpPost]
+
+        public ActionResult UploadFiles1()
+        {
+
+            try
+            {
+                string path = System.Web.HttpContext.Current.Server.MapPath("~/Uploads/");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                //Fetch the File.
+                HttpPostedFile postedFile = System.Web.HttpContext.Current.Request.Files[0];
+
+                //Fetch the File Name.
+                string fileName = System.Web.HttpContext.Current.Request.Form["fileName"] + Path.GetExtension(postedFile.FileName);
+
+                //Save the File.
+                postedFile.SaveAs(path + fileName);
+
+            }
+            catch (Exception ex)
+            {
+                LogApp.Log4Net.WriteException(ex);
+
+            }
+
+
+            //Create the Directory.
+            
+            //Send OK Response to Client.
+           // return  Request.CreateResponse(HttpStatusCode.OK, fileName);
+            return Json("yes", JsonRequestBehavior.AllowGet);
+
+        }
+
+
 
         public ActionResult ContentEdit(int id)
         {

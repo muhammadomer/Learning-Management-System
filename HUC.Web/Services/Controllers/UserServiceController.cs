@@ -467,8 +467,13 @@ namespace HUC.Web.Services.Controllers
         {
             string email = model.Email;
             int tcuserid = model.UserID;
+            LogApp.Log4Net.WriteLog("email: " + model.Email, LogApp.LogType.GENERALLOG);
+            LogApp.Log4Net.WriteLog("model tcuserid: " + model.UserID, LogApp.LogType.GENERALLOG);
+
             int emailcount = Database.Query<int>("select count(*)  from users where email='" + email + "' and id!="+tcuserid  ).FirstOrDefault();
             LogApp.Log4Net.WriteLog("email count: " + emailcount, LogApp.LogType.GENERALLOG);
+            LogApp.Log4Net.WriteLog("tcuserid: " + tcuserid, LogApp.LogType.GENERALLOG);
+
 
             if (emailcount > 0)
             {
