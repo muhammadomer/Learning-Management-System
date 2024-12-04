@@ -389,6 +389,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             });
                                         }
                                         <script>
+                                            debugger;
 													// Slider
 													var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
 													var jasonObj = {
@@ -644,7 +645,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 {
 
                                     var formId = "submitAnswer" + question.ID;
-                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
+                                    @*using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
                                     {
                                         foreach (var curAnswer in question.Answers)
                                         {
@@ -681,7 +682,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                             var freetext = new PreviewFreeText(jasonObj);
                                             freetext.initialize();
                                         </script>
-                                    }
+                                    }*@
                                 }
 
                             }

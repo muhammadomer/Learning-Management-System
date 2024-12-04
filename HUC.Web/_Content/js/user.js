@@ -21,16 +21,19 @@ $(document).ready(function () {
         var connectionId = $.connection.hub.id;
         if(connectionId!== undefined)
         {
-            
-            var url = AttachURL + '/Automation/ClientAliveMessage?connectionId=' + connectionId;
+            debugger;
+            var url =  '/Automation/ClientAliveMessage?connectionId=' + connectionId;
             $.ajax({
                 cache: false,
                 type: 'GET',
                 url: url,
                 success: function () {
+                    debugger;
                 console.log("Success");
                 },
                 error: function () {
+                    debugger;
+                    console.log(url);
                   console.log("Error");
                 }
             });
@@ -75,7 +78,7 @@ $(document).ready(function () {
         heartbeat();
         function heartbeat() {
             //console.log('thum-dum');
-           
+            debugger;
             var heatbeatHub = $.connection.heartbeatHub;
             //Client response call back....
             heatbeatHub.client.notify = function (response) {
@@ -97,13 +100,13 @@ $(document).ready(function () {
             // Start the connection.
             $.connection.hub.start().done(function () {
                 // Call the Send method on the hub. 
-               
+                debugger;
                 var model = {
                     CourseID: cID,
                     IsTest: isTest
                 };
 
-                heatbeatHub.server.sendHeartbeatInfo(model);
+                heatbeatHub.server.SendHeartbeatInfo();
                 pageRefresh();
             });
         }

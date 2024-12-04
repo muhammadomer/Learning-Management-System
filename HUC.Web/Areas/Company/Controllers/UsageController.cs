@@ -502,7 +502,9 @@ namespace HUC.Web.Areas.Company.Controllers
         private void WriteTexttoImage(string email,string username,string companyname,string issuedate,string questions,string answers,string officerName,string courseName,string companyName)
         {
 
-         
+
+
+            LogApp.Log4Net.WriteLog("companyname:" + companyname + "username:" + username, LogApp.LogType.GENERALLOG);
 
             PointF usernameLocation = new PointF(540f, 1170f);
             PointF companynameLocation = new PointF(540f, 1450f);
@@ -511,9 +513,10 @@ namespace HUC.Web.Areas.Company.Controllers
             PointF answersLocation = new PointF(620f, 2040f);
 
 
-            string imageFilePath = Server.MapPath("~/_Content/images/Certificate/certificatev3.png"); 
+            string imageFilePath = Server.MapPath("~/_Content/images/Certificate/CertificateV3.png"); 
             Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
             LogApp.Log4Net.WriteLog("imageFilePath--bitmapfrom:" + imageFilePath, LogApp.LogType.GENERALLOG);
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 using (System.Drawing.Font arialFont = new System.Drawing.Font("Arial", 10))
@@ -527,7 +530,9 @@ namespace HUC.Web.Areas.Company.Controllers
                 }
             }
             string FileName = "Certificate" + DateTime.UtcNow.Ticks + ".png";
-            bitmap.Save(System.Web.HttpContext.Current.Server.MapPath("~/certificate\\" + FileName));//save the image file
+            string imgfilepath = System.Web.HttpContext.Current.Server.MapPath("~/_Content/images/certificate\\" + FileName);
+            bitmap.Save(System.Web.HttpContext.Current.Server.MapPath("~/_Content/images/certificate\\" + FileName));//save the image file
+           
             LogApp.Log4Net.WriteLog("imageFilePath--bitmapsave:" + FileName, LogApp.LogType.GENERALLOG);
             EmailCertificate(email, username, FileName,officerName,courseName,companyName);
 
@@ -543,7 +548,7 @@ namespace HUC.Web.Areas.Company.Controllers
            System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
 
 
-            FileStream output = new FileStream(System.Web.HttpContext.Current.Server.MapPath("~/certificate\\" + FileName), FileMode.Create);
+            FileStream output = new FileStream(System.Web.HttpContext.Current.Server.MapPath("~/_Content/images/certificate\\" + FileName), FileMode.Create);
             LogApp.Log4Net.WriteLog("FileStream output:" + FileName, LogApp.LogType.GENERALLOG);
 
             PdfWriter writer = PdfWriter.GetInstance(document, output);
@@ -554,7 +559,7 @@ namespace HUC.Web.Areas.Company.Controllers
 
          
 
-            string imageURL =Server.MapPath("~/Certificate/" + filename);
+            string imageURL =Server.MapPath("~/_Content/images/Certificate\\" + filename);
             LogApp.Log4Net.WriteLog("imageURL:" + imageURL, LogApp.LogType.GENERALLOG);
 
             iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
@@ -609,7 +614,7 @@ namespace HUC.Web.Areas.Company.Controllers
             mail.Body += "<p>" + companyName + "</p></br>";
 
 
-            Attachment attachment = new Attachment(Server.MapPath("~/Certificate/" + FileName));
+            Attachment attachment = new Attachment(Server.MapPath("~/_Content/images/Certificate/" + FileName));
             LogApp.Log4Net.WriteLog("attachment:" + FileName, LogApp.LogType.GENERALLOG);
             mail.Attachments.Add(attachment);
 

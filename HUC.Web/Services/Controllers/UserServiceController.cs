@@ -20,7 +20,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Results;
+//using System.Web.Http.Results;
 
 
 namespace HUC.Web.Services.Controllers
@@ -108,6 +108,10 @@ namespace HUC.Web.Services.Controllers
         {
             _usersService.Logout();
             return Request.CreateResponse(HttpStatusCode.OK);
+
+
+
+           
         }
         // CRUD For Admin User
 

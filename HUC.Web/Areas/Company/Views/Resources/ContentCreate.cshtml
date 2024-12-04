@@ -21,44 +21,48 @@
     };
 }
 @*<script src="~/ckeditor/ckeditor_source.js"></script>*@
+
 <style>
     .edit-create-form .form-group label {
         margin-left: 10px !important;
         margin-top: 6px !important;
     }
-    .desktop-ver .align-top-content{
-        display:none;
+
+    .desktop-ver .align-top-content {
+        display: none;
     }
 </style>
 <script src="~/ckeditor/ckeditor.js"></script>
 <script src="~/ckeditor/config.js"></script>
+
 @*<div class="desktop-ver">
-    <div class="row">
-        <div class="col-md-12 align-top-content button-active" style="margin-top: 100px; margin-right: 15px;">
-            <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
-                <i class="fa fa-arrow-left"></i> Back
-            </a>
+        <div class="row">
+            <div class="col-md-12 align-top-content button-active" style="margin-top: 100px; margin-right: 15px;">
+                <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 
 @*<div class="mobile-ver middle-btn">
-    <div class="row" style="margin-bottom: 10px;">
-        <div class="col-md-12">
-            <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
-                <i class="fa fa-arrow-left"></i> Back
-            </a>
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12">
+                <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 <style>
     body {
-        font-family:Bahnschrift!important;
+        font-family: Bahnschrift !important;
     }
-    .chbody{
-        background-color:aqua;
+
+    .chbody {
+        background-color: aqua;
     }
-   
+
     /*Second row hide ckeditor end*/
 </style>
 
@@ -79,7 +83,7 @@
                             font-size: 18px !important;
                         }
                     </style>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <div class="input-field full">
                             @Html.EditorFor(x => x, "ChapterContent")
                         </div>
@@ -89,7 +93,7 @@
                         <div class="action-button" style="float:left !important; margin:2px !important;">
                             <input type="button" value="Create" id="btSubmit" class="btn btn-dark" />
                         </div>
-                        <a href ="/Company/Resources/View/@Model.Chapter.ResourceID" class="btn btn-secondary m-btn m-btn--custom" id="cncelb" style="float:left;margin:2px ;border: 1px solid darkgrey;">Cancel</a>
+                        <a href="/Company/Resources/View/@Model.Chapter.ResourceID" class="btn btn-secondary m-btn m-btn--custom" id="cncelb" style="float:left;margin:2px ;border: 1px solid darkgrey;">Cancel</a>
                     </div>
                 </div>
             }
@@ -122,18 +126,19 @@
         </div>
     </div>*@
 @*<script>
-    setInterval(function () {     
-      
-        $('iframe').contents().find('body').css('backgroundColor', 'wheat');
-    }, 1000);
-</script>*@
+        setInterval(function () {
+
+            $('iframe').contents().find('body').css('backgroundColor', 'wheat');
+        }, 1000);
+    </script>*@
 <script>
 
     $(document).ready(function () {
-	 $(".intro-text").removeClass("button-deactive");
+        $(".intro-text").removeClass("button-deactive");
         $(".btn-3").css("color", "#ffffff !important");
         $(".align-top-content").removeClass("button-deactive");
         $(".align-top-content").addClass("button-active");
         $(".col-md-1").hide();
+        
     })
 </script>

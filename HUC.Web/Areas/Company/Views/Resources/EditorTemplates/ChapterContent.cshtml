@@ -5,18 +5,6 @@
         margin-left: 10px;
     }
 
-    .edit-create-form .input-field {
-        max-width: 500px;
-    }
-
-    .form-control {
-        color: #72bbb8 !important;
-        border: 2px solid #72bbb8 !important;
-        border-radius: 6px;
-        height: 40px !important;
-        max-width: 500px !important;
-    }
-
     .accordiontitle, .accordiondescription {
         margin-left: 10px;
         margin-right: 4px;
@@ -24,36 +12,35 @@
 
     .removeItem {
         float: right;
-        margin-right: 10px;
-    }
-
-    #accordionList li {
-        background-color: #f6f6f6;
-        border: solid 1px;
-        margin-bottom: 2px;
-        padding: 5px;
-        cursor: grab;
     }
 </style>
-<link href="~/_Content/css/bootstrap-colorselector.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <style>
     #cke_7, #cke_8, #cke_14, #cke_22, #cke_28, #cke_45, #cke_49, #cke_50, #cke_51, #cke_52, #cke_57, #cke_58, #cke_59, #cke_63, #cke_72, #cke_74, #cke_80 {
         display: none !important;
     }
+
+    .cke_focus {
+        border: 0px solid #ffffff;
+    }
 </style>
+<link href="~/_Content/css/bootstrap-colorselector.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="~/_Content/dropzone/basic.css" rel="stylesheet" />
+<link href="~/_Content/dropzone/dropzone.css" rel="stylesheet" />
 <script>
     $(document).ready(function () {
+        const isHTML = (str) => !(str || '')
+            .replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, '')
+            .replace(/(<([^>]+)>)/ig, '')
+            .trim();
         var model = @Html.Raw(Json.Encode(Model.ContentType));
         var JsonList = [];
         var ValueList = [];
         var optionList = [];
         var IndexId = 1;
         var imageerror = 0;
-        var filesize = 0;
-        $("#loading").hide();
         console.log("model");
+
         if (model == 400) {
             var modelValue = $("#Value").val();
             if (modelValue.trim() != "") {
@@ -67,6 +54,7 @@
             }
         }
         else if (model == 500) {
+            debugger;
             var modelValue = $("#Value").val();
             var htmlRow;
             if (modelValue.trim() != "") {
@@ -74,9 +62,11 @@
                 JsonList = JSON.parse(modelValue);
                 for (var i = 0; i < ValueList.length; i++) {
                     IndexId = ValueList[i].IndexId;
+                    //var fullText = $(isHTML(ValueList[i].backdescription)).text();
                 }
             }
             IndexId++;
+            
         }
         else if (model == 600) {
             var modelValue = $("#Value").val();
@@ -91,9 +81,11 @@
             }
         }
         $("#btSubmit").on("click", function (e) {
-            debugger;
+
+
             e.preventDefault();
             JsonList = [];
+            var flag = true;
             var itemLength = $('#accordionList li').length;
             if (model == 400) {
                 if (itemLength == 0) {
@@ -115,6 +107,7 @@
                 });
             }
             else if (model == 500) {
+                debugger
                 var backflipdescription = $('#backtxtDescription').val();
                 var backflipcolor = $("#backBackgroundcolor").val();
                 var description = $('#txtDescription').val();
@@ -122,11 +115,51 @@
                 var checkitem = $('input[type="radio"]:checked').val();
                 if (checkitem == 1) {
                     // here
-                    if (file == "" || file == undefined) {
-                        imageerror = 1;
+                    if (sessionStorage.getItem("flipeditimage") != "null" && sessionStorage.getItem("flipeditimage") != null) {
+                    if (sessionStorage.getItem("flipeditindex") != "null" && sessionStorage.getItem("flipeditindex") != null) {
+
+
+                   // if (sessionStorage.getItem("flipeditindex") != "null" && sessionStorage.getItem("flipeditindex") != null) {
+                            IndexId = sessionStorage.getItem("flipeditindex");
+                            ValueList.splice(IndexId - 2, 1);
+                           // ValueList.splice($.inArray(IndexId, ValueList), 1);
+                            JsonList.splice(IndexId - 2, 1);
+                           // JsonList.splice($.inArray(IndexId, JsonList), 1);
+                        }
+                        var item = {
+                            "IndexId": IndexId,
+                            "imagePath": sessionStorage.getItem("flipeditimage"),
+                            "heading": "",
+                            "content": description,
+                            "backdescription": backflipdescription,
+                            "backcolor": backflipcolor
+                        }
+                        imageerror = 0;
+                        JsonList.splice(IndexId - 2, 0, item);
+                       // JsonList.push(item);
+                        ValueList.splice(IndexId - 2, 0, item);
+                    //    ValueList.push(item);
+                        $("#Value").val(JSON.stringify(JsonList));
+                        toastr.success("Flip Card Added");
+                        $("#txtDescription").val("");
+                        $("#flipImage").val("");
+                        $("#pic").prop("checked", true).trigger("click");
+                        $("#txtDescription_Iframe").contents().find("body").text("");
+                        $("#txtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                        $("#backtxtDescription_Iframe").contents().find("body").text("");
+                        $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                        $("ul.dropdown-menu li:first-child a").click();
+                        $("#addItemToList").text("Save");
+                        $("#btSubmit").val("Finish");
                         activaTab('front');
+                        $("#Value").val(JSON.stringify(ValueList));
+                        $("#submitform").submit();
+                    }
+                    else if (file == "" || file == undefined) {
+                        imageerror = 1;
                         $('#backtxtDescription_Iframe').contents().find('body').text("");
                         toastr.error("We cannot proceed until you have selected an image");
+                        activaTab('front');
                         $("#btSubmit").hide();
                         return;
                     }
@@ -149,7 +182,7 @@
                     fileData.append('username', 'Manas');
 
                     $.ajax({
-                        url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/UploadFiles',
+                        url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/UploadFiles',
                         type: "POST",
                         contentType: false, // Not to set any content header
                         processData: false, // Not to process data
@@ -158,8 +191,20 @@
                             if (result.Message == "1") {
                                 if (backflipdescription == "") {
                                     toastr.error("Please add flip side description");
+                                    $('#backtxtDescription_Iframe').contents().find('body').text("");
                                     return;
                                 } else {
+                                    if (sessionStorage.getItem("flipeditindex") != "null" && sessionStorage.getItem("flipeditindex") != null) {
+                                   // if (sessionStorage.getItem("flipeditindex") != "null" && sessionStorage.getItem("flipeditindex") != null) {
+                                        IndexId = sessionStorage.getItem("flipeditindex");
+                                        ValueList.splice(IndexId - 2, 1);
+                                     //   ValueList.splice($.inArray(IndexId, ValueList), 1);
+                                        JsonList.splice(IndexId - 2, 1);
+                                     //   JsonList.splice($.inArray(IndexId, JsonList), 1);
+                                    }
+                                 //   var htmlRow = '<li  class="list-group-item"><i class="fa fa-arrows" aria-hidden="true"></i>:' + fulltextshow + ' <span style="margin-left:100px"  class="removeItem">X</span></li>';
+                                    //$("#accordionList").append(htmlRow);
+                                    // $("#accordionList").sortable();
                                     var item = {
                                         "IndexId": IndexId,
                                         "imagePath": result.Data,
@@ -169,8 +214,11 @@
                                         "backcolor": backflipcolor
                                     }
                                     imageerror = 0;
-                                    JsonList.push(item);
-                                    ValueList.push(item);
+                                    JsonList.splice(IndexId - 2, 0, item);
+                                   // JsonList.push(item);
+                                    ValueList.splice(IndexId - 2, 0, item);
+                                  //  ValueList.push(item);
+                                  
                                     $("#Value").val(JSON.stringify(JsonList));
                                     toastr.success("Flip Card Added");
                                     $("#txtDescription").val("");
@@ -218,6 +266,20 @@
                         return;
                     }
                     var colour = $("#Backgroundcolor").val();
+                    if (sessionStorage.getItem("flipeditindex") != "null" && sessionStorage.getItem("flipeditindex") != null) {
+
+
+                   // if (sessionStorage.getItem("flipeditindex") != "null" && sessionStorage.getItem("flipeditindex") != null) {
+                        IndexId = sessionStorage.getItem("flipeditindex");
+                        debugger;
+                        var x = $.inArray(IndexId, ValueList);
+                        ValueList.splice(IndexId-2, 1);
+                       // ValueList.splice($.inArray(IndexId, ValueList), 1);
+                        JsonList.splice($.inArray(IndexId, JsonList), 1);
+                    }
+                  //  var htmlRow = '<li  class="list-group-item"><i class="fa fa-arrows" aria-hidden="true"></i>:' + fulltextshow + ' <span style="margin-left:100px"   class="removeItem">X</span></li>';
+                    //$("#accordionList").append(htmlRow);
+                    //$("#accordionList").sortable();
                     var item = {
                         "IndexId": IndexId,
                         "imagePath": colour,
@@ -226,7 +288,8 @@
                         "backdescription": backflipdescription,
                         "backcolor": backflipcolor
                     }
-                    ValueList.push(item);
+                    ValueList.splice(IndexId - 2, 0,item);
+                   // ValueList.push(item);
                     JsonList.push(item);
                     console.log(JsonList);
                     $("#Value").val(JSON.stringify(JsonList));
@@ -269,20 +332,15 @@
                     imageerror = 0;
                 }
                 else {
-                    //var size = $('#submitform')["0"].firstChild.files["0"].size;
-                    //if (filesize > 1234567) {
-                    //    return
-                    //}
-                 //   uploadVideo();
-
+                   // uploadVideo();
                     $("#submitform").submit();
                 }
             }
         });
 
 
-
         $("#addItemToList").on("click", function () {
+            debugger;
             if (model == 400) {
                 var title = $("#txtTitle").val();
                 var description = $("#txtDescription").val();
@@ -307,7 +365,7 @@
                 $("#txtTitle").val("");
                 $("#txtDescription").val("");
             }
-            else if (model == 500) {
+              else if (model == 500) {
                 var backflipdescription = $('#backtxtDescription').val();
                 var backflipcolor = $("#backBackgroundcolor").val();
                 var description = $('#txtDescription').val();
@@ -336,39 +394,43 @@
                     fileData.append('username', 'Manas');
 
                     $.ajax({
-                        url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/UploadFiles',
+                        url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/UploadFiles',
                         type: "POST",
                         contentType: false, // Not to set any content header
                         processData: false, // Not to process data
                         data: fileData,
                         success: function (result) {
                             if (result.Message == "1") {
-                                debugger
-                                $("#loading").show();
                                 var fulltextshow = $(backflipdescription).text();
                                 var htmlRow = '<li  class="list-group-item"><i class="fa fa-arrows" aria-hidden="true"></i>:' + fulltextshow + ' <span style="margin-left:100px"  class="removeItem">X</span></li>';
-                                $("#accordionList").append(htmlRow);
-                                $("#accordionList").sortable();
+                                //$("#accordionList").append(htmlRow);
+                               // $("#accordionList").sortable();
                                 var item = {
                                     "imagePath": result.Data,
                                     "heading": "",
                                     "content": description,
                                     "backdescription": backflipdescription,
-                                    "backcolor" : backflipcolor
+                                    "backcolor": backflipcolor,
+                                    "Del": fulltextshow
                                 }
                                 JsonList.push(item);
                                 ValueList.push(item);
                                 $("#Value").val(JSON.stringify(JsonList));
+                                toastr.success("Flip Card Added");
                                 $("#txtDescription").val("");
                                 $("#flipImage").val("");
-                                $('input[type="radio"]:checked').val(1);
-                                $("#backtxtDescription").val("");
-                                $("#backBackgroundcolor").val();
-                                $("#btSubmit").show();
+                                $("#pic").prop("checked", true).trigger("click");
+                                $("#txtDescription_Iframe").contents().find("body").text("");
+                                $("#txtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                                $("#backtxtDescription_Iframe").contents().find("body").text("");
+                                $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                                $("ul.dropdown-menu li:first-child a").click();
+                                $("#addItemToList").text("Save");
+                                $("#btSubmit").val("Finish");
                                 activaTab('front');
                             }
                             else {
-                                toastr.error(result.Message);
+                                toastr.error("No Image select, Select Image First");
                             }
                         },
                         error: function (err) {
@@ -379,39 +441,37 @@
                     toastr.error("FormData is not supported.");
                 }
                     }
-                    $("#addItemToList").text("Add Another Flip Card");
-
                 }
                 else {
                     var colour = $("#Backgroundcolor").val();
-                    var fulltextshow = $(description).text();
+                    var fulltextshow = $(backflipdescription).text();
                     var htmlRow = '<li  class="list-group-item"><i class="fa fa-arrows" aria-hidden="true"></i>:' + fulltextshow + ' <span style="margin-left:100px"   class="removeItem">X</span></li>';
-                    $("#accordionList").append(htmlRow);
-                    $("#accordionList").sortable();
+                    //$("#accordionList").append(htmlRow);
+                    //$("#accordionList").sortable();
                     var item = {
                         "imagePath": colour,
                         "heading": colour,
                         "content": description,
                         "backdescription": backflipdescription,
-                        "backcolor": backflipcolor
+                        "backcolor": backflipcolor,
+                        "Del": fulltextshow
                     }
                     ValueList.push(item);
                     JsonList.push(item);
                     console.log(JsonList);
                     $("#Value").val(JSON.stringify(JsonList));
-                    $("#txtDescription").val("");
+                    toastr.success("Flip Card Added");
                     $("#flipImage").val("");
-                    $('input[type="radio"]:checked').val(1);
-                    $("#addItemToList").text("Add Another Flip Card");
-                    $("#btSubmit").show();
+                    $("#pic").prop("checked", true).trigger("click");
+                    $("#txtDescription_Iframe").contents().find("body").text("");
+                    $("#txtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                    $("#backtxtDescription_Iframe").contents().find("body").text("");
+                    $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", "#ffffff");
+                    $("ul.dropdown-menu li:first-child a").click();
+                    $("#addItemToList").text("Save");
+                    $("#btSubmit").val("Finish");
                     activaTab('front');
-
                 }
-                //if (description == "") {
-                //    toastr.error("please provide description");
-                //    return;
-                //}
-                // Checking whether FormData is available in browser
 
             }
             else if (model == 600) {
@@ -492,7 +552,6 @@
                             "option": questionOption,
                             "type": questionBit
                         }
-                        debugger
                         optionList.push(option);
                         if (optionLength - 1 == key) {
                             if (!optionValidation) {
@@ -505,23 +564,12 @@
                     });
                 }
             }
-            $("#loading").hide();
         });
-
         $("#btnInsertEmptyOptionRow").on("click", function () {
             $(".optionList").append($(".optionRowTemplate").html());
         });
-
-        function activaTab(tab) {
-            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
-            $("#txtDescription").val("");
-            $("#backtxtDescription").val("");
-        };
-
-
-
 		$(document).on("click", ".removeItem", function () {
-        $(this).parent().remove();
+            $(this).parent().remove();
         JsonList = [];
         var itemLength = $('#accordionList li').length;
         $('#accordionList li').each(function (key, value) {
@@ -547,39 +595,14 @@
         $(this).closest(".row").remove();
     });
 
-
-    function SizeCheck() {
-        debugger;
-        var fileInput = document.getElementById('vFile').files;
-        var fsize = fileInput[0].size;
-        var file = Math.round((fsize / 1024));
-        if (file >= 10240) {     //10MB
-            //Add Alert Here If
-            // $('#upload_error').html("* File Size < 10MB");
-            alert("size exceed");
-        }
-        else {
-            // $('#invoice_error').html("");
-            alert("size ok");
-        }
-    }
-
-
-    function isNumber(evt) {
-        evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        return true;
-    }
-
-     function uploadVideo() {
+    function uploadVideo() {
         debugger;
         var formData = new FormData();
+        formData.append("fileName", $("#fileName").val());
+
         formData.append("file", $("#file")[0].files[0]);
         $.ajax({
-            url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Resources/UploadMP4Files',
+            url: '@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Resources/UploadMP4Files',
 
             type: 'POST',
             data: formData,
@@ -591,13 +614,19 @@
             }
         });
     }
-
-
-
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
 </script>
 
 @switch (Model.ContentType)
 {
+
     case ContentType.Text:
         <style>
             .cke_skin_kama .cke_focus {
@@ -612,7 +641,6 @@
                 @Html.ValidationMessageFor(model => model.Value)
             </div>
         </div>
-
         @*<b>Backgroung Color :</b>  <input type="color" class="default-tex" />
              <b>&nbsp;&nbsp;&nbsp; Text Color :</b> <input type="color" class="default-te"/>
             <input type="button" class="default-text"  value="Change"  />*@
@@ -664,13 +692,23 @@
                 }
                 @Html.HiddenFor(x => x.Value)
                 @Html.ValidationMessageFor(model => model.Value)
+
+                @*<input type="file" class="form-control" id="file" />*@
             </div>
         </div>
         <script>
             $('input[type="file"]').change(function (e) {
                 var fileName = e.target.files[0].name;
                 $("#filename").text(fileName);
+
             })
+
+
+
+
+
+
+
         </script>
         break;
     case ContentType.Video:
@@ -679,52 +717,130 @@
         <script>
             $(".panel").css('width', '40%');
         </script>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Value, "Video File : MP4 Format"@*, new { @class = "control-label white-color" }*@)
-            <div style="font-size:16px;font-family:Bahnschrift;">
-                @if (fileProvidedVideo)
+        // <div class="form-group">
+        //     @Html.LabelFor(model => model.Value, "Video File : MP4 Format"@*, new { @class = "control-label white-color" }*@)
+        //     <div style="font-size:16px;font-family:Bahnschrift;">
+        //         @if (fileProvidedVideo)
+        // {
+        //     <input type="file" class="form-control" name="value_file" value="@filevideo" id="file" />
+        //     <label id="filename">@filevideo</label>
+        // }
+        // else
+        // {
+        //     <input type="file" class="form-control" name="value_file" />
+        // }
+        // @Html.HiddenFor(x => x.Value)
+        // @Html.ValidationMessageFor(model => model.Value)
+        //         @*<input type="file" id="file" />*@
+        //     </div>
+        // </div>
+        <script type="text/javascript">
+    let dz = new Dropzone('#dz-upload',
         {
-            <input id="value_file"  type="file" class="form-control" name="value_file" value="@filevideo"  />
-            <label id="filename">@filevideo</label>
-        }
-        else
-        {
-            <input type="file" class="form-control" name="value_file" />
-        }
-        @Html.HiddenFor(x => x.Value)
-        @Html.ValidationMessageFor(model => model.Value)
-
-                @*<input type="file" id="file" />*@
-            </div>
-        </div>
-        <script>
-            $('input[type="file"]').change(function (e) {
-                debugger;
-                var fileName = e.target.files[0].name;
-               // filesize=e.target.files[0].size;
-                $("#filename").text(fileName);
-                var filesize = e.target.files[0].size;
-
-                if (filesize > 52428800) {
-                   
-                  
-
-                    var input = $(this);
-                    var next = this.nextSibling;
-                    var parent = input.parent();
-                    var form = $("<form></form>");
-                    form.append(input);
-                    form[0].reset();
-                    if (next) {
-                        $(next).before(input);
-                    } else {
-                        parent.append(input);
+            type: "POST",
+           // url: "http://localhost:5412/api/ChunkedUpload/UploadChunk",
+            url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/api/ChunkedUpload/UploadChunk" ,
+            params: function (files, xhr, chunk) {
+                if (chunk) {
+                    return {
+                        dzUuid: chunk.file.upload.uuid,
+                        dzChunkIndex: chunk.index,
+                        dzTotalFileSize: chunk.file.size,
+                        dzCurrentChunkSize: chunk.dataBlock.data.size,
+                        dzTotalChunkCount: chunk.file.upload.totalChunkCount,
+                        dzChunkByteOffset: chunk.index * this.options.chunkSize,
+                        dzChunkSize: this.options.chunkSize,
+                        dzFilename: chunk.file.name,
                     }
-                    toastr.error("File size can't be more than 50mb");
-                   
                 }
-               
-            })
+            },
+            parallelUploads: 1,  // since we're using a global 'currentFile', we could have issues if parallelUploads > 1, so we'll make it = 1
+            maxFiles: 1,
+            maxFilesize: 1024,   // max individual file size 1024 MB
+            chunking: true,      // enable chunking
+            forceChunking: true, // forces chunking when file.size < chunkSize
+            parallelChunkUploads: true, // allows chunks to be uploaded in parallel (this is independent of the parallelUploads option)
+            chunkSize: 1048576,  // chunk size 1,000,000 bytes (~1MB)
+            retryChunks: true,   // retry chunks on failure
+            retryChunksLimit: 3, // retry maximum of 3 times (default is 3)
+            // acceptedFiles: ".mp4,.mkv,.avi",
+            chunksUploaded: function (file, done) {
+                // All chunks have been uploaded. Perform any other actions
+                currentFile = file;
+
+                // This calls server-side code to merge all chunks for the currentFile
+                $.ajax({
+                    type: "POST",
+                  //  url: "http://localhost:5412/api/ChunkedUpload/CommitChunks?dzIdentifier=" + currentFile.upload.uuid
+                     url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/api/ChunkedUpload/CommitChunks?dzIdentifier=" + currentFile.upload.uuid
+                        + "&fileName=" + encodeURIComponent(currentFile.name)
+                        + "&expectedBytes=" + currentFile.size
+                        + "&totalChunks=" + currentFile.upload.totalChunkCount,
+                    success: function (data) {
+                        // Must call done() if successful
+                        done();
+
+
+
+
+                    },
+                    error: function (msg) {
+                        currentFile.accepted = false;
+                        //   myDropzone._errorProcessing([currentFile], msg.responseText);
+                    }
+                });
+            },
+            init: function () {
+                // This calls server-side code to delete temporary files created if the file failed to upload
+                // This also gets called if the upload is canceled
+                this.on('error', function (file, errorMessage) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/ChunkedUpload?dzIdentifier=" + file.upload.uuid
+                            + "&fileName=" + encodeURIComponent(file.name)
+                            + "&expectedBytes=" + file.size
+                            + "&totalChunks=" + file.upload.totalChunkCount,
+                        success: function (data) {
+                            // nothing
+                        }
+                    });
+                });
+            }
+        });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js"></script>
+
+
+
+
+        <script>
+            //$('input[type="file"]').change(function (e) {
+            //    debugger;
+            //    var fileName = e.target.files[0].name;
+            //    var filesize = e.target.files[0].size;
+            //   // alert(filesize);
+            //    $("#filename").text(fileName);
+            //    var filesize = e.target.files[0].size;
+
+            //    if (filesize > 52428800) {
+
+
+
+            //        var input = $(this);
+            //        var next = this.nextSibling;
+            //        var parent = input.parent();
+            //        var form = $("<form></form>");
+            //        form.append(input);
+            //        form[0].reset();
+            //        if (next) {
+            //            $(next).before(input);
+            //        } else {
+            //            parent.append(input);
+            //        }
+            //        toastr.error("File size can't be more than 50 MB");
+
+            //    }
+            //})
         </script>
         break;
 
@@ -732,7 +848,6 @@
         var fileProvidedPDF = Model != null && !String.IsNullOrWhiteSpace(Model.Value);
         var filename = Model.Value;
         <style>
-
             .fa-2x {
                 font-size: 1.5em !important;
             }
@@ -757,8 +872,8 @@
                     <i class="fa fa-2x fa-file-powerpoint-o" style="color:#72bbb8"></i>
                 </div>
             </div>
-            <div class="form-group" style="font-size:16px;font-family:Bahnschrift;width:370px;height:40px;padding:5px!important">
-
+            <div style="font-size:16px;font-family:Bahnschrift;width:370px;height:40px;padding:5px!important">
+                @*<p id="filetxt" style="display:none">No file choosen</p>*@
                 @if (fileProvidedPDF)
                 {
                     <input type="file" name="value_file" style="padding:7px;" class="form-control" accept=".pdf, .docx, .xlsx, .doc, .pptx, .ppt, .odp" value="@filename" />
@@ -777,8 +892,6 @@
             $('input[type="file"]').change(function (e) {
                 var fileName = e.target.files[0].name;
                 $("#filename").text(fileName);
-
-               
             })
         </script>
         break;
@@ -887,6 +1000,7 @@
             });
         </script>
         break;
+
     case ContentType.Accordion:
         <script>
             $(".panel").css('width', '87%');
@@ -913,7 +1027,7 @@
             }
         </style>
         <div class="row">
-            <div class="col-md-12" style="margin-left:-12px">
+            <div class="col-md-12">
                 <div class="form-group">
                     @Html.Label("Section Heading"@*, new { @class = "control-label white-color" }*@)
                     @Html.TextBox("Title", null, new { @class = "form-control", @id = "txtTitle", @placeholder = "Heading" })
@@ -982,17 +1096,11 @@
                     value: "7"
                 }
             ];
-            var fontColors = [
-                {
-                    text: "White",
-                    value: "#72bbb8"
-                }
-            ];
+
             $(document).ready(function () {
                 $("#btSubmit").hide();
                 $(".action-button").css({ "margin-right": "57%!important" });
                 $("#btSubmit").val("Finish");
-                $("#cncelb").css("margin-left", "-3px !important");
                 $(".tab-content #front").addClass('in active');
                 $('#backBackgroundcolor').colorselector();
                 $('#Backgroundcolor').colorselector();
@@ -1039,7 +1147,6 @@
                     showFooter: false,
                     fontName: fonts,
                     fontSize: textfontsize,
-                    // fontColor: fontColors,
                     tools: {
                         font: ["fontName", "fontSize", "fontColor", "backgroundColor"],
                         style: ["bold", "italic", "underline"]
@@ -1076,22 +1183,22 @@
                 $("#backtxtDescription_fontNameDDL").val('Calibri');
                 $("#backtxtDescription_fontNameDDL_hidden").val('Calibri');
             });
-
             $(document).ready(function () {
                 $('#txtDescription_Iframe').contents().find('body').css('backgroundColor', '#72bbb8');
                 $('#backtxtDescription_Iframe').contents().find('body').css('backgroundColor', '#e8eaef');
                 // $('#txtDescription_Iframe').contents().find('body').css('caret-color', '#72bbb8');
-                //  $('#backtxtDescription_Iframe').contents().find('body').css('caret-color', '#e8eaef');
+                //$('#backtxtDescription_Iframe').contents().find('body').css('caret-color', '#e8eaef');
+                
 
                 $('ul.dropdown-menu').click(function (e) {
                     var color = $('#Backgroundcolor').val();
-                    // $('#txtDescription_Iframe').contents().find('body').css('caret-color', color);
+                    //  $('#txtDescription_Iframe').contents().find('body').css('caret-color', color);
                     $('#txtDescription_Iframe').contents().find('body').css('backgroundColor', color);
                 });
                 $('ul.dropdown-caret').click(function (e) {
                     var backcolor = $('#backBackgroundcolor').val();
                     $('#backtxtDescription_Iframe').contents().find('body').css('backgroundColor', backcolor);
-                    //$('#backtxtDescription_Iframe').contents().find('body').css('caret-color', backcolor);
+                    // $('#backtxtDescription_Iframe').contents().find('body').css('caret-color', backcolor);
 
                 });
                 $(".open-tab-1").click(function () {
@@ -1186,7 +1293,6 @@
                 color: black !important;
             }
 
-
             table {
                 width: 500px;
                 border-radius: 6px;
@@ -1255,9 +1361,9 @@
             @*Front Cover Start*@
             <div class="tab-pane" id="front" style="margin-top:40px !important;">
                 <div class="row">
-                    <div class="col-md-8" style="margin-left:-14px">
+                    <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-6" style="margin-left: -15px;">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="input-field">
                                         <table style="border:2px solid #72bbb8">
@@ -1277,34 +1383,34 @@
                                 <div class="form-group" id="bcImage">
                                     Size(450*300) Pixels
                                     <div class="input-field">
-                                        <input type="file" style="border: 2px solid #72bbb8; padding: 7px; width: 104%; height: 0%;" accept=".png, .jpg, .jpeg" class="form-control" name="flipImage" id="flipImage" required="" onchange="readURL(this);" />
+                                        <input type="file" style="border: 2px solid #72bbb8; padding: 7px; width: 96%; height: 0%;" accept=".png, .jpg, .jpeg" class="form-control" name="flipImage" id="flipImage" required="" onchange="readURL(this);" />
                                     </div>
                                 </div>
                                 <div class="row col-md-12" id="bcColor" style="display:none;margin-top: 35px;">
                                     <div class="col-md-10">
-                                        Choose Colour
+                                        Choose Colour:
                                     </div>
-                                    <div class="col-md-2" style="margin-left: -30px; margin-top: 8px;">
+                                    <div class="col-md-2" style="margin-left: -34px; margin-top: 8px;">
                                         <select id="Backgroundcolor" name="Backgroundcolor">
-                                            <option value="#72bbb8" data-color="#72bbb8" selected>Hex</option>
-                                            <option value="#ffffff" data-color="#ffffff">White</option>
-                                            <option value="#A0522D" data-color="#A0522D">sienna</option>
-                                            <option value="#FF4500" data-color="#FF4500">orangered</option>
-                                            <option value="#008B8B" data-color="#008B8B">darkcyan</option>
-                                            <option value="#B8860B" data-color="#B8860B">darkgoldenrod</option>
-                                            <option value="#32CD32" data-color="#32CD32">limegreen</option>
-                                            <option value="#FFD700" data-color="#FFD700">gold</option>
-                                            <option value="#48D1CC" data-color="#48D1CC">mediumturquoise</option>
-                                            <option value="#87CEEB" data-color="#87CEEB">skyblue</option>
-                                            <option value="#FF69B4" data-color="#FF69B4">hotpink</option>
-                                            <option value="#CD5C5C" data-color="#CD5C5C">indianred</option>
-                                            <option value="#87CEFA" data-color="#87CEFA">lightskyblue</option>
-                                            <option value="#6495ED" data-color="#6495ED">cornflowerblue</option>
-                                            <option value="#DC143C" data-color="#DC143C">crimson</option>
-                                            <option value="#e8eaef" data-color="#e8eaef">darkGray</option>
-                                            <option value="#FF8C00" data-color="#FF8C00">darkorange</option>
-                                            <option value="#C71585" data-color="#C71585">mediumvioletred</option>
-                                            <option value="#000000" data-color="#000000">black</option>
+                                            <option value="#72bbb8"  data-color="#72bbb8" selected>Hex</option>
+                                            <option value="#ffffff"  data-color="#ffffff">White</option>
+                                            <option value="#A0522D"  data-color="#A0522D">sienna</option>
+                                            <option value="#FF4500"  data-color="#FF4500">orangered</option>
+                                            <option value="#008B8B"  data-color="#008B8B">darkcyan</option>
+                                            <option value="#B8860B"  data-color="#B8860B">darkgoldenrod</option>
+                                            <option value="#32CD32"  data-color="#32CD32">limegreen</option>
+                                            <option value="#FFD700"  data-color="#FFD700">gold</option>
+                                            <option value="#48D1CC"  data-color="#48D1CC">mediumturquoise</option>
+                                            <option value="#87CEEB"  data-color="#87CEEB">skyblue</option>
+                                            <option value="#FF69B4"  data-color="#FF69B4">hotpink</option>
+                                            <option value="#CD5C5C"  data-color="#CD5C5C">indianred</option>
+                                            <option value="#87CEFA"  data-color="#87CEFA">lightskyblue</option>
+                                            <option value="#6495ED"  data-color="#6495ED">cornflowerblue</option>
+                                            <option value="#DC143C"  data-color="#DC143C">crimson</option>
+                                            <option value="#e8eaef"  data-color="#e8eaef">darkGray</option>
+                                            <option value="#FF8C00"  data-color="#FF8C00">darkorange</option>
+                                            <option value="#C71585"  data-color="#C71585">mediumvioletred</option>
+                                            <option value="#000000"  data-color="#000000">black</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1312,7 +1418,6 @@
                         </div>
                         <div class="form-group" id="introid" style="width: 440px;display:none">
                             <div class="input-field">
-
                                 @Html.TextArea("Description", new { @class = "flipdescription", @id = "txtDescription", @name = "txtDescription", @placeholder = "Flip Cover Text" })
                             </div>
                         </div>
@@ -1330,29 +1435,29 @@
                 <div class="row">
                     <div class="col-md-12" style=" margin-top:8px;">
                         <div class="form-group" id="backbcColor">
-                            <div class="col-md-10" style=" margin-left: -30px;">
+                            <div class="col-md-10" style=" margin-left: -18px;">
                                 Choose Colour :
                             </div>
                             <div class="input-field col-md-2" style=" margin-left: 115px; margin-top: -18px;">
                                 <select id="backBackgroundcolor" name="backBackgroundcolor">
-                                    <option value="#e8eaef" data-color="#e8eaef" selected>darkGray</option>
-                                    <option value="#ffffff" data-color="#ffffff">White</option>
-                                    <option value="#A0522D" data-color="#A0522D">sienna</option>
-                                    <option value="#FF4500" data-color="#FF4500">orangered</option>
-                                    <option value="#008B8B" data-color="#008B8B">darkcyan</option>
-                                    <option value="#B8860B" data-color="#B8860B">darkgoldenrod</option>
-                                    <option value="#32CD32" data-color="#32CD32">limegreen</option>
-                                    <option value="#FFD700" data-color="#FFD700">gold</option>
-                                    <option value="#48D1CC" data-color="#48D1CC">mediumturquoise</option>
-                                    <option value="#87CEEB" data-color="#87CEEB">skyblue</option>
-                                    <option value="#FF69B4" data-color="#FF69B4">hotpink</option>
-                                    <option value="#CD5C5C" data-color="#CD5C5C">indianred</option>
-                                    <option value="#87CEFA" data-color="#87CEFA">lightskyblue</option>
-                                    <option value="#6495ED" data-color="#6495ED">cornflowerblue</option>
-                                    <option value="#DC143C" data-color="#DC143C">crimson</option>
-                                    <option value="#FF8C00" data-color="#FF8C00">darkorange</option>
-                                    <option value="#C71585" data-color="#C71585">mediumvioletred</option>
-                                    <option value="#000000" data-color="#000000">black</option>
+                                    <option value="#e8eaef"  data-color="#e8eaef" selected>darkGray</option>
+                                    <option value="#ffffff"  data-color="#ffffff">White</option>
+                                    <option value="#A0522D"  data-color="#A0522D">sienna</option>
+                                    <option value="#FF4500"  data-color="#FF4500">orangered</option>
+                                    <option value="#008B8B"  data-color="#008B8B">darkcyan</option>
+                                    <option value="#B8860B"  data-color="#B8860B">darkgoldenrod</option>
+                                    <option value="#32CD32"  data-color="#32CD32">limegreen</option>
+                                    <option value="#FFD700"  data-color="#FFD700">gold</option>
+                                    <option value="#48D1CC"  data-color="#48D1CC">mediumturquoise</option>
+                                    <option value="#87CEEB"  data-color="#87CEEB">skyblue</option>
+                                    <option value="#FF69B4"  data-color="#FF69B4">hotpink</option>
+                                    <option value="#CD5C5C"  data-color="#CD5C5C">indianred</option>
+                                    <option value="#87CEFA"  data-color="#87CEFA">lightskyblue</option>
+                                    <option value="#6495ED"  data-color="#6495ED">cornflowerblue</option>
+                                    <option value="#DC143C"  data-color="#DC143C">crimson</option>
+                                    <option value="#FF8C00"  data-color="#FF8C00">darkorange</option>
+                                    <option value="#C71585"  data-color="#C71585">mediumvioletred</option>
+                                    <option value="#000000"  data-color="#000000">black</option>
                                 </select>
                             </div>
                         </div>
@@ -1361,7 +1466,6 @@
                 <div class="form-group" id="introid" style="margin-top:-15px;width: 440px;">
                     Text
                     <div class="input-field">
-
                         @Html.TextArea("backDescription", new { @class = "backfliptxtDescription", @id = "backtxtDescription", @name = "backtxtDescription", @placeholder = "Back Flip  Text" })
                     </div>
                 </div>
@@ -1384,6 +1488,59 @@
                 </ul>
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                debugger
+                var eidtflip = sessionStorage.getItem("flipeditindex");
+                if (eidtflip != "null" && eidtflip != null) {
+                    var modelValue = $("#Value").val();
+                    JsonList = JSON.parse(modelValue);
+                    console.log(JsonList[0]);
+                    $.each(JsonList, function (index, value) {
+                        if (value.IndexId == eidtflip) {
+                            if (value.heading) {
+                                $("#pic").prop("checked", false);
+                                $("#colid").prop("checked", true);
+                                $("#introid").show();
+                                $("#bcColor").show();
+                                $("#bcImage").hide();
+                                $("#imagePreview").hide();
+                                $("#flipImage").val('');
+                                $("#imgshow").hide();
+                                $('#Backgroundimage').removeAttr('required');
+                                $("#Backgroundcolor").val(value.imagePath);
+                                var targetColor = value.imagePath;
+                                var backtargetColor = value.backcolor;
+                                $("#Backgroundcolor").val(targetColor).trigger('change');
+                                $("#backBackgroundcolor").val(backtargetColor).trigger('change');
+                                $("#txtDescription_Iframe").contents().find("body").css("backgroundColor", value.imagePath);
+                                $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", value.backcolor);
+                                $('#backtxtDescription_Iframe').contents().find('body').html(value.backdescription);
+                                $('#txtDescription_Iframe').contents().find('body').html(value.content);
+                            }
+                            else {
+                                $("#introid").hide();
+                                $("#colid").prop("checked", false);
+                                $("#pic").prop("checked", true);
+                                $("#bcColor").hide();
+                                $("#bcImage").show();
+                                $('#Backgroundcolor').removeAttr('required');
+                                $('#Backgroundimage').attr('required', true);
+                                $('#Backgroundcolor').val('');
+                                var backtargetColor = value.backcolor;
+                                $("ul.dropdown-menu li a.color-btn[data-color='" + backtargetColor + "']").click();
+                                $("#backtxtDescription_Iframe").contents().find("body").css("backgroundColor", value.backcolor);
+                                $('#backtxtDescription_Iframe').contents().find('body').html(value.backdescription);
+                                $("#imagePreview").show();
+                                $('#displayimage').attr('src', value.imagePath.replace('~', ''));
+                                sessionStorage.setItem('flipeditimage', value.imagePath);
+                            }
+                        }
+                    })
+                }
+                
+            });
+        </script>
         break;
     case ContentType.Interview:
         <script>

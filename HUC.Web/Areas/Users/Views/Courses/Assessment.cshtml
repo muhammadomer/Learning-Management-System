@@ -61,6 +61,7 @@
 <link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/Preview/CompanyPreview.css" />
 <input type="hidden" id="hdnCourseId" value="@Model.Course.ID" />
 <input type="hidden" id="hdnApplicatonPath" value="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)" />
+
 @if (Model.Course.BackGroundType == false && !string.IsNullOrEmpty(Model.Course.Background))
 {
     <style>
@@ -82,13 +83,21 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
     <div class="row">
         <div class="col-md-12">
             <div class="course-header">
-                @if (Model.Course.Name.Length > 25)
+                @if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Course.Background))
                 {
-                    <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    if (Model.Course.Name.Length > 25)
+                    {
+                        <div style="font-size:33px !important;">@Model.Course.Name</div>
+                    }
+                    else
+                    {
+                        <div>@Model.Course.Name</div>
+                    }
                 }
                 else
                 {
-                    <div>@Model.Course.Name</div>
+                    <p style="margin-top:220px"></p>
+
                 }
             </div>
         </div>

@@ -580,7 +580,7 @@ else
                                 {
 
                                     var formId = "submitAnswer" + question.ID;
-                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
+                                    @*using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
                                     {
                                         foreach (var curAnswer in question.Answers)
                                         {
@@ -617,7 +617,7 @@ else
                                             var freetext = new PreviewFreeText(jasonObj);
                                             freetext.initialize();
                                         </script>
-                                    }
+                                    }*@
                                 }
 
                             }

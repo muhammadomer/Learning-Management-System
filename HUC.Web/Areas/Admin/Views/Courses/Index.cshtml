@@ -34,20 +34,21 @@
         height: 39px;
         margin-left: 15px !important;
     }
+
     .swal2-confirm {
         width: 100px !important;
         height: 39px;
         background-color: black;
-        color:white !important;
+        color: white !important;
     }
 
     .swal2-modal {
         width: 503px !important;
         height: 302px;
-        
     }
-    .swal2-image{
-        margin-top:-2px !important;
+
+    .swal2-image {
+        margin-top: -2px !important;
     }
 </style>
 
@@ -115,6 +116,17 @@
     }
 </style>
 
+
+
+
+
+
+
+
+
+
+
+
 <div class="desktop-ver">
     <div class="row">
         <div class="col-md-12 align-top-content">
@@ -125,15 +137,52 @@
     </div>
 </div>
 
+
+<script src="~/_Content/js/lib/jquery-1.8.2.min.js"></script>
+
 <div class="mobile-ver middle-btn">
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-md-12">
+
+
             <a class="btn btn-success pull-right" href="@Url.Action("Create")">
                 <i class="fa fa-pencil" style="margin-right: 10px;"></i> Create New Course
             </a>
         </div>
     </div>
 </div>
+
+<script>
+    $('#upload').submit(function (e) {
+        e.preventDefault(); // stop the standard form submission
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: new FormData(this),
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log(data.UploadedFileCount + ' file(s) uploaded successfully');
+            },
+            error: function (xhr, error, status) {
+                console.log(error, status);
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
 
 <p class="hidden">
     <a href="@Url.Action("Create")" class="btn btn-s-md btn-primary"><i class="fa fa-pencil"></i> Create New</a>
@@ -188,18 +237,18 @@
                             {
                                 if (course.CanBePublished)
                                 {
-                        <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded  " style="background-color:orange; color: white !important; height: 31px; width: 115px; text-align: center; padding: 5px; padding-left: 1px; ">
-                            <i class="fa fa-times" style="color:white"></i> UnPublished
-                        </a>
+                                    <a href="@Url.Action("Publish", new {id = course.ID,confirm=true})" class="btn btn-xs btn-rounded  " style="background-color:orange; color: white !important; height: 31px; width: 115px; text-align: center; padding: 5px; padding-left: 1px; ">
+                                        <i class="fa fa-times" style="color:white"></i> UnPublished
+                                    </a>
                                 }
                                 else
                                 {
 
-                        <span href="#" class="btn btn-xs btn-rounded " style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: orange; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
-                              data-content="@PublishErrorsTooltip(course.PublishStatus)"
-                              data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
-                            <i class="fa fa-times" style="color:white"></i> UnPublished
-                        </span>
+                                    <span href="#" class="btn btn-xs btn-rounded " style=" height: 28px; width: 115px; text-align: center;  padding:4px;padding-left:1px; background-color: orange; color: white !important; border: none" data-toggle="popover" data-html="true" data-placement="top"
+                                          data-content="@PublishErrorsTooltip(course.PublishStatus)"
+                                          data-original-title='<button type="button" class="close pull-right" data-dismiss="popover">&times;</button>Error(s) Publishing Course'>
+                                        <i class="fa fa-times" style="color:white"></i> UnPublished
+                                    </span>
                                 }
                             }
                         </td>
@@ -234,103 +283,103 @@
                                     </div>
                                 </div>
                             </td>*@
-                    <td @*style="text-align:center;"*@ style=" width: 190px; text-align:center;">
-                        <a data-toggle="tooltip" title="Preview" href="#" onclick="OpenTab(@course.ID)"><i class="fa fa-eye resource-icon" style="color:green"></i></a>&nbsp;&nbsp;
-                        <a href="javascript:void(0)" title="Duplicate" data-toggle="modal" data-target="#myModal-@course.ID"><i class="fa fa-files-o resource-icon" style="color:red;"></i></a>&nbsp;&nbsp;
-                        <a data-toggle="tooltip" title="Modules" href="@Url.Action("Index", "Resources", new { id = course.ID })"><img style="width:20px;height:25px;margin-bottom:10px;" src="~/_Content/images/duplicate.png" /></a>&nbsp;&nbsp;
-                        @if (!course.IsPublished)
-                        {
+                        <td @*style="text-align:center;"*@ style=" width: 190px; text-align:center;">
+                            <a data-toggle="tooltip" title="Preview" href="#" onclick="OpenTab(@course.ID)"><i class="fa fa-eye resource-icon" style="color:green"></i></a>&nbsp;&nbsp;
+                            <a href="javascript:void(0)" title="Duplicate" data-toggle="modal" data-target="#myModal-@course.ID"><i class="fa fa-files-o resource-icon" style="color:red;"></i></a>&nbsp;&nbsp;
+                            <a data-toggle="tooltip" title="Modules" href="@Url.Action("Index", "Resources", new { id = course.ID })"><img style="width:20px;height:25px;margin-bottom:10px;" src="~/_Content/images/duplicate.png" /></a>&nbsp;&nbsp;
+                            @if (!course.IsPublished)
+                            {
 
-                            <a style="padding-right:10px"  data-toggle="tooltip" title="Edit" href="@Url.Action("Edit", new { id = course.ID })"><i class="fa fa-pencil edit-icon"></i></a>
-                            <a data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
-                        }
-                        else
-                        {
-                            <span style="cursor:no-drop">
-
-
-                                <a style="pointer-events: none;  padding-right: 10px" data-toggle="tooltip" title="Edit" href="@Url.Action("Edit", new { id = course.ID })"><i class="fa fa-pencil edit-icon"></i></a>
-                            </span>
-                            <span style="cursor:no-drop">
-                                <a style="pointer-events: none; " data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
-                            </span>
-                        }
+                                <a style="padding-right:10px" data-toggle="tooltip" title="Edit" href="@Url.Action("Edit", new { id = course.ID })"><i class="fa fa-pencil edit-icon"></i></a>
+                                <a data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
+                            }
+                            else
+                            {
+                                <span style="cursor:no-drop">
 
 
-                        <div id="myModal-@course.ID" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
+                                    <a style="pointer-events: none;  padding-right: 10px" data-toggle="tooltip" title="Edit" href="@Url.Action("Edit", new { id = course.ID })"><i class="fa fa-pencil edit-icon"></i></a>
+                                </span>
+                                <span style="cursor:no-drop">
+                                    <a style="pointer-events: none; " data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
+                                </span>
+                            }
 
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title" style="margin-bottom:0px">Duplicate This Course</h4>
-                                        <h5 style="margin-top:0px;padding-right:7px">With an amended filename</h5>
-                                    </div>
-                                    <form action="@Url.Action("CreateCourseClone")">
-                                        <div class="modal-body">
-                                            <input type="hidden" name="CourseID" value="@course.ID" />
-                                            <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
 
-                                         
-                                                <table style="width: 200px !important; background-color: white;margin-left:155px" >
+                            <div id="myModal-@course.ID" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title" style="margin-bottom:0px">Duplicate This Course</h4>
+                                            <h5 style="margin-top:0px;padding-right:7px">With an amended filename</h5>
+                                        </div>
+                                        <form action="@Url.Action("CreateCourseClone")">
+                                            <div class="modal-body">
+                                                <input type="hidden" name="CourseID" value="@course.ID" />
+                                                <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
+
+
+                                                <table style="width: 200px !important; background-color: white;margin-left:155px">
                                                     <thead>
 
                                                         <tr style="background-color: white;width:200px;">
-            <td style="width: 50px; height: 26px; border: 0px !important; background-color: white"><b> Cloud</b></td>
-            <td style="background-color:white;border:0px!important;width:20px">
-                @*@Html.RadioButton("CourseCopy", "Cloud", new { @id = "rdCloud", @onclick = "showhide({@course.ID})", @style = "width:20px" })*@
-                <input checked id="rdCloud" name="CourseCopy" onclick="showhide(@course.ID)" style="width:20px" type="radio" value="Cloud">
+                                                            <td style="width: 50px; height: 26px; border: 0px !important; background-color: white"><b> Cloud</b></td>
+                                                            <td style="background-color:white;border:0px!important;width:20px">
+                                                                @*@Html.RadioButton("CourseCopy", "Cloud", new { @id = "rdCloud", @onclick = "showhide({@course.ID})", @style = "width:20px" })*@
+                                                                <input checked id="rdCloud" name="CourseCopy" onclick="showhide(@course.ID)" style="width:20px" type="radio" value="Cloud">
 
-            </td>
-            <td style="width: 50px; height: 26px; background-color: white; border: 0px !important"><b> Company</b></td>
-            <td style="background-color: white; border: 0px !important;width:20px;height:26px">
+                                                            </td>
+                                                            <td style="width: 50px; height: 26px; background-color: white; border: 0px !important"><b> Company</b></td>
+                                                            <td style="background-color: white; border: 0px !important;width:20px;height:26px">
 
-                @*@Html.RadioButton("CourseCopy", "Company", new { @id = "rdCompany", @style = "width:20px" })*@
+                                                                @*@Html.RadioButton("CourseCopy", "Company", new { @id = "rdCompany", @style = "width:20px" })*@
 
-                <input id="rdCompany" name="CourseCopy" onclick="showhide1(@course.ID)" style="width:20px" type="radio" value="Company">
-
-
-            </td>
+                                                                <input id="rdCompany" name="CourseCopy" onclick="showhide1(@course.ID)" style="width:20px" type="radio" value="Company">
 
 
-        </tr>
+                                                            </td>
 
-                                                       
+
+                                                        </tr>
+
+
                                                     </thead>
                                                 </table>
-                                                                                        
-                                       
-                                        <div class="form-group hidden" id="lstcompany-@course.ID">
-                                            <select name="company"  style="width:200px">
-                                                @foreach (var cmp in ViewBag.company)
-                                                {
-                                                    <option value="@cmp.Id">@cmp.Name</option>
-                                                }
-                                            </select>
 
-                                        </div>
 
-                                         
-                                               
-        
+                                                <div class="form-group hidden" id="lstcompany-@course.ID">
+                                                    <select name="company" style="width:200px">
+                                                        @foreach (var cmp in ViewBag.company)
+                                                        {
+                                                            <option value="@cmp.Id">@cmp.Name</option>
+                                                        }
+                                                    </select>
 
-                                        </div>
-                                      
-                                        <div class="modal-footer">
+                                                </div>
 
-                                            <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </form>
+
+
+
+
+                                            </div>
+
+                                            <div class="modal-footer">
+
+                                                <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
                                 </div>
-
                             </div>
-                        </div>
-                        @*<a href="" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-files-o"></i> Resources</a>
-        <a href="@Url.Action("Edit", new { id = course.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-        <a href="@Url.Action("Delete", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>*@
-                    </td>
+                            @*<a href="" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-files-o"></i> Resources</a>
+                                <a href="@Url.Action("Edit", new { id = course.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                                <a href="@Url.Action("Delete", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>*@
+                        </td>
                     </tr>
                 }
             </tbody>

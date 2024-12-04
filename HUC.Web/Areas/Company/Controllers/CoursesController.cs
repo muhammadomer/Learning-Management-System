@@ -5,7 +5,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
+
 using System.Web.Mvc;
 using Dapper;
 using HUC.Web.App.Courses;
@@ -19,6 +23,9 @@ using HUC.Web.App.Shared;
 using HUC.Web.App.Users;
 using HUC.Web.App.Users.Courses;
 using HUC.Web.SessionExpire;
+using iTextSharp.text;
+using System.Net.Http.Headers;
+
 
 namespace HUC.Web.Areas.Company.Controllers
 {
@@ -60,6 +67,40 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return View(model);
         }
+
+
+
+
+
+
+       
+        public ActionResult UploadChunk()
+        {
+
+
+            try
+            {
+
+                int a = 0;
+            }
+            catch(Exception ex) { }
+
+
+
+            return null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         public ActionResult Create()
         {
@@ -529,5 +570,18 @@ namespace HUC.Web.Areas.Company.Controllers
 
 
 
+    }
+    public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
+    {
+        public readonly string _filename;
+        public CustomMultipartFormDataStreamProvider(string path, string filename) : base(path)
+        {
+            _filename = filename;
+        }
+
+        public override string GetLocalFileName(HttpContentHeaders headers)
+        {
+            return _filename;
+        }
     }
 }

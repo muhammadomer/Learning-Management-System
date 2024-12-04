@@ -121,7 +121,7 @@ namespace HUC.Web.Areas.Users.Controllers
                     return RedirectToAction("View", new { id = id });
                 }
             }
-
+            LogApp.Log4Net.WriteLog("CourseStage.IsEnd:"+ curUserCourse.CourseStage.IsEnd+ "CourseEndModule:" + CourseEndModule+ "!curUserCourse.IsComplete:" + !curUserCourse.IsComplete, LogApp.LogType.GENERALLOG);
             if ((curUserCourse.CourseStage.IsEnd || CourseEndModule) && !curUserCourse.IsComplete)
             {
                 //Next resource being null means this is the last resource. Now we mark the course as complete
@@ -1083,7 +1083,7 @@ namespace HUC.Web.Areas.Users.Controllers
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 smtp.Credentials = new System.Net.NetworkCredential(modelsmtp.MailUsername, modelsmtp.MailPassword); // Enter seders User name and password  
                 smtp.EnableSsl = true;
-                      smtp.Send(mail);
+                //      smtp.Send(mail);
 
                 var curUser = GetLoggedInUser().ID;
                 var usercourse = GetLoggedInUser().UserCourses.Where(x => x.UserID == curUser && x.CourseID ==Convert.ToInt32( CourseId)).FirstOrDefault();

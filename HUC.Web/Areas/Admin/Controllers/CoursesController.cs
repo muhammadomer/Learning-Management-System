@@ -18,6 +18,7 @@ using HUC.Web.App.Resources.Questions.Answers;
 using HUC.Web.App.Shared;
 using HUC.Web.App.Users;
 using HUC.Web.App.Users.Courses;
+using iTextSharp.text.pdf.parser;
 
 namespace HUC.Web.Areas.Admin.Controllers
 {
@@ -67,6 +68,70 @@ namespace HUC.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+
+
+
+
+
+
+        public ActionResult SaveUploadedFile(IEnumerable<HttpPostedFileBase> files)
+        {
+            bool SavedSuccessfully = true;
+            string fName = "";
+
+            LogApp.Log4Net.WriteLog("posted file " + files, LogApp.LogType.GENERALLOG);
+
+
+            try
+            {
+                //loop through all the files
+                foreach (var file in files)
+                {
+
+                    //Save file content goes here
+                    fName = file.FileName;
+                    if (file != null && file.ContentLength > 0)
+                    {
+
+                        //var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\", Server.MapPath(@"\")));
+
+                        //string pathString = System.IO.Path.Combine(originalDirectory.ToString(), "imagepath");
+
+                        //var fileName1 = System.IO.Path.GetFileName(file.FileName);
+
+                        //bool isExists = System.IO.Directory.Exists(pathString);
+
+                        //if (!isExists)
+                        //    System.IO.Directory.CreateDirectory(pathString);
+
+                        //var path = string.Format("{0}\\{1}", pathString, file.FileName);
+                        string FileName = System.IO.Path.GetFileName(file.FileName);
+                        string path = System.IO.Path.Combine(Server.MapPath("~/_Media/Uploads"), FileName);
+                        file.SaveAs(path);
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                SavedSuccessfully = false;
+            }
+
+
+            if (SavedSuccessfully)
+            {
+                return RedirectToAction("Index", new { Message = "All files saved successfully" });
+            }
+            else
+            {
+                return RedirectToAction("Index", new { Message = "Error in saving file" });
+            }
+        }
+
+
+
 
         public ActionResult Create()
         {

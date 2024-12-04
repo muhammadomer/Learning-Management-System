@@ -11,6 +11,7 @@ using HUC.Web.App.Users;
 using HUC.Web.App.Users.Courses;
 using HUC.Web.Controllers;
 using HUC.Web.Models.SinglePoint;
+using LogApp;
 
 namespace HUC.Web.Areas.Company.Controllers
 {
@@ -277,7 +278,10 @@ namespace HUC.Web.Areas.Company.Controllers
                 }
                 courseCount++;
             }
-         bool   isdata = timePerCourseData.Count() > 0 ? true : false;
+            //LogApp.Log4Net.WriteLog("timePerCourseData:"+ timePerCourseData.Count, LogType.GENERALLOG);
+            //LogApp.Log4Net.WriteLog("scorePerCourseData:" + scorePerCourseData.Count, LogType.GENERALLOG);
+
+            bool isdata = timePerCourseData.Count() > 0 ? true : false;
             var timePerCourse = new
             {
                 barData = timePerCourseData.ToArray(),
@@ -293,7 +297,8 @@ namespace HUC.Web.Areas.Company.Controllers
                 noData = !scorePerCourseHasData,
                 existdata = isdata
             };
-
+            LogApp.Log4Net.WriteLog("timePerCourseData:" + timePerCourse.barData.Count(), LogType.GENERALLOG);
+            LogApp.Log4Net.WriteLog("scorePerCourseData:" + scorePerCourse.barData.Count(), LogType.GENERALLOG);
 
             return Json(new
             {

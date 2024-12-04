@@ -1,0 +1,222 @@
+﻿@using HUC.Web.App.Resources.Chapters.Contents
+@using HUC.Web.Models
+@model HUC.Web.App.Resources.Chapters.Contents.ChapterContentAddModel
+
+@{
+    ViewBag.PageData = new PageDataModel
+    {
+        Title = "Resources - Create chapter",
+        ContentTitle = Model.Chapter.Resource.Course.Name + " > " + Model.Chapter.Resource.Name + " > " + Model.Chapter.Name,
+        ContentTitleDesc = "",
+        ActivePage = "courses",
+        Breadcrumb = new List<BreadcrumbItem>
+{
+            new BreadcrumbItem("Courses", Url.Action("Index", "Courses"), "fa-briefcase"),
+            new BreadcrumbItem(Model.Chapter.Resource.Course.Name),
+            new BreadcrumbItem("Resources", Url.Action("Index", new { id = Model.Chapter.Resource.CourseID}), "fa-files-o"),
+            new BreadcrumbItem(Model.Chapter.Resource.Name + " - Resource", Url.Action("View", new { id = Model.Chapter.ResourceID})),
+            new BreadcrumbItem("Chapter " + Model.Chapter.Sort + " - " + Model.Chapter.Name),
+            new BreadcrumbItem("Create Content"),
+        }
+    };
+}
+@*<script src="~/ckeditor/ckeditor_source.js"></script>*@
+
+<style>
+    .edit-create-form .form-group label {
+        margin-left: 10px !important;
+        margin-top: 6px !important;
+    }
+
+    .desktop-ver .align-top-content {
+        display: none;
+    }
+</style>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/basic.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js"></script>
+
+@*<div class="desktop-ver">
+        <div class="row">
+            <div class="col-md-12 align-top-content button-active" style="margin-top: 100px; margin-right: 15px;">
+                <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>*@
+
+@*<div class="mobile-ver middle-btn">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12">
+                <a class="btn btn-success pull-right" href="@Url.Action("View", new { id = Model.Chapter.ResourceID})">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>*@
+<style>
+    body {
+        font-family: Bahnschrift !important;
+    }
+
+    .chbody {
+        background-color: aqua;
+    }
+
+    /*Second row hide ckeditor end*/
+</style>
+
+<div class="col-md-12" style="padding-left:0px !important;">
+    <section class="panel panel-default">
+        @*<header class="panel-heading">The Header</header>*@
+        <div class="panel-body">
+            <form class="dropzone" id="dz-upload" method="post" action="api/chunk-upload" enctype="multipart/form-data" ></form>
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @id = "submitform" }))
+            {
+                @Html.AntiForgeryToken()
+                
+                <div class="edit-create-form" style="margin-top:12px;">
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ChapterID)
+                    @Html.HiddenFor(x => x.ContentType)
+                    <style>
+                        body {
+                            font-size: 18px !important;
+                        }
+                    </style>
+
+
+                    <div class="form-group">
+                      
+                        
+                        <div class="action-button" style="float:left !important; margin:2px !important;">
+                            <a onclick="OpenTab(@Model.Chapter.ResourceID)" class="btn btn-dark" id="cncelb" >Create</a>
+                        </div>
+                        
+
+                        <a href="/Company/Resources/View/@Model.Chapter.ResourceID" class="btn btn-secondary m-btn m-btn--custom" id="cncelb" style="float:left;margin:2px ;border: 1px solid darkgrey;">Cancel</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </section>
+</div>
+
+
+ 
+<script>
+    function OpenTab(id) {
+        var URLLink = "/Company/Resources/ContentCreateMP5?id=" + id + "&fileupload=" + fileupload + "&chapterId="+@Model.ChapterID ;
+        window.open(URLLink, "_self");
+    }
+    
+</script>
+
+
+
+<script type="text/javascript">
+
+    $(".panel").css('width', '40%');
+
+    var fileupload = false;
+
+    let dz = new Dropzone('#dz-upload',
+        {
+            type: "POST",
+           // url: "http://localhost:5412/api/ChunkedUpload/UploadChunk",
+            url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/api/ChunkedUpload/UploadChunk" ,
+            params: function (files, xhr, chunk) {
+                if (chunk) {
+                    return {
+                        dzUuid: chunk.file.upload.uuid,
+                        dzChunkIndex: chunk.index,
+                        dzTotalFileSize: chunk.file.size,
+                        dzCurrentChunkSize: chunk.dataBlock.data.size,
+                        dzTotalChunkCount: chunk.file.upload.totalChunkCount,
+                        dzChunkByteOffset: chunk.index * this.options.chunkSize,
+                        dzChunkSize: this.options.chunkSize,
+                        dzFilename: chunk.file.name,
+                    }
+                }
+            },
+            parallelUploads: 1,  // since we're using a global 'currentFile', we could have issues if parallelUploads > 1, so we'll make it = 1
+            maxFiles: 1,
+            maxFilesize: 50,   // max individual file size 1024 MB
+            chunking: true,      // enable chunking
+            forceChunking: true, // forces chunking when file.size < chunkSize
+            parallelChunkUploads: true, // allows chunks to be uploaded in parallel (this is independent of the parallelUploads option)
+            chunkSize: 1048576,  // chunk size 1,000,000 bytes (~1MB)
+            retryChunks: true,   // retry chunks on failure
+            retryChunksLimit: 3, // retry maximum of 3 times (default is 3)
+            acceptedFiles: ".mp4",
+            chunksUploaded: function (file, done) {
+                // All chunks have been uploaded. Perform any other actions
+                currentFile = file;
+
+                // This calls server-side code to merge all chunks for the currentFile
+                $.ajax({
+                    type: "POST",
+                  //  url: "http://localhost:5412/api/ChunkedUpload/CommitChunks?dzIdentifier=" + currentFile.upload.uuid
+                     url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/api/ChunkedUpload/CommitChunks?dzIdentifier=" + currentFile.upload.uuid
+                        + "&fileName=" + encodeURIComponent(currentFile.name)
+                        + "&expectedBytes=" + currentFile.size
+                        + "&totalChunks=" + currentFile.upload.totalChunkCount
+                        + "&ChapterId=" + @Html.Raw(Json.Encode(Model.ChapterID))
+                        + "&contentType=" + @Html.Raw(Json.Encode(Model.ContentType)),
+                    success: function (data) {
+                        // Must call done() if successful
+                        done();
+
+                        fileupload = true;
+
+
+                    },
+
+                    error: function (msg) {
+                        currentFile.accepted = false;
+                        fileupload = false;
+                        //   myDropzone._errorProcessing([currentFile], msg.responseText);
+                    }
+                    @*complete: function () {
+                        // $.ajax({
+                       //     type: "POST",
+                        //    url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/api/ChunkedUpload/FileUploaded"
+                        //         + "?fileName=" + encodeURIComponent(currentFile.name)
+                        //         + "&ChapterId=" + @Html.Raw(Json.Encode(Model.ChapterID)),
+                        //     success: function (response) {
+                        //        if (response == "ok") {
+                                    //  $("#cours-" + id).hide();
+                        //            toastr.success(' successfully');
+
+                        //        }
+                        //    }
+                       // });
+                    }*@
+
+                });
+            },
+            init: function () {
+                // This calls server-side code to delete temporary files created if the file failed to upload
+                // This also gets called if the upload is canceled
+                this.on('error', function (file, errorMessage) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/ChunkedUpload?dzIdentifier=" + file.upload.uuid
+                            + "&fileName=" + encodeURIComponent(file.name)
+                            + "&expectedBytes=" + file.size
+                            + "&totalChunks=" + file.upload.totalChunkCount,
+                        success: function (data) {
+                            // nothing
+                        }
+                    });
+                });
+            }
+        });
+</script>

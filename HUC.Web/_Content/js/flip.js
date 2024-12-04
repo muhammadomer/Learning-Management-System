@@ -12,7 +12,8 @@ function Flip(jasonObj) {
                 (item, i) => `
 <div class="col-md-6">
           <li class="ev-grid-item" id="litem-${this.jasonObj.divId}-${i}"  style=" flex: 1 1 33.3333%; text-align: center; box-sizing: border-box; margin: 10px auto">
-            <a onclick="DeleteConfirm('${this.jasonObj.flip[i].IndexId}','${this.jasonObj.divId}' ,' ${encodeURIComponent(JSON.stringify(this.jasonObj.flip))}','${i}','${this.jasonObj.ID}','${this.jasonObj.ChapterID}','${this.jasonObj.Sort}');" class="trigger-btn"><i class="fa fa-close close-btn" ></i></a>
+            <a onclick="DeleteConfirm('${this.jasonObj.flip[i].IndexId}','${this.jasonObj.divId}' ,' ${encodeURIComponent(JSON.stringify(this.jasonObj.flip))}','${i}','${this.jasonObj.ID}','${this.jasonObj.ChapterID}','${this.jasonObj.Sort}');" class="trigger-btn"><i class="fa fa-close close-btn" ></i></a>      
+            <a style="margin-right:10px;" onclick="ContentFlipEdit('${this.jasonObj.flip[i].IndexId}','${this.jasonObj.divId}' ,' ${encodeURIComponent(JSON.stringify(this.jasonObj.flip))}','${i}','${this.jasonObj.ID}','${this.jasonObj.ChapterID}','${this.jasonObj.Sort}');" class="trigger-btn"><i class="fa fa-pencil close-btn" ></i></a>
 <div class="ev-grid-item-inner flip-container" style="padding: 0px 10px; box-sizing: border-box;">
               <div class="ev-flip-card-item flipper" tabindex="0">
                   <div class="ev-flip-card-item-front" style="height:310px;width:440px;vertical-align: middle;top:50%;bottom:50%" >
@@ -104,6 +105,7 @@ ${this.jasonObj.flip[i].backdescription}
 }
 var results;
 function DeleteConfirm(IndexId, divid, array, loopid, ID, ChapterId, Sort) {
+    debugger;
     results = decodeURIComponent(array);
     $("#DeleteModalFlip").modal('show');
     $("#FlipValue").val(IndexId);
@@ -119,7 +121,12 @@ function DeleteConfirm(IndexId, divid, array, loopid, ID, ChapterId, Sort) {
     //  $('#litem-'+divid+"-"+loopid).remove();
 };
 
-
+function ContentFlipEdit(IndexId, divid, array, loopid, ID, ChapterId, Sort) {
+    debugger;
+    results = decodeURIComponent(array);
+    sessionStorage.setItem('flipeditindex', IndexId);
+    window.location.href = '/company/Resources/ContentEdit/' + ID ;
+}
 
 $(document).ready(function () {
     $(".ev-grid-item").mouseover(function () {

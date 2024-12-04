@@ -31,7 +31,7 @@
 <link href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/truefalse.css?id=1" rel="stylesheet" />
 
 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -49,6 +49,9 @@
 <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/truefalse.js"></script>
 <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/freetext.js"></script>
 
+<script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/user.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/signalr.js/2.1.1/jquery.signalR.js"></script>*@
 
 <script src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/js/lib/jquery.signalR-2.2.1.js"></script>
 <script src="~/signalr/hubs"></script>
@@ -56,7 +59,7 @@
     $(document).ready(function () {
         $("#modAdspic").empty();
         $("#modAdspic").append('<a href="#"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/Gdd-logo.jpg" style="max-height:106px;padding-right:50px;width:168px;"></a>');
-      
+
     });
 </script>
 
@@ -85,25 +88,24 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
 {
     <style>
         .full-page {
-            background: @Model.Course.Background !important;
-           
+          background:@Model.Course.Background !important;
         }
-      
+
 
     </style>
 
 }
 <style>
-      
-        .disabled-link {
-           /* cursor: no-drop;*/
-            pointer-events: none;
-            /* cursor:not-allowed;*/
-        }
-        .disable-icon {
-            cursor: no-drop;
-        }
-    
+
+    .disabled-link {
+        /* cursor: no-drop;*/
+        pointer-events: none;
+        /* cursor:not-allowed;*/
+    }
+
+    .disable-icon {
+        cursor: no-drop;
+    }
 </style>
 <div class="desktop-ver">
     <div class="row">
@@ -176,11 +178,11 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         {
                             if (Model.Questions.Count() == 1)
                             {
-                                <p class="margin-top-10"><strong style="font-family:Bahnschrift">Assessment:</strong> @Model.Questions.Count() question</p>
+                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() question</p>
                             }
                             else if (Model.Questions.Count() > 1)
                             {
-                                <p class="margin-top-10"><strong style="font-family:Bahnschrift">Assessment:</strong> @Model.Questions.Count() questions</p>
+                                <p class="margin-top-10"><strong style="font-family:'Franklin Gothic'">Assessment:</strong> @Model.Questions.Count() questions</p>
                             }
                         }
                     </div>
@@ -863,47 +865,47 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                                 else if (question.QuestionType == 7)
                                 {
                                     var formId = "submitAnswer" + question.ID;
-                                    using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
-                                    {
-                                        foreach (var curAnswer in question.Answers)
+                                    @*using (Html.BeginForm(null, null, FormMethod.Post, new { @id = formId }))
                                         {
-                                            if (curAnswer.CourseUserId == Convert.ToInt32(TempData["CurrentUserId"]))
+                                            foreach (var curAnswer in question.Answers)
                                             {
-                                                <script>
-                                                    $(document).ready(function () {
-                                                        var textarea ="@curAnswer.Answer";
-                                                        $("#freetext-"+@question.ID).val(textarea);
-                                                        $("#freetext-"+@question.ID).attr("disabled", "disabled");
-                                                        $("button." + "module-@question.ID").prop("disabled", true);
-                                                    });
-                                                </script>
+                                                if (curAnswer.CourseUserId == Convert.ToInt32(TempData["CurrentUserId"]))
+                                                {
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            var textarea ="@curAnswer.Answer";
+                                                            $("#freetext-"+@question.ID).val(textarea);
+                                                            $("#freetext-"+@question.ID).attr("disabled", "disabled");
+                                                            $("button." + "module-@question.ID").prop("disabled", true);
+                                                        });
+                                                    </script>
+                                                }
                                             }
-                                        }
-                                        <div class="freetext-module" id="module-@question.ID"></div>
-                                        <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
-                                        <input type="hidden" name="question" id="freetextqt-@question.ID" value="@question.ID" />
-                                        <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
-                                        <input type="hidden" name="adminAns" id="hdnadminAns" value="0" />
-                                        <script>
-                                            //var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
-													var jasonObj = {
-														divId: "module-@question.ID",
-                                                        title: "Part @question.Sort: Free Text",
-                                                       feedback: @Html.Raw(Json.Encode(question.Feedback)),
-                                                        question: "@question.Question.Replace("\n", "").Replace("\r", "")",
-                                                        statement: "Write your answer in the text box below." + "\n" + "<textarea id='freetext-" + @question.ID +"'" + "name='FreeTextAnswer' rows='10' cols='138' style='width:100%;margin-top:16px;margin-bottom:2px;border-color:#66CC99;color:black;font: caption;' ></textarea> ",
-                                                        adminpreviewAns: "@ViewBag.adminAns",
+                                            <div class="freetext-module" id="module-@question.ID"></div>
+                                            <input type="hidden" name="course" id="hdnCourseId-@question.ID" value="@question.Resource.Course.ID" />
+                                            <input type="hidden" name="question" id="freetextqt-@question.ID" value="@question.ID" />
+                                            <input type="hidden" name="answer" id="hdnAnswerId-@question.ID" value="0" />
+                                            <input type="hidden" name="adminAns" id="hdnadminAns" value="0" />
+                                            <script>
+                                                //var answers = JSON.parse('@Html.Raw(Json.Encode(answerList))');
+                                                        var jasonObj = {
+                                                            divId: "module-@question.ID",
+                                                            title: "Part @question.Sort: Free Text",
+                                                           feedback: @Html.Raw(Json.Encode(question.Feedback)),
+                                                            question: "@question.Question.Replace("\n", "").Replace("\r", "")",
+                                                            statement: "Write your answer in the text box below." + "\n" + "<textarea id='freetext-" + @question.ID +"'" + "name='FreeTextAnswer' rows='10' cols='138' style='width:100%;margin-top:16px;margin-bottom:2px;border-color:#66CC99;color:black;font: caption;' ></textarea> ",
+                                                            adminpreviewAns: "@ViewBag.adminAns",
 
-                                                        attempts: @question.Attempts,
-                                                        get multi() {
-															return @Html.Raw(Json.Encode(answerList))
-														},
-                                            };
+                                                            attempts: @question.Attempts,
+                                                            get multi() {
+                                                                return @Html.Raw(Json.Encode(answerList))
+                                                            },
+                                                };
 
-                                            var freetext = new FreeText(jasonObj);
-                                            freetext.initialize();
-                                        </script>
-                                    }
+                                                var freetext = new FreeText(jasonObj);
+                                                freetext.initialize();
+                                            </script>
+                                        }*@
                                 }
                             }
                         </div>
@@ -1006,5 +1008,5 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
         window.location.href = "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/DashBoardView";
 
             }
-   
+    $("#logoid").hide();
 </script>

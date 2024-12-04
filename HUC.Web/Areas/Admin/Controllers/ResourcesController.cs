@@ -415,7 +415,8 @@ namespace HUC.Web.Areas.Admin.Controllers
 
         List<ContentType> _uploadRequiredContentTypes = new List<ContentType> { ContentType.Video, ContentType.Audio, ContentType.PDF };
 
-        public ActionResult ContentCreate(int id, int? type = null)
+        public ActionResult 
+            ContentCreate(int id, int? type = null)
         {
             if (!type.HasValue || !Enum.IsDefined(typeof(ContentType), type.Value))
             {
@@ -519,6 +520,8 @@ namespace HUC.Web.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    LogApp.Log4Net.WriteLog("ModelState.IsValid: " , LogApp.LogType.GENERALLOG);
+
                     var prevContents = Database.GetAll<ChapterContentModel>("WHERE ChapterID = @ChapterID", new { ChapterID = model.ChapterID });
                     var lastSort = prevContents.Any() ? prevContents.Max(x => x.Sort) : 0;
                     model.Sort = lastSort + 1;
@@ -541,74 +544,38 @@ namespace HUC.Web.Areas.Admin.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult UploadMP4Files()
+        public ActionResult ContentCreateMP4(int id, int? type = null)
         {
-
-            try
+            if (!type.HasValue || !Enum.IsDefined(typeof(ContentType), type.Value))
             {
-               
-
-               // Fetch the File.
-                HttpPostedFile postedFile =System.Web. HttpContext.Current.Request.Files[0];
-
-                //Fetch the File Name.
-                string fileName =System.Web.HttpContext.Current.Request.Form["fileName"] + Path.GetExtension(postedFile.FileName);
-
-               // var httpPostedFile = HttpContext.Request.Files[0];
-
-                LogApp.Log4Net.WriteLog("posted file " + postedFile.ContentType, LogApp.LogType.GENERALLOG);
-
-            }
-            catch (Exception ex)
-            {
-                LogApp.Log4Net.WriteException(ex);
-
+                var chapter = Database.GetSingle<ResourceChapterModel>(id);
+                AddError("Type invalid or not provided.");
+                return RedirectToAction("View", new { id = chapter.ResourceID });
             }
 
+            var model = new ChapterContentAddModel
+            {
+                ChapterID = id,
+                ContentType = (ContentType)type.Value
+            };
 
-
-            return Json("yes", JsonRequestBehavior.AllowGet);
-          //  return Request.CreateResponse(HttpStatusCode.OK, fileName);
-
+            return View(model);
         }
 
 
-        [HttpPost]
 
-        public ActionResult UploadFiles1()
+        //  [HttpPost]
+
+        public ActionResult ContentCreateMP5(int id)
         {
 
-            try
-            {
-                string path = System.Web.HttpContext.Current.Server.MapPath("~/Uploads/");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                //Fetch the File.
-                HttpPostedFile postedFile = System.Web.HttpContext.Current.Request.Files[0];
-
-                //Fetch the File Name.
-                string fileName = System.Web.HttpContext.Current.Request.Form["fileName"] + Path.GetExtension(postedFile.FileName);
-
-                //Save the File.
-                postedFile.SaveAs(path + fileName);
-
-            }
-            catch (Exception ex)
-            {
-                LogApp.Log4Net.WriteException(ex);
-
-            }
 
 
-            //Create the Directory.
-            
-            //Send OK Response to Client.
-           // return  Request.CreateResponse(HttpStatusCode.OK, fileName);
-            return Json("yes", JsonRequestBehavior.AllowGet);
+            AddSuccessCreate("Section");
+            return RedirectToAction("View", new { id = id });
+
+
+
 
         }
 
@@ -692,7 +659,12 @@ namespace HUC.Web.Areas.Admin.Controllers
             AddErrorModel();
             return View(model);
         }
+        public ActionResult ContentEditMP4(int id)
+        {
+            var model = Database.GetSingle<ChapterContentEditModel>(id);
 
+            return View(model);
+        }
         private void ChangeChapterSort(ResourceChapterModel chapter, int newSort)
         {
             if (newSort < chapter.Sort)

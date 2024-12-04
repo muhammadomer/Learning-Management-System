@@ -25,7 +25,7 @@
 {
     <style>
         .full-page {
-            background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Background) !important;
+            background-image: url(/_Media/Uploads/@Model.Background) !important;
         }
     </style>
 }
@@ -94,7 +94,7 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                         @if (!String.IsNullOrWhiteSpace(Model.IntroCopy))
                         {
                             <p style="font-size:16px;" title="@Html.Raw(Model.IntroCopy)">
-                                @*@Html.Raw(Model.IntroCopy)*@
+                               
                             </p>
                         }
                         <span class="module-time">Duration: <small style="font-weight:400">2 Minute</small></span>

@@ -510,7 +510,7 @@ namespace HUC.Web.Areas.Users.Controllers
 
 
                 var data = Database.Query(query, new { ID = 113 });
-
+                
                 LogApp.Log4Net.WriteLog("Retake Date: " + data.Select(x => x.RetakeDate).FirstOrDefault(), LogApp.LogType.GENERALLOG);
                 LogApp.Log4Net.WriteLog("duration: " + data.Select(x => x.RetakeDuration).FirstOrDefault(), LogApp.LogType.GENERALLOG);
 
@@ -611,7 +611,7 @@ namespace HUC.Web.Areas.Users.Controllers
              //   System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 smtp.Credentials = new System.Net.NetworkCredential(model.MailUsername, model.MailPassword); // Enter seders User name and password  
                 smtp.EnableSsl = true;
-                smtp.Send(mail);
+             //   smtp.Send(mail);
 
 
 
@@ -698,7 +698,7 @@ namespace HUC.Web.Areas.Users.Controllers
                     (model.MailUsername, model.MailPassword);
             //Or your Smtp Email ID and Password
             smtp.EnableSsl =true;
-            smtp.Send(mail);
+         //   smtp.Send(mail);
 
         }
 

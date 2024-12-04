@@ -45,6 +45,7 @@ namespace HUC.Web
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+           // RouteTable.Routes.MapHubs();
         }
 
         protected void Application_End(object sender, EventArgs e)
@@ -63,8 +64,8 @@ namespace HUC.Web
 
             //var now = DateTime.Now;
 
-           
-            //    var beats = db.Query<HeartbeatModel>("SELECT * FROM Heartbeats WHERE EndOn is null AND ConnectionID is not null");
+
+            //var beats = db.Query<HeartbeatModel>("SELECT * FROM Heartbeats WHERE EndOn is null AND ConnectionID is not null");
 
             //foreach (var beat in beats)
             //{

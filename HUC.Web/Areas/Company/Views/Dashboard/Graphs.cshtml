@@ -399,6 +399,7 @@
 
     }
     function FarwardScore() {
+        debugger;
         score++;
         com = 2;
         updateGraphs(score, com);
@@ -468,11 +469,11 @@
         $("#yeartxt1").text(@Model.Year);
          $("#yeartxt2").text(@Model.Year);
 
-
+        debugger;
 
         $.get('@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Dashboard/PageData?year=@Model.Year' + '&next=' + count, function (data) {
 
-           // debugger;
+            debugger;
 
             totalDataScoreinGraph = data.TotalRecordScoreInGraph;
             totalDataTimeinGraph = data.TotalRecordTimeInGraph;
@@ -512,6 +513,8 @@
                      if (count > 0)
                          $("#prev").show();
                         // $("#prevscore").show();
+                     //$("#nextscore").show();
+                     //$("#next").show();
                  }
              }
              if (co == 1) {
@@ -529,6 +532,8 @@
     function updateScoreGraph(data) {
         if (totalDataScoreinGraph > 10) {
             countscorerecord = countscorerecord + data.ticks.length;
+            $("#nextscore").show();
+            $("#next").show();
         }
         else {
             $("#nextscore").hide();

@@ -6,6 +6,7 @@ using HUC.Web.App.Courses;
 using HUC.Web.App.PageModels;
 using HUC.Web.App.Users;
 using HUC.Web.Models;
+using LogApp;
 
 namespace HUC.Web.Areas.Company.Controllers
 {
@@ -168,11 +169,11 @@ namespace HUC.Web.Areas.Company.Controllers
             var userAverageTimeSpentPerCourseData = new List<decimal[]>();
             var userAverageScorePerCourseHasData = false;
             var userAverageTimeSpentPerCourseHasData = false;
-            var courseCount = 1;  
-            
+            var courseCount = 1;
+            int c = 0;
             if (year == null)
             {
-                foreach (var curCourse in company.Courses.OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
+                foreach (var curCourse in company.Courses.Where(x=>x.Course.IsDeleted==false).OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
                 {
                     var courseNameSmall = curCourse.Course.Name;
                     if (courseNameSmall.Length > 15)
@@ -186,17 +187,20 @@ namespace HUC.Web.Areas.Company.Controllers
                         ? curCourse.UserCourses.Where(x => x.StartedOn.HasValue).ToList()
                         : curCourse.UserCourses;
 
-                    if (userCourses.Any(/*x => x.IsComplete*/ ))
-                    {
+
+
+                    //if (userCourses.Any(/*x => x.IsComplete*/ ))
+                    //{
                         courseTicks.Add(new object[] { courseCount, courseNameSmall });
                         userAverageScorePerCourseHasData = true;
                         int scoremin = (curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore;
 
                         targetCompliancePerCourseData.Add(new[] { courseCount, /*((curCourse.ComplianceScoreMinimum * 100) / curCourse.Course.MaxScore)*/scoremin });
                         userAverageScorePerCourseData.Add(new[] { courseCount, Math.Round(((curCourse.ComplianceScoreAverage * 100) / curCourse.Course.MaxScore)) });
-                    }
-                    if (userCourses.Any())
-                    {
+                        c = c + 1;
+                    //}
+                    //if (userCourses.Any())
+                    //{
                         userAverageTimeSpentPerCourseHasData = true;
                         userAverageTimeSpentPerCourseData.Add(new[] { courseCount, Math.Round((decimal)curCourse.AverageTime.TotalMinutes) });
                         courseCount++;
@@ -204,13 +208,17 @@ namespace HUC.Web.Areas.Company.Controllers
                         //{
                         //    break;
                         //}
-                    }
+                    //}
 
+
+                   
                 }
+                LogApp.Log4Net.WriteLog("courseCount:" + courseCount+" c:"+c, LogType.GENERALLOG);
+              //  LogApp.Log4Net.WriteLog("usercourse:" +  , LogType.GENERALLOG);
             }
             else
             {
-                foreach (var curCourse in company.Courses.Where(w => w.Course.CreatedDate.Value.Year == year).OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
+                foreach (var curCourse in company.Courses.Where(w => w.Course.CreatedDate.Value.Year == year && w.Course.IsDeleted==false).OrderBy(w => w.Course.Name)/*.Skip(next * 10).Take(10)*/)
                 {
                     var courseNameSmall = curCourse.Course.Name;
                     if (courseNameSmall.Length > 15)
@@ -248,14 +256,17 @@ namespace HUC.Web.Areas.Company.Controllers
 
             }
 
-            bool isdata = userAverageScorePerCourseData.Skip(next * 10).Take(10).Count() > 0 ? true : false;
+            bool isdata =true;//userAverageScorePerCourseData.Skip(next * 10).Take(8).Count() > 0 ? true : false;
             userAverageScorePerCourseHasData = isdata;
             userAverageTimeSpentPerCourseHasData = isdata;
             var userAverageScorePerCourse = new
             {
-                barDataCompliance = targetCompliancePerCourseData.Skip(next * 10).Take(10).ToArray(),
+                barDataCompliance = targetCompliancePerCourseData.Skip(next *10 ).Take(10).ToArray(),
                 barDataAverage = userAverageScorePerCourseData.Skip(next * 10).Take(10).ToArray(),
                 ticks = courseTicks.Skip(next * 10).Take(10),
+                //barDataCompliance = targetCompliancePerCourseData.ToArray(),
+                //barDataAverage = userAverageScorePerCourseData.ToArray(),
+                //ticks = courseTicks,
                 noData = !userAverageScorePerCourseHasData,
                 existdata = isdata
             };
@@ -264,11 +275,14 @@ namespace HUC.Web.Areas.Company.Controllers
             var userAverageTimeSpentPerCourse = new
             {
                 barData = userAverageTimeSpentPerCourseData.Skip(next * 10).Take(10).ToArray(),
+                //barData = userAverageTimeSpentPerCourseData.ToArray(),
                 ticks = courseTicks.Skip(next * 10).Take(10),
+                //ticks = courseTicks,
                 noData = !userAverageTimeSpentPerCourseHasData,
                 existdata = isdata
             };
-
+             LogApp.Log4Net.WriteLog("userAverageScorePerCourse:" + userAverageScorePerCourse.barDataCompliance.Count(), LogType.GENERALLOG);
+            LogApp.Log4Net.WriteLog("userAverageTimeSpentPerCourse:" + userAverageTimeSpentPerCourse.barData.Count(), LogType.GENERALLOG);
 
             return Json(new
             {

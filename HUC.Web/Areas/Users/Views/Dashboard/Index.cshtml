@@ -99,7 +99,7 @@
 
         </div>
         <div class="col-md-2" style="text-align:right;padding:0px">
-            <select class="chosen-select year-select" id="years-filter">
+            <select class="chosen-select year-select" id="years-filter" style="width:100px">
                 <option value="">All Time</option>
                 @foreach (var year in Model.YearsOptions())
                 {
@@ -366,6 +366,14 @@
                                         }
                                     }
                                     @course.Name
+                                    @*@if (course.IsDeleted)
+                        {
+                            @(course.Name+"(Expired)")
+                        }
+                        else
+                        {
+                            @course.Name;
+                        }*@
                                     @if (isComplete)
                                     {
 
@@ -430,19 +438,19 @@
                                 </td>
                                 <td style="text-align: center;vertical-align:middle">
                                     @*@if (!isStarted && !isComplete)
-                                        {
-                                            <i class="fa fa-times-circle" style="color:grey"></i>
-                                            @:Not Started
-                                        }
-                                        else if (isStarted && !isComplete)
-                                        {
-                                            @:In Progress
-                                        }
+                        {
+                            <i class="fa fa-times-circle" style="color:grey"></i>
+                            @:Not Started
+                        }
+                        else if (isStarted && !isComplete)
+                        {
+                            @:In Progress
+                        }
 
-                                                                    else
-                                                                    {
+                                                    else
+                                                    {
 
-                                                                        result = ((userCourse.TotalScore * 100) / userCourse.Course.MaxScore);*@
+                                                        result = ((userCourse.TotalScore * 100) / userCourse.Course.MaxScore);*@
 
                                     @if (course.RetakeDuration != 0)
                                     {
@@ -483,10 +491,10 @@
                                         <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/Results/@course.ID"><i class="fa fa-file-text"></i></a>
 
                                         @*}
-                                            else
-                                            {
-                                                <i class="fa fa-file-text" style="color:#c5c5c5"></i>
-                                            }*@
+                            else
+                            {
+                                <i class="fa fa-file-text" style="color:#c5c5c5"></i>
+                            }*@
 
                                     }
                                     else
@@ -560,6 +568,298 @@
                                 </td>
                             </tr>
                         }
+                        foreach (var course in user.AllCourses(Model.Year).Where(x => x.IsDeleted == true).OrderBy(x => x.Name, new StrCmpLogicalComparer()))
+                        {
+                            var modelissue = Model.Certificates.Where(w => w.CourseId == course.ID).FirstOrDefault();
+                            var userCourse = user.UserCourses.Where(x => x.CourseID == course.ID).FirstOrDefault();
+                            var resources = course.Resources.ToList();
+                            freetextanswer = 0;
+                            foreach (var item in resources)
+                            {
+                                if (item.ModuleCompleted == false)
+                                {
+                                    var FreeText = item.Questions.Where(w => w.QuestionType == 7).ToList();
+
+                                    foreach (var q in FreeText)
+                                    {
+
+
+                                        var freetextanswers = q.Answers.Where(w => w.TestQuestionID == q.ID && w.IsCorrect == true && user.ID == w.CourseUserId && w.IsResult == 0).ToList();
+
+
+                                        if (freetextanswers.Count() > 0)
+                                        {
+                                            userCourse.CompanyUser.HasFreeText = 1;
+                                            freetextanswer = freetextanswers.Count();
+                                        }
+                                    }
+                                }
+                            }
+                            int spnTime = 0;
+                            int? ModulTime = 0;
+                            string timeColor = "#788288";
+                            int attemptedques = 0;
+                            bool ispass = false;
+                            var result = 0;
+
+
+                            if (userCourse != null)
+                            {
+                                result = ((userCourse.TotalScore * 100) / userCourse.Course.MaxScore);
+                            }
+
+                            if (userCourse != null)
+                            {
+
+                                spnTime = Convert.ToInt32(userCourse.TimeTaken.TotalMinutes);
+                                ModulTime = userCourse.Course.Resources.Sum(x => x.ModuleTime);
+                                attemptedques = userCourse.TotalAttemtedQuestion;
+
+
+
+                            }
+                            var isStarted = userCourse != null && userCourse.StartedOn.HasValue && !userCourse.IsComplete;
+                            var isComplete = userCourse != null && userCourse.StartedOn.HasValue && userCourse.IsComplete;
+
+                            if (userCourse != null && attemptedques == course.MaxScore)
+                            {
+                                isComplete = true;
+                                isStarted = false;
+                                if (ModulTime > spnTime)
+                                {
+                                    timeColor = "red";
+
+                                }
+                            }
+                            <tr>
+                                <td style="vertical-align:middle">
+
+                                    @if (!isStarted && !isComplete)
+                                    {
+                                        @*@:Not Started*@
+                                        <i class="fa fa-circle" style="color:grey" data-toggle="tooltip" title="Not Started"></i>
+                                    }
+                                    else
+                                    {
+                                        if (isComplete)
+                                        {
+                                            @*@:Complete*@
+                                            <i class="fa fa-circle" style="color:#1aae88" data-toggle="tooltip" title="Complete"></i>
+                                        }
+                                        else
+                                        {
+                                            @*@:Started*@
+                                            <i class="fa fa-circle" style="color:red" data-toggle="tooltip" title="In Progress"></i>
+                                        }
+                                    }
+                                    @(course.Name+" (Expired)")
+                                    @*@course.Name*@
+                                    @*@if (course.IsDeleted)
+        {
+            @(course.Name+"(Expired)")
+        }
+        else
+        {
+            @course.Name;
+        }*@
+                                    @if (isComplete)
+                                    {
+
+                                        ispass = course.PassingPercentage != null && ((userCourse.TotalScore * 100) / course.MaxScore) >= course.PassingPercentage ? true : false;
+                                        int days = userCourse.RetakeDate == null ? 50 : (Convert.ToDateTime(userCourse.RetakeDate).Date - DateTime.Now.Date).Days;
+                                        if (days <= 30 && days > 0 && ispass && course.RetakeDuration > 0)
+                                        {
+                                            icon = "fa fa-info-circle";
+                                            tool = "You have " + days + " days left to renew the " + course.Name + " course or your compliance will be revoked.";
+                                            <script>
+                                              var messg = "You have " + '@Html.Encode(days)' + " days left to renew the " + '@Html.Encode(course.Name)' + " course or your compliance will be revoked.";
+                                            toastr.info(messg);
+
+                                            // $("#revisit").attr("title", "sjdhfsd fjsdfhkjsdfh sdkfh");
+
+                                            </script>
+                                            <i class="@icon" style="color:red;padding-left:10px;" title="@tool" data-toggle="tooltip"></i>
+                                        }
+                                        else
+                                        {
+                                            tool = "";
+                                            icon = "";
+                                        }
+                                    }
+
+                                </td>
+                                <td style="color:@timeColor;text-align: center;vertical-align:middle">
+                                    @if (!isStarted && !isComplete)
+                                    {
+                                        @:0 minute 0 second
+                                    }
+                                    else
+                                    {
+                                        @userCourse.TimeTakenString
+                                    }
+                                </td>
+                                <td style="vertical-align:middle;text-align:center;">
+                                    @if (userCourse == null || !userCourse.StartedOn.HasValue)
+                                    {
+                                        @:Not Started
+                                    }
+                                    else if (userCourse.IsComplete)
+                                    {
+                                        if (userCourse.CompanyUser.HasFreeText == 1)
+                                        {
+                                            @: In progress
+                                        }
+                                        else if (result >= userCourse.Course.PassingPercentage)
+                                        {
+                                            <i class="fa fa-check-circle"></i> @:Passed
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-times-circle" style="color:red"></i> @:Failed
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        @:In Progress
+                                    }
+                                </td>
+                                <td style="text-align: center;vertical-align:middle">
+                                    @*@if (!isStarted && !isComplete)
+                        {
+                            <i class="fa fa-times-circle" style="color:grey"></i>
+                            @:Not Started
+                        }
+                        else if (isStarted && !isComplete)
+                        {
+                            @:In Progress
+                        }
+
+                                                    else
+                                                    {
+
+                                                        result = ((userCourse.TotalScore * 100) / userCourse.Course.MaxScore);*@
+
+                                    @if (course.RetakeDuration != 0)
+                                    {
+
+
+
+                                        if (result >= course.PassingPercentage && freetextanswer == 0)
+                                        {
+                                            <i class="fa fa-check-circle"></i> @: Compliant
+                                        }
+                                        else if (freetextanswer != 0)
+                                        {
+                                            @:  Not Compliant
+
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-times-circle" style="color:red"></i> @:Not Compliant
+                                        }
+
+
+
+                                    }
+                                    else
+                                    {
+                                        @: Not Applicable
+
+                                    }
+
+
+                                    @*}*@
+                                </td>
+                                <td class="text-center">
+                                    @if (isComplete && freetextanswer == 0)
+                                    {
+                                        //if (userCourse.CompanyUser.HasFreeText == 1)
+                                        //{
+                                        <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Users/Dashboard/Results/@course.ID"><i class="fa fa-file-text"></i></a>
+
+                                        @*}
+                            else
+                            {
+                                <i class="fa fa-file-text" style="color:#c5c5c5"></i>
+                            }*@
+
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-file-text" style="color:#c5c5c5"></i>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!isStarted && !isComplete)
+                                    {
+                                        <a href="@Url.Action("Start", "Courses", new { id = course.ID })" class="btn btn-xs btn-rounded btn-primary"><i class="fa fa-chevron-right"></i> Start Course</a>
+                                    }
+
+                                    @if (isStarted || freetextanswer != 0)
+                                    {
+                                        <a href="@Url.Action("Modules", "Courses", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-chevron-right"></i> Continue Course</a>
+                                    }
+                                    else if (isComplete)
+                                    {
+                                        ispass = course.PassingPercentage != null && ((userCourse.TotalScore * 100) / course.MaxScore) >= course.PassingPercentage ? true : false;
+                                        if (userCourse != null && !ispass && attemptedques == course.MaxScore && attemptedques != userCourse.TotalScore)
+                                        {
+
+
+                                            if ((userCourse.CoolDownHoursTime != null && course.ReTake == true && DateTime.Compare(DateTime.Now, Convert.ToDateTime(userCourse.CoolDownHoursTime)) > 0) || (userCourse.CoolDownHoursTime == null && course.ReTake == true))
+                                            {
+                                                
+                                <span  class="btn btn-xs btn-rounded btn-warning" style="cursor: unset"><i class="fa fa-reply"></i> Re-Take Course</span>
+                                            }
+
+                                            else if (userCourse.CoolDownHoursTime == null && course.ReTake == false)
+                                            {
+                                               
+                                                <span  class="btn btn-xs btn-rounded btn-warning" style="cursor: unset"><i class="fa fa-reply"></i> Re-Take Course</span>
+                                            }
+                                            else
+
+                                            {
+                                                
+                                                <span  class="btn btn-xs btn-rounded btn-warning" style="cursor: unset"><i class="fa fa-reply"></i> Re-Take Course</span>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            //here-------------------
+                                            if (userCourse.RetakeDate != null && DateTime.Now.Date > Convert.ToDateTime(userCourse.RetakeDate) && course.RetakeDuration > 0)
+                                            {
+                                                
+                                                <span  class="btn btn-xs btn-rounded btn-warning" style="cursor: unset"><i class="fa fa-reply"></i> Re-Take Course</span>
+                                            }
+                                            else
+                                            {
+                                               
+                                                <span  class="btn btn-xs btn-rounded " style="background:#1aae88 !important;color:#fff !important;cursor:unset"><i class="fa fa-reply"></i> Re-Visit Course </span>
+                                            }
+                                        }
+                                        <a href="@Url.Action("Results", "Dashboard", new { id = course.ID })" class="btn btn-xs btn-rounded btn-success hidden"><i class="fa fa-eye"></i> View Test Results</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (modelissue != null)
+                                    {
+                                        <a href="@Url.Action("IssueCertificate", new { id = modelissue.UserId, CourseId = modelissue.CourseId , type = 1 })" target="_blank" style="width:115px;margin-left:30px;padding-left:5px" class="btn btn-xs btn-rounded btn-success"><i class="fa fa-check-circle"></i>  View Certificate</a>
+                                    }
+                                    else
+                                    {
+                                        <span href="#" class="btn btn-xs btn-rounded btn-danger" style=" height: 23px; width: 115px; text-align: center;  padding:1px;padding-left:1px; background-color: darkgray; color: white !important; border: none;margin-left:30px;">
+                                            Not Available
+                                        </span>
+
+
+                                    }
+                                </td>
+                            </tr>
+                        }
+
                     }
                     else
                     {

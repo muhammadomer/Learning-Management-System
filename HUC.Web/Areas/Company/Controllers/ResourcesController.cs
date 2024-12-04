@@ -411,52 +411,81 @@ namespace HUC.Web.Areas.Company.Controllers
             return View(model);
         }
 
+        public ActionResult ContentCreateMP4(int id, int? type = null)
+        {
+            if (!type.HasValue || !Enum.IsDefined(typeof(ContentType), type.Value))
+            {
+                var chapter = Database.GetSingle<ResourceChapterModel>(id);
+                AddError("Type invalid or not provided.");
+                return RedirectToAction("View", new { id = chapter.ResourceID });
+            }
+
+            var model = new ChapterContentAddModel
+            {
+                ChapterID = id,
+                ContentType = (ContentType)type.Value
+            };
+
+            return View(model);
+        }
+
+
+
+      //  [HttpPost]
+
+        public ActionResult ContentCreateMP5(int id,bool fileupload,int chapterId )
+        {
+
+            if (fileupload == false)
+            {
+                ModelState.AddModelError("Value", "file can't be uploaded");
+                AddErrorModel();
+                //var model = new ChapterContentModel
+                //{
+                //    ChapterID = 17827,
+                //    ContentType = ContentType.Video
+                //};
+                return RedirectToAction("ContentCreateMP4", new { id =chapterId,type=201 });
+              //  return View(model);
+
+            }
+         else
+            {
+                 AddSuccessCreate("Section");
+                     return RedirectToAction("View", new { id =id });
+            }
+
+
+
+
+
+
+
+
+        }
+
+
         [HttpPost]
 
         public ActionResult ContentCreate(ChapterContentAddModel model, HttpPostedFileBase value_file)
         {
 
+                   
+            if(model.ContentType == ContentType.Video)
+            {
+                AddSuccessCreate("Section");
+                return RedirectToAction("View", new { id = model.Chapter.ResourceID });
+            }
 
-            
-
-
-            //HttpFileCollectionBase files = Request.Files;
-            //LogApp.Log4Net.WriteLog("Total no requested files " + Request.Files.Count, LogApp.LogType.GENERALLOG);
-
-            //for (int i = 0; i < files.Count; i++)
-            //{
-               
-            //    HttpPostedFileBase file = files[i];
-            //    string fileName = file.FileName;
-            //    LogApp.Log4Net.WriteLog("File Name " + file.FileName, LogApp.LogType.GENERALLOG);
-            //    LogApp.Log4Net.WriteLog("File Size " + file.ContentLength, LogApp.LogType.GENERALLOG);
-
-
-            //}
-
-
-            //LogApp.Log4Net.WriteLog("Model content type " + model.ContentType, LogApp.LogType.GENERALLOG);
-            //LogApp.Log4Net.WriteLog("Model value " + model.Value, LogApp.LogType.GENERALLOG);
-
-
-            // if (value_file.ContentLength >= 19841325)
-            // {
-            // ModelState.AddModelError("Value", "The file size must not above 50mb");
-
-            // }
-            // else
-            // { 
+           
+           
             if (_uploadRequiredContentTypes.Contains(model.ContentType))
             {
                 //We require a file to be uploaded (or to already be present)!
                 if (value_file != null)
                 {
                     LogApp.Log4Net.WriteLog("value_file != null", LogApp.LogType.GENERALLOG);
-                    if (value_file.ContentLength >= 19841325)
-                         {
-                         ModelState.AddModelError("Value", "The file size must not above 50mb");
-
-                         }
+                   
 
                         //File present, upload!
                         var validFileTypes = new List<FileType> { FileType.Any };
@@ -550,6 +579,16 @@ namespace HUC.Web.Areas.Company.Controllers
 
             return View(model);
         }
+        public ActionResult ContentEditMP4(int id)
+        {
+            var model = Database.GetSingle<ChapterContentEditModel>(id);
+
+            return View(model);
+        }
+
+
+
+
 
         [HttpPost]
         public ActionResult ContentEdit(ChapterContentEditModel model, HttpPostedFileBase value_file)

@@ -231,27 +231,35 @@
                                     }
 
                                     <tr>
-                                        <td style="vertical-align: middle;">
-                                            @if (!isStarted && !isComplete)
-                                            {
-                                                @*@:Not Started*@
-                                                <i class="fa fa-circle" style="color:grey" data-toggle="tooltip" title="Not Started"></i>
-                                            }
-                                            else
-                                            {
-                                                if (isComplete)
-                                                {
-                                                    @*@:Complete*@
-                                                    <i class="fa fa-circle" style="color:#1aae88" data-toggle="tooltip" title="Complete"></i>
-                                                }
-                                                else
-                                                {
-                                                    @*@:Started*@
-                                                    <i class="fa fa-circle" style="color:red" data-toggle="tooltip" title="In Progress"></i>
-                                                }
-                                            }
-                                            @course.Name
-                                        </td>
+                                                                <td style="vertical-align: middle;">
+                                                                    @if (!isStarted && !isComplete)
+                                                                    {
+                                                                        @*@:Not Started*@
+                                                                        <i class="fa fa-circle" style="color:grey" data-toggle="tooltip" title="Not Started"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (isComplete)
+                                                                        {
+                                                                            @*@:Complete*@
+                                                                            <i class="fa fa-circle" style="color:#1aae88" data-toggle="tooltip" title="Complete"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @*@:Started*@
+                                                                            <i class="fa fa-circle" style="color:red" data-toggle="tooltip" title="In Progress"></i>
+                                                                        }
+                                                                    }
+                                                                    @if (course.IsDeleted == true)
+        {
+            @(course.Name+" (Expired)")
+        }
+        else
+        {
+            @course.Name
+        }
+                                                                    @*@(course.Name+" (Expired)")*@
+                                                                </td>
                                         <td @*class="hidden"*@ class="aligntd">
                                             @if (!isStarted && !isComplete)
                                             {
@@ -362,7 +370,14 @@
                                                     <i class="fa fa-circle" style="color:red" data-toggle="tooltip" title="In Progress"></i>
                                                 }
                                             }
-                                            @course.Name
+                                            @if (course.IsDeleted == true)
+                                            {
+                                                @(course.Name+" (Expired)")
+                                            }
+                                            else
+                                            {
+                                                @course.Name
+                                            }
                                         </td>
                                         <td @*class="hidden"*@ class="aligntd">
                                             @if (!isStarted && !isComplete)

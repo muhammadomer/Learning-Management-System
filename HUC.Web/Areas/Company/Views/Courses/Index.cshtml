@@ -128,10 +128,12 @@
 
 <div class="desktop-ver">
     <div class="row">
-        <div class="col-md-12 align-top-content btncoursecompany" >
+        <div class="col-md-12 align-top-content btncoursecompany">
             <a class="btn btn-success pull-right" href="@Url.Action("Create")">
                 <i class="fa fa-pencil" style="margin-right: 10px;"></i> Create New Course
             </a>
+
+
         </div>
     </div>
 </div>
@@ -163,7 +165,7 @@
                 </tr>
             </thead>
             <tbody>
-                 @foreach (var course in Model)
+                @foreach (var course in Model)
                 {
                     <tr id="cours-@course.ID">
                         <td class="hidden"> @course.ID</td>
@@ -219,41 +221,41 @@
                                 <span style="cursor:no-drop">
                                     <a style="pointer-events: none; " data-toggle="tooltip" title="Delete" @*href="@Url.Action("Delete", new { id = course.ID, confirm = true })"*@ onclick="DeleteCourse(@course.ID)"><i class="fa fa-times delete-icon"></i></a>
                                 </span>
-                                    }
-                                    <div id="myModal-@course.ID" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
+                            }
+                            <div id="myModal-@course.ID" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
 
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Duplicate This Course</h4>
-                                                </div>
-                                                <form action="@Url.Action("CreateCourseClone")">
-                                                    <div class="modal-body">
-                                                        <input type="hidden" name="CourseID" value="@course.ID" />
-                                                        <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
-
-
-
-                                                    </div>
-                                                    <div class="modal-footer">
-
-                                                        <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Duplicate This Course</h4>
                                         </div>
-                                    </div>
-                                    @*<a href="" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-files-o"></i> Resources</a>
-                <a href="@Url.Action("Edit", new { id = course.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="@Url.Action("Delete", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>*@
+                                        <form action="@Url.Action("CreateCourseClone")">
+                                            <div class="modal-body">
+                                                <input type="hidden" name="CourseID" value="@course.ID" />
+                                                <input type="text" name="CourseName" class="form-control" value="@course.Name" required />
 
-                            </td>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <button type="submit" class="btn btn-default" style="margin-top:6px;">Duplicate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*<a href="" class="btn btn-xs btn-rounded btn-info"><i class="fa fa-files-o"></i> Resources</a>
+                                <a href="@Url.Action("Edit", new { id = course.ID })" class="btn btn-xs btn-rounded btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                                <a href="@Url.Action("Delete", new { id = course.ID })" class="btn btn-xs btn-rounded btn-danger"><i class="fa fa-times"></i> Delete</a>*@
+
+                        </td>
                     </tr>
-               }
+                }
             </tbody>
         </table>
     </div>
@@ -323,7 +325,7 @@
 	  $(".intro-text").removeClass("button-deactive");
         $(".btn-3").css("color", "#ffffff !important");
         var CreatedId = '@TempData["ID"]';
-		
+
          if (CreatedId > 0) {
              swal({
                  title: 'New course has been created. Do you want </br> to add course content now?',
@@ -367,11 +369,11 @@
         $(".swal2-cancel").text("No");
         $(".swal2-confirm").text("Yes");
         $(".swal2-confirm").click(function () {
-           
+
         var i = 1;
         $("table tbody tr").each(function() {
             var idd = $(this).attr('id');
-            
+
             if (i == 1) {
 
                 $("#" + idd).removeClass('even');
@@ -388,8 +390,8 @@
             type: "POST",
             url: "@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Company/Courses/DeleteWithAjax?id=" + id,
             success: function (response) {
-                if (response == "yes") {
-                    $("#cours-" + id).hide();
+                if (response == "ok") {
+                  //  $("#cours-" + id).hide();
                     toastr.success('Deleted successfully');
 
                 }

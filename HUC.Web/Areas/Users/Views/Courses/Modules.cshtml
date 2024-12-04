@@ -130,7 +130,7 @@ else if (Model.Course.BackGroundType == true && !string.IsNullOrEmpty(Model.Cour
                         @if (!String.IsNullOrWhiteSpace(Model.Course.IntroCopy))
                         {
                     <p style="font-size:16px;" title="@Html.Raw(Model.Course.IntroCopy)">
-                        @Html.Raw(Model.Course.IntroCopy)
+                        @*@Html.Raw(Model.Course.IntroCopy)*@
                         @*@Html.Raw(Model.Course.IntroCopy.Length > 120 ? Model.Course.IntroCopy.Substring(0, 120) + "..." : Model.Course.IntroCopy)*@
                     </p>
                         }

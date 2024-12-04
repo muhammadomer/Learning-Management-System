@@ -183,11 +183,22 @@ else
 
 
                             @foreach (var val in abc)
-        {
-            <li>
-                <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
-            </li>
-        }
+                            {
+                                int x = (int)val;
+                                if (x == 201 )
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ContentCreateMP4", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+                                    </li>
+                                }
+
+                            }
 
 
 
@@ -470,7 +481,8 @@ else
                     </div>
                     <div class="flip-module" id="module-@content.ID"></div>
                     <script>
-                    var flipJson = @Html.Raw(content.Value);
+                        var flipJson = @Html.Raw(content.Value);
+                        debugger;
                     for (var i = 0; i < flipJson.length; i++) {
                         flipJson[i].imagePath = flipJson[i].imagePath.replace("~/", "../../../");
                     }
@@ -493,6 +505,7 @@ else
                         })
 
                         function DeleteFlip() {
+                            debugger;
                             var text = $("#FlipValue").val();
                             var divid = $("#DivId").val();
                             var array = $("#arraydata").val();
@@ -551,30 +564,40 @@ else
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            <p class="bg-end-section rounded flip-@content.ID" style="padding: 5px 30px; margin-top: 20px;">
-                @if (content.Sort > 1)
-                {
-                    @:<a href="@Url.Action("ContentMoveUp", new { id = content.ID })" data-toggle="tooltip" title="Move Up"><i class="fa fa-chevron-circle-up white-color "></i></a>
-                }
-                else
-                {
-                    <a href="#"><i class="fa fa-chevron-circle-up" style="opacity:0.4;cursor:default; color:white"></i></a>
-                }
-                &nbsp;&nbsp;
-                @if (content.Sort < chapter.Contents.Count())
-                {
-                    @:<a href="@Url.Action("ContentMoveDown", new { id = content.ID })" data-toggle="tooltip" title="Move Down"><i class="fa fa-chevron-circle-down white-color "></i></a>
-                }
-                else
-                {
-                    <a href="#"><i class="fa fa-chevron-circle-down" style="opacity:0.4;cursor:default; color:white"></i></a>
-                }
-                &nbsp;&nbsp;
-                <a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a> &nbsp;&nbsp;
-                @*<a href="@Url.Action("ContentDelete", new { id = content.ID, confirm = true })" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>*@
+        <p class="bg-end-section rounded flip-@content.ID" style="padding: 5px 30px; margin-top: 20px;">
+            @if (content.Sort > 1)
+            {
+                @:<a href="@Url.Action("ContentMoveUp", new { id = content.ID })" data-toggle="tooltip" title="Move Up"><i class="fa fa-chevron-circle-up white-color "></i></a>
+            }
+            else
+            {
+                <a href="#"><i class="fa fa-chevron-circle-up" style="opacity:0.4;cursor:default; color:white"></i></a>
+            }
+            &nbsp;&nbsp;
+            @if (content.Sort < chapter.Contents.Count())
+            {
+                @:<a href="@Url.Action("ContentMoveDown", new { id = content.ID })" data-toggle="tooltip" title="Move Down"><i class="fa fa-chevron-circle-down white-color "></i></a>
+            }
+            else
+            {
+                <a href="#"><i class="fa fa-chevron-circle-down" style="opacity:0.4;cursor:default; color:white"></i></a>
+            }
+            &nbsp;&nbsp;
+            @if (content.ContentType == ContentType.Video || content.ContentType==ContentType.Audio || content.ContentType == ContentType.PDF)
+            {
+                <a href="@Url.Action("ContentEditMP4", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a>
 
-                <a id="contentchapter-@content.ID" onclick="DeleteContent(@content.ID)" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>
-            </p>
+            }
+            else
+            {
+                <a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a>
+
+            }
+            &nbsp;&nbsp;
+            @*<a href="@Url.Action("ContentDelete", new { id = content.ID, confirm = true })" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>*@
+
+            <a id="contentchapter-@content.ID" onclick="DeleteContent(@content.ID)" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>
+        </p>
             <p class="bg-end-section rounded showflip-@content.ID" style="padding: 5px 30px; margin-top: 20px; display:none">
                 @if (content.Sort > 1)
                 {
@@ -594,7 +617,12 @@ else
                     <a href="#"><i class="fa fa-chevron-circle-down" style="opacity:0.4;cursor:default; color:white"></i></a>
                 }
                 &nbsp;&nbsp;
-                <a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Add"><i class="fa fa-plus white-color "></i></a> &nbsp;&nbsp;
+
+               
+                    <a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Add"><i class="fa fa-plus white-color "></i></a>
+
+                
+                &nbsp; &nbsp;
                 <a href="@Url.Action("ContentDelete", new { id = content.ID, confirm = true })" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>
             </p>
         </div>

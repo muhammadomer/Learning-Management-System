@@ -63,7 +63,7 @@ namespace HUC.Web.Controllers
 
         public ActionResult ClientAliveMessage(string connectionId)
         {
-           var beat = Database.GetSingle<HeartbeatModel>(connectionId, "ConnectionID");
+            var beat = Database.GetSingle<HeartbeatModel>(connectionId, "ConnectionID");
 
             if (beat == null) return Json(true, JsonRequestBehavior.AllowGet);
 

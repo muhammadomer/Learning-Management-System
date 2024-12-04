@@ -16,6 +16,8 @@ namespace HUC.Web
 
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(3);
 
+           
+
             app.MapSignalR();
         }
     }

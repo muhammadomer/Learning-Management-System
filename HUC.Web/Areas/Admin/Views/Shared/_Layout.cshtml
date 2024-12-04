@@ -123,7 +123,7 @@
             }
             else
             {
-                <a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/main-logo.png" class="m-r-sm"></a>
+                @*<a href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses" class="navbar-brand"><img src="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_content/images/main-logo.png" class="m-r-sm"></a>*@
             }
 
             <a href="@Url.Action("Logout", "Auth", new { area = ""})" class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">

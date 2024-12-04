@@ -44,13 +44,16 @@
 <link rel="stylesheet" type="text/css" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/_Content/css/Preview/AdminPreview.css" />
 <input type="hidden" id="hdnCourseId" value="@Model.ID" />
 <input type="hidden" id="hdnApplicatonPath" value="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)" />
+
+<link href="~/_Content/dropzone/basic.css" rel="stylesheet" />
+<link href="~/_Content/dropzone/dropzone.css" rel="stylesheet" />
 @if (Model.BackGroundType == false && !string.IsNullOrEmpty(Model.Background))
 {
     <style>
         .full-page {
             background-image: url(@HttpContext.Current.Request.ApplicationPath/_Media/Uploads/@Model.Background) !important;
         }
-      
+
     </style>
 }
 else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background))
@@ -80,12 +83,12 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 align-top-content1" >
-      <a class="btn btn-success  pull-left btn-blue-color-userclose" style="margin-left:16px; width:100px" href="#" onclick="Back();">
-            <i  class="fa fa-arrow-left"></i> Back
+    <div class="col-md-12 align-top-content1">
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="margin-left:16px; width:100px" href="#" onclick="Back();">
+            <i class="fa fa-arrow-left"></i> Back
         </a>
-		 <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"  href="javascript:window.open('','_self').close();">
-             Dashboard
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px" href="javascript:window.open('','_self').close();">
+            Dashboard
         </a>
     </div>
 </div>
@@ -100,7 +103,7 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
         </div>
     </div>
 </div>
-<div class="course-overview course-overview-top-asses" >
+<div class="course-overview course-overview-top-asses">
     <div class="col-md-12 main-panel no-padding">
         <div class="panel" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
             <div class="panel-body">
@@ -114,21 +117,27 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                                 @Html.Raw(Model.OutroCopy)
                             </p>
                         }
+
+                        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+                      
+
+
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12 ev-article">
                         <h4>Course Feedback</h4>
                         @*@if (!String.IsNullOrWhiteSpace(Model.Course.IntroCopy))
-                        {
-                            <p style="font-size:15px;">
-                                @Html.Raw(Model.Course.IntroCopy)
-                            </p>
-                        }*@
+                            {
+                                <p style="font-size:15px;">
+                                    @Html.Raw(Model.Course.IntroCopy)
+                                </p>
+                            }*@
                         <p style="font-size:15px;">
                             If you have any constructive criticisms about the course and how we could improve it, type in the box below. Maximum 500 (characters)
                         </p>
@@ -195,10 +204,11 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
         </div>
     </div>
 </div>
+<script src="~/_Content/dropzone/dropzone.js"></script>
 <script>
     $("#logoid").hide();
     $(".bg-white").hide();
-	function Back(){
-	window.history.back();
-  }
+    function Back() {
+        window.history.back();
+    }
 </script>

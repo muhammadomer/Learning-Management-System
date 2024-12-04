@@ -77,7 +77,7 @@
                         <div class="action-button" style="float:left !important; margin:2px !important;">
                             <input type="button" id="btSubmit" value="Update" class="btn btn-dark" />
                         </div>
-                       <a href ="/TrainingCourses/Admin/Resources/View/@Model.Chapter.ResourceID" class="btn btn-secondary m-btn m-btn--custom" style="float:left;margin:2px !important;border: 1px solid darkgrey;">Cancel</a>
+                       <a href ="/Admin/Resources/View/@Model.Chapter.ResourceID" class="btn btn-secondary m-btn m-btn--custom" style="float:left;margin:2px !important;border: 1px solid darkgrey;">Cancel</a>
                     </div>
                 </div>
             }
@@ -86,11 +86,14 @@
     </div>
 <script>
     $(document).ready(function () {
+        debugger;
 	 $('.text-black').removeAttr('style')  ; 
         $(".align-top-content").removeClass("button-deactive");
         $(".align-top-content").addClass("button-active");
         $(".col-md-1").hide();
+        
     })
+
 </script>
     @*<div class="col-md-3">
 

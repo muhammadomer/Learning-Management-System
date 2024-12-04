@@ -178,7 +178,7 @@ function Slider(jasonObj) {
 
         //show popup by clicking submit button
         $("button." + this.jasonObj.divId).on("click", (e) => {
-            debugger;
+           // debugger;
             $("#ev-prompt-title-" + this.jasonObj.divId).show();
             $("#ev-prompt-title-" + this.jasonObj.divId).prev().show();
             if ($.trim($(e.target).children().text()) === "Submit") {

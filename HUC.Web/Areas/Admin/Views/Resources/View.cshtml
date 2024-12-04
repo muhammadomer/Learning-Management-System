@@ -176,9 +176,25 @@ else
         }*@
                             @foreach (var val in abc)
                             {
-                                <li>
-                                    <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
-                                </li>
+
+
+                                int x = (int)val;
+                                if (x == 201)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ContentCreateMP4", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+                                    </li>
+                                }
+
+                                @*<li>
+                <a href="@Url.Action("ContentCreate", new { id = chapter.ID, type = (int)val })">@val.StringValue()</a>
+            </li>*@
                             }
                         </ul>
                     </li>
@@ -187,7 +203,7 @@ else
             </header>
             @foreach (var content in chapter.Contents.OrderBy(x => x.Sort))
             {
-        <div class="panel-body" style=" margin-top: -20px;">
+        <div class="panel-body" style=" margin-top: -20px;" id="panel-body-@content.ID">
             @switch (content.ContentType)
             {
                 case ContentType.Text:
@@ -442,6 +458,7 @@ else
                     </div>
                     <div class="flip-module" id="module-@content.ID"></div>
                     <script>
+                        debugger;
                     var flipJson = @Html.Raw(content.Value);
                     for (var i = 0; i < flipJson.length; i++) {
                         flipJson[i].imagePath = flipJson[i].imagePath.replace("~/", "../../../");
@@ -527,30 +544,42 @@ else
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            <p class="bg-end-section rounded flip-@content.ID" style="padding: 5px 30px; margin-top: 20px;">
-                @if (content.Sort > 1)
-                {
-                    @:<a href="@Url.Action("ContentMoveUp", new { id = content.ID })" data-toggle="tooltip" title="Move Up"><i class="fa fa-chevron-circle-up white-color "></i></a>
-                }
-                else
-                {
-                    <a href="#"><i class="fa fa-chevron-circle-up" style="opacity:0.4;cursor:default; color:white"></i></a>
-                }
-                &nbsp;&nbsp;
-                @if (content.Sort < chapter.Contents.Count())
-                {
-                    @:<a href="@Url.Action("ContentMoveDown", new { id = content.ID })" data-toggle="tooltip" title="Move Down"><i class="fa fa-chevron-circle-down white-color "></i></a>
-                }
-                else
-                {
-                    <a href="#"><i class="fa fa-chevron-circle-down" style="opacity:0.4;cursor:default; color:white"></i></a>
-                }
-                &nbsp;&nbsp;
-                <a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a> &nbsp;&nbsp;
-                @*<a href="@Url.Action("ContentDelete", new { id = content.ID, confirm = true })" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>*@
-                <a id="contentchapter-@content.ID" onclick="DeleteContent(@content.ID)" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>
+        <p class="bg-end-section rounded flip-@content.ID" style="padding: 5px 30px; margin-top: 20px;">
+            @if (content.Sort > 1)
+            {
+                @:<a href="@Url.Action("ContentMoveUp", new { id = content.ID })" data-toggle="tooltip" title="Move Up"><i class="fa fa-chevron-circle-up white-color "></i></a>
+            }
+            else
+            {
+                <a href="#"><i class="fa fa-chevron-circle-up" style="opacity:0.4;cursor:default; color:white"></i></a>
+            }
+            &nbsp;&nbsp;
+            @if (content.Sort < chapter.Contents.Count())
+            {
+                @:<a href="@Url.Action("ContentMoveDown", new { id = content.ID })" data-toggle="tooltip" title="Move Down"><i class="fa fa-chevron-circle-down white-color "></i></a>
+            }
+            else
+            {
+                <a href="#"><i class="fa fa-chevron-circle-down" style="opacity:0.4;cursor:default; color:white"></i></a>
+            }
+            &nbsp;&nbsp;
+            @*<a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a> &nbsp;&nbsp;*@
+            @*<a href="@Url.Action("ContentDelete", new { id = content.ID, confirm = true })" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>*@
+            @if (content.ContentType == ContentType.Video)
+            {
+                <a href="@Url.Action("ContentEditMP4", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a>
 
-            </p>
+            }
+            else
+            {
+                <a href="@Url.Action("ContentEdit", new { id = content.ID })" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil white-color "></i></a>
+
+            }
+            &nbsp;&nbsp;
+
+            <a id="contentchapter-@content.ID" onclick="DeleteContent(@content.ID)" data-toggle="tooltip" title="Delete"><i class="fa fa-times white-color "></i></a>
+
+        </p>
             <p class="bg-end-section rounded showflip-@content.ID" style="padding: 5px 30px; margin-top: 20px; display:none">
                 @if (content.Sort > 1)
                 {
@@ -591,7 +620,9 @@ else
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script>
  $(document).ready(function () {
-        $('.text-black').removeAttr('style');
+     $('.text-black').removeAttr('style');
+     sessionStorage.setItem('flipeditimage', null);
+     sessionStorage.setItem('flipeditindex', null);
     })
 function DeleteContent(id) {
       //  alert(id);

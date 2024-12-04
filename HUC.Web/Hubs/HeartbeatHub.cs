@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Data.Metadata.Edm;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AtlasDB;
@@ -8,9 +6,6 @@ using HUC.Web.App.Courses.Time;
 using HUC.Web.App.Heartbeats;
 using HUC.Web.App.Users;
 using HUC.Web.App.Users.Courses;
-using Microsoft.AspNet.SignalR.Infrastructure;
-using WebGrease.Css.Extensions;
-using Connection = Microsoft.AspNet.SignalR.Client.Connection;
 
 
 namespace HUC.Web.Hubs
@@ -69,9 +64,9 @@ namespace HUC.Web.Hubs
                 db.Query<HeartbeatModel>(
                     "SELECT * FROM Heartbeats WHERE UserCourseID = @userCourseId AND EndOn is null " +
                     " AND ConnectionID <> @id AND ConnectionID is not null",
-                    new {id = connectionID,userCourseId = curUserCourse.ID});
+                    new { id = connectionID, userCourseId = curUserCourse.ID });
 
-            //If any close them..instead of closing the current one...
+           // If any close them..instead of closing the current one...
             if (connections.Any())
             {
                 //kick off the courses
@@ -79,21 +74,21 @@ namespace HUC.Web.Hubs
                 //TellClient(new HeartbeatClientResponse {ForceClose = true});
             }
 
-            //if (data.IsTest)
-            //{
-                
-            //    // Get all connections currently open in the database
-            //    var openConnections =
-            //        db.Query<HeartbeatModel>(
-            //            "SELECT * FROM Heartbeats WHERE UserCourseID = @userCourseId AND EndOn is null AND ConnectionID <> @id AND ConnectionID is not null",
-            //            new { userCourseId = curUserCourse.ID, id = connectionID}).ToList();
+            if (data.IsTest)
+            {
 
-                
-            //    if (openConnections.Any())
-            //    {
-            //        Clients.Clients(openConnections.Select(x=>x.ConnectionID).ToList()).Notify(new HeartbeatClientResponse {ForceClose = true});
-            //    }
-            //}
+                // Get all connections currently open in the database
+                var openConnections =
+                    db.Query<HeartbeatModel>(
+                        "SELECT * FROM Heartbeats WHERE UserCourseID = @userCourseId AND EndOn is null AND ConnectionID <> @id AND ConnectionID is not null",
+                        new { userCourseId = curUserCourse.ID, id = connectionID }).ToList();
+
+
+                if (openConnections.Any())
+                {
+                    Clients.Clients(openConnections.Select(x => x.ConnectionID).ToList()).Notify(new HeartbeatClientResponse { ForceClose = true });
+                }
+            }
 
             UserCourseTestModel curUserCourseTest = null;
             if (curUserCourse.CourseStage.IsTest)
@@ -106,7 +101,7 @@ namespace HUC.Web.Hubs
                 curUserCourse.CourseStage.ChapterID, connectionID, DateTime.Now, null);
 
             //Notify client
-            
+
             TellClient(response);
         }
 

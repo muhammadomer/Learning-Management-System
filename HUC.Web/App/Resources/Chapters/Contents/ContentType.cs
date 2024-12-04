@@ -41,12 +41,12 @@ namespace HUC.Web.App.Resources.Chapters.Contents
         VideoWistia = 302,
         [StringValue("Audio (MP3)")]
         // [Display(Order = 5)]
-        [Order(5)]
+        [Order(6)]
 
         Audio = 200,
         [StringValue("Video (MP4)")]
         // [Display(Order = 5)]
-        [Order(6)]
+        [Order(5)]
 
         Video = 201,
 

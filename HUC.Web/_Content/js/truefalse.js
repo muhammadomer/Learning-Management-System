@@ -1067,7 +1067,7 @@ function TrueFalse2(jasonObj) {
             $("#ev-prompt-title-" + this.jasonObj.divId).show();
             $("#ev-prompt-title-" + this.jasonObj.divId).prev().show();
             if ($.trim($(e.target).children().text()) === "Submit") {
-                debugger
+               // debugger
                 var ans = "s";
                 var ques = "q";
                 for (var i = 0; i < length; i++) {
@@ -1513,7 +1513,7 @@ function TrueFalse2(jasonObj) {
     };
     let enableSimpleFeedback = (e) => {
 
-        debugger;
+       // debugger;
         $("#ev-prompt-title-" + this.jasonObj.divId).hide();
         $("#ev-prompt-title-" + this.jasonObj.divId).prev().hide();
         //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().siblings().removeClass("ev-notify-glyph");
@@ -1803,7 +1803,7 @@ function TrueFalse1(jasonObj) {
         //show popup by clicking submit button
 
         $("button." + this.jasonObj.divId).on("click", (e) => {
-            debugger;
+          //  debugger;
             $("#ev-prompt-title-" + this.jasonObj.divId).show();
             $("#ev-prompt-title-" + this.jasonObj.divId).prev().show();
 
@@ -1813,7 +1813,7 @@ function TrueFalse1(jasonObj) {
 
 
 
-                debugger;
+             //   debugger;
                 var s = 0;
                 trueAnswerList = new Array();
                 for (var i = 1; i <= length; i++) {
@@ -1931,7 +1931,7 @@ function TrueFalse1(jasonObj) {
                 }
             }
             else if ($.trim($(e.target).children().text()) == "Reset") {
-                debugger;
+           //     debugger;
 
                 // change reset button to submit button
                 btnSubmit.children().text("Submit");
@@ -2230,7 +2230,7 @@ function TrueFalse1(jasonObj) {
 
     let enableSimpleFeedback = (e) => {
 
-        debugger;
+   //     debugger;
         $("#ev-prompt-title-" + this.jasonObj.divId).hide();
         $("#ev-prompt-title-" + this.jasonObj.divId).prev().hide();
         //$("#ev-prompt-title-" + this.jasonObj.divId).siblings().siblings().removeClass("ev-notify-glyph");

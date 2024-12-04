@@ -57,12 +57,12 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 align-top-content1" >
-       <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px"  href="" onclick="Back();">
-            <i  class="fa fa-arrow-left"></i> Back
+    <div class="col-md-12 align-top-content1">
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:100px" href="" onclick="Back();">
+            <i class="fa fa-arrow-left"></i> Back
         </a>
-		 <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px"   href="javascript:window.open('','_self').close();">
-             Dashboard
+        <a class="btn btn-success  pull-left btn-blue-color-userclose" style="width:135px" href="javascript:window.open('','_self').close();">
+            Dashboard
         </a>
     </div>
 </div>
@@ -76,7 +76,7 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
         </div>
     </div>
 </div>
-<div class="course-overview col-md-12 course-overview-top-about" >
+<div class="course-overview col-md-12 course-overview-top-about">
     <div class="col-md-12 main-panel no-padding">
         <div class="panel panel-default" style="box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);">
             <div class="panel-body">
@@ -103,18 +103,18 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
                     </div>
                     <div class="col-md-2 footer-current-page">
                         <div class="coursecounter">
-                           @* <span>1</span> of <span>@(Model.Resources.Count()+2)</span>*@
+                            @* <span>1</span> of <span>@(Model.Resources.Count()+2)</span>*@
                         </div>
                     </div>
                     <div class="col-md-5" style="text-align:right !important;">
                         @if (Model.Resources.OrderBy(x => x.Sort).FirstOrDefault() != null)
                         {
-						
+
                             <a class="btn btn-success  pull-left btn-blue-color-close" href="@(HttpContext.Current.Request.ApplicationPath.Length > 1 ? HttpContext.Current.Request.ApplicationPath : string.Empty)/Admin/Courses/ModuleDetail/@Model.Resources.OrderBy(x => x.Sort).FirstOrDefault().ID" style="color: #fff !important; width:50%;height:38px;margin-left: 50%;">Next Module  <i class="fa fa-arrow-right" style="color:#fff !important"></i></a>
-							                   
+
                         }
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@ else if (Model.BackGroundType == true && !string.IsNullOrEmpty(Model.Background)
     function closetab() {
         window.close();
     }
-	function Back(){
-	window.history.back();
-  }
+    function Back() {
+        window.history.back();
+    }
 </script>
